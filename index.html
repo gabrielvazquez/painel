@@ -1,0 +1,1618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Controle · Equipe e Frota</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{
+  --bg:#f4f5fa;--card:#fff;--ink:#1d2033;--ink2:#4a4f66;--muted:#8b90a6;--line:#eceef5;--soft:#f6f7fb;
+  --accent:#4f5fd8;--accent2:#3d4cc4;--accent-soft:#eef0fd;
+  --green:#22c55e;--yellow:#f5a623;--red:#ef4444;--blue:#4f63d6;--gray:#94a3b8;--pink:#d94ee8;
+  --shadow:0 1px 2px rgba(20,24,60,.04),0 6px 18px rgba(20,24,60,.05);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:13px;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;font-size:inherit;cursor:pointer;color:inherit}
+input,select,textarea{font-family:inherit;font-size:13px;color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+.muted{color:var(--muted)} .s{font-size:11.5px} .fw5{font-weight:500}
+.mono{font-family:ui-monospace,'SF Mono',Consolas,monospace;letter-spacing:.3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- Layout ---------- */
+.app{display:flex;min-height:100vh}
+.rail{width:76px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:8px;position:sticky;top:0;height:100vh;z-index:20;flex:none}
+.logo{font-weight:700;font-size:25px;color:var(--accent);letter-spacing:-1px;margin-bottom:28px;line-height:1}
+.nav-btn{width:44px;height:44px;border-radius:12px;border:0;background:transparent;color:#a3a8bd;display:grid;place-items:center;position:relative;transition:background .15s,color .15s}
+.nav-btn:hover{background:var(--soft);color:var(--ink2)}
+.nav-btn.on{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(79,95,216,.35)}
+.nav-btn .badge{position:absolute;top:3px;right:3px;background:var(--accent);color:#fff;font-size:9px;min-width:17px;height:17px;padding:0 3px;border-radius:9px;display:grid;place-items:center;border:2px solid #fff;font-weight:600}
+.nav-btn.on .badge{background:#fff;color:var(--accent);border-color:var(--accent)}
+.nav-btn .tip{position:absolute;left:56px;background:var(--ink);color:#fff;padding:5px 10px;border-radius:6px;font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transform:translateX(-4px);transition:.15s}
+.nav-btn:hover .tip{opacity:1;transform:none}
+.rail .spacer{flex:1}
+.nav-btn.out{color:var(--red)} .nav-btn.out:hover{background:#fdeeee}
+.main{flex:1;min-width:0;padding:22px 30px 48px}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap}
+.topbar h1{font-size:18px;font-weight:600;margin:0}
+.topbar .sub{color:var(--muted);font-size:12px}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.userchip{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);padding:4px 14px 4px 4px;border-radius:30px}
+.userchip b{font-weight:600;font-size:12px;display:block;line-height:1.25}
+.userchip small{color:var(--muted);font-size:10.5px}
+.live{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+.demo-tag{background:#fff6e5;color:#a8701a;border:1px solid #fde3b0;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:500}
+
+/* ---------- Cards ---------- */
+.card{background:var(--card);border-radius:14px;box-shadow:var(--shadow);border:1px solid #eff0f6}
+.card-h{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 0;gap:10px;flex-wrap:wrap}
+.card-h h3{margin:0;font-size:15px;font-weight:600}
+.card-b{padding:18px 22px 22px}
+.grid{display:grid;gap:18px}
+.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+.kpi{padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:transform .15s}
+.kpi:hover{transform:translateY(-2px)}
+.kpi .ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c);flex:none}
+.kpi b{font-size:22px;font-weight:600;display:block;line-height:1.15}
+.kpi span{color:var(--ink2);font-size:12px}
+.kpi .k-sub{color:var(--muted);font-size:10.5px}
+
+/* ---------- Hero / tabs (referência) ---------- */
+.hero{display:flex;align-items:center;gap:18px;padding:4px 4px 20px}
+.hero h2{margin:0;font-size:18px;font-weight:600}
+.hero p{margin:4px 0 0;color:var(--muted);text-transform:none}
+.tabs{display:flex;gap:6px;background:#fff;border-radius:12px;padding:0 12px;box-shadow:var(--shadow);border:1px solid #eff0f6;margin-bottom:18px;overflow-x:auto}
+.tab,.mtab{border:0;background:none;padding:15px 16px 13px;color:var(--ink2);font-size:12.5px;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on,.mtab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.mtabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
+.mtab{padding:10px 12px}
+
+/* ---------- Donut overview ---------- */
+.overview{display:grid;grid-template-columns:300px 1fr;gap:34px;align-items:center}
+.donut-wrap{position:relative;width:260px;height:260px;margin:auto}
+.donut-wrap svg{display:block}
+.donut-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.donut-c small{color:var(--muted);font-size:12px}
+.donut-c b{font-size:20px;font-weight:600;margin:4px 0 10px}
+.donut-c hr{width:120px;border:0;border-top:1px solid var(--line);margin:0 0 10px}
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px 34px}
+.lg{display:flex;align-items:center;gap:12px;cursor:pointer;border:0;background:none;padding:0;text-align:left}
+.lg .n{width:32px;height:32px;border:1px solid var(--line);border-radius:6px;display:grid;place-items:center;font-size:11.5px;font-weight:500;flex:none}
+.lg .p{width:36px;color:var(--muted);font-size:11.5px}
+.lg .l{flex:1;font-weight:500;font-size:12px}
+.lg .pill{background:var(--c);color:#fff;padding:5px 10px;border-radius:5px;font-size:11px;min-width:110px;text-align:center}
+.lg:hover .l{color:var(--accent)}
+
+/* ---------- Tables ---------- */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{background:#f3f4f9;text-align:left;font-weight:500;font-size:11.5px;color:var(--ink2);padding:11px 12px;white-space:nowrap}
+th:first-child{border-radius:8px 0 0 8px} th:last-child{border-radius:0 8px 8px 0}
+th.sort{cursor:pointer;user-select:none} th .ar{opacity:.45;margin-left:5px;font-size:9px}
+td{padding:13px 12px;border-bottom:1px solid var(--line);font-size:12.5px;vertical-align:middle}
+tr.click{cursor:pointer} tr.click:hover td{background:#fafbff}
+td.act{text-align:right;white-space:nowrap}
+.tfoot{color:var(--muted);font-size:11.5px;padding-top:12px}
+
+/* ---------- Chips / tags ---------- */
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;color:color-mix(in srgb,var(--c) 80%,#000);background:color-mix(in srgb,var(--c) 13%,#fff);white-space:nowrap;border:0;line-height:1.5}
+.chip .d,.dot{width:7px;height:7px;border-radius:50%;background:var(--c);display:inline-block;flex:none}
+button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
+.chip .caret{font-size:8px;opacity:.7}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;color:color-mix(in srgb,var(--c) 85%,#000);background:color-mix(in srgb,var(--c) 11%,#fff)}
+
+/* ---------- Buttons / inputs ---------- */
+.btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;border-radius:10px;font-weight:500;font-size:12.5px;transition:background .15s,border-color .15s;white-space:nowrap}
+.btn:hover{border-color:#d9dcea;background:var(--soft)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(79,95,216,.28)}
+.btn.pri:hover{background:var(--accent2)}
+.btn.danger{color:var(--red)} .btn.danger:hover{background:#fdeeee;border-color:#f8cfcf}
+.btn.sm{padding:6px 11px;font-size:11.5px}
+.btn.full{width:100%;justify-content:center;padding:12px}
+.btn:disabled{opacity:.6;cursor:wait}
+.icon-btn{width:32px;height:32px;border-radius:8px;border:0;background:transparent;color:var(--ink2);display:inline-grid;place-items:center;vertical-align:middle}
+.icon-btn:hover{background:var(--soft);color:var(--ink)}
+.icon-btn.xs{width:24px;height:24px}
+.icon-btn.bord{border:1px solid var(--line);background:#fff}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:500;padding:8px 0;font-size:12px}
+.lnk{color:var(--accent);cursor:pointer;font-weight:500}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.tb-right{margin-left:auto;display:flex;gap:8px}
+.search{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:0 12px;flex:1;min-width:200px;max-width:380px;color:var(--muted)}
+.search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.search input{border:0;outline:0;padding:10px 0;flex:1;background:transparent;min-width:0}
+.sel{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;outline:0}
+.sel.sm{padding:6px 10px;font-size:12px}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:7px;color:var(--ink2);font-size:12px;display:flex;gap:6px;align-items:center}
+.seg button.on{background:var(--accent-soft);color:var(--accent);font-weight:500}
+.seg.full{display:flex;margin-bottom:18px} .seg.full button{flex:1;justify-content:center;padding:9px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.fchip{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2);transition:.15s}
+.fchip .d{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.fchip b{font-weight:600;color:var(--ink)}
+.fchip:hover{border-color:color-mix(in srgb,var(--c) 45%,#fff)}
+.fchip.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--ink)}
+.hint{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:11.5px;margin:-4px 0 16px}
+
+/* ---------- Avatar ---------- */
+.av{border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:600;flex:none;background:var(--c)}
+.who{display:flex;align-items:center;gap:10px;min-width:0}
+.who b{font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{color:var(--muted);font-size:11px;display:block}
+.pos{font-size:12px}
+
+/* ---------- Placa Mercosul ---------- */
+.plate{display:inline-flex;flex-direction:column;align-items:stretch;border:2px solid #23263a;border-radius:6px;overflow:hidden;background:#fff;min-width:124px;vertical-align:middle}
+.plate i{display:block;background:#1e40af;color:#fff;font-style:normal;font-size:7.5px;letter-spacing:2.5px;text-align:center;padding:1.5px 0;font-weight:600}
+.plate b{font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:19px;letter-spacing:2.5px;padding:3px 10px;font-weight:700;text-align:center;color:#1d2033}
+.plate.mini{min-width:0;border-width:1.5px;border-radius:4px}
+.plate.mini i{font-size:4.5px;letter-spacing:1px;padding:0;height:4px;line-height:4px}
+.plate.mini b{font-size:11px;padding:1px 6px;letter-spacing:1px}
+.vlink{display:inline-flex;align-items:center;gap:8px}
+
+/* ---------- Frota ---------- */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.vcard{padding:16px 16px 14px;cursor:pointer;transition:transform .15s,box-shadow .15s;border-top:3px solid var(--c)}
+.vcard:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(20,24,60,.09)}
+.vtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.vico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--soft);color:var(--ink2)}
+.vmid{text-align:center;margin-bottom:12px}
+.vmodel{font-weight:600;margin-top:10px}
+.vmeta{color:var(--muted);font-size:11.5px;margin-top:2px}
+.vobs{display:flex;gap:7px;align-items:flex-start;background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--ink2);border-radius:8px;padding:8px 10px;font-size:11.5px;margin-bottom:10px}
+.vobs svg{flex:none;margin-top:1px;color:var(--c)}
+.vfoot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:10px;font-size:11.5px;gap:8px}
+.vupd{color:var(--muted);font-size:10.5px;margin-top:8px}
+
+/* ---------- Popover status ---------- */
+.pop{position:fixed;z-index:60;background:#fff;border-radius:12px;box-shadow:0 14px 44px rgba(20,24,60,.2);border:1px solid var(--line);padding:10px;width:262px;animation:pop .12s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}}
+.pop h5{margin:2px 6px 8px;font-size:12px;color:var(--ink);font-weight:600}
+.pop textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;resize:none;height:50px;outline:0;font-size:12px;margin-bottom:6px}
+.pop textarea:focus{border-color:var(--accent)}
+.pop-opt{display:flex;align-items:center;gap:11px;width:100%;border:0;background:none;padding:8px;border-radius:8px;text-align:left}
+.pop-opt:hover{background:var(--soft)}
+.pop-opt .d{width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,#fff);flex:none}
+.pop-opt div{flex:1}
+.pop-opt b{font-weight:500;display:block;font-size:12.5px}
+.pop-opt small{color:var(--muted);font-size:10.5px}
+.pop-opt.cur{background:var(--accent-soft)} .pop-opt.cur svg{color:var(--accent)}
+
+/* ---------- Modal ---------- */
+.ov{position:fixed;inset:0;background:rgba(20,24,50,.4);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:5vh 16px;overflow-y:auto;animation:fade .15s}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:580px;box-shadow:0 24px 70px rgba(0,0,0,.22);animation:up .18s ease}
+.modal.wide{max-width:780px}
+.m-h{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line)}
+.m-h h3{margin:0;font-size:15px;font-weight:600}
+.m-b{padding:20px 22px}
+.m-f{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--line);background:#fcfcfe;border-radius:0 0 16px 16px;flex-wrap:wrap}
+.m-f .left{margin-right:auto}
+.cf-ico{width:52px;height:52px;border-radius:50%;background:#fdeeee;color:var(--red);display:grid;place-items:center;margin:auto}
+
+/* ---------- Forms ---------- */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f.full{grid-column:1/-1}
+.f label{font-size:11.5px;font-weight:500;color:var(--ink2)}
+.f label em{color:var(--red);font-style:normal}
+.f input,.f select,.f textarea,.ta{border:1px solid var(--line);border-radius:10px;padding:10px 12px;outline:0;background:#fff;transition:border-color .15s,box-shadow .15s;width:100%}
+.f input:focus,.f select:focus,.f textarea:focus,.ta:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.f textarea,.ta{resize:vertical;min-height:84px;line-height:1.5}
+.radios{display:flex;gap:8px;flex-wrap:wrap}
+.rchip input{position:absolute;opacity:0;pointer-events:none}
+.rchip span{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);padding:7px 13px;border-radius:20px;cursor:pointer;font-size:12px;color:var(--ink2);transition:.12s}
+.rchip span .d{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.rchip input:checked+span{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);color:var(--ink);font-weight:500}
+.rchip input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.f-hint{font-size:10.5px;color:var(--muted)}
+
+/* ---------- Detalhes ---------- */
+.dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 22px}
+.dl > div small{display:block;color:var(--muted);font-size:11px;margin-bottom:3px}
+.dl > div b{font-weight:500}
+.dl .full{grid-column:1/-1}
+.sec{font-size:12px;font-weight:600;margin:20px 0 8px;color:var(--ink)}
+.box{background:var(--soft);border-radius:10px;padding:14px;white-space:pre-wrap;line-height:1.6}
+.box.resp{background:#f0fdf4;border:1px solid #d1f5dd}
+.resp-by{margin-top:8px;color:var(--muted);font-size:11px}
+.minicard{display:flex;align-items:center;gap:14px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.minicard:hover{background:#fafbff}
+.contact{display:flex;gap:6px;margin-top:4px}
+.contact a{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--accent);text-decoration:none;background:var(--accent-soft);padding:3px 9px;border-radius:12px}
+.timeline{position:relative;padding-left:18px}
+.timeline::before{content:'';position:absolute;left:4px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl{position:relative;padding:0 0 14px}
+.tl::before{content:'';position:absolute;left:-18px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px #fff}
+.tl b{font-weight:500} .tl small{display:block;color:var(--muted);font-size:11px}
+.tl p{margin:4px 0 0;color:var(--ink2);font-size:12px}
+.steps{display:flex;gap:0;margin-top:22px}
+.step{flex:1;position:relative;padding-top:20px;text-align:center}
+.step i{position:absolute;top:0;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:#e4e6ef;border:3px solid #fff;box-shadow:0 0 0 1px #e4e6ef;z-index:1}
+.step::before{content:'';position:absolute;top:6px;left:0;right:0;height:2px;background:#e4e6ef}
+.step:first-child::before{left:50%} .step:last-child::before{right:50%}
+.step.done i{background:var(--green);box-shadow:0 0 0 1px var(--green)}
+.step b{display:block;font-weight:500;font-size:12px}
+.step small{color:var(--muted);font-size:10.5px}
+.ch-head h2{margin:0 0 10px;font-size:17px;font-weight:600}
+.chips{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+
+/* ---------- Diário ---------- */
+.leaders{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:18px}
+.ld{padding:14px;display:flex;gap:12px;align-items:center;cursor:pointer;border:1px solid #eff0f6;text-align:left;background:#fff}
+.ld.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ld b{font-weight:500;display:block}
+.ld .nums{display:flex;gap:10px;font-size:11px;color:var(--muted);margin-top:3px}
+.ld .nums span{display:flex;align-items:center;gap:4px}
+.tk{display:flex;gap:14px;align-items:center;padding:14px 18px 14px 20px;border-bottom:1px solid var(--line);cursor:pointer;position:relative}
+.tk:last-child{border-bottom:0}
+.tk:hover{background:#fafbff}
+.tk::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:0 3px 3px 0;background:var(--c)}
+.tk .num{color:var(--muted);font-size:11.5px;width:40px;flex:none}
+.tk .body{flex:1;min-width:0}
+.tk .t{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk .m{color:var(--muted);font-size:11px;margin-top:4px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.replied{color:var(--green);display:grid;place-items:center}
+
+/* ---------- Calendário ---------- */
+.cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.cal-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.cal-h h2{margin:0 6px;font-size:17px;font-weight:600;min-width:170px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.cal .wd{padding:11px 6px;font-size:11px;color:var(--muted);font-weight:500;text-align:center;border-bottom:1px solid var(--line);background:#fafbfe}
+.cal .day{min-height:108px;padding:6px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:0;transition:background .1s}
+.cal .day:nth-child(7n){border-right:0}
+.cal .day:hover{background:#f8f9ff}
+.cal .day.we{background:#fcfcfe}
+.cal .day.out{color:#c3c6d4} .cal .day.out .ev{opacity:.55}
+.cal .day .dn{font-size:11.5px;font-weight:500;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;flex:none}
+.cal .day.today .dn{background:var(--accent);color:#fff}
+.ev{font-size:10.5px;padding:3px 6px;border-radius:5px;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--ink);border-left:3px solid var(--c);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev:hover{background:color-mix(in srgb,var(--c) 24%,#fff)}
+.more{font-size:10.5px;color:var(--accent);padding-left:4px;font-weight:500}
+.agenda-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer;align-items:center}
+.agenda-item:last-child{border-bottom:0}
+.agenda-item .bar{width:4px;align-self:stretch;border-radius:4px;background:var(--c);flex:none}
+.agenda-item b{font-weight:500;display:block}
+.agenda-item small{color:var(--muted);font-size:11px}
+.leg-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12px}
+.leg-row span{display:flex;align-items:center;gap:8px}
+
+/* ---------- Switch ---------- */
+.sw{position:relative;display:inline-block;width:38px;height:22px}
+.sw input{opacity:0;width:0;height:0}
+.sw span{position:absolute;inset:0;background:#dfe2ec;border-radius:22px;cursor:pointer;transition:.2s}
+.sw span::after{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw input:checked+span{background:var(--green)}
+.sw input:checked+span::after{transform:translateX(16px)}
+.info-row{display:flex;gap:14px;align-items:flex-start;color:var(--accent)}
+.info-row b{color:var(--ink);font-weight:600}
+.info-row p{margin:4px 0 0;color:var(--ink2);line-height:1.6;max-width:820px}
+
+/* ---------- Login ---------- */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 15% 10%,#e6e9fd,transparent 45%),radial-gradient(circle at 90% 90%,#fbeefa,transparent 40%),var(--bg)}
+.lcard{width:100%;max-width:410px;padding:32px}
+.lcard.center{text-align:center}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.brand .logo{margin:0;width:48px;height:48px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:21px}
+.brand b{font-size:16px;font-weight:600;display:block}
+.brand small{color:var(--muted);font-size:11.5px}
+.lform{display:flex;flex-direction:column;gap:14px}
+.lmsg{font-size:12px;color:var(--red);min-height:0}
+.lmsg.ok{color:#15803d}
+.notice{display:flex;gap:10px;background:#fff8ea;border:1px solid #fde3b0;border-radius:10px;padding:12px;font-size:11.5px;line-height:1.55;color:#7a5410;margin-bottom:18px}
+.notice svg{flex:none;margin-top:1px}
+.notice code{background:#fff;padding:1px 5px;border-radius:4px;font-size:10.5px}
+.demo-list{display:flex;flex-direction:column;gap:8px}
+.demo-btn{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;text-align:left;transition:.15s}
+.demo-btn:hover{border-color:var(--accent);background:#fafbff}
+.demo-btn div{flex:1} .demo-btn b{font-weight:500;display:block} .demo-btn small{color:var(--muted);font-size:11px}
+.lbl{font-size:12px;font-weight:500;color:var(--ink2);margin:0 0 10px}
+.pend-ico{width:64px;height:64px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:0 auto 16px}
+.lcard h2{font-size:17px;font-weight:600;margin:0 0 8px}
+.row-c{display:flex;gap:10px;justify-content:center;margin-top:20px}
+.loading{min-height:100vh;display:grid;place-items:center;color:var(--muted)}
+.spin{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 10px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- Toast / vazio ---------- */
+.toasts{position:fixed;bottom:20px;right:20px;z-index:90;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.toast{background:var(--ink);color:#fff;padding:11px 16px;border-radius:10px;font-size:12.5px;box-shadow:0 10px 30px rgba(0,0,0,.2);display:flex;align-items:center;gap:9px;animation:up .2s;transition:.25s;max-width:380px}
+.toast.err{background:#c2312f}
+.toast.ok .i{color:#4ade80}
+.empty{text-align:center;padding:42px 20px;color:var(--muted)}
+.empty .i{width:56px;height:56px;border-radius:50%;background:var(--soft);display:grid;place-items:center;margin:0 auto 12px;color:#b4b8cc}
+.empty b{display:block;color:var(--ink2);font-weight:500;margin-bottom:4px}
+
+/* ---------- Responsivo ---------- */
+@media (max-width:1150px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.overview{grid-template-columns:1fr}.cal-wrap{grid-template-columns:1fr}.two{grid-template-columns:1fr!important}}
+@media (max-width:720px){
+  .app{flex-direction:column}
+  .rail{position:fixed;bottom:0;top:auto;left:0;right:0;width:100%;height:64px;flex-direction:row;justify-content:space-around;padding:0 6px;border-right:0;border-top:1px solid var(--line)}
+  .rail .logo,.rail .spacer{display:none}
+  .nav-btn .tip{display:none}
+  .main{padding:16px 14px 92px}
+  .topbar .right .live,.userchip div{display:none}
+  .userchip{padding:4px}
+  .form,.dl{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:12px;gap:10px} .kpi .ico{width:38px;height:38px} .kpi b{font-size:18px}
+  .cal .day{min-height:62px;padding:4px}
+  .ev{font-size:0;height:5px;padding:0;border-left:0;background:var(--c)}
+  .more{font-size:9px;padding:0}
+  .hide-m{display:none}
+  .tb-right{margin-left:0}
+  .donut-wrap{transform:scale(.85)}
+  .toasts{left:14px;right:14px;bottom:80px;align-items:stretch}
+}
+
+/* ================= VISÃO GERAL (nova) ================= */
+.dhero{position:relative;overflow:hidden;display:flex;gap:28px;align-items:stretch;background:#23276a;color:#fff;border-radius:20px;padding:30px 32px;box-shadow:0 18px 40px rgba(35,39,106,.22)}
+.dhero::before{content:'';position:absolute;right:-120px;top:-160px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(124,138,255,.55),transparent 65%)}
+.dhero::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:18px 18px;mask-image:linear-gradient(90deg,transparent 30%,#000);-webkit-mask-image:linear-gradient(90deg,transparent 30%,#000)}
+.dhero > *{position:relative;z-index:1}
+.dhero-main{flex:1;min-width:0}
+.dhero-tag{display:inline-block;font-size:11px;padding:4px 11px;border-radius:20px;background:rgba(255,255,255,.12);color:#c9cdfb;margin-bottom:12px}
+.dhero h2{margin:0;font-size:27px;font-weight:600;letter-spacing:-.4px}
+.dhero p{margin:8px 0 22px;color:#bfc4f0;font-size:14px;line-height:1.6;max-width:640px}
+.dhero p b{color:#fff;font-weight:600}
+.dhero-act{display:flex;gap:10px;flex-wrap:wrap}
+.hbtn{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;padding:10px 16px;border-radius:11px;font-weight:500;font-size:12.5px;transition:background .15s}
+.hbtn:hover{background:rgba(255,255,255,.16)}
+.hbtn.pri{background:#fff;color:#23276a;border-color:#fff}
+.hbtn.pri:hover{background:#eef0fd}
+.dhero-date{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-left:28px;border-left:1px solid rgba(255,255,255,.14);min-width:170px;text-align:right}
+.dhero-date b{font-size:62px;font-weight:600;line-height:1;letter-spacing:-2px}
+.dhero-date span{font-size:14px;margin-top:6px;font-weight:500}
+.dhero-date small{color:#a9afe6;font-size:12px;margin-top:2px}
+
+.dgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin-top:18px}
+.span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+.ch-sub{margin:3px 0 0;color:var(--muted);font-size:11.5px}
+.dgrid .card-h{align-items:flex-start}
+
+.k2 > div:first-child{min-width:0}
+.k2{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.k2:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(20,24,60,.08)}
+.k2-l{display:flex;align-items:center;gap:7px;white-space:nowrap;color:var(--ink2);font-size:12px;font-weight:500}
+.k2-l svg{color:var(--muted);flex:none}
+.k2-l{overflow:hidden;text-overflow:ellipsis}
+.k2-v{display:block;font-size:30px;font-weight:600;letter-spacing:-.8px;margin:8px 0 4px;line-height:1}
+.k2-v small{font-size:15px;color:var(--muted);font-weight:500;letter-spacing:0}
+.k2-s{color:var(--muted);font-size:11px}
+.k2-s em{font-style:normal;font-weight:600;margin-left:4px}
+.k2-s em.up{color:var(--red)} .k2-s em.down{color:#16a34a}
+.mini-seg{display:flex;gap:3px;height:8px;margin:2px 0 8px}
+.mini-seg i{background:var(--c);border-radius:4px}
+.ring,.spark{flex:none}
+
+.gauge-wrap{position:relative;max-width:260px;margin:4px auto 0}
+.gauge{display:block;width:100%}
+.gauge-c{position:absolute;left:0;right:0;bottom:2px;text-align:center}
+.gauge-c b{display:block;font-size:34px;font-weight:600;letter-spacing:-1px;line-height:1}
+.gauge-c span{color:var(--muted);font-size:11.5px}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);margin:20px 0 14px;border:1px solid var(--line);border-radius:12px}
+.trio div{padding:10px;text-align:center}
+.trio div+div{border-left:1px solid var(--line)}
+.trio b{display:block;font-size:18px;font-weight:600}
+.trio span{color:var(--muted);font-size:10.5px}
+.aus-chips{display:flex;flex-wrap:wrap;gap:6px}
+.aus-c{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:3px 10px 3px 3px;font-size:11.5px}
+.aus-c i{font-style:normal;color:var(--c);font-weight:500}
+.aus-c:hover{border-color:var(--c)}
+.ok-line{display:flex;align-items:center;gap:6px;color:#16a34a;font-size:12px;margin:0;justify-content:center}
+
+.fleet-bar{display:flex;gap:4px;height:16px;margin-bottom:12px}
+.fleet-bar button{border:0;padding:0;background:var(--c);border-radius:6px;transition:filter .15s}
+.fleet-bar button:hover{filter:brightness(1.1)}
+.fleet-leg{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:18px}
+.fleet-leg button{border:0;background:none;padding:0;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2)}
+.fleet-leg i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+.fleet-leg b{font-weight:600;color:var(--ink)}
+.fleet-leg button:hover{color:var(--ink)}
+.yard{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px}
+.yt{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 7%,#fff),#fff 60%);text-align:left;transition:border-color .15s,transform .15s;position:relative}
+.yt:hover{border-color:var(--c);transform:translateY(-1px)}
+.yt-top{display:flex;justify-content:space-between;width:100%;color:var(--ink2)}
+.yt-top i{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,#fff)}
+.yt-m{font-size:11.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.yt-c{font-size:10.5px;color:var(--muted);margin-top:-5px}
+
+.lg2{display:flex;gap:12px;flex-wrap:wrap}
+.lg2 span{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink2)}
+.lg2 i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+.bars{display:block;width:100%;height:auto}
+.bars rect.b{transform-box:fill-box;transform-origin:bottom;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleY(0)}}
+.ring-v,.gauge-v{animation:dash 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes dash{from{stroke-dasharray:0 1000}}
+
+.hbars{display:flex;flex-direction:column;gap:13px}
+.hb{display:grid;grid-template-columns:110px 1fr 28px;gap:12px;align-items:center;cursor:pointer;font-size:12px}
+.hb:hover .hb-l{color:var(--accent)}
+.hb-l{color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb-l .who{gap:7px}
+.hb-t{display:flex;gap:2px;height:12px;background:#f3f4f9;border-radius:6px;overflow:hidden}
+.hb-t i{background:var(--c)}
+.hb-t i:first-child{border-radius:6px 0 0 6px}
+.hb b{text-align:right;font-weight:600}
+
+.heat{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}
+.hw{font-size:10.5px;color:var(--muted);text-align:center;padding-bottom:2px}
+.hc{border:0;aspect-ratio:1.55;border-radius:9px;background:color-mix(in srgb,#4f5fd8 var(--p),#f3f4f9);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:6px 8px;font-size:11px;color:var(--ink2);transition:transform .12s}
+.hc:hover{transform:scale(1.05)}
+.hc b{align-self:flex-end;font-size:14px;font-weight:600;line-height:1}
+.hc.dark{color:#fff}
+.hc.past{opacity:.45}
+.hc.now{box-shadow:0 0 0 2px #fff,0 0 0 4px #4f5fd8}
+.heat-leg{display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-top:12px;font-size:10.5px;color:var(--muted)}
+.heat-leg i{width:14px;height:10px;border-radius:3px;background:color-mix(in srgb,#4f5fd8 var(--p),#f3f4f9)}
+.heat-leg span{margin:0 4px}
+
+.feed{display:flex;flex-direction:column;gap:2px;padding-top:12px}
+.fd{display:flex;align-items:center;gap:12px;border:0;background:none;padding:9px 8px;border-radius:10px;text-align:left;width:100%}
+.fd:hover{background:var(--soft)}
+.fd-i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);flex:none}
+.fd-t{flex:1;min-width:0}
+.fd-t b{display:block;font-weight:500;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-t small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-w{color:var(--muted);font-size:10.5px;white-space:nowrap}
+.all-ok{text-align:center;padding:30px 10px;color:#16a34a;display:flex;flex-direction:column;align-items:center;gap:6px}
+.all-ok b{color:var(--ink);font-weight:600}
+.all-ok span{color:var(--muted);font-size:12px}
+
+@media (max-width:1250px){.span-3{grid-column:span 6}.span-4,.span-8,.span-5,.span-7{grid-column:span 12}}
+@media (max-width:720px){
+  .dhero{flex-direction:column;padding:22px;gap:16px}.dhero h2{font-size:22px}
+  .dhero-date{flex-direction:row;align-items:baseline;gap:10px;border-left:0;border-top:1px solid rgba(255,255,255,.14);padding:14px 0 0;min-width:0}
+  .dhero-date b{font-size:30px}
+  .dgrid{gap:12px}.span-3{grid-column:span 12}
+  .hb{grid-template-columns:84px 1fr 24px}
+  .hc{aspect-ratio:1;padding:4px 5px;font-size:10px}.hc b{font-size:12px}
+}
+
+</style>
+</head>
+<body>
+<div id="root"><div class="loading"><div><div class="spin"></div>Carregando painel...</div></div></div>
+<div class="toasts" id="toasts"></div>
+<script>
+/* =====================================================================
+   CONFIGURAÇÃO — cole aqui os dados do seu projeto Supabase
+   (Supabase > Project Settings > API). Se ficar vazio, o painel roda
+   em MODO DEMONSTRAÇÃO, com dados salvos só neste navegador.
+   ===================================================================== */
+const CONFIG = {
+  SUPABASE_URL: '',        // ex: 'https://abcdefgh.supabase.co'
+  SUPABASE_ANON_KEY: ''    // chave "anon public" (ou "publishable")
+};
+
+/* ========================= Constantes ========================= */
+const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
+let sb = null;
+if (!DEMO && window.supabase) sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+const VSTATUS = {
+  ok:         {label:'Operando',      color:'#22c55e', desc:'Rodando normalmente'},
+  atencao:    {label:'Atenção',       color:'#f5a623', desc:'Precisa de revisão em breve'},
+  problema:   {label:'Com problema',  color:'#ef4444', desc:'Defeito, avaria ou risco'},
+  manutencao: {label:'Em manutenção', color:'#4f63d6', desc:'Na oficina ou em reparo'},
+  parado:     {label:'Parado',        color:'#94a3b8', desc:'Fora de uso no momento'}
+};
+const VORDER = ['problema','manutencao','atencao','parado','ok'];
+const CSTATUS = {
+  ativo:{label:'Ativo',color:'#22c55e'}, afastado:{label:'Afastado',color:'#ef4444'},
+  ferias:{label:'Férias',color:'#d94ee8'}, desligado:{label:'Desligado',color:'#94a3b8'}
+};
+const EV = {
+  folga:{label:'Folga',color:'#22c55e'}, atestado:{label:'Atestado',color:'#ef4444'},
+  medico:{label:'Médico',color:'#4f63d6'}, ferias:{label:'Férias',color:'#d94ee8'},
+  falta:{label:'Falta',color:'#f5a623'}, outro:{label:'Outro',color:'#94a3b8'}
+};
+const CH = {
+  aberto:{label:'Aberto',color:'#ef4444'}, andamento:{label:'Em andamento',color:'#f5a623'},
+  resolvido:{label:'Resolvido',color:'#22c55e'}
+};
+const PRIOR = {
+  baixa:{label:'Baixa',color:'#94a3b8'}, media:{label:'Média',color:'#4f63d6'},
+  alta:{label:'Alta',color:'#f5a623'}, urgente:{label:'Urgente',color:'#ef4444'}
+};
+const PW = {urgente:0,alta:1,media:2,baixa:3};
+const CHW = {aberto:0,andamento:1,resolvido:2};
+const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'#d94ee8'}};
+const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
+const ROLE = {admin:'Administrador', lider:'Líder', pendente:'Aguardando liberação'};
+const TABLES = ['profiles','colaboradores','veiculos','chamados','eventos','veiculo_historico'];
+
+/* ========================= Ícones ========================= */
+const ICONS = {
+  dash:'<rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  car:'<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>',
+  bike:'<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>',
+  book:'<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/>',
+  cal:'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/>',
+  logout:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/>',
+  plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  edit:'<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>',
+  trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+  more:'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+  phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  mail:'<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  copy:'<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+  chevL:'<path d="m15 18-6-6 6-6"/>', chevR:'<path d="m9 18 6-6-6-6"/>',
+  x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>', check:'<path d="M20 6 9 17l-5-5"/>',
+  download:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+  msg:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  alert:'<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  user:'<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'
+};
+const ic = (n, s=18) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]||''}</svg>`;
+
+/* ========================= Utilitários ========================= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'id-' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+const pad = n => String(n).padStart(2,'0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parseISO = s => { const [y,m,d] = String(s).slice(0,10).split('-').map(Number); return new Date(y, m-1, d); };
+const nowISO = () => new Date().toISOString();
+const fmtD = s => s ? (String(s).length <= 10 ? parseISO(s) : new Date(s)).toLocaleDateString('pt-BR') : '—';
+const fmtDT = s => s ? new Date(s).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+const fmtKm = n => (n == null || n === '') ? '' : Number(n).toLocaleString('pt-BR') + ' km';
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const firstName = n => String(n || '—').split(' ')[0];
+const sameId = (a, b) => String(a) === String(b);
+function ago(s){
+  if(!s) return '';
+  const m = (Date.now() - new Date(s)) / 60000;
+  if (m < 1) return 'agora';
+  if (m < 60) return `há ${Math.floor(m)} min`;
+  const h = m / 60; if (h < 24) return `há ${Math.floor(h)} h`;
+  const d = Math.floor(h / 24); if (d < 30) return `há ${d} dia${d>1?'s':''}`;
+  return 'em ' + fmtD(s);
+}
+function rangeTxt(a, b){ return a === b ? fmtD(a) : `${fmtD(a)} a ${fmtD(b)}`; }
+function daysBetween(a, b){ return Math.round((parseISO(b) - parseISO(a)) / 864e5) + 1; }
+const initials = n => String(n || '?').trim().split(/\s+/).filter(Boolean).map(p => p[0]).filter((_,i,a)=>i===0||i===a.length-1).join('').toUpperCase();
+const PALETTE = ['#4f5fd8','#f5a623','#d94ee8','#22c55e','#ef4444','#0ea5e9','#8b5cf6','#14b8a6','#f97316'];
+const colorOf = s => { let h = 0; for (const c of String(s||'')) h = (h*31 + c.charCodeAt(0)) >>> 0; return PALETTE[h % PALETTE.length]; };
+const avatar = (n, size=34) => `<span class="av" style="--c:${colorOf(n)};width:${size}px;height:${size}px;font-size:${Math.round(size*.36)}px">${esc(initials(n))}</span>`;
+const chip = (o, dot=true) => o ? `<span class="chip" style="--c:${o.color}">${dot?'<i class="d"></i>':''}${esc(o.label)}</span>` : '';
+const plate = (p, mini=false) => `<span class="plate ${mini?'mini':''}"><i>BRASIL</i><b>${esc(p)}</b></span>`;
+function fmtPhone(v){
+  const d = String(v||'').replace(/\D/g,'').slice(0,11);
+  if (d.length <= 2) return d;
+  if (d.length <= 6) return `(${d.slice(0,2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`;
+  return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
+}
+const empty = (i, t, s='') => `<div class="empty"><div class="i">${ic(i,24)}</div><b>${esc(t)}</b>${s?`<span>${s}</span>`:''}</div>`;
+const fchip = (act, k, label, n, color, on) => `<button class="fchip ${on?'on':''}" style="--c:${color}" data-act="${act}" data-k="${k}"><i class="d"></i>${esc(label)}<b>${n}</b></button>`;
+const fld = (label, inner, full=false, req=false, hint='') => `<div class="f ${full?'full':''}"><label>${label}${req?' <em>*</em>':''}</label>${inner}${hint?`<span class="f-hint">${hint}</span>`:''}</div>`;
+const inp = (name, val, attrs='') => `<input name="${name}" value="${esc(val ?? '')}" ${attrs}>`;
+const opts = (arr, cur) => arr.map(([v,l]) => `<option value="${esc(v)}" ${String(v)===String(cur ?? '')?'selected':''}>${esc(l)}</option>`).join('');
+const rchips = (name, obj, cur) => `<div class="radios">${Object.entries(obj).map(([k,o]) => `<label class="rchip" style="--c:${o.color}"><input type="radio" name="${name}" value="${k}" ${k===cur?'checked':''}><span><i class="d"></i>${esc(o.label)}</span></label>`).join('')}</div>`;
+function formObj(sel='#mf'){
+  const o = {}; new FormData($(sel)).forEach((v,k) => { v = String(v).trim(); o[k] = v === '' ? null : v; }); return o;
+}
+function traduz(m=''){
+  const map = [
+    ['Invalid login credentials','E-mail ou senha incorretos.'],
+    ['Email not confirmed','Confirme seu e-mail pelo link recebido antes de entrar.'],
+    ['User already registered','Este e-mail já tem cadastro. Use "Entrar".'],
+    ['Password should be at least','A senha precisa ter pelo menos 6 caracteres.'],
+    ['row-level security','Seu perfil não tem permissão para esta ação.'],
+    ['duplicate key','Registro duplicado — verifique placa ou veículo já vinculado.'],
+    ['rate limit','Muitas tentativas. Aguarde alguns minutos.'],
+    ['Failed to fetch','Sem conexão com o servidor. Verifique a internet.']
+  ];
+  const f = map.find(([k]) => m.toLowerCase().includes(k.toLowerCase()));
+  return f ? f[1] : m || 'Erro inesperado.';
+}
+function toast(msg, type='ok'){
+  const t = document.createElement('div'); t.className = 'toast ' + type;
+  t.innerHTML = `<span class="i">${ic(type==='err'?'alert':'check',16)}</span><span>${esc(msg)}</span>`;
+  $('#toasts').appendChild(t);
+  setTimeout(() => { t.style.opacity = 0; t.style.transform = 'translateY(6px)'; setTimeout(() => t.remove(), 260); }, type==='err' ? 5000 : 3000);
+}
+const err = e => { console.error(e); toast(traduz(e?.message || String(e)), 'err'); };
+async function copyText(v){
+  try { await navigator.clipboard.writeText(v); }
+  catch(e){ const t = document.createElement('textarea'); t.value = v; document.body.appendChild(t); t.select(); try{document.execCommand('copy')}catch(_){} t.remove(); }
+  toast('Copiado: ' + v);
+}
+function downloadCSV(name, rows){
+  const s = rows.map(r => r.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(';')).join('\r\n');
+  const b = new Blob(['\ufeff' + s], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+}
+
+/* ========================= Dados de demonstração ========================= */
+function seed(){
+  const h = n => new Date(Date.now() - n*3600e3).toISOString();
+  const dOff = n => { const d = new Date(); d.setDate(d.getDate()+n); return iso(d); };
+  const profiles = [
+    {id:'u-admin',   nome:'Administrador',  email:'admin@empresa.com',    role:'admin',   ativo:true, created_at:h(2000)},
+    {id:'u-carlos',  nome:'Carlos Lima',    email:'carlos@empresa.com',   role:'lider',   ativo:true, created_at:h(1900)},
+    {id:'u-fernanda',nome:'Fernanda Souza', email:'fernanda@empresa.com', role:'lider',   ativo:true, created_at:h(1800)},
+    {id:'u-rafael',  nome:'Rafael Mendes',  email:'rafael@empresa.com',   role:'lider',   ativo:true, created_at:h(1700)},
+    {id:'u-juliana', nome:'Juliana Prado',  email:'juliana@empresa.com',  role:'pendente',ativo:true, created_at:h(3)}
+  ];
+  const V = (id,tipo,marca,modelo,placa,ano,cor,km,status,obs,hrs,por) => ({id,tipo,marca,modelo,placa,ano,cor,km,status,status_obs:obs,status_em:h(hrs),status_por:por,observacoes:null,created_at:h(2000)});
+  const veiculos = [
+    V('v1','carro','Fiat','Strada Endurance','FTR2A41',2022,'Branco',48210,'ok',null,30,'Carlos Lima'),
+    V('v2','carro','Volkswagen','Saveiro Robust','BRA2E19',2021,'Prata',73550,'atencao','Revisão dos 75 mil km se aproximando',8,'Carlos Lima'),
+    V('v3','carro','Fiat','Fiorino','QWE4R56',2020,'Branco',98400,'manutencao','Troca de embreagem na oficina',50,'Administrador'),
+    V('v4','carro','Chevrolet','Onix','RTY7U89',2023,'Cinza',21300,'ok',null,70,'Rafael Mendes'),
+    V('v5','moto','Honda','CG 160 Cargo','MOT0A12',2023,'Vermelha',15800,'ok',null,20,'Fernanda Souza'),
+    V('v6','moto','Yamaha','Factor 150','JKL3M45',2021,'Preta',41200,'problema','Freio traseiro com ruído',4,'Fernanda Souza'),
+    V('v7','moto','Honda','Pop 110i','PQA9B87',2022,'Branca',30500,'parado','Aguardando documentação',120,'Administrador')
+  ];
+  const C = (id,nome,cargo,tel,pos,mat,adm,vid,lid,status) => ({id,nome,cargo,telefone:tel,email:nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').split(' ').slice(0,2).join('.')+'@empresa.com',pos,matricula:mat,admissao:adm,veiculo_id:vid,lider_id:lid,status,observacoes:null,created_at:h(1500)});
+  const colaboradores = [
+    C('c1','Ana Beatriz Rocha','Técnica de campo','(11) 98765-4321','0012345678901234','10234','2021-03-15','v1','u-carlos','ativo'),
+    C('c2','Bruno Carvalho','Motorista','(11) 97654-3210','0012345678905678','10251','2020-07-01','v2','u-carlos','ativo'),
+    C('c3','Camila Ferreira','Técnica de campo','(11) 96543-2109','0012345678909012','10302','2022-01-10','v5','u-fernanda','ativo'),
+    C('c4','Diego Martins','Técnico de campo','(11) 95432-1098','0012345678903456','10318','2022-05-23','v6','u-fernanda','ativo'),
+    C('c5','Eduardo Santos','Eletricista','(11) 94321-0987','0012345678907890','10120','2019-09-02','v4','u-rafael','ativo'),
+    C('c6','Gabriela Nunes','Auxiliar','(11) 93210-9876','0012345678902345','10377','2023-02-06',null,'u-rafael','ferias'),
+    C('c7','Henrique Alves','Motociclista','(11) 92109-8765','0012345678906789','10290','2021-11-18','v7','u-carlos','afastado'),
+    C('c8','Isabela Costa','Técnica de campo','(11) 91098-7654','0012345678900123','10401','2024-04-01',null,'u-fernanda','ativo')
+  ];
+  const chamados = [
+    {id:1,autor_id:'u-rafael',autor_nome:'Rafael Mendes',titulo:'Solicitação de troca de escala no sábado',descricao:'Eduardo pediu troca da escala de sábado com a Gabriela por motivo familiar. Os dois concordam.',categoria:'Equipe',prioridade:'media',status:'resolvido',colaborador_id:'c5',veiculo_id:null,resposta:'Troca aprovada. Atualizar a escala no grupo.',respondido_por:'Administrador',respondido_em:h(60),resolvido_em:h(60),created_at:h(80),updated_at:h(60)},
+    {id:2,autor_id:'u-fernanda',autor_nome:'Fernanda Souza',titulo:'Moto JKL3M45 com freio fazendo barulho',descricao:'O Diego relatou ruído forte no freio traseiro desde ontem. Por segurança está rodando devagar.',categoria:'Veículo',prioridade:'urgente',status:'andamento',colaborador_id:'c4',veiculo_id:'v6',resposta:'Agendado na oficina amanhã às 8h. Diego fica com a moto reserva.',respondido_por:'Administrador',respondido_em:h(2),resolvido_em:null,created_at:h(5),updated_at:h(2)},
+    {id:3,autor_id:'u-carlos',autor_nome:'Carlos Lima',titulo:'Falta de material: lacres e fita',descricao:'Estoque de lacres e fita isolante acabou na base. Equipe precisa para amanhã cedo.',categoria:'Material',prioridade:'alta',status:'aberto',colaborador_id:null,veiculo_id:null,resposta:null,respondido_por:null,respondido_em:null,resolvido_em:null,created_at:h(26),updated_at:h(26)},
+    {id:4,autor_id:'u-carlos',autor_nome:'Carlos Lima',titulo:'Equipe sem EPI completo',descricao:'Bruno está sem luva de vaqueta e o capacete está com a jugular quebrada.',categoria:'Segurança',prioridade:'alta',status:'aberto',colaborador_id:'c2',veiculo_id:null,resposta:null,respondido_por:null,respondido_em:null,resolvido_em:null,created_at:h(3),updated_at:h(3)}
+  ];
+  const E = (id,col,tipo,a,b,obs,por,porNome) => ({id,colaborador_id:col,tipo,data_inicio:a,data_fim:b,observacao:obs,criado_por:por,criado_por_nome:porNome,created_at:h(40)});
+  const eventos = [
+    E('e1','c6','ferias',dOff(-3),dOff(10),'Férias programadas','u-rafael','Rafael Mendes'),
+    E('e2','c7','atestado',dOff(-1),dOff(2),'Atestado de 4 dias','u-carlos','Carlos Lima'),
+    E('e3','c1','folga',dOff(2),dOff(2),'Folga compensatória','u-carlos','Carlos Lima'),
+    E('e4','c3','medico',dOff(4),dOff(4),'Consulta às 14h','u-fernanda','Fernanda Souza'),
+    E('e5','c8','folga',dOff(6),dOff(6),null,'u-fernanda','Fernanda Souza'),
+    E('e6','c4','falta',dOff(-6),dOff(-6),'Não justificada','u-fernanda','Fernanda Souza')
+  ];
+  const veiculo_historico = veiculos.map((v,i) => ({id:'h'+i,veiculo_id:v.id,status:v.status,obs:v.status_obs,por_id:null,por_nome:v.status_por,created_at:v.status_em}));
+  veiculo_historico.push({id:'hx',veiculo_id:'v6',status:'ok',obs:'Revisão concluída',por_id:null,por_nome:'Administrador',created_at:h(400)});
+  return {profiles, veiculos, colaboradores, chamados, eventos, veiculo_historico};
+}
+const Store = {
+  key:'painel_controle_demo_v1', mem:null,
+  load(){ if (this.mem) return this.mem; let d = null; try { d = JSON.parse(localStorage.getItem(this.key)); } catch(e){} this.mem = d || seed(); this.save(); return this.mem; },
+  save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e){} },
+  reset(){ this.mem = seed(); this.save(); }
+};
+
+/* ========================= Camada de dados ========================= */
+const DB = {
+  async list(t){
+    if (DEMO) return JSON.parse(JSON.stringify(Store.load()[t] || []));
+    let q = sb.from(t).select('*');
+    if (t === 'veiculo_historico') q = q.order('created_at', {ascending:false}).limit(2000);
+    const {data, error} = await q; if (error) throw error; return data;
+  },
+  async insert(t, row){
+    if (DEMO){
+      const d = Store.load(); const r = {...row};
+      r.id = t === 'chamados' ? Math.max(0, ...d[t].map(x => +x.id)) + 1 : uid();
+      r.created_at = nowISO(); d[t].push(r); Store.save(); return r;
+    }
+    const {data, error} = await sb.from(t).insert(row).select().single(); if (error) throw error; return data;
+  },
+  async update(t, id, patch){
+    if (DEMO){
+      const d = Store.load(); const r = d[t].find(x => sameId(x.id, id)); if (r) Object.assign(r, patch); Store.save(); return r;
+    }
+    const {error} = await sb.from(t).update(patch).eq('id', id); if (error) throw error;
+  },
+  async remove(t, id){
+    if (DEMO){
+      const d = Store.load(); d[t] = d[t].filter(x => !sameId(x.id, id));
+      if (t === 'veiculos'){
+        d.colaboradores.forEach(c => { if (sameId(c.veiculo_id, id)) c.veiculo_id = null; });
+        d.chamados.forEach(c => { if (sameId(c.veiculo_id, id)) c.veiculo_id = null; });
+        d.veiculo_historico = d.veiculo_historico.filter(x => !sameId(x.veiculo_id, id));
+      }
+      if (t === 'colaboradores'){
+        d.eventos = d.eventos.filter(e => !sameId(e.colaborador_id, id));
+        d.chamados.forEach(c => { if (sameId(c.colaborador_id, id)) c.colaborador_id = null; });
+      }
+      Store.save(); return;
+    }
+    const {error} = await sb.from(t).delete().eq('id', id); if (error) throw error;
+  }
+};
+
+/* ========================= Estado ========================= */
+const today0 = new Date();
+const S = {
+  page:'dashboard', profile:null, rt:null,
+  profiles:[], colabs:[], veics:[], chamados:[], eventos:[], hist:[],
+  f:{dash:'frota', cq:'', cl:'', cs:'', vq:'', vs:'', vt:'', tq:'', ts:'', tl:'', tc:''},
+  sort:{col:'nome', dir:1},
+  cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''}
+};
+const isAdmin = () => S.profile?.role === 'admin';
+const P = id => S.profiles.find(x => sameId(x.id, id));
+const C = id => S.colabs.find(x => sameId(x.id, id));
+const V = id => S.veics.find(x => sameId(x.id, id));
+const condutorOf = vid => S.colabs.find(c => c.veiculo_id && sameId(c.veiculo_id, vid));
+const myChamados = () => (isAdmin() ? S.chamados : S.chamados.filter(c => sameId(c.autor_id, S.profile.id)))
+  .slice().sort((a,b) => CHW[a.status]-CHW[b.status] || PW[a.prioridade]-PW[b.prioridade] || new Date(b.created_at)-new Date(a.created_at));
+const colabsSorted = () => S.colabs.slice().sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+
+async function loadAll(){
+  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); return []; })));
+  [S.profiles, S.colabs, S.veics, S.chamados, S.eventos, S.hist] = res;
+  const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
+  if (me) S.profile = me;
+}
+async function reload(){
+  await loadAll();
+  if (!S.profile || S.profile.role === 'pendente' || !S.profile.ativo) return renderPending();
+  render();
+}
+
+/* ========================= Navegação / shell ========================= */
+const NAV = [
+  {id:'dashboard',label:'Visão geral',icon:'dash'},
+  {id:'colaboradores',label:'Colaboradores',icon:'users'},
+  {id:'frota',label:'Frota',icon:'car', badge:() => S.veics.filter(v => v.status==='problema').length},
+  {id:'diario',label:'Diário de bordo',icon:'book', badge:() => myChamados().filter(c => c.status==='aberto').length},
+  {id:'calendario',label:'Calendário',icon:'cal'},
+  {id:'usuarios',label:'Usuários e perfis',icon:'shield',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
+];
+const SUBS = {
+  dashboard:'Resumo da equipe, da frota e das ocorrências',
+  colaboradores:'Cadastro da equipe e vínculo com veículos da frota',
+  frota:'Carros e motos com a situação atualizada pela equipe',
+  diario:'Ocorrências registradas pelos líderes e respostas do administrador',
+  calendario:'Folgas, atestados, consultas médicas e outras ausências',
+  usuarios:'Quem acessa o painel e com qual perfil'
+};
+const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, calendario:pgCal, usuarios:pgUsers};
+
+function go(page){ S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
+window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
+
+function render(){
+  if (!$('#rail')) $('#root').innerHTML = `<div class="app"><nav class="rail" id="rail"></nav><main class="main"><header class="topbar" id="topbar"></header><section id="page"></section></main></div>`;
+  const nav = NAV.filter(n => !n.admin || isAdmin());
+  if (!nav.find(n => n.id === S.page)) S.page = 'dashboard';
+  $('#rail').innerHTML = `<div class="logo">pc</div>` + nav.map(n => {
+    const b = n.badge ? n.badge() : 0;
+    return `<button class="nav-btn ${S.page===n.id?'on':''}" data-nav="${n.id}" aria-label="${n.label}">${ic(n.icon,20)}${b?`<span class="badge">${b}</span>`:''}<span class="tip">${n.label}</span></button>`;
+  }).join('') + `<div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button>`;
+  const cur = NAV.find(n => n.id === S.page);
+  $('#topbar').innerHTML = `<div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
+    <div class="right">${DEMO ? '<span class="demo-tag">Modo demonstração</span>' : '<span class="live"><i></i>Sincronizado</span>'}
+    <div class="userchip">${avatar(S.profile.nome,30)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}</small></div></div></div>`;
+  PAGES[S.page]();
+}
+
+/* ========================= Modal / popover / confirmação ========================= */
+function openModal({title, body, foot='', wide=false, onMount}){
+  closeModal();
+  const ov = document.createElement('div'); ov.className = 'ov'; ov.id = 'ov';
+  ov.innerHTML = `<div class="modal ${wide?'wide':''}" role="dialog" aria-modal="true"><div class="m-h"><h3>${title}</h3><button class="icon-btn" data-act="modal-close" aria-label="Fechar">${ic('x',18)}</button></div><div class="m-b">${body}</div>${foot?`<div class="m-f">${foot}</div>`:''}</div>`;
+  ov.addEventListener('mousedown', e => { if (e.target === ov) closeModal(); });
+  document.body.appendChild(ov); document.body.style.overflow = 'hidden';
+  const form = $('form', ov);
+  if (form) form.addEventListener('submit', e => { e.preventDefault(); $('.m-f .btn.pri', ov)?.click(); });
+  $$('[data-mask=phone]', ov).forEach(i => i.addEventListener('input', () => i.value = fmtPhone(i.value)));
+  $$('[data-mask=upper]', ov).forEach(i => i.addEventListener('input', () => i.value = i.value.toUpperCase()));
+  onMount && onMount(ov);
+  const first = $('form input:not([type=radio]):not([type=checkbox]), form select, form textarea', ov); if (first) first.focus();
+}
+function closeModal(){ const had = $('#ov'); had?.remove(); document.body.style.overflow = '';
+  if (had && S.stale && S.profile){ S.stale = false; loadAll().then(() => { if ($('#rail') && !$('#ov')) render(); }); } }
+function closePop(){ $('#pop')?.remove(); }
+function confirmBox(msg, ok='Excluir'){
+  return new Promise(res => {
+    const el = document.createElement('div'); el.className = 'ov'; el.style.zIndex = 70;
+    el.innerHTML = `<div class="modal" style="max-width:390px"><div class="m-b" style="text-align:center;padding:28px 24px 8px"><div class="cf-ico">${ic('alert',24)}</div><p style="margin:14px 0 0;font-size:13.5px;line-height:1.6">${msg}</p></div><div class="m-f" style="justify-content:center;border:0;background:none"><button class="btn" data-x="0">Cancelar</button><button class="btn pri" style="background:var(--red);border-color:var(--red);box-shadow:none" data-x="1">${ok}</button></div></div>`;
+    el.addEventListener('click', e => { const b = e.target.closest('[data-x]'); if (b || e.target === el){ el.remove(); res(b?.dataset.x === '1'); } });
+    document.body.appendChild(el); $('[data-x="1"]', el).focus();
+  });
+}
+
+/* ========================= VISÃO GERAL ========================= */
+function startOfWeek(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const w = (x.getDay() + 6) % 7; x.setDate(x.getDate() - w); return x; }
+function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function fmtDur(h){ if (h == null) return '—'; if (h < 1) return Math.max(1, Math.round(h*60)) + ' min'; if (h < 48) return (h < 10 ? h.toFixed(1).replace('.', ',') : Math.round(h)) + ' h'; return Math.round(h/24) + ' dias'; }
+function ausentesEm(ds){ return new Set(S.eventos.filter(e => e.data_inicio <= ds && e.data_fim >= ds).map(e => String(e.colaborador_id))); }
+
+function ringSVG(pct, color, size=60, sw=7){
+  const r = (size - sw)/2, c = 2*Math.PI*r, p = Math.max(0, Math.min(1, pct || 0)), m = size/2;
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" class="ring" aria-hidden="true"><circle cx="${m}" cy="${m}" r="${r}" fill="none" stroke="#eef0f6" stroke-width="${sw}"/>${p>0?`<circle class="ring-v" cx="${m}" cy="${m}" r="${r}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${m} ${m})"/>`:''}<text x="50%" y="52%" text-anchor="middle" dominant-baseline="middle" font-size="${Math.round(size*.23)}" font-weight="600" fill="#1d2033">${Math.round(p*100)}%</text></svg>`;
+}
+function sparkSVG(vals, color, w=128, h=44){
+  const max = Math.max(1, ...vals), n = vals.length, step = (w-8)/(n-1);
+  const pts = vals.map((v,i) => [4 + i*step, h - 5 - (v/max)*(h-12)]);
+  const line = pts.map((p,i) => (i?'L':'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const last = pts[n-1];
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" class="spark" aria-hidden="true"><path d="${line} L${last[0].toFixed(1)} ${h} L4 ${h} Z" fill="${color}" opacity=".13"/><path class="spark-l" d="${line}" fill="none" stroke="${color}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="${last[0]}" cy="${last[1]}" r="3.5" fill="#fff" stroke="${color}" stroke-width="2"/></svg>`;
+}
+function gaugeSVG(pct, color){
+  const R = 90, L = Math.PI*R, p = Math.max(0, Math.min(1, pct || 0));
+  const d = 'M 20 112 A 90 90 0 0 1 200 112';
+  const ticks = [0,.25,.5,.75,1].map(t => { const a = Math.PI*(1-t), x1 = 110+Math.cos(a)*104, y1 = 112-Math.sin(a)*104, x2 = 110+Math.cos(a)*110, y2 = 112-Math.sin(a)*110; return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#d6d9e6" stroke-width="2" stroke-linecap="round"/>`; }).join('');
+  return `<svg viewBox="0 0 220 122" class="gauge" aria-hidden="true">${ticks}<path d="${d}" fill="none" stroke="#eef0f6" stroke-width="18" stroke-linecap="round"/>${p>0?`<path class="gauge-v" d="${d}" fill="none" stroke="${color}" stroke-width="18" stroke-linecap="round" stroke-dasharray="${(L*p).toFixed(1)} ${L.toFixed(1)}"/>`:''}</svg>`;
+}
+function weeksChart(chs){
+  const W = 8, s0 = startOfWeek(new Date()), weeks = [];
+  for (let i = W-1; i >= 0; i--){ const a = addDays(s0, -7*i); weeks.push({a, b:addDays(a,7), ab:0, re:0}); }
+  const find = t => weeks.find(w => t >= w.a && t < w.b);
+  chs.forEach(c => { const w = find(new Date(c.created_at)); if (w) w.ab++; if (c.resolvido_em){ const w2 = find(new Date(c.resolvido_em)); if (w2) w2.re++; } });
+  const max = Math.max(1, ...weeks.map(w => Math.max(w.ab, w.re)));
+  const stepV = Math.max(1, Math.ceil(max/4)), top = stepV*4;
+  const VW = 640, VH = 230, pl = 30, pb = 28, pt = 12, ch = VH-pb-pt, cw = (VW-pl)/W, bw = Math.min(18, cw/4);
+  let g = '';
+  for (let k = 0; k <= 4; k++){ const y = pt + ch - (k/4)*ch; g += `<line x1="${pl}" x2="${VW}" y1="${y}" y2="${y}" stroke="${k?'#f0f1f6':'#e4e6ef'}" ${k?'stroke-dasharray="3 5"':''}/><text x="${pl-8}" y="${y}" text-anchor="end" dominant-baseline="middle" font-size="10.5" fill="#9aa0b5">${k*stepV}</text>`; }
+  const bar = (x, v, col, i, lbl) => { const hgt = v/top*ch; return v ? `<rect class="b" style="animation-delay:${i*60}ms" x="${x}" y="${pt+ch-hgt}" width="${bw}" height="${hgt}" rx="5" fill="${col}"><title>${lbl}: ${v}</title></rect>` : `<rect x="${x}" y="${pt+ch-2}" width="${bw}" height="2" rx="1" fill="#e4e6ef"/>`; };
+  weeks.forEach((w,i) => {
+    const cx = pl + cw*i + cw/2, cur = i === W-1;
+    if (cur) g += `<rect x="${pl+cw*i+4}" y="${pt}" width="${cw-8}" height="${ch}" rx="10" fill="#f5f6ff"/>`;
+    g += bar(cx-bw-2, w.ab, '#4f5fd8', i, 'Abertos') + bar(cx+2, w.re, '#22c55e', i, 'Resolvidos');
+    g += `<text x="${cx}" y="${VH-8}" text-anchor="middle" font-size="10.5" fill="${cur?'#4f5fd8':'#9aa0b5'}" font-weight="${cur?600:400}">${cur?'Esta sem.':pad(w.a.getDate())+'/'+pad(w.a.getMonth()+1)}</text>`;
+  });
+  return `<svg viewBox="0 0 ${VW} ${VH}" class="bars" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Chamados por semana">${g}</svg>`;
+}
+function hbars(rows, emptyMsg){
+  if (!rows.length) return empty('book', emptyMsg);
+  const max = Math.max(1, ...rows.map(r => r.total));
+  return `<div class="hbars">${rows.map((r,i) => `<div class="hb" ${r.act||''}><span class="hb-l">${r.label}</span><div class="hb-t">${r.parts.map(p => p.n ? `<i style="--c:${p.color};flex:${p.n}" title="${esc(p.name)}: ${p.n}"></i>` : '').join('')}<span style="flex:${max - r.total}"></span></div><b>${r.total}</b></div>`).join('')}</div>`;
+}
+function heatmap(){
+  const s0 = startOfWeek(new Date()), today = iso(new Date()); const days = [];
+  for (let i = 0; i < 28; i++){ const d = addDays(s0, i), ds = iso(d); days.push({d, ds, n:ausentesEm(ds).size}); }
+  const max = Math.max(1, ...days.map(x => x.n));
+  return `<div class="heat">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(w => `<span class="hw">${w}</span>`).join('')}${days.map(x => {
+    const p = x.n ? Math.round(18 + (x.n/max)*72) : 0; const past = x.ds < today;
+    return `<button class="hc ${past?'past':''} ${x.ds===today?'now':''} ${p>55?'dark':''}" style="--p:${p}%" data-act="cal-day" data-date="${x.ds}" title="${fmtD(x.ds)}: ${x.n} ausente(s)"><span>${x.d.getDate()}</span>${x.n?`<b>${x.n}</b>`:''}</button>`; }).join('')}</div>
+    <div class="heat-leg"><span>Menos</span>${[0,25,50,75,95].map(p => `<i style="--p:${p}%"></i>`).join('')}<span>Mais ausentes</span></div>`;
+}
+function feedItems(chs){
+  const today = iso(new Date()), out = [];
+  S.veics.filter(v => ['problema','manutencao','atencao'].includes(v.status)).sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status)).forEach(v => {
+    const s = VSTATUS[v.status]; out.push({w:v.status==='problema'?0:2, icon:v.tipo==='moto'?'bike':'car', color:s.color, title:`${v.placa} — ${s.label}`, sub:v.status_obs || [v.marca,v.modelo].filter(Boolean).join(' '), act:'v-open', id:v.id, when:v.status_em});
+  });
+  chs.filter(c => c.status !== 'resolvido' && (c.prioridade === 'urgente' || c.prioridade === 'alta')).forEach(c => {
+    out.push({w:c.prioridade==='urgente'?0:1, icon:'book', color:PRIOR[c.prioridade].color, title:c.titulo, sub:`#${c.id} — ${c.autor_nome} — ${PRIOR[c.prioridade].label}`, act:'ch-open', id:c.id, when:c.created_at});
+  });
+  S.eventos.filter(e => e.data_inicio <= today && e.data_fim >= today).forEach(e => {
+    const o = EV[e.tipo] || EV.outro; out.push({w:3, icon:'cal', color:o.color, title:`${C(e.colaborador_id)?.nome || '—'} — ${o.label}`, sub:`Até ${fmtD(e.data_fim)}`, act:'ev-open', id:e.id, when:null});
+  });
+  return out.sort((a,b) => a.w-b.w).slice(0,8);
+}
+function pgDashboard(){
+  const me = S.profile, now = new Date(), today = iso(now), adm = isAdmin();
+  const chs = myChamados();
+  const ativos = S.colabs.filter(c => c.status === 'ativo');
+  const ausHoje = ausentesEm(today);
+  const ausAtivos = ativos.filter(c => ausHoje.has(String(c.id)));
+  const disp = ativos.length - ausAtivos.length, pDisp = ativos.length ? disp/ativos.length : 0;
+  const vt = S.veics.length, vOk = S.veics.filter(v => v.status==='ok').length, vFora = S.veics.filter(v => ['problema','manutencao','parado'].includes(v.status)).length;
+  const abertos = chs.filter(c => c.status !== 'resolvido'), semResp = chs.filter(c => c.status==='aberto' && !c.resposta);
+  const resp = chs.filter(c => c.respondido_em), avgH = resp.length ? resp.reduce((s,c) => s + (new Date(c.respondido_em)-new Date(c.created_at))/36e5, 0)/resp.length : null;
+  const resolvidos = chs.filter(c => c.status==='resolvido').length;
+  const daily = Array.from({length:14}, (_,i) => { const ds = iso(addDays(now, i-13)); return chs.filter(c => iso(new Date(c.created_at)) === ds).length; });
+  const sem7 = daily.slice(7).reduce((a,b)=>a+b,0), ant7 = daily.slice(0,7).reduce((a,b)=>a+b,0);
+  const hr = now.getHours(), saud = hr < 12 ? 'Bom dia' : hr < 18 ? 'Boa tarde' : 'Boa noite';
+  const frases = [];
+  frases.push(`<b>${disp} de ${ativos.length}</b> pessoas disponíveis`);
+  frases.push(vFora ? `<b>${vFora} veículo${vFora>1?'s':''}</b> fora de operação` : 'frota toda rodando');
+  frases.push(adm ? (semResp.length ? `<b>${semResp.length} chamado${semResp.length>1?'s':''}</b> aguardando sua resposta` : 'nenhum chamado sem resposta')
+                  : (abertos.length ? `<b>${abertos.length}</b> registro${abertos.length>1?'s':''} seu${abertos.length>1?'s':''} em aberto` : 'nenhum registro seu em aberto'));
+  const segs = VORDER.slice().reverse().map(k => ({k, n:S.veics.filter(v => v.status===k).length, ...VSTATUS[k]}));
+  const yard = S.veics.slice().sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
+  const catRows = CATS.map(k => { const l = chs.filter(c => c.categoria===k); return {label:esc(k), total:l.length, parts:Object.entries(CH).map(([s,o]) => ({n:l.filter(c=>c.status===s).length, color:o.color, name:o.label})), act:`data-act="dash-cat" data-k="${esc(k)}"`}; }).filter(r => r.total).sort((a,b) => b.total-a.total);
+  const leadRows = adm ? S.profiles.filter(p => p.role==='lider' || S.chamados.some(c => sameId(c.autor_id,p.id))).map(p => { const l = S.chamados.filter(c => sameId(c.autor_id,p.id));
+    return {label:`<span class="who">${avatar(p.nome,24)}<span>${esc(firstName(p.nome))}</span></span>`, total:l.length, parts:Object.entries(CH).map(([s,o]) => ({n:l.filter(c=>c.status===s).length, color:o.color, name:o.label})), act:`data-act="t-fl" data-k="${p.id}" data-go="1"`}; }).sort((a,b) => b.total-a.total) : [];
+  const feed = feedItems(chs);
+  const outros = S.colabs.filter(c => c.status==='ferias' || c.status==='afastado').length;
+
+  $('#page').innerHTML = `
+  <section class="dhero">
+    <div class="dhero-main">
+      <span class="dhero-tag">${ROLE[me.role]}</span>
+      <h2>${saud}, ${esc(firstName(me.nome))}.</h2>
+      <p>Hoje: ${frases.join(', ').replace(/, ([^,]*)$/, ' e $1')}.</p>
+      <div class="dhero-act">
+        <button class="hbtn pri" data-act="t-new">${ic('plus',15)}Registrar ocorrência</button>
+        <button class="hbtn" data-act="ev-new">${ic('cal',15)}Marcar ausência</button>
+        <button class="hbtn" data-nav="frota">${ic('car',15)}Atualizar frota</button>
+      </div>
+    </div>
+    <div class="dhero-date"><b>${pad(now.getDate())}</b><span>${cap(now.toLocaleDateString('pt-BR',{weekday:'long'}))}</span><small>${cap(now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'}))}</small></div>
+  </section>
+
+  <div class="dgrid">
+    <div class="card k2 span-3" data-nav="calendario" role="button" tabindex="0">
+      <div><span class="k2-l">${ic('users',15)}Equipe disponível hoje</span><b class="k2-v">${disp}<small>/${ativos.length}</small></b><span class="k2-s">${ausAtivos.length} ausente(s) agora</span></div>${ringSVG(pDisp,'#4f5fd8')}</div>
+    <div class="card k2 span-3" data-nav="frota" role="button" tabindex="0">
+      <div style="flex:1"><span class="k2-l">${ic('car',15)}Frota operando</span><b class="k2-v">${vOk}<small>/${vt}</small></b>
+      <div class="mini-seg">${segs.map(s => s.n ? `<i style="--c:${s.color};flex:${s.n}" title="${s.label}: ${s.n}"></i>` : '').join('') || '<i style="--c:#e4e6ef;flex:1"></i>'}</div><span class="k2-s">${vFora} fora de operação</span></div></div>
+    <div class="card k2 span-3" data-nav="diario" role="button" tabindex="0">
+      <div><span class="k2-l">${ic('book',15)}${adm?'Chamados em aberto':'Meus chamados abertos'}</span><b class="k2-v">${abertos.length}</b><span class="k2-s">${sem7} novo(s) em 7 dias${ant7||sem7?` <em class="${sem7>ant7?'up':'down'}">${sem7>ant7?'▲':sem7<ant7?'▼':'='} ${Math.abs(sem7-ant7)}</em>`:''}</span></div>${sparkSVG(daily,'#ef4444',96,40)}</div>
+    <div class="card k2 span-3" data-nav="diario" role="button" tabindex="0">
+      <div><span class="k2-l">${ic('clock',15)}Tempo médio de resposta</span><b class="k2-v">${fmtDur(avgH)}</b><span class="k2-s">${resolvidos} de ${chs.length} resolvido(s)</span></div>${ringSVG(chs.length?resolvidos/chs.length:0,'#22c55e')}</div>
+
+    <div class="card span-4">
+      <div class="card-h"><div><h3>Disponibilidade da equipe</h3><p class="ch-sub">Colaboradores ativos sem ausência hoje</p></div></div>
+      <div class="card-b">
+        <div class="gauge-wrap">${gaugeSVG(pDisp, pDisp>=.85?'#22c55e':pDisp>=.65?'#f5a623':'#ef4444')}<div class="gauge-c"><b>${Math.round(pDisp*100)}%</b><span>disponível</span></div></div>
+        <div class="trio"><div><b>${ativos.length}</b><span>Ativos</span></div><div><b>${ausAtivos.length}</b><span>Ausentes hoje</span></div><div><b>${outros}</b><span>Férias / afastados</span></div></div>
+        ${ausAtivos.length ? `<div class="aus-chips">${S.eventos.filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avatar(C(e.colaborador_id)?.nome,22)}${esc(firstName(C(e.colaborador_id)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
+      </div>
+    </div>
+
+    <div class="card span-8">
+      <div class="card-h"><div><h3>Pátio da frota</h3><p class="ch-sub">Situação de cada veículo agora — clique para abrir</p></div><button class="btn sm" data-nav="frota">Gerenciar frota</button></div>
+      <div class="card-b">
+        <div class="fleet-bar">${segs.map(s => s.n ? `<button style="--c:${s.color};flex:${s.n}" data-act="dash-v" data-k="${s.k}" title="${s.label}: ${s.n}"></button>` : '').join('') || '<span class="muted">Nenhum veículo cadastrado.</span>'}</div>
+        <div class="fleet-leg">${segs.map(s => `<button data-act="dash-v" data-k="${s.k}" style="--c:${s.color}"><i></i>${s.label}<b>${s.n}</b></button>`).join('')}</div>
+        <div class="yard">${yard.map(v => { const s = VSTATUS[v.status]||VSTATUS.ok, c = condutorOf(v.id); return `<button class="yt" style="--c:${s.color}" data-act="v-open" data-id="${v.id}"><span class="yt-top">${ic(v.tipo==='moto'?'bike':'car',15)}<i title="${s.label}"></i></span>${plate(v.placa,true)}<span class="yt-m">${esc(v.modelo||'')}</span><span class="yt-c">${c?esc(firstName(c.nome)):'Sem condutor'}</span></button>`; }).join('')}</div>
+      </div>
+    </div>
+
+    <div class="card span-7">
+      <div class="card-h"><div><h3>${adm?'Chamados por semana':'Meus registros por semana'}</h3><p class="ch-sub">Últimas 8 semanas</p></div><div class="lg2"><span style="--c:#4f5fd8"><i></i>Abertos</span><span style="--c:#22c55e"><i></i>Resolvidos</span></div></div>
+      <div class="card-b">${weeksChart(chs)}</div>
+    </div>
+
+    <div class="card span-5">
+      <div class="card-h"><div><h3>Ocorrências por categoria</h3><p class="ch-sub">Distribuição pela situação</p></div><div class="lg2">${Object.values(CH).map(o => `<span style="--c:${o.color}"><i></i>${o.label}</span>`).join('')}</div></div>
+      <div class="card-b">${hbars(catRows,'Nenhuma ocorrência registrada ainda.')}</div>
+    </div>
+
+    <div class="card span-7">
+      <div class="card-h"><div><h3>Mapa de ausências</h3><p class="ch-sub">Esta semana e as próximas 3 — clique em um dia</p></div><button class="btn sm" data-nav="calendario">Calendário</button></div>
+      <div class="card-b">${heatmap()}</div>
+    </div>
+
+    <div class="card span-5">
+      <div class="card-h"><div><h3>Precisa de atenção</h3><p class="ch-sub">Veículos, chamados prioritários e ausências de hoje</p></div></div>
+      <div class="card-b feed">${feed.length ? feed.map(f => `<button class="fd" style="--c:${f.color}" data-act="${f.act}" data-id="${f.id}"><span class="fd-i">${ic(f.icon,16)}</span><span class="fd-t"><b>${esc(f.title)}</b><small>${esc(f.sub||'')}</small></span>${f.when?`<span class="fd-w">${ago(f.when)}</span>`:''}</button>`).join('') : `<div class="all-ok">${ic('check',26)}<b>Tudo em ordem</b><span>Nenhum veículo parado, chamado urgente ou ausência hoje.</span></div>`}</div>
+    </div>
+
+    ${adm ? `<div class="card span-5"><div class="card-h"><div><h3>Chamados por líder</h3><p class="ch-sub">Clique para ver os registros de cada um</p></div></div><div class="card-b">${hbars(leadRows,'Nenhum líder com registros.')}</div></div>` : ''}
+    <div class="card ${adm?'span-7':'span-12'}"><div class="card-h"><div><h3>${adm?'Chamados recentes':'Meus chamados'}</h3><p class="ch-sub">Ordenados por situação e prioridade</p></div><button class="btn sm" data-nav="diario">Ver todos</button></div><div class="card-b">${tableChamados(chs.slice(0,5))}</div></div>
+  </div>`;
+}
+
+function tableChamados(list){
+  if (!list.length) return empty('book','Nenhum chamado por aqui','Os registros do diário de bordo aparecem nesta lista.');
+  return `<div class="tbl-wrap"><table><thead><tr><th>Nº</th><th>Título</th><th class="hide-m">Registrado por</th><th class="hide-m">Data</th><th>Prioridade</th><th>Situação</th><th></th></tr></thead><tbody>${
+    list.map(c => `<tr class="click" data-act="ch-open" data-id="${c.id}"><td class="muted">#${c.id}</td><td><span class="fw5">${esc(c.titulo)}</span><div style="margin-top:4px"><span class="tag" style="--c:#4f5fd8">#${esc(c.categoria)}</span></div></td><td class="hide-m">${esc(c.autor_nome)}</td><td class="hide-m">${fmtD(c.created_at)}</td><td>${chip(PRIOR[c.prioridade],false)}</td><td>${chip(CH[c.status])}</td><td class="act">${ic('more',18)}</td></tr>`).join('')
+  }</tbody></table></div>`;
+}
+function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
+  if (!evs.length) return empty('cal', emptyMsg);
+  return evs.map(e => { const c = C(e.colaborador_id); const o = EV[e.tipo] || EV.outro;
+    return `<div class="agenda-item" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}"><span class="bar"></span>${avatar(c?.nome,32)}<div style="flex:1;min-width:0"><b>${esc(c?.nome || 'Colaborador removido')}</b><small>${rangeTxt(e.data_inicio,e.data_fim)}${e.observacao?' — '+esc(e.observacao):''}</small></div>${chip(o)}</div>`; }).join('');
+}
+
+/* ========================= COLABORADORES ========================= */
+function pgColab(){
+  const f = S.f;
+  const lid = S.profiles.filter(p => p.role !== 'pendente');
+  $('#page').innerHTML = `
+  <div class="filters">${fchip('c-fs','','Todos',S.colabs.length,'#4f5fd8',!f.cs)}${Object.entries(CSTATUS).map(([k,o]) => fchip('c-fs',k,o.label,S.colabs.filter(c=>c.status===k).length,o.color,f.cs===k)).join('')}</div>
+  <div class="toolbar">
+    <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar por nome, POS, telefone, placa..." value="${esc(f.cq)}"></label>
+    <select class="sel" id="fl"><option value="">Todos os líderes</option>${opts(lid.map(p=>[p.id,p.nome]), f.cl)}</select>
+    <div class="tb-right"><button class="btn" data-act="c-csv">${ic('download',16)}<span class="hide-m">Exportar</span></button>${isAdmin()?`<button class="btn pri" data-act="c-new">${ic('plus',16)}Novo colaborador</button>`:''}</div>
+  </div>
+  <div class="card"><div class="card-b" id="list" style="padding-top:14px"></div></div>`;
+  $('#q').oninput = e => { f.cq = e.target.value; colabList(); };
+  $('#fl').onchange = e => { f.cl = e.target.value; colabList(); };
+  colabList();
+}
+function colabFiltered(){
+  const f = S.f, q = f.cq.toLowerCase().trim();
+  return S.colabs.filter(c => (!f.cs || c.status===f.cs) && (!f.cl || sameId(c.lider_id,f.cl)) &&
+    (!q || [c.nome,c.cargo,c.telefone,c.email,c.pos,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome].join(' ').toLowerCase().includes(q)));
+}
+function colabList(){
+  const list = colabFiltered(); const {col, dir} = S.sort;
+  const key = c => col==='veiculo' ? (V(c.veiculo_id)?.placa || '~') : col==='lider' ? (P(c.lider_id)?.nome || '~') : String(c[col] ?? '~');
+  list.sort((a,b) => key(a).localeCompare(key(b),'pt',{numeric:true}) * dir);
+  const th = (c,l,cls='') => `<th class="sort ${cls}" data-act="c-sort" data-col="${c}">${l}<span class="ar">${col===c?(dir>0?'▲':'▼'):'▲▼'}</span></th>`;
+  $('#list').innerHTML = list.length ? `<div class="tbl-wrap"><table><thead><tr>${th('nome','Colaborador')}${th('telefone','Contato','hide-m')}${th('pos','Nº POS')}${th('veiculo','Veículo')}${th('lider','Líder','hide-m')}${th('status','Status')}<th></th></tr></thead><tbody>${list.map(rowColab).join('')}</tbody></table></div><div class="tfoot">${list.length} de ${S.colabs.length} colaboradores</div>`
+    : empty('users','Nenhum colaborador encontrado', isAdmin() ? 'Ajuste os filtros ou clique em "Novo colaborador".' : 'Ajuste os filtros de busca.');
+}
+function rowColab(c){
+  const v = V(c.veiculo_id), l = P(c.lider_id);
+  return `<tr class="click" data-act="c-open" data-id="${c.id}">
+    <td><div class="who">${avatar(c.nome)}<div style="min-width:0"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'Sem cargo')}${c.matricula?' — mat. '+esc(c.matricula):''}</small></div></div></td>
+    <td class="hide-m"><div>${esc(c.telefone||'—')}</div><div class="muted s">${esc(c.email||'')}</div></td>
+    <td>${c.pos?`<span class="pos mono">${esc(c.pos)}</span> <button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar POS">${ic('copy',13)}</button>`:'<span class="muted">—</span>'}</td>
+    <td>${v?`<span class="vlink">${plate(v.placa,true)}<i class="dot" style="--c:${VSTATUS[v.status]?.color}" title="${VSTATUS[v.status]?.label}"></i></span>`:'<span class="muted">Sem veículo</span>'}</td>
+    <td class="hide-m">${l?esc(l.nome):'<span class="muted">—</span>'}</td>
+    <td>${chip(CSTATUS[c.status])}</td>
+    <td class="act">${isAdmin()?`<button class="icon-btn" data-act="c-edit" data-id="${c.id}" title="Editar">${ic('edit',16)}</button>`:''}</td></tr>`;
+}
+function openColab(id){
+  const c = C(id); if (!c) return;
+  const v = V(c.veiculo_id), l = P(c.lider_id);
+  const evs = S.eventos.filter(e => sameId(e.colaborador_id,id)).sort((a,b) => b.data_inicio.localeCompare(a.data_inicio));
+  const chs = (isAdmin() ? S.chamados : S.chamados.filter(x => sameId(x.autor_id,S.profile.id))).filter(x => sameId(x.colaborador_id,id));
+  const dig = String(c.telefone||'').replace(/\D/g,'');
+  openModal({wide:true, title:'Ficha do colaborador', body:`
+    <div class="hero" style="padding:0 0 16px">${avatar(c.nome,58)}<div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])}</p></div></div>
+    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Chamados (${chs.length})</button></div>
+    <div data-pane="det">
+      <div class="dl">
+        <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
+        <div><small>E-mail</small><b>${esc(c.email||'—')}</b>${c.email?`<div class="contact"><a href="mailto:${esc(c.email)}">${ic('mail',12)}Enviar e-mail</a></div>`:''}</div>
+        <div><small>Nº da POS</small><b class="mono">${esc(c.pos||'—')}</b> ${c.pos?`<button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar">${ic('copy',13)}</button>`:''}</div>
+        <div><small>Matrícula</small><b>${esc(c.matricula||'—')}</b></div>
+        <div><small>Admissão</small><b>${fmtD(c.admissao)}</b></div>
+        <div><small>Líder responsável</small><b>${esc(l?.nome||'—')}</b></div>
+        ${c.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(c.observacoes)}</div></div>`:''}
+      </div>
+      <div class="sec">Veículo vinculado</div>
+      ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.${isAdmin()?' Use "Editar" para vincular.':''}</div>`}
+    </div>
+    <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
+    <div data-pane="ch" hidden>${tableChamados(chs)}</div>`,
+    foot: isAdmin() ? `<button class="btn danger left" data-act="c-del" data-id="${c.id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="c-edit" data-id="${c.id}">${ic('edit',15)}Editar</button>`
+      : `<button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="modal-close">Fechar</button>`
+  });
+}
+function colabForm(id){
+  if (!isAdmin()) return;
+  const c = id ? C(id) : {status:'ativo'};
+  const vOpts = S.veics.slice().sort((a,b)=>a.placa.localeCompare(b.placa)).map(v => { const d = condutorOf(v.id); const busy = d && !sameId(d.id,id);
+    return [v.id, `${v.placa} — ${[v.marca,v.modelo].filter(Boolean).join(' ')}${busy?` (hoje com ${firstName(d.nome)})`:''}`]; });
+  const lid = S.profiles.filter(p => p.role !== 'pendente');
+  openModal({title: id ? 'Editar colaborador' : 'Novo colaborador', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Nome completo', inp('nome',c.nome,'required maxlength="120"'), true, true)}
+    ${fld('Cargo / função', inp('cargo',c.cargo,'placeholder="Ex: Técnico de campo"'))}
+    ${fld('Matrícula', inp('matricula',c.matricula))}
+    ${fld('Telefone', inp('telefone',c.telefone,'data-mask="phone" inputmode="tel" placeholder="(11) 90000-0000"'))}
+    ${fld('E-mail', inp('email',c.email,'type="email" placeholder="nome@empresa.com"'))}
+    ${fld('Nº da POS', inp('pos',c.pos,'class="mono" inputmode="numeric" placeholder="Número completo da POS"'), false, false, 'Pode colar o número inteiro, sem limite de dígitos.')}
+    ${fld('Data de admissão', inp('admissao',c.admissao,'type="date"'))}
+    ${fld('Líder responsável', `<select name="lider_id"><option value="">— Sem líder —</option>${opts(lid.map(p=>[p.id,p.nome]), c.lider_id)}</select>`)}
+    ${fld('Veículo da frota', `<select name="veiculo_id"><option value="">— Sem veículo —</option>${opts(vOpts, c.veiculo_id)}</select>`, false, false, 'Se o veículo estiver com outra pessoa, ele é transferido.')}
+    ${fld('Status', rchips('status',CSTATUS,c.status||'ativo'), true)}
+    ${fld('Observações', `<textarea name="observacoes" rows="3">${esc(c.observacoes||'')}</textarea>`, true)}
+  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="c-save" data-id="${id||''}">${ic('check',15)}Salvar colaborador</button>`});
+}
+async function saveColab(id){
+  const f = formObj(); if (!f.nome) return toast('Informe o nome do colaborador.','err');
+  const row = {nome:f.nome, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
+    admissao:f.admissao, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
+  try {
+    if (row.veiculo_id){ const other = condutorOf(row.veiculo_id); if (other && !sameId(other.id,id)) await DB.update('colaboradores', other.id, {veiculo_id:null}); }
+    if (id) await DB.update('colaboradores', id, row); else await DB.insert('colaboradores', row);
+    closeModal(); toast(id ? 'Colaborador atualizado.' : 'Colaborador cadastrado.'); await reload();
+  } catch(e){ err(e); }
+}
+async function delColab(id){
+  const c = C(id); if (!c) return;
+  if (!await confirmBox(`Excluir <b>${esc(c.nome)}</b>?<br><span class="muted">As ausências dele no calendário também serão removidas.</span>`)) return;
+  try { await DB.remove('colaboradores', id); closeModal(); toast('Colaborador excluído.'); await reload(); } catch(e){ err(e); }
+}
+function exportColabs(){
+  const rows = [['Nome','Cargo','Matrícula','Telefone','E-mail','Nº POS','Veículo (placa)','Modelo','Líder','Status','Admissão']];
+  colabFiltered().forEach(c => { const v = V(c.veiculo_id); rows.push([c.nome,c.cargo,c.matricula,c.telefone,c.email,c.pos?`="${c.pos}"`:'',v?.placa,v?.modelo,P(c.lider_id)?.nome,CSTATUS[c.status]?.label,fmtD(c.admissao)]); });
+  downloadCSV(`colaboradores_${iso(new Date())}.csv`, rows);
+}
+
+/* ========================= FROTA ========================= */
+function pgFrota(){
+  const f = S.f; const base = S.veics.filter(v => !f.vt || v.tipo===f.vt);
+  $('#page').innerHTML = `
+  <div class="filters">${fchip('v-fs','','Todos',base.length,'#4f5fd8',!f.vs)}${Object.entries(VSTATUS).map(([k,o]) => fchip('v-fs',k,o.label,base.filter(v=>v.status===k).length,o.color,f.vs===k)).join('')}</div>
+  <div class="toolbar">
+    <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar placa, modelo, condutor..." value="${esc(f.vq)}"></label>
+    <div class="seg">${[['','Todos',''],['carro','Carros','car'],['moto','Motos','bike']].map(([k,l,i]) => `<button class="${f.vt===k?'on':''}" data-act="v-ft" data-k="${k}">${i?ic(i,15):''}${l}</button>`).join('')}</div>
+    <div class="tb-right"><button class="btn" data-act="v-csv">${ic('download',16)}<span class="hide-m">Exportar</span></button>${isAdmin()?`<button class="btn pri" data-act="v-new">${ic('plus',16)}Novo veículo</button>`:''}</div>
+  </div>
+  <p class="hint">${ic('info',14)}Clique no status de um veículo e escolha a nova situação — pronto, atualizado para todos. Clique no card para ver detalhes e histórico.</p>
+  <div id="list"></div>`;
+  $('#q').oninput = e => { f.vq = e.target.value; frotaList(); };
+  frotaList();
+}
+function frotaFiltered(){
+  const f = S.f, q = f.vq.toLowerCase().trim();
+  return S.veics.filter(v => (!f.vt || v.tipo===f.vt) && (!f.vs || v.status===f.vs) &&
+    (!q || [v.placa,v.marca,v.modelo,v.cor,v.ano,condutorOf(v.id)?.nome].join(' ').toLowerCase().includes(q)))
+    .sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
+}
+function frotaList(){
+  const list = frotaFiltered();
+  $('#list').innerHTML = list.length ? `<div class="vgrid">${list.map(vcard).join('')}</div>` : `<div class="card">${empty('car','Nenhum veículo encontrado', isAdmin()?'Cadastre o primeiro em "Novo veículo".':'')}</div>`;
+}
+function vcard(v){
+  const s = VSTATUS[v.status] || VSTATUS.ok, c = condutorOf(v.id);
+  return `<div class="card vcard" style="--c:${s.color}" data-act="v-open" data-id="${v.id}">
+    <div class="vtop"><div class="vico">${ic(v.tipo==='moto'?'bike':'car',20)}</div>
+      <button class="chip" style="--c:${s.color}" data-act="v-status" data-id="${v.id}" title="Alterar situação"><i class="d"></i>${s.label}<span class="caret">▼</span></button></div>
+    <div class="vmid">${plate(v.placa)}<div class="vmodel">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</div><div class="vmeta">${[v.ano,v.cor,fmtKm(v.km)].filter(Boolean).map(esc).join(' — ')}</div></div>
+    ${v.status_obs?`<div class="vobs">${ic('alert',14)}<span>${esc(v.status_obs)}</span></div>`:''}
+    <div class="vfoot">${c?`<div class="who">${avatar(c.nome,26)}<b>${esc(c.nome)}</b></div>`:'<span class="muted">Sem condutor</span>'}<span class="muted">${v.tipo==='moto'?'Moto':'Carro'}</span></div>
+    <div class="vupd">Atualizado ${ago(v.status_em)}${v.status_por?' por '+esc(v.status_por):''}</div></div>`;
+}
+function openStatusPop(btn, vid){
+  const ex = $('#pop'); if (ex && ex.dataset.id === String(vid)){ closePop(); return; }
+  closePop();
+  const v = V(vid); if (!v) return;
+  const el = document.createElement('div'); el.className = 'pop'; el.id = 'pop'; el.dataset.id = vid;
+  el.innerHTML = `<h5>Situação de ${esc(v.placa)}</h5><textarea id="popobs" placeholder="Observação (opcional): ex. pneu furado, barulho no motor...">${esc(v.status_obs||'')}</textarea>
+    ${Object.entries(VSTATUS).map(([k,o]) => `<button class="pop-opt ${v.status===k?'cur':''}" style="--c:${o.color}" data-act="v-set" data-id="${vid}" data-k="${k}"><i class="d"></i><div><b>${o.label}</b><small>${o.desc}</small></div>${v.status===k?ic('check',16):''}</button>`).join('')}`;
+  document.body.appendChild(el);
+  const r = btn.getBoundingClientRect(), w = el.offsetWidth, hh = el.offsetHeight;
+  let top = r.bottom + 6, left = Math.min(Math.max(8, r.right - w), window.innerWidth - w - 8);
+  if (top + hh > window.innerHeight - 8) top = Math.max(8, r.top - hh - 6);
+  el.style.top = top + 'px'; el.style.left = left + 'px';
+}
+async function setVeicStatus(id, k){
+  const v = V(id); if (!v) return;
+  let obs = ($('#popobs')?.value || '').trim() || null;
+  if (k === 'ok' && obs === v.status_obs) obs = null;
+  closePop();
+  const inModal = !!$('#ov');
+  const patch = {status:k, status_obs:obs, status_em:nowISO(), status_por:S.profile.nome};
+  Object.assign(v, patch); if (!inModal) render();
+  try {
+    await DB.update('veiculos', id, patch);
+    await DB.insert('veiculo_historico', {veiculo_id:id, status:k, obs, por_id:S.profile.id, por_nome:S.profile.nome});
+    toast(`${v.placa}: ${VSTATUS[k].label}`); await reload(); if (inModal) openVeic(id);
+  } catch(e){ err(e); reload(); }
+}
+function openVeic(id){
+  const v = V(id); if (!v) return; const s = VSTATUS[v.status] || VSTATUS.ok; const c = condutorOf(v.id);
+  const hist = S.hist.filter(h => sameId(h.veiculo_id,id)).sort((a,b) => new Date(b.created_at)-new Date(a.created_at)).slice(0,25);
+  openModal({wide:true, title: v.tipo==='moto' ? 'Detalhes da moto' : 'Detalhes do carro', body:`
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px">${plate(v.placa)}<div style="flex:1;min-width:180px"><h2 style="margin:0;font-size:17px;font-weight:600">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</h2><div class="muted">${[v.tipo==='moto'?'Moto':'Carro',v.ano,v.cor].filter(Boolean).map(esc).join(' — ')}</div></div>
+      <button class="chip" style="--c:${s.color};font-size:12px;padding:7px 14px" data-act="v-status" data-id="${v.id}"><i class="d"></i>${s.label}<span class="caret">▼</span></button></div>
+    ${v.status_obs?`<div class="vobs" style="--c:${s.color}">${ic('alert',14)}<span>${esc(v.status_obs)}</span></div>`:''}
+    <div class="dl" style="margin-top:14px">
+      <div><small>Quilometragem</small><b>${fmtKm(v.km)||'—'}</b></div>
+      <div><small>Última atualização</small><b>${fmtDT(v.status_em)}</b>${v.status_por?`<div class="muted s">por ${esc(v.status_por)}</div>`:''}</div>
+      <div class="full"><small>Condutor</small>${c?`<div class="minicard" data-act="c-open" data-id="${c.id}">${avatar(c.nome,32)}<div style="flex:1"><b class="fw5">${esc(c.nome)}</b><div class="muted s">${esc(c.cargo||'')}${c.telefone?' — '+esc(c.telefone):''}</div></div>${chip(CSTATUS[c.status])}</div>`:'<b class="muted">Sem condutor vinculado</b>'}</div>
+      ${v.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(v.observacoes)}</div></div>`:''}
+    </div>
+    <div class="sec">Histórico de situação</div>
+    ${hist.length?`<div class="timeline">${hist.map(h => { const o = VSTATUS[h.status]||VSTATUS.ok; return `<div class="tl" style="--c:${o.color}"><b>${o.label}</b><small>${fmtDT(h.created_at)}${h.por_nome?' — '+esc(h.por_nome):''}</small>${h.obs?`<p>${esc(h.obs)}</p>`:''}</div>`; }).join('')}</div>`:'<div class="box muted">Sem histórico ainda.</div>'}`,
+    foot: isAdmin() ? `<button class="btn danger left" data-act="v-del" data-id="${v.id}">${ic('trash',15)}Excluir</button><button class="btn pri" data-act="v-edit" data-id="${v.id}">${ic('edit',15)}Editar veículo</button>` : `<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+function veicForm(id){
+  if (!isAdmin()) return;
+  const v = id ? V(id) : {tipo:'carro', status:'ok'}; const cur = id ? condutorOf(id) : null;
+  openModal({title: id ? 'Editar veículo' : 'Novo veículo', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Tipo', rchips('tipo',TIPOV,v.tipo||'carro'), true, true)}
+    ${fld('Placa', inp('placa',v.placa,'data-mask="upper" maxlength="8" placeholder="ABC1D23" class="mono" style="text-transform:uppercase;letter-spacing:2px"'), false, true, 'Mercosul (ABC1D23) ou antiga (ABC1234).')}
+    ${fld('Marca', inp('marca',v.marca,'placeholder="Ex: Fiat, Honda"'))}
+    ${fld('Modelo', inp('modelo',v.modelo,'placeholder="Ex: Strada, CG 160"'), false, true)}
+    ${fld('Ano', inp('ano',v.ano,'type="number" min="1980" max="2100" inputmode="numeric"'))}
+    ${fld('Cor', inp('cor',v.cor))}
+    ${fld('Quilometragem', inp('km',v.km,'type="number" min="0" inputmode="numeric"'))}
+    ${fld('Condutor', `<select name="condutor"><option value="">— Sem condutor —</option>${opts(colabsSorted().map(c => [c.id, c.nome + (c.veiculo_id && !sameId(c.veiculo_id,id) ? ` (tem ${V(c.veiculo_id)?.placa||'veículo'})` : '')]), cur?.id)}</select>`, true)}
+    ${fld('Situação', rchips('status',VSTATUS,v.status||'ok'), true)}
+    ${fld('Observações', `<textarea name="observacoes" rows="3" placeholder="Seguro, revisões, detalhes do veículo...">${esc(v.observacoes||'')}</textarea>`, true)}
+  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="v-save" data-id="${id||''}">${ic('check',15)}Salvar veículo</button>`});
+}
+async function saveVeic(id){
+  const f = formObj(); const placa = String(f.placa||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if (!/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(placa)) return toast('Placa inválida. Use ABC1D23 ou ABC1234.','err');
+  if (!f.modelo) return toast('Informe o modelo do veículo.','err');
+  if (S.veics.some(v => v.placa===placa && !sameId(v.id,id))) return toast('Já existe um veículo com essa placa.','err');
+  const old = id ? V(id) : null;
+  const row = {tipo:f.tipo||'carro', placa, marca:f.marca, modelo:f.modelo, ano:f.ano?parseInt(f.ano):null, cor:f.cor, km:f.km?parseInt(f.km):null, status:f.status||'ok', observacoes:f.observacoes};
+  const stChanged = !old || old.status !== row.status;
+  if (stChanged){ row.status_em = nowISO(); row.status_por = S.profile.nome; row.status_obs = null; }
+  try {
+    let vid = id;
+    if (id) await DB.update('veiculos', id, row); else vid = (await DB.insert('veiculos', row)).id;
+    if (stChanged) await DB.insert('veiculo_historico', {veiculo_id:vid, status:row.status, obs: old ? 'Alterado no cadastro' : 'Veículo cadastrado', por_id:S.profile.id, por_nome:S.profile.nome});
+    const cur = condutorOf(vid), want = f.condutor || null;
+    if (!sameId(cur?.id ?? '', want ?? '')){
+      if (cur) await DB.update('colaboradores', cur.id, {veiculo_id:null});
+      if (want) await DB.update('colaboradores', want, {veiculo_id:vid});
+    }
+    closeModal(); toast(id ? 'Veículo atualizado.' : 'Veículo cadastrado.'); await reload();
+  } catch(e){ err(e); }
+}
+async function delVeic(id){
+  const v = V(id); if (!v) return;
+  if (!await confirmBox(`Excluir o veículo <b>${esc(v.placa)}</b>?<br><span class="muted">O condutor fica sem veículo e o histórico é apagado.</span>`)) return;
+  try { await DB.remove('veiculos', id); closeModal(); toast('Veículo excluído.'); await reload(); } catch(e){ err(e); }
+}
+function exportVeics(){
+  const rows = [['Placa','Tipo','Marca','Modelo','Ano','Cor','KM','Situação','Observação da situação','Atualizado em','Atualizado por','Condutor']];
+  frotaFiltered().forEach(v => rows.push([v.placa,v.tipo==='moto'?'Moto':'Carro',v.marca,v.modelo,v.ano,v.cor,v.km,VSTATUS[v.status]?.label,v.status_obs,fmtDT(v.status_em),v.status_por,condutorOf(v.id)?.nome]));
+  downloadCSV(`frota_${iso(new Date())}.csv`, rows);
+}
+
+/* ========================= DIÁRIO DE BORDO ========================= */
+function pgDiario(){
+  const f = S.f, mine = myChamados();
+  const base = mine.filter(c => !f.tl || sameId(c.autor_id,f.tl));
+  let leaders = '';
+  if (isAdmin()){
+    const autores = S.profiles.filter(p => p.role==='lider' || S.chamados.some(c => sameId(c.autor_id,p.id)));
+    leaders = `<div class="leaders">${autores.map(p => { const l = S.chamados.filter(c => sameId(c.autor_id,p.id)); const n = k => l.filter(c => c.status===k).length;
+      return `<button class="card ld ${sameId(f.tl,p.id)?'on':''}" data-act="t-fl" data-k="${p.id}">${avatar(p.nome,38)}<div style="min-width:0"><b>${esc(p.nome)}</b><div class="nums"><span><i class="dot" style="--c:${CH.aberto.color}"></i><b>${n('aberto')}</b> abertos</span><span><i class="dot" style="--c:${CH.andamento.color}"></i><b>${n('andamento')}</b></span><span><i class="dot" style="--c:${CH.resolvido.color}"></i><b>${n('resolvido')}</b></span></div></div></button>`; }).join('')}</div>`;
+  }
+  $('#page').innerHTML = `${leaders}
+  <div class="toolbar">
+    <div class="seg">${[['','Todos'],['aberto','Abertos'],['andamento','Em andamento'],['resolvido','Resolvidos']].map(([k,l]) => `<button class="${f.ts===k?'on':''}" data-act="t-fs" data-k="${k}">${l} <b style="font-weight:600">${k?base.filter(c=>c.status===k).length:base.length}</b></button>`).join('')}</div>
+    <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar no diário..." value="${esc(f.tq)}"></label>
+    <select class="sel" id="fc"><option value="">Todas as categorias</option>${opts(CATS.map(c=>[c,c]), f.tc)}</select>
+    <div class="tb-right"><button class="btn pri" data-act="t-new">${ic('plus',16)}Novo registro</button></div>
+  </div>
+  <div class="card" id="list" style="overflow:hidden"></div>`;
+  $('#q').oninput = e => { f.tq = e.target.value; diarioList(); };
+  $('#fc').onchange = e => { f.tc = e.target.value; diarioList(); };
+  diarioList();
+}
+function diarioList(){
+  const f = S.f, q = f.tq.toLowerCase().trim();
+  const list = myChamados().filter(c => (!f.tl || sameId(c.autor_id,f.tl)) && (!f.ts || c.status===f.ts) && (!f.tc || c.categoria===f.tc) &&
+    (!q || [c.titulo,c.descricao,c.resposta,c.autor_nome,'#'+c.id,C(c.colaborador_id)?.nome,V(c.veiculo_id)?.placa].join(' ').toLowerCase().includes(q)));
+  $('#list').innerHTML = list.length ? list.map(c => { const col = C(c.colaborador_id), v = V(c.veiculo_id);
+    return `<div class="tk" style="--c:${PRIOR[c.prioridade]?.color}" data-act="ch-open" data-id="${c.id}" role="button" tabindex="0">
+      <span class="num">#${c.id}</span>${avatar(c.autor_nome,34)}
+      <div class="body"><div class="t">${esc(c.titulo)}</div><div class="m"><span>${esc(c.autor_nome)}</span><span>${ago(c.created_at)}</span><span class="tag" style="--c:#4f5fd8">#${esc(c.categoria)}</span>${col?`<span>${ic('user',12)} ${esc(col.nome)}</span>`:''}${v?plate(v.placa,true):''}</div></div>
+      <span class="hide-m">${chip(PRIOR[c.prioridade],false)}</span>
+      ${c.resposta?`<span class="replied" title="Respondido pelo administrador">${ic('msg',17)}</span>`:''}
+      ${chip(CH[c.status])}</div>`; }).join('')
+    : empty('book','Nenhum registro encontrado', 'Use "Novo registro" para relatar um problema ou reclamação da equipe.');
+}
+function chForm(){
+  openModal({title:'Novo registro no diário de bordo', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Título', inp('titulo','','maxlength="120" placeholder="Resuma o problema em poucas palavras"'), true, true)}
+    ${fld('Categoria', `<select name="categoria">${opts(CATS.map(c=>[c,c]),'Equipe')}</select>`)}
+    ${fld('Colaborador envolvido', `<select name="colaborador_id"><option value="">— Nenhum —</option>${opts(colabsSorted().map(c=>[c.id,c.nome]))}</select>`)}
+    ${fld('Prioridade', rchips('prioridade',PRIOR,'media'), true)}
+    ${fld('Veículo relacionado', `<select name="veiculo_id"><option value="">— Nenhum —</option>${opts(S.veics.map(v=>[v.id,`${v.placa} — ${v.modelo}`]))}</select>`, true)}
+    ${fld('Descrição', `<textarea name="descricao" rows="5" placeholder="O que aconteceu, quem está envolvido e o que é preciso para resolver."></textarea>`, true, true)}
+  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="t-save">${ic('check',15)}Registrar</button>`});
+}
+async function saveCh(){
+  const f = formObj();
+  if (!f.titulo) return toast('Informe o título.','err');
+  if (!f.descricao) return toast('Descreva o problema.','err');
+  try {
+    const r = await DB.insert('chamados', {titulo:f.titulo, descricao:f.descricao, categoria:f.categoria||'Outro', prioridade:f.prioridade||'media', status:'aberto',
+      colaborador_id:f.colaborador_id, veiculo_id:f.veiculo_id, autor_id:S.profile.id, autor_nome:S.profile.nome, updated_at:nowISO()});
+    closeModal(); toast(`Registro #${r.id} criado.`); await reload();
+  } catch(e){ err(e); }
+}
+const step = (l, d, done) => `<div class="step ${done?'done':''}"><i></i><b>${l}</b><small>${d?fmtDT(d):'—'}</small></div>`;
+function openCh(id){
+  const c = S.chamados.find(x => sameId(x.id,id)); if (!c) return;
+  const col = C(c.colaborador_id), v = V(c.veiculo_id), adm = isAdmin();
+  openModal({wide:true, title:`Chamado #${c.id}`, body:`
+    <div class="ch-head"><h2>${esc(c.titulo)}</h2><div class="chips">${chip(CH[c.status])}${chip(PRIOR[c.prioridade],false)}<span class="tag" style="--c:#4f5fd8">#${esc(c.categoria)}</span></div></div>
+    <div class="dl" style="margin:18px 0 0">
+      <div><small>Registrado por</small><div class="who">${avatar(c.autor_nome,26)}<b>${esc(c.autor_nome)}</b></div></div>
+      <div><small>Data</small><b>${fmtDT(c.created_at)}</b></div>
+      ${col?`<div><small>Colaborador envolvido</small><span class="lnk" data-act="c-open" data-id="${col.id}">${esc(col.nome)}</span></div>`:''}
+      ${v?`<div><small>Veículo</small><span class="lnk" data-act="v-open" data-id="${v.id}">${plate(v.placa,true)} ${esc(v.modelo)}</span></div>`:''}
+    </div>
+    <div class="sec">Descrição</div><div class="box">${esc(c.descricao||'—')}</div>
+    <div class="sec">Resposta do administrador</div>
+    ${adm ? `<textarea id="resp" class="ta" rows="4" placeholder="Escreva a resposta ou as providências tomadas...">${esc(c.resposta||'')}</textarea>
+      ${c.respondido_em?`<div class="f-hint" style="margin-top:4px">Última resposta em ${fmtDT(c.respondido_em)} por ${esc(c.respondido_por||'')}</div>`:''}
+      <div class="sec">Situação</div>${rchips('st',CH,c.status)}`
+      : c.resposta ? `<div class="box resp">${esc(c.resposta)}<div class="resp-by">${esc(c.respondido_por||'Administrador')} — ${fmtDT(c.respondido_em)}</div></div>`
+      : `<div class="box muted">Aguardando análise do administrador.</div>`}
+    <div class="steps">${step('Aberto',c.created_at,true)}${step('Respondido',c.respondido_em,!!c.respondido_em)}${step('Resolvido',c.resolvido_em,c.status==='resolvido')}</div>`,
+    foot: adm ? `<button class="btn danger left" data-act="ch-del" data-id="${c.id}">${ic('trash',15)}Excluir</button>${c.status!=='resolvido'?`<button class="btn" data-act="ch-resolve" data-id="${c.id}">${ic('check',15)}Responder e resolver</button>`:''}<button class="btn pri" data-act="ch-resp" data-id="${c.id}">Salvar resposta</button>`
+      : `<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+async function saveResp(id, force){
+  const c = S.chamados.find(x => sameId(x.id,id)); if (!c) return;
+  const resp = ($('#resp')?.value || '').trim() || null;
+  let st = force || $('input[name=st]:checked')?.value || c.status;
+  if (st === 'aberto' && resp && !c.resposta) st = 'andamento';
+  const n = nowISO(); const patch = {resposta:resp, status:st, updated_at:n};
+  if (resp && resp !== c.resposta){ patch.respondido_por = S.profile.nome; patch.respondido_em = n; }
+  patch.resolvido_em = st === 'resolvido' ? (c.resolvido_em || n) : null;
+  try { await DB.update('chamados', id, patch); closeModal(); toast(st==='resolvido' ? `Chamado #${id} resolvido.` : `Chamado #${id} atualizado.`); await reload(); } catch(e){ err(e); }
+}
+async function delCh(id){
+  if (!await confirmBox(`Excluir o chamado <b>#${id}</b>? Esta ação não pode ser desfeita.`)) return;
+  try { await DB.remove('chamados', id); closeModal(); toast('Chamado excluído.'); await reload(); } catch(e){ err(e); }
+}
+
+/* ========================= CALENDÁRIO ========================= */
+function calVisible(e){ const c = S.cal; return (!c.tipos.size || c.tipos.has(e.tipo)) && (!c.colab || sameId(e.colaborador_id,c.colab)); }
+function pgCal(){
+  const c = S.cal, first = new Date(c.y, c.m, 1);
+  const mName = cap(first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
+  const mStart = iso(first), mEnd = iso(new Date(c.y, c.m+1, 0));
+  const inMonth = S.eventos.filter(e => e.data_inicio<=mEnd && e.data_fim>=mStart);
+  const off = first.getDay(), dim = new Date(c.y, c.m+1, 0).getDate(), cells = Math.ceil((off+dim)/7)*7, today = iso(new Date());
+  let days = '';
+  for (let i = 0; i < cells; i++){
+    const d = new Date(c.y, c.m, 1-off+i), ds = iso(d);
+    const evs = S.eventos.filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds).sort((a,b)=>a.tipo.localeCompare(b.tipo));
+    days += `<div class="day ${d.getMonth()!==c.m?'out':''} ${ds===today?'today':''} ${[0,6].includes(d.getDay())?'we':''}" data-act="cal-cell" data-date="${ds}" title="Clique para marcar em ${fmtD(ds)}"><span class="dn">${d.getDate()}</span>
+      ${evs.slice(0,3).map(e => { const o = EV[e.tipo]||EV.outro, n = C(e.colaborador_id)?.nome; return `<div class="ev" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}" title="${esc(n||'')} — ${o.label}">${esc(firstName(n))} · ${o.label}</div>`; }).join('')}
+      ${evs.length>3?`<span class="more" data-act="cal-day" data-date="${ds}">+${evs.length-3} mais</span>`:''}</div>`;
+  }
+  const vis = inMonth.filter(calVisible).sort((a,b) => a.data_inicio.localeCompare(b.data_inicio));
+  $('#page').innerHTML = `
+  <div class="cal-h">
+    <button class="icon-btn bord" data-act="cal-prev" aria-label="Mês anterior">${ic('chevL',18)}</button>
+    <h2>${mName}</h2>
+    <button class="icon-btn bord" data-act="cal-next" aria-label="Próximo mês">${ic('chevR',18)}</button>
+    <button class="btn sm" data-act="cal-today">Hoje</button>
+    <div class="tb-right"><select class="sel" id="calc"><option value="">Toda a equipe</option>${opts(colabsSorted().map(x=>[x.id,x.nome]), c.colab)}</select><button class="btn pri" data-act="ev-new">${ic('plus',16)}Marcar ausência</button></div>
+  </div>
+  <div class="filters">${Object.entries(EV).map(([k,o]) => fchip('cal-type',k,o.label,inMonth.filter(e=>e.tipo===k && (!c.colab||sameId(e.colaborador_id,c.colab))).length,o.color,c.tipos.has(k))).join('')}${c.tipos.size?`<button class="linkbtn" data-act="cal-clear">Limpar filtro</button>`:''}</div>
+  <div class="cal-wrap">
+    <div class="card" style="overflow:hidden"><div class="cal">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(w=>`<div class="wd">${w}</div>`).join('')}${days}</div></div>
+    <div class="card"><div class="card-h"><h3>Neste mês</h3><span class="muted">${vis.length} registro(s)</span></div><div class="card-b" style="padding-top:6px">${agendaList(vis,'Nenhum registro neste mês. Clique em um dia para marcar.')}</div></div>
+  </div>`;
+  $('#calc').onchange = e => { S.cal.colab = e.target.value; pgCal(); };
+}
+function calDay(ds){
+  const evs = S.eventos.filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds);
+  openModal({title:`Ausências em ${fmtD(ds)}`, body: agendaList(evs), foot:`<button class="btn" data-act="modal-close">Fechar</button><button class="btn pri" data-act="ev-new" data-date="${ds}">${ic('plus',15)}Marcar ausência</button>`});
+}
+function evForm(id, date, colId){
+  const e = id ? S.eventos.find(x => sameId(x.id,id)) : {tipo:'folga', data_inicio:date||iso(new Date()), data_fim:date||iso(new Date()), colaborador_id:colId||S.cal.colab||null};
+  if (!e) return;
+  const can = !id || isAdmin() || sameId(e.criado_por, S.profile.id);
+  if (!can){
+    const c = C(e.colaborador_id), o = EV[e.tipo]||EV.outro;
+    return openModal({title:'Ausência', body:`<div class="who" style="margin-bottom:16px">${avatar(c?.nome,44)}<div><b style="font-size:15px">${esc(c?.nome||'—')}</b><small>${esc(c?.cargo||'')}</small></div></div>
+      <div class="dl"><div><small>Tipo</small>${chip(o)}</div><div><small>Período</small><b>${rangeTxt(e.data_inicio,e.data_fim)} (${daysBetween(e.data_inicio,e.data_fim)} dia(s))</b></div>
+      <div><small>Registrado por</small><b>${esc(e.criado_por_nome||'—')}</b></div>${e.observacao?`<div class="full"><small>Observação</small><div class="box">${esc(e.observacao)}</div></div>`:''}</div>
+      <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o administrador pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+  }
+  openModal({title: id ? 'Editar ausência' : 'Marcar ausência', body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Colaborador', `<select name="colaborador_id" required><option value="">Selecione...</option>${opts(colabsSorted().filter(c=>c.status!=='desligado'||sameId(c.id,e.colaborador_id)).map(c=>[c.id,c.nome]), e.colaborador_id)}</select>`, true, true)}
+    ${fld('Tipo', rchips('tipo',EV,e.tipo), true, true)}
+    ${fld('Data inicial', inp('data_inicio',e.data_inicio,'type="date" required'), false, true)}
+    ${fld('Data final', inp('data_fim',e.data_fim,'type="date" required'), false, true, 'Para um dia só, repita a data inicial.')}
+    ${fld('Observação', `<textarea name="observacao" rows="3" placeholder="Ex: consulta às 14h, CID informado, folga compensatória...">${esc(e.observacao||'')}</textarea>`, true)}
+    ${id?`<p class="f-hint full">Registrado por ${esc(e.criado_por_nome||'—')} em ${fmtDT(e.created_at)}</p>`:''}
+  </form>`, foot:`${id?`<button class="btn danger left" data-act="ev-del" data-id="${id}">${ic('trash',15)}Excluir</button>`:''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="ev-save" data-id="${id||''}">${ic('check',15)}Salvar</button>`,
+    onMount: ov => { const a = $('[name=data_inicio]',ov), b = $('[name=data_fim]',ov); a.addEventListener('change', () => { if (!b.value || b.value < a.value) b.value = a.value; }); }});
+}
+async function saveEv(id){
+  const f = formObj();
+  if (!f.colaborador_id) return toast('Selecione o colaborador.','err');
+  if (!f.data_inicio || !f.data_fim) return toast('Informe as datas.','err');
+  if (f.data_fim < f.data_inicio) return toast('A data final não pode ser antes da inicial.','err');
+  const clash = S.eventos.find(e => !sameId(e.id,id) && sameId(e.colaborador_id,f.colaborador_id) && e.data_inicio<=f.data_fim && e.data_fim>=f.data_inicio);
+  if (clash && !await confirmBox(`${esc(C(f.colaborador_id)?.nome)} já tem <b>${EV[clash.tipo].label}</b> em ${rangeTxt(clash.data_inicio,clash.data_fim)}. Salvar mesmo assim?`,'Salvar')) return;
+  const row = {colaborador_id:f.colaborador_id, tipo:f.tipo||'outro', data_inicio:f.data_inicio, data_fim:f.data_fim, observacao:f.observacao};
+  try {
+    if (id) await DB.update('eventos', id, row);
+    else await DB.insert('eventos', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
+    closeModal(); toast('Ausência salva no calendário.');
+    const d = parseISO(f.data_inicio); if (S.page === 'calendario'){ S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); }
+    await reload();
+  } catch(e){ err(e); }
+}
+async function delEv(id){
+  if (!await confirmBox('Excluir esta ausência do calendário?')) return;
+  try { await DB.remove('eventos', id); closeModal(); toast('Ausência excluída.'); await reload(); } catch(e){ err(e); }
+}
+
+/* ========================= USUÁRIOS ========================= */
+function pgUsers(){
+  if (!isAdmin()) return go('dashboard');
+  const list = S.profiles.slice().sort((a,b) => (a.role==='pendente'?0:1)-(b.role==='pendente'?0:1) || a.nome.localeCompare(b.nome,'pt'));
+  const pend = list.filter(p => p.role==='pendente').length;
+  $('#page').innerHTML = `
+  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Como dar acesso a um líder</b>
+    <p>${DEMO ? 'No modo demonstração você cria usuários aqui mesmo. Com o Supabase configurado, a pessoa abre o link do painel e clica em <b>Criar conta</b>.' : 'Envie o link do painel. A pessoa clica em <b>Criar conta</b> na tela de entrada e aparece aqui como <b>Aguardando</b>.'}
+    Mude o perfil para <b>Líder</b> para liberar. Líderes registram ocorrências no diário, marcam ausências e atualizam a situação da frota. Cadastrar e editar colaboradores e veículos e responder chamados é exclusivo do administrador.</p></div></div></div></div>
+  <div class="card" style="margin-top:18px"><div class="card-h"><h3>Usuários (${list.length})${pend?` <span class="chip" style="--c:#f5a623;margin-left:6px">${pend} aguardando</span>`:''}</h3>${DEMO?`<button class="btn pri sm" data-act="u-new">${ic('plus',14)}Novo usuário</button>`:''}</div>
+  <div class="card-b"><div class="tbl-wrap"><table><thead><tr><th>Usuário</th><th>Perfil</th><th>Acesso ativo</th><th class="hide-m">Registros no diário</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
+  ${list.map(p => `<tr><td><div class="who">${avatar(p.nome)}<div style="min-width:0"><b>${esc(p.nome)}${sameId(p.id,S.profile.id)?' <span class="muted">(você)</span>':''}</b><small>${esc(p.email||'')}</small></div></div></td>
+    <td><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Administrador'],['lider','Líder'],['pendente','Aguardando']],p.role)}</select></td>
+    <td><label class="sw" title="${p.ativo?'Ativo':'Bloqueado'}"><input type="checkbox" data-chg="u-ativo" data-id="${p.id}" ${p.ativo?'checked':''}><span></span></label></td>
+    <td class="hide-m">${S.chamados.filter(c=>sameId(c.autor_id,p.id)).length}</td><td class="hide-m">${fmtD(p.created_at)}</td></tr>`).join('')}
+  </tbody></table></div></div></div>`;
+}
+const CHG = {
+  'u-role': async t => {
+    if (sameId(t.dataset.id,S.profile.id) && t.value !== 'admin'){ toast('Você não pode tirar o próprio acesso de administrador.','err'); t.value = 'admin'; return; }
+    try { await DB.update('profiles', t.dataset.id, {role:t.value}); toast('Perfil atualizado.'); await reload(); } catch(e){ err(e); reload(); }
+  },
+  'u-ativo': async t => {
+    if (sameId(t.dataset.id,S.profile.id) && !t.checked){ toast('Você não pode bloquear o próprio acesso.','err'); t.checked = true; return; }
+    try { await DB.update('profiles', t.dataset.id, {ativo:t.checked}); toast(t.checked ? 'Acesso liberado.' : 'Acesso bloqueado.'); await reload(); } catch(e){ err(e); reload(); }
+  }
+};
+function userForm(){
+  openModal({title:'Novo usuário (demonstração)', body:`<form id="mf" class="form">${fld('Nome', inp('nome','','required'), true, true)}${fld('E-mail', inp('email','','type="email"'), true)}${fld('Perfil', rchips('role',{lider:{label:'Líder',color:'#4f5fd8'},admin:{label:'Administrador',color:'#d94ee8'}},'lider'), true)}</form>`,
+    foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="u-save">Criar usuário</button>`});
+}
+async function saveUser(){
+  const f = formObj(); if (!f.nome) return toast('Informe o nome.','err');
+  try { await DB.insert('profiles', {nome:f.nome, email:f.email, role:f.role||'lider', ativo:true}); closeModal(); toast('Usuário criado.'); await reload(); } catch(e){ err(e); }
+}
+
+/* ========================= LOGIN / SESSÃO ========================= */
+function renderLogin(msg=''){
+  S.profile = null; closeModal(); closePop();
+  let inner;
+  if (DEMO){
+    const ps = Store.load().profiles;
+    inner = `<div class="notice">${ic('info',16)}<div><b>Modo demonstração.</b> Os dados ficam só neste navegador. Para usar com a equipe, preencha <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no início do arquivo.</div></div>
+      <p class="lbl">Entrar como:</p>
+      <div class="demo-list">${ps.map(p => `<button class="demo-btn" data-act="demo-login" data-id="${p.id}">${avatar(p.nome,36)}<div><b>${esc(p.nome)}</b><small>${ROLE[p.role]}${p.ativo?'':' — bloqueado'}</small></div>${ic('chevR',16)}</button>`).join('')}</div>
+      <button class="linkbtn" data-act="demo-reset" style="margin-top:12px">Restaurar dados de exemplo</button>`;
+  } else {
+    inner = `<div class="seg full" id="lmode"><button class="on" data-m="in" type="button">Entrar</button><button data-m="up" type="button">Criar conta</button></div>
+      <form id="lf" class="lform">
+        <div class="f up" hidden><label>Nome completo</label><input name="nome" autocomplete="name"></div>
+        <div class="f"><label>E-mail</label><input name="email" type="email" required autocomplete="email"></div>
+        <div class="f"><label>Senha</label><input name="senha" type="password" required minlength="6" autocomplete="current-password"></div>
+        <div class="lmsg" id="lmsg">${esc(msg)}</div>
+        <button class="btn pri full" type="submit" id="lbtn">Entrar</button>
+        <button type="button" class="linkbtn" id="lforgot">Esqueci minha senha</button>
+      </form>`;
+  }
+  $('#root').innerHTML = `<div class="login"><div class="card lcard"><div class="brand"><span class="logo">pc</span><div><b>Painel de Controle</b><small>Equipe, frota e diário de bordo</small></div></div>${inner}</div></div>`;
+  if (!DEMO) bindLogin();
+}
+function bindLogin(){
+  let mode = 'in';
+  $$('#lmode button').forEach(b => b.onclick = () => {
+    mode = b.dataset.m; $$('#lmode button').forEach(x => x.classList.toggle('on', x === b));
+    $$('.up').forEach(x => x.hidden = mode !== 'up'); $('#lbtn').textContent = mode === 'in' ? 'Entrar' : 'Criar conta';
+    $('#lforgot').hidden = mode !== 'in'; $('#lmsg').textContent = '';
+  });
+  $('#lf').onsubmit = async e => {
+    e.preventDefault(); const f = formObj('#lf'), m = $('#lmsg'), btn = $('#lbtn'); m.className = 'lmsg'; m.textContent = ''; btn.disabled = true;
+    try {
+      if (mode === 'in'){
+        const {data, error} = await sb.auth.signInWithPassword({email:f.email, password:f.senha}); if (error) throw error;
+        await afterLogin(data.user);
+      } else {
+        if (!f.nome) throw new Error('Informe seu nome completo.');
+        const {data, error} = await sb.auth.signUp({email:f.email, password:f.senha, options:{data:{nome:f.nome}, emailRedirectTo:location.href.split('#')[0]}});
+        if (error) throw error;
+        if (data.session) await afterLogin(data.user);
+        else { m.className = 'lmsg ok'; m.textContent = 'Conta criada! Abra o link enviado ao seu e-mail para confirmar e depois entre.'; }
+      }
+    } catch(er){ m.className = 'lmsg'; m.textContent = traduz(er.message); }
+    finally { if (document.body.contains(btn)) btn.disabled = false; }
+  };
+  $('#lforgot').onclick = async () => {
+    const email = $('#lf [name=email]').value.trim(), m = $('#lmsg');
+    if (!email){ m.className = 'lmsg'; m.textContent = 'Digite seu e-mail acima e clique de novo em "Esqueci minha senha".'; return; }
+    const {error} = await sb.auth.resetPasswordForEmail(email, {redirectTo:location.href.split('#')[0]});
+    m.className = 'lmsg ' + (error ? '' : 'ok'); m.textContent = error ? traduz(error.message) : 'Enviamos um link para redefinir a senha.';
+  };
+}
+function renderPending(){
+  const blocked = S.profile && !S.profile.ativo;
+  $('#root').innerHTML = `<div class="login"><div class="card lcard center"><div class="pend-ico">${ic(blocked?'shield':'clock',28)}</div>
+    <h2>${blocked?'Acesso bloqueado':'Acesso aguardando liberação'}</h2>
+    <p class="muted" style="line-height:1.6">Olá${S.profile?', '+esc(firstName(S.profile.nome)):''}! ${blocked?'Seu acesso foi bloqueado pelo administrador.':'Seu cadastro foi recebido. O administrador precisa liberar seu perfil para você usar o painel.'}</p>
+    <div class="row-c"><button class="btn" data-act="logout">Sair</button><button class="btn pri" data-act="recheck">Verificar novamente</button></div></div></div>`;
+}
+async function afterLogin(user){
+  try {
+    if (DEMO){ S.profile = Store.load().profiles.find(p => sameId(p.id,user.id)); try{ sessionStorage.setItem('pc_demo_user', user.id); }catch(e){} }
+    else {
+      const {data, error} = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+      if (error) throw error;
+      if (!data){ S.profile = {nome:user.email, role:'pendente', ativo:true}; return renderPending(); }
+      S.profile = data;
+    }
+    if (!S.profile || S.profile.role === 'pendente' || !S.profile.ativo) return renderPending();
+    const h = location.hash.slice(1); if (PAGES[h]) S.page = h;
+    await loadAll(); render(); subscribeRealtime();
+  } catch(e){ err(e); renderLogin(traduz(e.message)); }
+}
+let rtTimer = null;
+function subscribeRealtime(){
+  if (DEMO || S.rt) return;
+  S.rt = sb.channel('painel-controle').on('postgres_changes', {event:'*', schema:'public'}, () => {
+    clearTimeout(rtTimer);
+    rtTimer = setTimeout(async () => { if (!S.profile) return; if ($('#ov')){ S.stale = true; return; } await loadAll(); if ($('#rail')) render(); }, 500);
+  }).subscribe();
+}
+async function logout(){
+  if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; }
+  if (!DEMO) await sb.auth.signOut();
+  try { sessionStorage.removeItem('pc_demo_user'); } catch(e){}
+  renderLogin();
+}
+function askNewPassword(){
+  openModal({title:'Definir nova senha', body:`<form id="mf" class="form">${fld('Nova senha', inp('senha','','type="password" minlength="6" required'), true, true)}</form>`,
+    foot:`<button class="btn pri" data-act="pw-save">Salvar senha</button>`});
+}
+
+/* ========================= Ações (cliques) ========================= */
+const ACT = {
+  'modal-close': () => closeModal(),
+  'logout': () => logout(),
+  'copy': a => copyText(a.dataset.v),
+  'mtab': a => { const m = a.closest('.modal'); $$('.mtab',m).forEach(b => b.classList.toggle('on', b === a)); $$('[data-pane]',m).forEach(p => p.hidden = p.dataset.pane !== a.dataset.k); },
+  'dash-tab': a => { S.f.dash = a.dataset.k; render(); },
+  'dash-go': a => { const k = a.dataset.k, t = S.f.dash;
+    if (t === 'frota'){ S.f.vs = k; go('frota'); } else if (t === 'equipe'){ S.f.cs = k; go('colaboradores'); }
+    else if (t === 'chamados'){ S.f.ts = k; go('diario'); } else { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); S.cal.tipos = new Set([k]); go('calendario'); } },
+  'c-fs': a => { S.f.cs = a.dataset.k; pgColab(); },
+  'c-sort': a => { const c = a.dataset.col; S.sort = {col:c, dir: S.sort.col === c ? -S.sort.dir : 1}; colabList(); },
+  'c-new': () => colabForm(), 'c-edit': a => colabForm(a.dataset.id), 'c-open': a => openColab(a.dataset.id),
+  'c-save': a => saveColab(a.dataset.id || null), 'c-del': a => delColab(a.dataset.id), 'c-csv': () => exportColabs(),
+  'v-fs': a => { S.f.vs = a.dataset.k; pgFrota(); }, 'v-ft': a => { S.f.vt = a.dataset.k; pgFrota(); },
+  'v-status': a => openStatusPop(a, a.dataset.id), 'v-set': a => setVeicStatus(a.dataset.id, a.dataset.k),
+  'v-open': a => openVeic(a.dataset.id), 'v-new': () => veicForm(), 'v-edit': a => veicForm(a.dataset.id),
+  'v-save': a => saveVeic(a.dataset.id || null), 'v-del': a => delVeic(a.dataset.id), 'v-csv': () => exportVeics(),
+  't-fs': a => { S.f.ts = a.dataset.k; pgDiario(); }, 't-fl': a => { if (a.dataset.go){ S.f.tl = a.dataset.k; S.f.ts = ''; return go('diario'); } S.f.tl = sameId(S.f.tl, a.dataset.k) ? '' : a.dataset.k; pgDiario(); },
+  'dash-v': a => { S.f.vs = a.dataset.k; S.f.vt = ''; go('frota'); },
+  'dash-cat': a => { S.f.tc = a.dataset.k; S.f.ts = ''; go('diario'); },
+  't-new': () => chForm(), 't-save': () => saveCh(), 'ch-open': a => openCh(a.dataset.id),
+  'ch-resp': a => saveResp(a.dataset.id), 'ch-resolve': a => saveResp(a.dataset.id, 'resolvido'), 'ch-del': a => delCh(a.dataset.id),
+  'cal-prev': () => { const c = S.cal; c.m--; if (c.m < 0){ c.m = 11; c.y--; } pgCal(); },
+  'cal-next': () => { const c = S.cal; c.m++; if (c.m > 11){ c.m = 0; c.y++; } pgCal(); },
+  'cal-today': () => { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); pgCal(); },
+  'cal-type': a => { const t = S.cal.tipos, k = a.dataset.k; t.has(k) ? t.delete(k) : t.add(k); pgCal(); },
+  'cal-clear': () => { S.cal.tipos.clear(); pgCal(); },
+  'cal-cell': a => evForm(null, a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
+  'ev-new': a => evForm(null, a.dataset.date, a.dataset.col), 'ev-open': a => evForm(a.dataset.id),
+  'ev-save': a => saveEv(a.dataset.id || null), 'ev-del': a => delEv(a.dataset.id),
+  'u-new': () => userForm(), 'u-save': () => saveUser(),
+  'demo-login': a => afterLogin({id:a.dataset.id}),
+  'demo-reset': async () => { if (await confirmBox('Apagar tudo e restaurar os dados de exemplo?','Restaurar')){ Store.reset(); renderLogin(); toast('Dados de exemplo restaurados.'); } },
+  'recheck': async () => { if (DEMO){ const id = S.profile?.id; return id ? afterLogin({id}) : renderLogin(); } const {data} = await sb.auth.getUser(); data?.user ? afterLogin(data.user) : renderLogin(); },
+  'pw-save': async () => { const f = formObj(); if (!f.senha || f.senha.length < 6) return toast('A senha precisa ter pelo menos 6 caracteres.','err');
+    const {error} = await sb.auth.updateUser({password:f.senha}); if (error) return err(error); closeModal(); toast('Senha alterada.'); }
+};
+document.addEventListener('click', e => {
+  const pop = $('#pop');
+  if (pop && !pop.contains(e.target) && !e.target.closest('[data-act="v-status"]')) closePop();
+  const a = e.target.closest('[data-act]');
+  if (a){ if (a.tagName === 'A') return; ACT[a.dataset.act]?.(a, e); return; }
+  const n = e.target.closest('[data-nav]'); if (n) go(n.dataset.nav);
+});
+document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.chg) CHG[t.dataset.chg]?.(t); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ if ($('#pop')) closePop(); else closeModal(); }
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role=button][data-act],[role=button][data-nav]')){ e.preventDefault(); e.target.click(); }
+});
+window.addEventListener('scroll', closePop, true);
+window.addEventListener('resize', closePop);
+
+/* ========================= Início ========================= */
+(async function boot(){
+  if (!DEMO && !sb){ $('#root').innerHTML = `<div class="login"><div class="card lcard center"><div class="pend-ico">${ic('alert',28)}</div><h2>Não foi possível conectar</h2><p class="muted">A biblioteca do Supabase não carregou. Verifique a internet e recarregue a página.</p></div></div>`; return; }
+  if (DEMO){
+    let id = null; try { id = sessionStorage.getItem('pc_demo_user'); } catch(e){}
+    return id && Store.load().profiles.find(p => p.id === id) ? afterLogin({id}) : renderLogin();
+  }
+  sb.auth.onAuthStateChange(ev => { if (ev === 'PASSWORD_RECOVERY') setTimeout(askNewPassword, 300); });
+  const {data:{session}} = await sb.auth.getSession();
+  session ? await afterLogin(session.user) : renderLogin();
+})();
+</script>
+</body>
+</html>
