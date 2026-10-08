@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painel de Controle · Equipe e Frota</title>
+<title>Primarização</title>
+<meta name="theme-color" content="#0a2a5e">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Crect width=%2248%22 height=%2248%22 rx=%2214%22 fill=%22%230b4ea2%22/%3E%3Cpath d=%22M24 8.5s-11.2 12.6-11.2 20.2a11.2 11.2 0 0 0 22.4 0C35.2 21.1 24 8.5 24 8.5z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -375,7 +377,7 @@ button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
 .dhero-date{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-left:28px;border-left:1px solid rgba(255,255,255,.14);min-width:170px;text-align:right}
 .dhero-date b{font-size:62px;font-weight:600;line-height:1;letter-spacing:-2px}
 .dhero-date span{font-size:14px;margin-top:6px;font-weight:500}
-.dhero-date small{color:#a9afe6;font-size:12px;margin-top:2px}
+.dhero-date small{color:rgba(255,255,255,.65);font-size:12px;margin-top:2px}
 
 .dgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin-top:18px}
 .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
@@ -484,25 +486,215 @@ button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
 
 .ver{font-size:9.5px;color:#b4b8cc;margin-top:6px}
 @media (max-width:720px){.ver{display:none}}
+
+/* ================= v2: marca, bases, diário, importação ================= */
+.emb{display:inline-block;flex:none;vertical-align:middle}
+.logo-svg,.logo-img{display:block;border-radius:14px}
+.rail .logo{margin-bottom:22px;font-size:0}
+.wm{display:inline-flex;flex-direction:column;line-height:1.15}
+.wm b{font-weight:700;font-size:17px;letter-spacing:-.3px;color:#0a3f92}
+.wm small{font-size:11px;color:var(--muted);font-weight:400}
+.bstripe{display:flex;gap:4px;margin:18px 0 22px}
+.bstripe i{flex:1;height:5px;border-radius:3px;background:var(--c)}
+.btag{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;border-radius:20px;font-size:11px;font-weight:500;background:color-mix(in srgb,var(--c) 11%,#fff);color:color-mix(in srgb,var(--c) 80%,#000);white-space:nowrap}
+.btag.none{padding:3px 10px;background:#f1f2f6;color:var(--muted)}
+.tb-brand{margin-bottom:6px}
+.tb-brand .wm b{font-size:13px;color:var(--accent)}
+.tb-brand .wm small{display:none}
+.topbar .tb-title{min-width:0}
+.live.off i{background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.18)}
+.live.wait i{background:var(--yellow);box-shadow:0 0 0 3px rgba(245,166,35,.18)}
+
+.bswitch{display:flex;gap:10px;margin:-6px 0 20px;overflow-x:auto;padding:2px 2px 4px;scrollbar-width:thin}
+.bs{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:8px 16px 8px 8px;text-align:left;flex:none;transition:border-color .15s,box-shadow .15s,transform .15s}
+.bs b{display:block;font-weight:600;font-size:12.5px;line-height:1.2}
+.bs small{display:block;color:var(--muted);font-size:10.5px}
+.bs:hover{border-color:color-mix(in srgb,var(--c) 45%,#fff);transform:translateY(-1px)}
+.bs.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 18%,transparent);background:color-mix(in srgb,var(--c) 6%,#fff)}
+.bs.on b{color:var(--c)}
+.warnbar{display:flex;gap:10px;align-items:flex-start;background:#fff6e5;border:1px solid #fde3b0;color:#7a5410;border-radius:12px;padding:12px 14px;margin:-6px 0 18px;font-size:12px;line-height:1.5}
+.warnbar svg{flex:none;margin-top:1px}
+
+.dhero{background:linear-gradient(130deg,var(--hero) 0%,color-mix(in srgb,var(--accent) 78%,var(--hero)) 100%)!important;box-shadow:0 18px 40px color-mix(in srgb,var(--hero) 30%,transparent)!important}
+.dhero::before{background:radial-gradient(circle,color-mix(in srgb,var(--accent) 65%,#fff 10%),transparent 65%)!important;opacity:.55}
+.dhero-emb{position:absolute;right:190px;bottom:-60px;opacity:.09;transform:rotate(-12deg);pointer-events:none}
+.dhero-tag{display:inline-flex!important;align-items:center;gap:7px;color:#fff!important;background:rgba(255,255,255,.14)!important;padding:4px 12px 4px 4px!important}
+.dhero p{color:rgba(255,255,255,.78)!important}
+.hbtn.pri{color:var(--hero)!important}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin:24px 0 12px}
+.sec-h h3{margin:0;font-size:15px;font-weight:600}
+.sec-h span{color:var(--muted);font-size:11.5px}
+.bcards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.bcard{position:relative;overflow:hidden;display:flex;flex-direction:column;gap:14px;text-align:left;border:1px solid #eff0f6;background:#fff;border-radius:16px;padding:16px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.bcard::before{content:'';position:absolute;inset:0 0 auto 0;height:4px;background:var(--c)}
+.bcard:hover{transform:translateY(-2px);box-shadow:0 14px 30px color-mix(in srgb,var(--c) 18%,transparent)}
+.bc-top{display:flex;align-items:center;gap:11px}
+.bc-top b{display:block;font-size:14.5px;font-weight:600;color:var(--d)}
+.bc-top small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:170px}
+.bc-nums{display:grid;grid-template-columns:1fr 1fr;gap:10px 8px;font-size:10.5px;color:var(--muted)}
+.bc-nums b{display:block;font-size:18px;font-weight:600;color:var(--ink);line-height:1.1}
+.bc-nums b small{font-size:11px;color:var(--muted);font-weight:500}
+.bc-nums .hot b{color:var(--red)}
+.bc-bar{display:block;height:6px;border-radius:4px;background:var(--s)}
+.bc-bar i{display:block;height:100%;border-radius:4px;background:var(--c)}
+.yt-top{align-items:center;gap:6px}
+.yt-top > svg{margin-right:auto}
+.yt-b{width:8px;height:8px;border-radius:2px;background:var(--b)}
+
+.heat .hc{background:color-mix(in srgb,var(--accent) var(--p),#f3f4f9)!important}
+.heat .hc.now{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--accent)!important}
+.heat-leg i{background:color-mix(in srgb,var(--accent) var(--p),#f3f4f9)!important}
+.nav-btn.on{box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 38%,transparent)!important}
+.nav-btn.on .badge{color:var(--accent)!important;border-color:var(--accent)!important}
+.btn.pri{box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 30%,transparent)!important}
+
+.dtabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.dtab{display:flex;align-items:center;gap:14px;border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 18px;text-align:left;position:relative;transition:border-color .15s,box-shadow .15s}
+.dtab .dt-i{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--ink2);flex:none}
+.dtab b{display:block;font-weight:600;font-size:13.5px}
+.dtab small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.dtab em{position:absolute;top:12px;right:14px;font-style:normal;background:var(--accent);color:#fff;font-size:11px;font-weight:600;min-width:22px;height:22px;border-radius:11px;display:grid;place-items:center;padding:0 6px}
+.dtab.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.dtab.on .dt-i{background:var(--accent);color:#fff}
+.mcount{display:inline-flex;align-items:center;gap:4px;color:var(--muted);font-size:11.5px;font-weight:500}
+.mcount.new{color:var(--accent)}
+.mcount.new::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.late{color:var(--red)!important;font-weight:500}
+.thread{display:flex;flex-direction:column;gap:12px;max-height:340px;overflow-y:auto;padding:4px 2px 12px}
+.msg{display:flex;gap:10px;align-items:flex-end;max-width:88%}
+.msg.me{flex-direction:row-reverse;align-self:flex-end}
+.bub{background:var(--soft);border-radius:14px 14px 14px 4px;padding:9px 13px}
+.msg.me .bub{border-radius:14px 14px 4px 14px;background:var(--accent-soft)}
+.msg.g:not(.me) .bub{background:#f0f6ff;border:1px solid #dbe7fb}
+.mh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.mh b{font-weight:600;font-size:12px}
+.mh small{color:var(--muted);font-size:10.5px}
+.gtag{font-size:9.5px;font-weight:600;background:#0b4ea2;color:#fff;padding:1px 7px;border-radius:8px}
+.bub p{margin:4px 0 0;white-space:pre-wrap;line-height:1.55;font-size:12.5px}
+.fixed-base{padding:7px 0}
+.tag svg{vertical-align:-1px}
+
+.imp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.imp-step{display:flex;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px}
+.imp-step > span{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:11.5px;font-weight:600;flex:none}
+.imp-step b{font-weight:600;font-size:12.5px}
+.imp-step p{margin:3px 0 8px;color:var(--muted);font-size:11.5px;line-height:1.45}
+.drop{display:flex;flex-direction:column;align-items:center;gap:6px;border:2px dashed #d6d9e6;border-radius:14px;padding:26px;cursor:pointer;color:var(--muted);text-align:center;transition:border-color .15s,background .15s}
+.drop b{color:var(--ink);font-weight:500}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.imp-sum{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 10px}
+.imp-f{display:inline-flex;align-items:center;gap:6px;font-weight:500;margin-right:6px}
+.imp-base{display:flex;align-items:center;gap:10px;background:var(--accent-soft);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:12px;flex-wrap:wrap}
+.imp-tbl{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+.imp-tbl th{position:sticky;top:0;border-radius:0!important;z-index:1}
+.imp-tbl td{padding:9px 12px}
+.imp-tbl tr.bad td{background:#fff6f6}
+.imp-tbl .e{color:var(--red)} .imp-tbl .w{color:#a8701a}
+.imp-err{display:flex;gap:8px;align-items:center;color:var(--red);background:#fdeeee;border-radius:10px;padding:12px;margin-top:14px}
+
+.cover{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.cv{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:10px}
+.cv b{display:block;font-weight:600;font-size:12.5px}
+.cv small{color:var(--muted);font-size:11px}
+.cv.none small{color:var(--red)}
+.bpick{display:flex;flex-wrap:wrap;gap:6px}
+.bp{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:3px 10px 3px 3px;font-size:11.5px;color:var(--muted);transition:.12s}
+.bp .emb{filter:grayscale(1);opacity:.45}
+.bp.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--ink);font-weight:500}
+.bp.on .emb{filter:none;opacity:1}
+.utbl tr.pend td{background:#fffbf2}
+
+.login .lcard{max-width:440px}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:0}
+.brand .wm b{font-size:22px}
+.lfoot{text-align:center;color:var(--muted);font-size:11px;margin-top:14px}
+.login{flex-direction:column;display:flex!important;align-items:center;justify-content:center}
+.lbases{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lb input{position:absolute;opacity:0;pointer-events:none}
+.lb span{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:12px;padding:7px 10px;cursor:pointer;font-size:12.5px;font-weight:500;transition:.12s}
+.lb input:checked+span{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 15%,transparent)}
+.lb input:focus-visible+span{outline:2px solid var(--c);outline-offset:2px}
+.chk{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.chk li{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:9px 12px;border-radius:10px;background:var(--soft)}
+.chk li.ok svg{color:var(--green)} .chk li.no{background:#fdeeee} .chk li.no svg{color:var(--red)}
+.chk code{background:#fff;padding:1px 5px;border-radius:4px;font-size:11px}
+.lcard.center-l{text-align:left}
+.lcard .pend-ico{margin-top:4px}
+
+@media (max-width:1250px){.bcards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){
+  .bcards,.cover{grid-template-columns:1fr 1fr;gap:10px}
+  .bcard{padding:12px}.bc-nums b{font-size:15px}
+  .dtabs{grid-template-columns:1fr}
+  .imp-steps{grid-template-columns:1fr}
+  .dhero-emb{right:-40px}
+  .tb-brand{display:none}
+  .bs{padding:6px 12px 6px 6px}.bs small{display:none}
+  .lbases{grid-template-columns:1fr 1fr}
+}
+
 </style>
+
 </head>
 <body>
 <div id="root"><div class="loading"><div><div class="spin"></div>Carregando painel...</div></div></div>
 <div class="toasts" id="toasts"></div>
+
 <script>
 /* =====================================================================
-   CONFIGURAÇÃO — fica no arquivo config.js (separado), assim você pode
-   trocar este index.html por versões novas sem perder suas chaves.
-   Sem config.js preenchido, o painel abre em MODO DEMONSTRAÇÃO.
+   PRIMARIZAÇÃO · Painel de Controle — v2.0
+   A configuração fica no config.js (separado). O login é feito só
+   pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
-const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '1.1';
+const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:''}, window.PAINEL_CONFIG || {});
+const APP_VERSION = '2.0';
+const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
+const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
+const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
+let sb = null;
+if (!TEST && CFG_OK && window.supabase) sb = window.supabase.createClient(cleanUrl(CONFIG.SUPABASE_URL), String(CONFIG.SUPABASE_ANON_KEY).trim());
+
+/* ========================= Bases ========================= */
+const BASES = {
+  'pinheiros':   {nome:'Pinheiros',   c:'#12805c', d:'#0b4a37', soft:'#e5f3ed', icon:'pine',  sub:'Zona Oeste'},
+  'ipiranga':    {nome:'Ipiranga',    c:'#d0541b', d:'#6b2a0d', soft:'#fcefe6', icon:'river', sub:'Zona Sul'},
+  'sao-mateus':  {nome:'São Mateus',  c:'#6a48d7', d:'#30206b', soft:'#efebfc', icon:'star',  sub:'Zona Leste'},
+  'santo-andre': {nome:'Santo André', c:'#0e7c9a', d:'#0a3c4b', soft:'#e4f2f6', icon:'cross', sub:'ABC'}
+};
+const BKEYS = Object.keys(BASES);
+const ALLB = {nome:'Todas as bases', c:'#0b4ea2', d:'#0a2a5e', soft:'#e8effa', icon:'drop', sub:'Visão do gestor'};
+const BG = {
+  pine:'<path d="M12 3 7 9.6h2.7L6 14.6h4.2V20h3.6v-5.4H18l-3.7-5H17z" fill="#fff"/>',
+  river:'<path d="M4 9.2c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0 3.2-1.4 4.8 0M4 14.8c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0 3.2-1.4 4.8 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/>',
+  star:'<path d="M12 4.2l1.9 5.1 5.1 1.9-5.1 1.9L12 18.2l-1.9-5.1L5 11.2l5.1-1.9z" fill="#fff"/>',
+  cross:'<path d="M7.5 7.5l9 9M16.5 7.5l-9 9" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
+  drop:'<path d="M12 4s-5.6 6.1-5.6 9.7a5.6 5.6 0 0 0 11.2 0C17.6 10.1 12 4 12 4z" fill="#fff"/>'
+};
+const bOf = k => BASES[k] || null;
+const bName = k => bOf(k)?.nome || 'Sem base';
+const emblem = (k, s=28, r=8) => { const b = bOf(k) || ALLB; return `<svg class="emb" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="${r*24/s}" fill="${b.c}"/>${BG[b.icon]}</svg>`; };
+const bTag = k => bOf(k) ? `<span class="btag" style="--c:${BASES[k].c}">${emblem(k,16,5)}${esc(BASES[k].nome)}</span>` : `<span class="btag none">Sem base</span>`;
+function baseKey(v){
+  const n = String(v || '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]/g,'');
+  if (!n) return '';
+  if (n.includes('pinheiro')) return 'pinheiros';
+  if (n.includes('ipiranga')) return 'ipiranga';
+  if (n.includes('mateus')) return 'sao-mateus';
+  if (n.includes('andre') || n.includes('tamanduatei')) return 'santo-andre';
+  return null;
+}
+
+/* ========================= Marca ========================= */
+let _lg = 0;
+function logoMark(s=40){
+  if (CONFIG.LOGO_URL) return `<img class="logo-img" src="${esc(CONFIG.LOGO_URL)}" alt="" width="${s}" height="${s}">`;
+  const id = 'lg' + (++_lg);
+  return `<svg width="${s}" height="${s}" viewBox="0 0 48 48" aria-hidden="true" class="logo-svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a8fe0"/><stop offset="1" stop-color="#0a3f92"/></linearGradient></defs><rect width="48" height="48" rx="14" fill="url(#${id})"/><path d="M24 8.5s-11.2 12.6-11.2 20.2a11.2 11.2 0 0 0 22.4 0C35.2 21.1 24 8.5 24 8.5z" fill="#fff"/><path d="M16.2 30.6c2.6-2.3 5.2-2.3 7.8 0s5.2 2.3 7.8 0" stroke="#1a8fe0" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M18.4 25.2c1.9-1.6 3.7-1.6 5.6 0" stroke="#9fd2f5" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>`;
+}
+const wordmark = (sub='Controle de equipe e frota') => `<span class="wm"><b>Primarização</b><small>${sub}</small></span>`;
+const baseStripe = () => `<div class="bstripe">${BKEYS.map(k => `<i style="--c:${BASES[k].c}" title="${BASES[k].nome}"></i>`).join('')}</div>`;
 
 /* ========================= Constantes ========================= */
-const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
-let sb = null;
-if (!DEMO && window.supabase) sb = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-
 const VSTATUS = {
   ok:         {label:'Operando',      color:'#22c55e', desc:'Rodando normalmente'},
   atencao:    {label:'Atenção',       color:'#f5a623', desc:'Precisa de revisão em breve'},
@@ -520,10 +712,13 @@ const EV = {
   medico:{label:'Médico',color:'#4f63d6'}, ferias:{label:'Férias',color:'#d94ee8'},
   falta:{label:'Falta',color:'#f5a623'}, outro:{label:'Outro',color:'#94a3b8'}
 };
-const CH = {
-  aberto:{label:'Aberto',color:'#ef4444'}, andamento:{label:'Em andamento',color:'#f5a623'},
-  resolvido:{label:'Resolvido',color:'#22c55e'}
+const CH = {aberto:{color:'#ef4444'}, andamento:{color:'#f5a623'}, resolvido:{color:'#22c55e'}};
+const CHL = {
+  problema:{aberto:'Aberto', andamento:'Em andamento', resolvido:'Resolvido'},
+  pedido:{aberto:'Pendente', andamento:'Em andamento', resolvido:'Concluído'}
 };
+const tipoOf = c => c.tipo === 'pedido' ? 'pedido' : 'problema';
+const chSt = (c, st) => ({label: CHL[tipoOf(c)][st || c.status], color: CH[st || c.status]?.color || '#94a3b8'});
 const PRIOR = {
   baixa:{label:'Baixa',color:'#94a3b8'}, media:{label:'Média',color:'#4f63d6'},
   alta:{label:'Alta',color:'#f5a623'}, urgente:{label:'Urgente',color:'#ef4444'}
@@ -532,8 +727,9 @@ const PW = {urgente:0,alta:1,media:2,baixa:3};
 const CHW = {aberto:0,andamento:1,resolvido:2};
 const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'#d94ee8'}};
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
-const ROLE = {admin:'Administrador', lider:'Líder', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','eventos','veiculo_historico'];
+const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
+const ROLE = {admin:'Gestor', lider:'Líder de base', pendente:'Aguardando liberação'};
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico'];
 
 /* ========================= Ícones ========================= */
 const ICONS = {
@@ -645,43 +841,69 @@ function downloadCSV(name, rows){
   setTimeout(() => URL.revokeObjectURL(a.href), 1500);
 }
 
-/* ========================= Dados de demonstração ========================= */
+
+Object.assign(ICONS, {
+  upload:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/>',
+  send:'<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>',
+  inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
+  file:'<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13h8"/><path d="M8 17h8"/>',
+  map:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'
+});
+
+/* ========================= Dados de teste (somente testes automatizados) ========================= */
 function seed(){
   const h = n => new Date(Date.now() - n*3600e3).toISOString();
   const dOff = n => { const d = new Date(); d.setDate(d.getDate()+n); return iso(d); };
   const profiles = [
-    {id:'u-admin',   nome:'Administrador',  email:'admin@empresa.com',    role:'admin',   ativo:true, created_at:h(2000)},
-    {id:'u-carlos',  nome:'Carlos Lima',    email:'carlos@empresa.com',   role:'lider',   ativo:true, created_at:h(1900)},
-    {id:'u-fernanda',nome:'Fernanda Souza', email:'fernanda@empresa.com', role:'lider',   ativo:true, created_at:h(1800)},
-    {id:'u-rafael',  nome:'Rafael Mendes',  email:'rafael@empresa.com',   role:'lider',   ativo:true, created_at:h(1700)},
-    {id:'u-juliana', nome:'Juliana Prado',  email:'juliana@empresa.com',  role:'pendente',ativo:true, created_at:h(3)}
+    {id:'u-admin',   nome:'Gestor Principal', email:'gestor@empresa.com',   role:'admin',   ativo:true, bases:[], created_at:h(2000)},
+    {id:'u-carlos',  nome:'Carlos Lima',    email:'carlos@empresa.com',   role:'lider',   ativo:true, bases:['pinheiros'], created_at:h(1900)},
+    {id:'u-fernanda',nome:'Fernanda Souza', email:'fernanda@empresa.com', role:'lider',   ativo:true, bases:['ipiranga'], created_at:h(1800)},
+    {id:'u-rafael',  nome:'Rafael Mendes',  email:'rafael@empresa.com',   role:'lider',   ativo:true, bases:['sao-mateus'], created_at:h(1700)},
+    {id:'u-paula',   nome:'Paula Ribeiro',  email:'paula@empresa.com',    role:'lider',   ativo:true, bases:['santo-andre','sao-mateus'], created_at:h(1600)},
+    {id:'u-juliana', nome:'Juliana Prado',  email:'juliana@empresa.com',  role:'pendente',ativo:true, bases:['santo-andre'], created_at:h(3)}
   ];
-  const V = (id,tipo,marca,modelo,placa,ano,cor,km,status,obs,hrs,por) => ({id,tipo,marca,modelo,placa,ano,cor,km,status,status_obs:obs,status_em:h(hrs),status_por:por,observacoes:null,created_at:h(2000)});
+  const V = (id,base,tipo,marca,modelo,placa,ano,cor,km,status,obs,hrs,por) => ({id,base,tipo,marca,modelo,placa,ano,cor,km,status,status_obs:obs,status_em:h(hrs),status_por:por,observacoes:null,created_at:h(2000)});
   const veiculos = [
-    V('v1','carro','Fiat','Strada Endurance','FTR2A41',2022,'Branco',48210,'ok',null,30,'Carlos Lima'),
-    V('v2','carro','Volkswagen','Saveiro Robust','BRA2E19',2021,'Prata',73550,'atencao','Revisão dos 75 mil km se aproximando',8,'Carlos Lima'),
-    V('v3','carro','Fiat','Fiorino','QWE4R56',2020,'Branco',98400,'manutencao','Troca de embreagem na oficina',50,'Administrador'),
-    V('v4','carro','Chevrolet','Onix','RTY7U89',2023,'Cinza',21300,'ok',null,70,'Rafael Mendes'),
-    V('v5','moto','Honda','CG 160 Cargo','MOT0A12',2023,'Vermelha',15800,'ok',null,20,'Fernanda Souza'),
-    V('v6','moto','Yamaha','Factor 150','JKL3M45',2021,'Preta',41200,'problema','Freio traseiro com ruído',4,'Fernanda Souza'),
-    V('v7','moto','Honda','Pop 110i','PQA9B87',2022,'Branca',30500,'parado','Aguardando documentação',120,'Administrador')
+    V('v1','pinheiros','carro','Fiat','Strada Endurance','FTR2A41',2022,'Branco',48210,'ok',null,30,'Carlos Lima'),
+    V('v2','pinheiros','carro','Volkswagen','Saveiro Robust','BRA2E19',2021,'Prata',73550,'atencao','Revisão dos 75 mil km se aproximando',8,'Carlos Lima'),
+    V('v3','ipiranga','carro','Fiat','Fiorino','QWE4R56',2020,'Branco',98400,'manutencao','Troca de embreagem na oficina',50,'Gestor Principal'),
+    V('v4','sao-mateus','carro','Chevrolet','Onix','RTY7U89',2023,'Cinza',21300,'ok',null,70,'Rafael Mendes'),
+    V('v5','ipiranga','moto','Honda','CG 160 Cargo','MOT0A12',2023,'Vermelha',15800,'ok',null,20,'Fernanda Souza'),
+    V('v6','ipiranga','moto','Yamaha','Factor 150','JKL3M45',2021,'Preta',41200,'problema','Freio traseiro com ruído',4,'Fernanda Souza'),
+    V('v7','pinheiros','moto','Honda','Pop 110i','PQA9B87',2022,'Branca',30500,'parado','Aguardando documentação',120,'Gestor Principal'),
+    V('v8','santo-andre','carro','Renault','Kangoo','SAN1D23',2022,'Branco',55100,'ok',null,10,'Paula Ribeiro'),
+    V('v9','santo-andre','moto','Honda','Biz 125','TMD4E56',2024,'Azul',8200,'ok',null,12,'Paula Ribeiro')
   ];
-  const C = (id,nome,cargo,tel,pos,mat,adm,vid,lid,status) => ({id,nome,cargo,telefone:tel,email:nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').split(' ').slice(0,2).join('.')+'@empresa.com',pos,matricula:mat,admissao:adm,veiculo_id:vid,lider_id:lid,status,observacoes:null,created_at:h(1500)});
+  const C = (id,base,nome,cargo,tel,pos,mat,adm,vid,lid,status) => ({id,base,nome,cargo,telefone:tel,email:nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(' ').slice(0,2).join('.')+'@empresa.com',pos,matricula:mat,admissao:adm,veiculo_id:vid,lider_id:lid,status,observacoes:null,created_at:h(1500)});
   const colaboradores = [
-    C('c1','Ana Beatriz Rocha','Técnica de campo','(11) 98765-4321','0012345678901234','10234','2021-03-15','v1','u-carlos','ativo'),
-    C('c2','Bruno Carvalho','Motorista','(11) 97654-3210','0012345678905678','10251','2020-07-01','v2','u-carlos','ativo'),
-    C('c3','Camila Ferreira','Técnica de campo','(11) 96543-2109','0012345678909012','10302','2022-01-10','v5','u-fernanda','ativo'),
-    C('c4','Diego Martins','Técnico de campo','(11) 95432-1098','0012345678903456','10318','2022-05-23','v6','u-fernanda','ativo'),
-    C('c5','Eduardo Santos','Eletricista','(11) 94321-0987','0012345678907890','10120','2019-09-02','v4','u-rafael','ativo'),
-    C('c6','Gabriela Nunes','Auxiliar','(11) 93210-9876','0012345678902345','10377','2023-02-06',null,'u-rafael','ferias'),
-    C('c7','Henrique Alves','Motociclista','(11) 92109-8765','0012345678906789','10290','2021-11-18','v7','u-carlos','afastado'),
-    C('c8','Isabela Costa','Técnica de campo','(11) 91098-7654','0012345678900123','10401','2024-04-01',null,'u-fernanda','ativo')
+    C('c1','pinheiros','Ana Beatriz Rocha','Técnica de campo','(11) 98765-4321','0012345678901234','10234','2021-03-15','v1','u-carlos','ativo'),
+    C('c2','pinheiros','Bruno Carvalho','Motorista','(11) 97654-3210','0012345678905678','10251','2020-07-01','v2','u-carlos','ativo'),
+    C('c3','ipiranga','Camila Ferreira','Técnica de campo','(11) 96543-2109','0012345678909012','10302','2022-01-10','v5','u-fernanda','ativo'),
+    C('c4','ipiranga','Diego Martins','Técnico de campo','(11) 95432-1098','0012345678903456','10318','2022-05-23','v6','u-fernanda','ativo'),
+    C('c5','sao-mateus','Eduardo Santos','Eletricista','(11) 94321-0987','0012345678907890','10120','2019-09-02','v4','u-rafael','ativo'),
+    C('c6','sao-mateus','Gabriela Nunes','Auxiliar','(11) 93210-9876','0012345678902345','10377','2023-02-06',null,'u-rafael','ferias'),
+    C('c7','pinheiros','Henrique Alves','Motociclista','(11) 92109-8765','0012345678906789','10290','2021-11-18','v7','u-carlos','afastado'),
+    C('c8','ipiranga','Isabela Costa','Técnica de campo','(11) 91098-7654','0012345678900123','10401','2024-04-01',null,'u-fernanda','ativo'),
+    C('c9','santo-andre','João Pedro Lima','Técnico de campo','(11) 90987-6543','0012345678904567','10455','2022-08-08','v8','u-paula','ativo'),
+    C('c10','santo-andre','Larissa Moura','Motociclista','(11) 99876-5432','0012345678908901','10460','2023-06-12','v9','u-paula','ativo')
   ];
+  const CHM = (id,tipo,base,autor,autorNome,dest,titulo,descricao,categoria,prioridade,status,col,vei,hrs,prazo) => ({id,tipo,base,autor_id:autor,autor_nome:autorNome,destinatario_id:dest,titulo,descricao,categoria,prioridade,status,colaborador_id:col,veiculo_id:vei,prazo:prazo||null,resolvido_em:status==='resolvido'?h(hrs-20):null,created_at:h(hrs),updated_at:h(Math.max(0,hrs-2))});
   const chamados = [
-    {id:1,autor_id:'u-rafael',autor_nome:'Rafael Mendes',titulo:'Solicitação de troca de escala no sábado',descricao:'Eduardo pediu troca da escala de sábado com a Gabriela por motivo familiar. Os dois concordam.',categoria:'Equipe',prioridade:'media',status:'resolvido',colaborador_id:'c5',veiculo_id:null,resposta:'Troca aprovada. Atualizar a escala no grupo.',respondido_por:'Administrador',respondido_em:h(60),resolvido_em:h(60),created_at:h(80),updated_at:h(60)},
-    {id:2,autor_id:'u-fernanda',autor_nome:'Fernanda Souza',titulo:'Moto JKL3M45 com freio fazendo barulho',descricao:'O Diego relatou ruído forte no freio traseiro desde ontem. Por segurança está rodando devagar.',categoria:'Veículo',prioridade:'urgente',status:'andamento',colaborador_id:'c4',veiculo_id:'v6',resposta:'Agendado na oficina amanhã às 8h. Diego fica com a moto reserva.',respondido_por:'Administrador',respondido_em:h(2),resolvido_em:null,created_at:h(5),updated_at:h(2)},
-    {id:3,autor_id:'u-carlos',autor_nome:'Carlos Lima',titulo:'Falta de material: lacres e fita',descricao:'Estoque de lacres e fita isolante acabou na base. Equipe precisa para amanhã cedo.',categoria:'Material',prioridade:'alta',status:'aberto',colaborador_id:null,veiculo_id:null,resposta:null,respondido_por:null,respondido_em:null,resolvido_em:null,created_at:h(26),updated_at:h(26)},
-    {id:4,autor_id:'u-carlos',autor_nome:'Carlos Lima',titulo:'Equipe sem EPI completo',descricao:'Bruno está sem luva de vaqueta e o capacete está com a jugular quebrada.',categoria:'Segurança',prioridade:'alta',status:'aberto',colaborador_id:'c2',veiculo_id:null,resposta:null,respondido_por:null,respondido_em:null,resolvido_em:null,created_at:h(3),updated_at:h(3)}
+    CHM(1,'problema','sao-mateus','u-rafael','Rafael Mendes',null,'Solicitação de troca de escala no sábado','Eduardo pediu troca da escala de sábado com a Gabriela por motivo familiar. Os dois concordam.','Equipe','media','resolvido','c5',null,80),
+    CHM(2,'problema','ipiranga','u-fernanda','Fernanda Souza',null,'Moto JKL3M45 com freio fazendo barulho','O Diego relatou ruído forte no freio traseiro desde ontem. Por segurança está rodando devagar.','Veículo','urgente','andamento','c4','v6',5),
+    CHM(3,'problema','pinheiros','u-carlos','Carlos Lima',null,'Falta de material: lacres e fita','Estoque de lacres e fita isolante acabou na base. Equipe precisa para amanhã cedo.','Material','alta','aberto',null,null,26),
+    CHM(4,'problema','pinheiros','u-carlos','Carlos Lima',null,'Equipe sem EPI completo','Bruno está sem luva de vaqueta e o capacete está com a jugular quebrada.','Segurança','alta','aberto','c2',null,3),
+    CHM(5,'pedido','pinheiros','u-admin','Gestor Principal','u-carlos','Enviar relatório de produtividade da semana','Preciso do fechamento de produtividade da equipe até sexta, com as OS executadas por pessoa.','Relatório','media','aberto',null,null,6,dOff(2)),
+    CHM(6,'pedido','santo-andre','u-admin','Gestor Principal',null,'Atualizar escala de sábado','Conferir e mandar a escala dos próximos dois sábados.','Escala','alta','andamento',null,null,30,dOff(-1)),
+    CHM(7,'pedido','ipiranga','u-admin','Gestor Principal','u-fernanda','Checklist dos veículos','Fazer checklist de pneus e documentação de todos os veículos da base.','Frota','baixa','resolvido',null,null,90,dOff(-5))
+  ];
+  const M = (id,cid,autor,nome,texto,hrs) => ({id,chamado_id:cid,autor_id:autor,autor_nome:nome,texto,created_at:h(hrs)});
+  const mensagens = [
+    M('m1',1,'u-admin','Gestor Principal','Troca aprovada. Atualize a escala no grupo.',60),
+    M('m2',2,'u-admin','Gestor Principal','Agendado na oficina amanhã às 8h. Diego fica com a moto reserva.',2),
+    M('m3',6,'u-paula','Paula Ribeiro','Estou fechando com a equipe, mando até amanhã.',20),
+    M('m4',7,'u-fernanda','Fernanda Souza','Checklist feito, todos ok. Só a JKL3M45 precisa de freio.',70)
   ];
   const E = (id,col,tipo,a,b,obs,por,porNome) => ({id,colaborador_id:col,tipo,data_inicio:a,data_fim:b,observacao:obs,criado_por:por,criado_por_nome:porNome,created_at:h(40)});
   const eventos = [
@@ -690,43 +912,44 @@ function seed(){
     E('e3','c1','folga',dOff(2),dOff(2),'Folga compensatória','u-carlos','Carlos Lima'),
     E('e4','c3','medico',dOff(4),dOff(4),'Consulta às 14h','u-fernanda','Fernanda Souza'),
     E('e5','c8','folga',dOff(6),dOff(6),null,'u-fernanda','Fernanda Souza'),
-    E('e6','c4','falta',dOff(-6),dOff(-6),'Não justificada','u-fernanda','Fernanda Souza')
+    E('e6','c4','falta',dOff(-6),dOff(-6),'Não justificada','u-fernanda','Fernanda Souza'),
+    E('e7','c10','medico',dOff(0),dOff(0),'Exame periódico','u-paula','Paula Ribeiro')
   ];
   const veiculo_historico = veiculos.map((v,i) => ({id:'h'+i,veiculo_id:v.id,status:v.status,obs:v.status_obs,por_id:null,por_nome:v.status_por,created_at:v.status_em}));
-  veiculo_historico.push({id:'hx',veiculo_id:'v6',status:'ok',obs:'Revisão concluída',por_id:null,por_nome:'Administrador',created_at:h(400)});
-  return {profiles, veiculos, colaboradores, chamados, eventos, veiculo_historico};
+  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico};
 }
 const Store = {
-  key:'painel_controle_demo_v1', mem:null,
+  key:'primarizacao_teste_v2', mem:null,
   load(){ if (this.mem) return this.mem; let d = null; try { d = JSON.parse(localStorage.getItem(this.key)); } catch(e){} this.mem = d || seed(); this.save(); return this.mem; },
-  save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e){} },
-  reset(){ this.mem = seed(); this.save(); }
+  save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e){} }
 };
 
 /* ========================= Camada de dados ========================= */
 const DB = {
   async list(t){
-    if (DEMO) return JSON.parse(JSON.stringify(Store.load()[t] || []));
+    if (TEST) return JSON.parse(JSON.stringify(Store.load()[t] || []));
     let q = sb.from(t).select('*');
-    if (t === 'veiculo_historico') q = q.order('created_at', {ascending:false}).limit(2000);
+    if (t === 'veiculo_historico') q = q.order('created_at', {ascending:false}).limit(3000);
     const {data, error} = await q; if (error) throw error; return data;
   },
-  async insert(t, row){
-    if (DEMO){
-      const d = Store.load(); const r = {...row};
-      r.id = t === 'chamados' ? Math.max(0, ...d[t].map(x => +x.id)) + 1 : uid();
-      r.created_at = nowISO(); d[t].push(r); Store.save(); return r;
+  async insert(t, row){ return (await this.insertMany(t, [row]))[0]; },
+  async insertMany(t, rows){
+    if (!rows.length) return [];
+    if (TEST){
+      const d = Store.load(); d[t] = d[t] || [];
+      const out = rows.map(row => { const r = {...row};
+        r.id = t === 'chamados' ? Math.max(0, ...d[t].map(x => +x.id)) + 1 : uid();
+        r.created_at = nowISO(); d[t].push(r); return r; });
+      Store.save(); return out;
     }
-    const {data, error} = await sb.from(t).insert(row).select().single(); if (error) throw error; return data;
+    const {data, error} = await sb.from(t).insert(rows).select(); if (error) throw error; return data;
   },
   async update(t, id, patch){
-    if (DEMO){
-      const d = Store.load(); const r = d[t].find(x => sameId(x.id, id)); if (r) Object.assign(r, patch); Store.save(); return r;
-    }
+    if (TEST){ const d = Store.load(); const r = d[t].find(x => sameId(x.id, id)); if (r) Object.assign(r, patch); Store.save(); return r; }
     const {error} = await sb.from(t).update(patch).eq('id', id); if (error) throw error;
   },
   async remove(t, id){
-    if (DEMO){
+    if (TEST){
       const d = Store.load(); d[t] = d[t].filter(x => !sameId(x.id, id));
       if (t === 'veiculos'){
         d.colaboradores.forEach(c => { if (sameId(c.veiculo_id, id)) c.veiculo_id = null; });
@@ -737,6 +960,7 @@ const DB = {
         d.eventos = d.eventos.filter(e => !sameId(e.colaborador_id, id));
         d.chamados.forEach(c => { if (sameId(c.colaborador_id, id)) c.colaborador_id = null; });
       }
+      if (t === 'chamados') d.mensagens = d.mensagens.filter(m => !sameId(m.chamado_id, id));
       Store.save(); return;
     }
     const {error} = await sb.from(t).delete().eq('id', id); if (error) throw error;
@@ -746,26 +970,47 @@ const DB = {
 /* ========================= Estado ========================= */
 const today0 = new Date();
 const S = {
-  page:'dashboard', profile:null, rt:null,
-  profiles:[], colabs:[], veics:[], chamados:[], eventos:[], hist:[],
-  f:{dash:'frota', cq:'', cl:'', cs:'', vq:'', vs:'', vt:'', tq:'', ts:'', tl:'', tc:''},
+  page:'dashboard', profile:null, rt:null, rtOk:null, stale:false, schemaOld:false,
+  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[],
+  base:'',
+  f:{cq:'', cl:'', cs:'', vq:'', vs:'', vt:'', tq:'', ts:'', tl:'', tc:'', tt:'problema'},
   sort:{col:'nome', dir:1},
   cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''}
 };
 const isAdmin = () => S.profile?.role === 'admin';
+const myBases = () => isAdmin() ? BKEYS.slice() : (S.profile?.bases || []).filter(b => BASES[b]);
+const allowed = b => isAdmin() || myBases().includes(b);
+const inScope = b => S.base ? b === S.base : allowed(b);
 const P = id => S.profiles.find(x => sameId(x.id, id));
 const C = id => S.colabs.find(x => sameId(x.id, id));
 const V = id => S.veics.find(x => sameId(x.id, id));
+const CHM = id => S.chamados.find(x => sameId(x.id, id));
 const condutorOf = vid => S.colabs.find(c => c.veiculo_id && sameId(c.veiculo_id, vid));
-const myChamados = () => (isAdmin() ? S.chamados : S.chamados.filter(c => sameId(c.autor_id, S.profile.id)))
-  .slice().sort((a,b) => CHW[a.status]-CHW[b.status] || PW[a.prioridade]-PW[b.prioridade] || new Date(b.created_at)-new Date(a.created_at));
-const colabsSorted = () => S.colabs.slice().sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const colabsV = () => S.colabs.filter(c => inScope(c.base));
+const veicsV = () => S.veics.filter(v => inScope(v.base));
+const evsV = () => S.eventos.filter(e => { const c = C(e.colaborador_id); return c && inScope(c.base); });
+const sortCh = l => l.slice().sort((a,b) => CHW[a.status]-CHW[b.status] || PW[a.prioridade]-PW[b.prioridade] || new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at));
+const chsV = tipo => sortCh(S.chamados.filter(c => inScope(c.base) && (!tipo || tipoOf(c) === tipo) &&
+  (isAdmin() || tipoOf(c) === 'problema' || !c.destinatario_id || sameId(c.destinatario_id, S.profile.id))));
+const msgsOf = id => S.msgs.filter(m => sameId(m.chamado_id, id)).sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
+const colabsSorted = (base) => S.colabs.filter(c => base ? c.base === base : inScope(c.base)).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const lidersOf = base => S.profiles.filter(p => p.role === 'lider' && p.ativo && (!base || (p.bases||[]).includes(base))).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const theme = () => { const b = S.base || (!isAdmin() && myBases().length === 1 ? myBases()[0] : ''); return bOf(b) || ALLB; };
+const curBaseKey = () => S.base || (!isAdmin() && myBases().length === 1 ? myBases()[0] : '');
+const defBase = () => curBaseKey() || myBases()[0] || '';
+function applyTheme(){
+  const t = theme(), st = document.documentElement.style;
+  st.setProperty('--accent', t.c); st.setProperty('--accent2', t.d); st.setProperty('--accent-soft', t.soft); st.setProperty('--hero', t.d);
+  const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = t.d;
+}
 
 async function loadAll(){
-  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.eventos, S.hist] = res;
+  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (t === 'mensagens') S.schemaOld = true; return []; })));
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist] = res;
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
+  if (S.profile && S.profile.bases === undefined) S.schemaOld = true;
+  if (S.base && !allowed(S.base)) S.base = '';
 }
 async function reload(){
   await loadAll();
@@ -773,40 +1018,69 @@ async function reload(){
   render();
 }
 
+
 /* ========================= Navegação / shell ========================= */
 const NAV = [
   {id:'dashboard',label:'Visão geral',icon:'dash'},
   {id:'colaboradores',label:'Colaboradores',icon:'users'},
-  {id:'frota',label:'Frota',icon:'car', badge:() => S.veics.filter(v => v.status==='problema').length},
-  {id:'diario',label:'Diário de bordo',icon:'book', badge:() => myChamados().filter(c => c.status==='aberto').length},
+  {id:'frota',label:'Frota',icon:'car', badge:() => veicsV().filter(v => v.status==='problema').length},
+  {id:'diario',label:'Diário de bordo',icon:'book', badge:() => isAdmin()
+      ? chsV('problema').filter(c => c.status==='aberto').length
+      : chsV('pedido').filter(c => c.status==='aberto').length},
   {id:'calendario',label:'Calendário',icon:'cal'},
-  {id:'usuarios',label:'Usuários e perfis',icon:'shield',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
+  {id:'usuarios',label:'Usuários e bases',icon:'shield',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
 ];
 const SUBS = {
   dashboard:'Resumo da equipe, da frota e das ocorrências',
-  colaboradores:'Cadastro da equipe e vínculo com veículos da frota',
-  frota:'Carros e motos com a situação atualizada pela equipe',
-  diario:'Ocorrências registradas pelos líderes e respostas do administrador',
+  colaboradores:'Cadastro da equipe, importação por Excel e vínculo com veículos',
+  frota:'Carros e motos com a situação atualizada pelas bases',
+  diario:'Problemas das bases e pedidos do gestor',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
-  usuarios:'Quem acessa o painel e com qual perfil'
+  usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
 const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, calendario:pgCal, usuarios:pgUsers};
 
 function go(page){ S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
 
+function setBase(k){
+  S.base = k && allowed(k) ? k : '';
+  try { sessionStorage.setItem('prim_base', S.base); } catch(e){}
+  closePop(); render();
+}
+function baseSwitch(){
+  const bs = myBases(); if (bs.length < 2) return '';
+  const count = k => S.colabs.filter(c => c.base === k && c.status === 'ativo').length;
+  return `<div class="bswitch" role="tablist" aria-label="Escolher base">
+    <button class="bs ${!S.base?'on':''}" style="--c:${ALLB.c}" data-act="base" data-k="" role="tab">${emblem('',26,8)}<span><b>${isAdmin()?'Todas':'Minhas bases'}</b><small>${isAdmin()?'Visão do gestor':bs.length+' bases'}</small></span></button>
+    ${bs.map(k => `<button class="bs ${S.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="base" data-k="${k}" role="tab">${emblem(k,26,8)}<span><b>${BASES[k].nome}</b><small>${count(k)} ativos</small></span></button>`).join('')}
+  </div>`;
+}
+function liveTag(){
+  if (TEST) return '<span class="live"><i></i>Modo de teste</span>';
+  if (S.rtOk === false) return '<span class="live off" title="As mudanças de outras pessoas só aparecem ao recarregar"><i></i>Sem tempo real</span>';
+  return `<span class="live ${S.rtOk?'':'wait'}"><i></i>${S.rtOk?'Conectado':'Conectando...'}</span>`;
+}
 function render(){
-  if (!$('#rail')) $('#root').innerHTML = `<div class="app"><nav class="rail" id="rail"></nav><main class="main"><header class="topbar" id="topbar"></header><section id="page"></section></main></div>`;
+  applyTheme();
+  if (!$('#rail')) $('#root').innerHTML = `<div class="app"><nav class="rail" id="rail"></nav><main class="main"><header class="topbar" id="topbar"></header><div id="bbar"></div><section id="page"></section></main></div>`;
   const nav = NAV.filter(n => !n.admin || isAdmin());
   if (!nav.find(n => n.id === S.page)) S.page = 'dashboard';
-  $('#rail').innerHTML = `<div class="logo">pc</div>` + nav.map(n => {
+  $('#rail').innerHTML = `<div class="logo" title="Primarização">${logoMark(42)}</div>` + nav.map(n => {
     const b = n.badge ? n.badge() : 0;
     return `<button class="nav-btn ${S.page===n.id?'on':''}" data-nav="${n.id}" aria-label="${n.label}">${ic(n.icon,20)}${b?`<span class="badge">${b}</span>`:''}<span class="tip">${n.label}</span></button>`;
   }).join('') + `<div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button><span class="ver" title="Versão do painel">v${APP_VERSION}</span>`;
-  const cur = NAV.find(n => n.id === S.page);
-  $('#topbar').innerHTML = `<div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
-    <div class="right">${DEMO ? '<span class="demo-tag">Modo demonstração</span>' : '<span class="live"><i></i>Sincronizado</span>'}
-    <div class="userchip">${avatar(S.profile.nome,30)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}</small></div></div></div>`;
+  const cur = NAV.find(n => n.id === S.page), t = theme(), ck = curBaseKey();
+  $('#topbar').innerHTML = `<div class="tb-title"><div class="tb-brand">${wordmark(ck ? 'Base ' + BASES[ck].nome : (isAdmin() ? 'Todas as bases' : 'Controle de equipe e frota'))}</div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
+    <div class="right">${liveTag()}
+    <div class="userchip">${emblem(ck,30,9)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}${!isAdmin() && myBases().length ? ' · ' + myBases().map(bName).join(', ') : ''}</small></div></div></div>`;
+  let bar = baseSwitch();
+  if (isAdmin() && S.schemaOld) bar += `<div class="warnbar">${ic('alert',16)}<span>O banco ainda está na versão antiga. Rode o <b>supabase_schema.sql</b> novo no SQL Editor do Supabase para liberar bases, pedidos e mensagens.</span></div>`;
+  $('#bbar').innerHTML = bar;
+  document.title = 'Primarização' + (ck ? ' · ' + BASES[ck].nome : '');
+  if (!isAdmin() && !myBases().length){
+    $('#page').innerHTML = `<div class="card">${empty('map','Seu acesso ainda não tem base definida','Peça ao gestor para escolher sua base em "Usuários e bases".')}</div>`; return;
+  }
   PAGES[S.page]();
 }
 
@@ -836,11 +1110,12 @@ function confirmBox(msg, ok='Excluir'){
   });
 }
 
+
 /* ========================= VISÃO GERAL ========================= */
 function startOfWeek(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const w = (x.getDay() + 6) % 7; x.setDate(x.getDate() - w); return x; }
 function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate() + n); return x; }
 function fmtDur(h){ if (h == null) return '—'; if (h < 1) return Math.max(1, Math.round(h*60)) + ' min'; if (h < 48) return (h < 10 ? h.toFixed(1).replace('.', ',') : Math.round(h)) + ' h'; return Math.round(h/24) + ' dias'; }
-function ausentesEm(ds){ return new Set(S.eventos.filter(e => e.data_inicio <= ds && e.data_fim >= ds).map(e => String(e.colaborador_id))); }
+function ausentesEm(ds){ return new Set(evsV().filter(e => e.data_inicio <= ds && e.data_fim >= ds).map(e => String(e.colaborador_id))); }
 
 function ringSVG(pct, color, size=60, sw=7){
   const r = (size - sw)/2, c = 2*Math.PI*r, p = Math.max(0, Math.min(1, pct || 0)), m = size/2;
@@ -872,9 +1147,9 @@ function weeksChart(chs){
   const bar = (x, v, col, i, lbl) => { const hgt = v/top*ch; return v ? `<rect class="b" style="animation-delay:${i*60}ms" x="${x}" y="${pt+ch-hgt}" width="${bw}" height="${hgt}" rx="5" fill="${col}"><title>${lbl}: ${v}</title></rect>` : `<rect x="${x}" y="${pt+ch-2}" width="${bw}" height="2" rx="1" fill="#e4e6ef"/>`; };
   weeks.forEach((w,i) => {
     const cx = pl + cw*i + cw/2, cur = i === W-1;
-    if (cur) g += `<rect x="${pl+cw*i+4}" y="${pt}" width="${cw-8}" height="${ch}" rx="10" fill="#f5f6ff"/>`;
-    g += bar(cx-bw-2, w.ab, '#4f5fd8', i, 'Abertos') + bar(cx+2, w.re, '#22c55e', i, 'Resolvidos');
-    g += `<text x="${cx}" y="${VH-8}" text-anchor="middle" font-size="10.5" fill="${cur?'#4f5fd8':'#9aa0b5'}" font-weight="${cur?600:400}">${cur?'Esta sem.':pad(w.a.getDate())+'/'+pad(w.a.getMonth()+1)}</text>`;
+    if (cur) g += `<rect x="${pl+cw*i+4}" y="${pt}" width="${cw-8}" height="${ch}" rx="10" fill="${theme().soft}"/>`;
+    g += bar(cx-bw-2, w.ab, theme().c, i, 'Abertos') + bar(cx+2, w.re, '#22c55e', i, 'Resolvidos');
+    g += `<text x="${cx}" y="${VH-8}" text-anchor="middle" font-size="10.5" fill="${cur?theme().c:'#9aa0b5'}" font-weight="${cur?600:400}">${cur?'Esta sem.':pad(w.a.getDate())+'/'+pad(w.a.getMonth()+1)}</text>`;
   });
   return `<svg viewBox="0 0 ${VW} ${VH}" class="bars" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Chamados por semana">${g}</svg>`;
 }
@@ -892,54 +1167,89 @@ function heatmap(){
     return `<button class="hc ${past?'past':''} ${x.ds===today?'now':''} ${p>55?'dark':''}" style="--p:${p}%" data-act="cal-day" data-date="${x.ds}" title="${fmtD(x.ds)}: ${x.n} ausente(s)"><span>${x.d.getDate()}</span>${x.n?`<b>${x.n}</b>`:''}</button>`; }).join('')}</div>
     <div class="heat-leg"><span>Menos</span>${[0,25,50,75,95].map(p => `<i style="--p:${p}%"></i>`).join('')}<span>Mais ausentes</span></div>`;
 }
-function feedItems(chs){
+
+function respHoras(c){
+  const m = msgsOf(c.id).find(x => !sameId(x.autor_id, c.autor_id));
+  return m ? (new Date(m.created_at) - new Date(c.created_at)) / 36e5 : null;
+}
+function feedItems(){
   const today = iso(new Date()), out = [];
-  S.veics.filter(v => ['problema','manutencao','atencao'].includes(v.status)).sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status)).forEach(v => {
-    const s = VSTATUS[v.status]; out.push({w:v.status==='problema'?0:2, icon:v.tipo==='moto'?'bike':'car', color:s.color, title:`${v.placa} — ${s.label}`, sub:v.status_obs || [v.marca,v.modelo].filter(Boolean).join(' '), act:'v-open', id:v.id, when:v.status_em});
+  veicsV().filter(v => ['problema','manutencao','atencao'].includes(v.status)).forEach(v => {
+    const s = VSTATUS[v.status]; out.push({w:v.status==='problema'?0:2, icon:v.tipo==='moto'?'bike':'car', color:s.color, title:`${v.placa} — ${s.label}`, sub:v.status_obs || [v.marca,v.modelo].filter(Boolean).join(' '), act:'v-open', id:v.id, when:v.status_em, base:v.base});
   });
-  chs.filter(c => c.status !== 'resolvido' && (c.prioridade === 'urgente' || c.prioridade === 'alta')).forEach(c => {
-    out.push({w:c.prioridade==='urgente'?0:1, icon:'book', color:PRIOR[c.prioridade].color, title:c.titulo, sub:`#${c.id} — ${c.autor_nome} — ${PRIOR[c.prioridade].label}`, act:'ch-open', id:c.id, when:c.created_at});
+  chsV('problema').filter(c => c.status !== 'resolvido' && (c.prioridade === 'urgente' || c.prioridade === 'alta')).forEach(c => {
+    out.push({w:c.prioridade==='urgente'?0:1, icon:'book', color:PRIOR[c.prioridade].color, title:c.titulo, sub:`Problema #${c.id} — ${c.autor_nome}`, act:'ch-open', id:c.id, when:c.created_at, base:c.base});
   });
-  S.eventos.filter(e => e.data_inicio <= today && e.data_fim >= today).forEach(e => {
-    const o = EV[e.tipo] || EV.outro; out.push({w:3, icon:'cal', color:o.color, title:`${C(e.colaborador_id)?.nome || '—'} — ${o.label}`, sub:`Até ${fmtD(e.data_fim)}`, act:'ev-open', id:e.id, when:null});
+  chsV('pedido').filter(c => c.status !== 'resolvido').forEach(c => {
+    const late = c.prazo && c.prazo < today;
+    if (!late && isAdmin()) return;
+    out.push({w:late?0:1, icon:'flag', color:late?'#ef4444':theme().c, title:c.titulo, sub:`Pedido #${c.id} — ${late?'prazo vencido em '+fmtD(c.prazo):c.prazo?'prazo '+fmtD(c.prazo):'sem prazo'}`, act:'ch-open', id:c.id, when:c.created_at, base:c.base});
+  });
+  evsV().filter(e => e.data_inicio <= today && e.data_fim >= today).forEach(e => {
+    const o = EV[e.tipo] || EV.outro, c = C(e.colaborador_id); out.push({w:3, icon:'cal', color:o.color, title:`${c?.nome || '—'} — ${o.label}`, sub:`Até ${fmtD(e.data_fim)}`, act:'ev-open', id:e.id, when:null, base:c?.base});
   });
   return out.sort((a,b) => a.w-b.w).slice(0,8);
 }
+function baseCards(){
+  const today = iso(new Date());
+  return `<div class="bcards">${BKEYS.map(k => {
+    const b = BASES[k];
+    const cs = S.colabs.filter(c => c.base === k), at = cs.filter(c => c.status === 'ativo');
+    const aus = new Set(S.eventos.filter(e => e.data_inicio <= today && e.data_fim >= today && C(e.colaborador_id)?.base === k).map(e => String(e.colaborador_id)));
+    const disp = at.filter(c => !aus.has(String(c.id))).length;
+    const vs = S.veics.filter(v => v.base === k), vok = vs.filter(v => v.status === 'ok').length;
+    const pr = S.chamados.filter(c => c.base === k && tipoOf(c) === 'problema' && c.status !== 'resolvido').length;
+    const pd = S.chamados.filter(c => c.base === k && tipoOf(c) === 'pedido' && c.status !== 'resolvido').length;
+    const lid = lidersOf(k).map(p => firstName(p.nome)).join(', ');
+    return `<button class="bcard" style="--c:${b.c};--d:${b.d};--s:${b.soft}" data-act="base" data-k="${k}">
+      <span class="bc-top">${emblem(k,38,11)}<span><b>${b.nome}</b><small>${esc(lid || 'Sem líder definido')}</small></span></span>
+      <span class="bc-nums">
+        <span><b>${disp}<small>/${at.length}</small></b>disponíveis</span>
+        <span><b>${vok}<small>/${vs.length}</small></b>veículos ok</span>
+        <span class="${pr?'hot':''}"><b>${pr}</b>problemas</span>
+        <span><b>${pd}</b>pedidos</span>
+      </span>
+      <span class="bc-bar"><i style="width:${at.length?Math.round(disp/at.length*100):0}%"></i></span>
+    </button>`; }).join('')}</div>`;
+}
 function pgDashboard(){
-  const me = S.profile, now = new Date(), today = iso(now), adm = isAdmin();
-  const chs = myChamados();
-  const ativos = S.colabs.filter(c => c.status === 'ativo');
+  const me = S.profile, now = new Date(), today = iso(now), adm = isAdmin(), t = theme(), ck = curBaseKey();
+  const colabs = colabsV(), veics = veicsV();
+  const probs = chsV('problema'), peds = chsV('pedido'), all = chsV();
+  const ativos = colabs.filter(c => c.status === 'ativo');
   const ausHoje = ausentesEm(today);
   const ausAtivos = ativos.filter(c => ausHoje.has(String(c.id)));
   const disp = ativos.length - ausAtivos.length, pDisp = ativos.length ? disp/ativos.length : 0;
-  const vt = S.veics.length, vOk = S.veics.filter(v => v.status==='ok').length, vFora = S.veics.filter(v => ['problema','manutencao','parado'].includes(v.status)).length;
-  const abertos = chs.filter(c => c.status !== 'resolvido'), semResp = chs.filter(c => c.status==='aberto' && !c.resposta);
-  const resp = chs.filter(c => c.respondido_em), avgH = resp.length ? resp.reduce((s,c) => s + (new Date(c.respondido_em)-new Date(c.created_at))/36e5, 0)/resp.length : null;
-  const resolvidos = chs.filter(c => c.status==='resolvido').length;
-  const daily = Array.from({length:14}, (_,i) => { const ds = iso(addDays(now, i-13)); return chs.filter(c => iso(new Date(c.created_at)) === ds).length; });
+  const vt = veics.length, vOk = veics.filter(v => v.status==='ok').length, vFora = veics.filter(v => ['problema','manutencao','parado'].includes(v.status)).length;
+  const k3 = adm ? probs : peds, k3ab = k3.filter(c => c.status !== 'resolvido');
+  const semResp = probs.filter(c => c.status==='aberto' && respHoras(c) == null);
+  const resp = probs.map(respHoras).filter(x => x != null), avgH = resp.length ? resp.reduce((a,b)=>a+b,0)/resp.length : null;
+  const resolvidos = probs.filter(c => c.status==='resolvido').length;
+  const daily = Array.from({length:14}, (_,i) => { const ds = iso(addDays(now, i-13)); return k3.filter(c => iso(new Date(c.created_at)) === ds).length; });
   const sem7 = daily.slice(7).reduce((a,b)=>a+b,0), ant7 = daily.slice(0,7).reduce((a,b)=>a+b,0);
   const hr = now.getHours(), saud = hr < 12 ? 'Bom dia' : hr < 18 ? 'Boa tarde' : 'Boa noite';
-  const frases = [];
-  frases.push(`<b>${disp} de ${ativos.length}</b> pessoas disponíveis`);
-  frases.push(vFora ? `<b>${vFora} veículo${vFora>1?'s':''}</b> fora de operação` : 'frota toda rodando');
-  frases.push(adm ? (semResp.length ? `<b>${semResp.length} chamado${semResp.length>1?'s':''}</b> aguardando sua resposta` : 'nenhum chamado sem resposta')
-                  : (abertos.length ? `<b>${abertos.length}</b> registro${abertos.length>1?'s':''} seu${abertos.length>1?'s':''} em aberto` : 'nenhum registro seu em aberto'));
-  const segs = VORDER.slice().reverse().map(k => ({k, n:S.veics.filter(v => v.status===k).length, ...VSTATUS[k]}));
-  const yard = S.veics.slice().sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
-  const catRows = CATS.map(k => { const l = chs.filter(c => c.categoria===k); return {label:esc(k), total:l.length, parts:Object.entries(CH).map(([s,o]) => ({n:l.filter(c=>c.status===s).length, color:o.color, name:o.label})), act:`data-act="dash-cat" data-k="${esc(k)}"`}; }).filter(r => r.total).sort((a,b) => b.total-a.total);
-  const leadRows = adm ? S.profiles.filter(p => p.role==='lider' || S.chamados.some(c => sameId(c.autor_id,p.id))).map(p => { const l = S.chamados.filter(c => sameId(c.autor_id,p.id));
-    return {label:`<span class="who">${avatar(p.nome,24)}<span>${esc(firstName(p.nome))}</span></span>`, total:l.length, parts:Object.entries(CH).map(([s,o]) => ({n:l.filter(c=>c.status===s).length, color:o.color, name:o.label})), act:`data-act="t-fl" data-k="${p.id}" data-go="1"`}; }).sort((a,b) => b.total-a.total) : [];
-  const feed = feedItems(chs);
-  const outros = S.colabs.filter(c => c.status==='ferias' || c.status==='afastado').length;
+  const pedLate = peds.filter(c => c.status !== 'resolvido' && c.prazo && c.prazo < today).length;
+  const frases = [`<b>${disp} de ${ativos.length}</b> pessoas disponíveis`, vFora ? `<b>${vFora} veículo${vFora>1?'s':''}</b> fora de operação` : 'frota toda rodando'];
+  if (adm) frases.push(semResp.length ? `<b>${semResp.length} problema${semResp.length>1?'s':''}</b> aguardando sua resposta` : 'nenhum problema sem resposta');
+  else frases.push(k3ab.length ? `<b>${k3ab.length} pedido${k3ab.length>1?'s':''}</b> do gestor em aberto${pedLate?` (${pedLate} atrasado${pedLate>1?'s':''})`:''}` : 'nenhum pedido do gestor em aberto');
+  const segs = VORDER.slice().reverse().map(k => ({k, n:veics.filter(v => v.status===k).length, ...VSTATUS[k]}));
+  const yard = veics.slice().sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
+  const catRows = CATS.map(k => { const l = probs.filter(c => c.categoria===k); return {label:esc(k), total:l.length, parts:['aberto','andamento','resolvido'].map(s => ({n:l.filter(c=>c.status===s).length, color:CH[s].color, name:CHL.problema[s]})), act:`data-act="dash-cat" data-k="${esc(k)}"`}; }).filter(r => r.total).sort((a,b) => b.total-a.total);
+  const leadRows = adm ? S.profiles.filter(p => p.role==='lider' && (p.bases||[]).some(inScope)).map(p => { const l = probs.filter(c => sameId(c.autor_id,p.id));
+    return {label:`<span class="who">${emblem((p.bases||[])[0],20,6)}<span>${esc(firstName(p.nome))}</span></span>`, total:l.length, parts:['aberto','andamento','resolvido'].map(s => ({n:l.filter(c=>c.status===s).length, color:CH[s].color, name:CHL.problema[s]})), act:`data-act="t-fl" data-k="${p.id}" data-go="1"`}; }).sort((a,b) => b.total-a.total) : [];
+  const feed = feedItems();
+  const outros = colabs.filter(c => c.status==='ferias' || c.status==='afastado').length;
+  const showBases = adm && !S.base;
 
   $('#page').innerHTML = `
   <section class="dhero">
+    <div class="dhero-emb" aria-hidden="true">${emblem(ck,220,60)}</div>
     <div class="dhero-main">
-      <span class="dhero-tag">${ROLE[me.role]}</span>
+      <span class="dhero-tag">${emblem(ck,18,5)}${ck ? 'Base ' + BASES[ck].nome : (adm ? 'Gestor — todas as bases' : 'Suas bases: ' + myBases().map(bName).join(', '))}</span>
       <h2>${saud}, ${esc(firstName(me.nome))}.</h2>
       <p>Hoje: ${frases.join(', ').replace(/, ([^,]*)$/, ' e $1')}.</p>
       <div class="dhero-act">
-        <button class="hbtn pri" data-act="t-new">${ic('plus',15)}Registrar ocorrência</button>
+        ${adm ? `<button class="hbtn pri" data-act="p-new">${ic('flag',15)}Novo pedido para base</button>` : `<button class="hbtn pri" data-act="t-new">${ic('plus',15)}Registrar problema</button>`}
         <button class="hbtn" data-act="ev-new">${ic('cal',15)}Marcar ausência</button>
         <button class="hbtn" data-nav="frota">${ic('car',15)}Atualizar frota</button>
       </div>
@@ -947,23 +1257,25 @@ function pgDashboard(){
     <div class="dhero-date"><b>${pad(now.getDate())}</b><span>${cap(now.toLocaleDateString('pt-BR',{weekday:'long'}))}</span><small>${cap(now.toLocaleDateString('pt-BR',{month:'long',year:'numeric'}))}</small></div>
   </section>
 
+  ${showBases ? `<div class="sec-h"><h3>Bases</h3><span>Clique em uma base para ver só os dados dela</span></div>${baseCards()}` : ''}
+
   <div class="dgrid">
     <div class="card k2 span-3" data-nav="calendario" role="button" tabindex="0">
-      <div><span class="k2-l">${ic('users',15)}Equipe disponível hoje</span><b class="k2-v">${disp}<small>/${ativos.length}</small></b><span class="k2-s">${ausAtivos.length} ausente(s) agora</span></div>${ringSVG(pDisp,'#4f5fd8')}</div>
+      <div><span class="k2-l">${ic('users',15)}Equipe disponível hoje</span><b class="k2-v">${disp}<small>/${ativos.length}</small></b><span class="k2-s">${ausAtivos.length} ausente(s) agora</span></div>${ringSVG(pDisp,t.c)}</div>
     <div class="card k2 span-3" data-nav="frota" role="button" tabindex="0">
       <div style="flex:1"><span class="k2-l">${ic('car',15)}Frota operando</span><b class="k2-v">${vOk}<small>/${vt}</small></b>
       <div class="mini-seg">${segs.map(s => s.n ? `<i style="--c:${s.color};flex:${s.n}" title="${s.label}: ${s.n}"></i>` : '').join('') || '<i style="--c:#e4e6ef;flex:1"></i>'}</div><span class="k2-s">${vFora} fora de operação</span></div></div>
-    <div class="card k2 span-3" data-nav="diario" role="button" tabindex="0">
-      <div><span class="k2-l">${ic('book',15)}${adm?'Chamados em aberto':'Meus chamados abertos'}</span><b class="k2-v">${abertos.length}</b><span class="k2-s">${sem7} novo(s) em 7 dias${ant7||sem7?` <em class="${sem7>ant7?'up':'down'}">${sem7>ant7?'▲':sem7<ant7?'▼':'='} ${Math.abs(sem7-ant7)}</em>`:''}</span></div>${sparkSVG(daily,'#ef4444',96,40)}</div>
-    <div class="card k2 span-3" data-nav="diario" role="button" tabindex="0">
-      <div><span class="k2-l">${ic('clock',15)}Tempo médio de resposta</span><b class="k2-v">${fmtDur(avgH)}</b><span class="k2-s">${resolvidos} de ${chs.length} resolvido(s)</span></div>${ringSVG(chs.length?resolvidos/chs.length:0,'#22c55e')}</div>
+    <div class="card k2 span-3" data-act="dash-tt" data-k="${adm?'problema':'pedido'}" role="button" tabindex="0">
+      <div><span class="k2-l">${ic(adm?'book':'flag',15)}${adm?'Problemas em aberto':'Pedidos do gestor'}</span><b class="k2-v">${k3ab.length}</b><span class="k2-s">${sem7} novo(s) em 7 dias${ant7||sem7?` <em class="${sem7>ant7?'up':'down'}">${sem7>ant7?'▲':sem7<ant7?'▼':'='} ${Math.abs(sem7-ant7)}</em>`:''}</span></div>${sparkSVG(daily,adm?'#ef4444':t.c,96,40)}</div>
+    <div class="card k2 span-3" data-act="dash-tt" data-k="problema" role="button" tabindex="0">
+      <div><span class="k2-l">${ic('clock',15)}Tempo médio de resposta</span><b class="k2-v">${fmtDur(avgH)}</b><span class="k2-s">${resolvidos} de ${probs.length} problema(s) resolvido(s)</span></div>${ringSVG(probs.length?resolvidos/probs.length:0,'#22c55e')}</div>
 
     <div class="card span-4">
       <div class="card-h"><div><h3>Disponibilidade da equipe</h3><p class="ch-sub">Colaboradores ativos sem ausência hoje</p></div></div>
       <div class="card-b">
         <div class="gauge-wrap">${gaugeSVG(pDisp, pDisp>=.85?'#22c55e':pDisp>=.65?'#f5a623':'#ef4444')}<div class="gauge-c"><b>${Math.round(pDisp*100)}%</b><span>disponível</span></div></div>
         <div class="trio"><div><b>${ativos.length}</b><span>Ativos</span></div><div><b>${ausAtivos.length}</b><span>Ausentes hoje</span></div><div><b>${outros}</b><span>Férias / afastados</span></div></div>
-        ${ausAtivos.length ? `<div class="aus-chips">${S.eventos.filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avatar(C(e.colaborador_id)?.nome,22)}${esc(firstName(C(e.colaborador_id)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
+        ${ausAtivos.length ? `<div class="aus-chips">${evsV().filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avatar(C(e.colaborador_id)?.nome,22)}${esc(firstName(C(e.colaborador_id)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
       </div>
     </div>
 
@@ -972,18 +1284,18 @@ function pgDashboard(){
       <div class="card-b">
         <div class="fleet-bar">${segs.map(s => s.n ? `<button style="--c:${s.color};flex:${s.n}" data-act="dash-v" data-k="${s.k}" title="${s.label}: ${s.n}"></button>` : '').join('') || '<span class="muted">Nenhum veículo cadastrado.</span>'}</div>
         <div class="fleet-leg">${segs.map(s => `<button data-act="dash-v" data-k="${s.k}" style="--c:${s.color}"><i></i>${s.label}<b>${s.n}</b></button>`).join('')}</div>
-        <div class="yard">${yard.map(v => { const s = VSTATUS[v.status]||VSTATUS.ok, c = condutorOf(v.id); return `<button class="yt" style="--c:${s.color}" data-act="v-open" data-id="${v.id}"><span class="yt-top">${ic(v.tipo==='moto'?'bike':'car',15)}<i title="${s.label}"></i></span>${plate(v.placa,true)}<span class="yt-m">${esc(v.modelo||'')}</span><span class="yt-c">${c?esc(firstName(c.nome)):'Sem condutor'}</span></button>`; }).join('')}</div>
+        <div class="yard">${yard.map(v => { const s = VSTATUS[v.status]||VSTATUS.ok, c = condutorOf(v.id); return `<button class="yt" style="--c:${s.color}" data-act="v-open" data-id="${v.id}"><span class="yt-top">${ic(v.tipo==='moto'?'bike':'car',15)}${!S.base && myBases().length>1 ? `<span class="yt-b" style="--b:${bOf(v.base)?.c||'#94a3b8'}" title="${bName(v.base)}"></span>` : ''}<i title="${s.label}"></i></span>${plate(v.placa,true)}<span class="yt-m">${esc(v.modelo||'')}</span><span class="yt-c">${c?esc(firstName(c.nome)):'Sem condutor'}</span></button>`; }).join('') || '<span class="muted">Nenhum veículo nesta base.</span>'}</div>
       </div>
     </div>
 
     <div class="card span-7">
-      <div class="card-h"><div><h3>${adm?'Chamados por semana':'Meus registros por semana'}</h3><p class="ch-sub">Últimas 8 semanas</p></div><div class="lg2"><span style="--c:#4f5fd8"><i></i>Abertos</span><span style="--c:#22c55e"><i></i>Resolvidos</span></div></div>
-      <div class="card-b">${weeksChart(chs)}</div>
+      <div class="card-h"><div><h3>Problemas e pedidos por semana</h3><p class="ch-sub">Últimas 8 semanas</p></div><div class="lg2"><span style="--c:${t.c}"><i></i>Abertos</span><span style="--c:#22c55e"><i></i>Resolvidos</span></div></div>
+      <div class="card-b">${weeksChart(all)}</div>
     </div>
 
     <div class="card span-5">
-      <div class="card-h"><div><h3>Ocorrências por categoria</h3><p class="ch-sub">Distribuição pela situação</p></div><div class="lg2">${Object.values(CH).map(o => `<span style="--c:${o.color}"><i></i>${o.label}</span>`).join('')}</div></div>
-      <div class="card-b">${hbars(catRows,'Nenhuma ocorrência registrada ainda.')}</div>
+      <div class="card-h"><div><h3>Problemas por categoria</h3><p class="ch-sub">Distribuição pela situação</p></div><div class="lg2">${['aberto','andamento','resolvido'].map(s => `<span style="--c:${CH[s].color}"><i></i>${CHL.problema[s]}</span>`).join('')}</div></div>
+      <div class="card-b">${hbars(catRows,'Nenhum problema registrado ainda.')}</div>
     </div>
 
     <div class="card span-7">
@@ -992,19 +1304,20 @@ function pgDashboard(){
     </div>
 
     <div class="card span-5">
-      <div class="card-h"><div><h3>Precisa de atenção</h3><p class="ch-sub">Veículos, chamados prioritários e ausências de hoje</p></div></div>
-      <div class="card-b feed">${feed.length ? feed.map(f => `<button class="fd" style="--c:${f.color}" data-act="${f.act}" data-id="${f.id}"><span class="fd-i">${ic(f.icon,16)}</span><span class="fd-t"><b>${esc(f.title)}</b><small>${esc(f.sub||'')}</small></span>${f.when?`<span class="fd-w">${ago(f.when)}</span>`:''}</button>`).join('') : `<div class="all-ok">${ic('check',26)}<b>Tudo em ordem</b><span>Nenhum veículo parado, chamado urgente ou ausência hoje.</span></div>`}</div>
+      <div class="card-h"><div><h3>Precisa de atenção</h3><p class="ch-sub">Veículos, problemas prioritários, pedidos e ausências de hoje</p></div></div>
+      <div class="card-b feed">${feed.length ? feed.map(f => `<button class="fd" style="--c:${f.color}" data-act="${f.act}" data-id="${f.id}"><span class="fd-i">${ic(f.icon,16)}</span><span class="fd-t"><b>${esc(f.title)}</b><small>${esc(f.sub||'')}</small></span>${!S.base && myBases().length>1 && f.base ? emblem(f.base,18,5) : ''}${f.when?`<span class="fd-w">${ago(f.when)}</span>`:''}</button>`).join('') : `<div class="all-ok">${ic('check',26)}<b>Tudo em ordem</b><span>Nenhum veículo parado, problema urgente ou ausência hoje.</span></div>`}</div>
     </div>
 
-    ${adm ? `<div class="card span-5"><div class="card-h"><div><h3>Chamados por líder</h3><p class="ch-sub">Clique para ver os registros de cada um</p></div></div><div class="card-b">${hbars(leadRows,'Nenhum líder com registros.')}</div></div>` : ''}
-    <div class="card ${adm?'span-7':'span-12'}"><div class="card-h"><div><h3>${adm?'Chamados recentes':'Meus chamados'}</h3><p class="ch-sub">Ordenados por situação e prioridade</p></div><button class="btn sm" data-nav="diario">Ver todos</button></div><div class="card-b">${tableChamados(chs.slice(0,5))}</div></div>
+    ${adm ? `<div class="card span-5"><div class="card-h"><div><h3>Problemas por líder</h3><p class="ch-sub">Clique para ver os registros de cada um</p></div></div><div class="card-b">${hbars(leadRows,'Nenhum líder com registros.')}</div></div>` : ''}
+    <div class="card ${adm?'span-7':'span-12'}"><div class="card-h"><div><h3>Diário de bordo recente</h3><p class="ch-sub">Ordenado por situação e prioridade</p></div><button class="btn sm" data-nav="diario">Ver todos</button></div><div class="card-b">${tableChamados(all.slice(0,5))}</div></div>
   </div>`;
 }
-
+function tipoTag(c){ return tipoOf(c) === 'pedido' ? `<span class="tag" style="--c:${theme().c}">${ic('flag',11)} Pedido</span>` : `<span class="tag" style="--c:#64748b">Problema</span>`; }
 function tableChamados(list){
-  if (!list.length) return empty('book','Nenhum chamado por aqui','Os registros do diário de bordo aparecem nesta lista.');
-  return `<div class="tbl-wrap"><table><thead><tr><th>Nº</th><th>Título</th><th class="hide-m">Registrado por</th><th class="hide-m">Data</th><th>Prioridade</th><th>Situação</th><th></th></tr></thead><tbody>${
-    list.map(c => `<tr class="click" data-act="ch-open" data-id="${c.id}"><td class="muted">#${c.id}</td><td><span class="fw5">${esc(c.titulo)}</span><div style="margin-top:4px"><span class="tag" style="--c:#4f5fd8">#${esc(c.categoria)}</span></div></td><td class="hide-m">${esc(c.autor_nome)}</td><td class="hide-m">${fmtD(c.created_at)}</td><td>${chip(PRIOR[c.prioridade],false)}</td><td>${chip(CH[c.status])}</td><td class="act">${ic('more',18)}</td></tr>`).join('')
+  if (!list.length) return empty('book','Nada por aqui','Os registros do diário de bordo aparecem nesta lista.');
+  const multi = !S.base && myBases().length > 1;
+  return `<div class="tbl-wrap"><table><thead><tr><th>Nº</th><th>Título</th>${multi?'<th class="hide-m">Base</th>':''}<th class="hide-m">Aberto por</th><th>Prioridade</th><th>Situação</th></tr></thead><tbody>${
+    list.map(c => `<tr class="click" data-act="ch-open" data-id="${c.id}"><td class="muted">#${c.id}</td><td><span class="fw5">${esc(c.titulo)}</span><div class="chips" style="margin-top:4px">${tipoTag(c)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span></div></td>${multi?`<td class="hide-m">${bTag(c.base)}</td>`:''}<td class="hide-m">${esc(c.autor_nome)}<div class="muted s">${fmtD(c.created_at)}</div></td><td>${chip(PRIOR[c.prioridade],false)}</td><td>${chip(chSt(c))}</td></tr>`).join('')
   }</tbody></table></div>`;
 }
 function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
@@ -1013,16 +1326,21 @@ function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
     return `<div class="agenda-item" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}"><span class="bar"></span>${avatar(c?.nome,32)}<div style="flex:1;min-width:0"><b>${esc(c?.nome || 'Colaborador removido')}</b><small>${rangeTxt(e.data_inicio,e.data_fim)}${e.observacao?' — '+esc(e.observacao):''}</small></div>${chip(o)}</div>`; }).join('');
 }
 
+
 /* ========================= COLABORADORES ========================= */
+const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Escolha a base —</option>':'') + myBases().map(k => `<option value="${k}" ${k===cur?'selected':''}>${BASES[k].nome}</option>`).join('');
 function pgColab(){
-  const f = S.f;
-  const lid = S.profiles.filter(p => p.role !== 'pendente');
+  const f = S.f, list = colabsV();
+  const lid = S.profiles.filter(p => p.role === 'lider' && (p.bases||[]).some(inScope));
   $('#page').innerHTML = `
-  <div class="filters">${fchip('c-fs','','Todos',S.colabs.length,'#4f5fd8',!f.cs)}${Object.entries(CSTATUS).map(([k,o]) => fchip('c-fs',k,o.label,S.colabs.filter(c=>c.status===k).length,o.color,f.cs===k)).join('')}</div>
+  <div class="filters">${fchip('c-fs','','Todos',list.length,theme().c,!f.cs)}${Object.entries(CSTATUS).map(([k,o]) => fchip('c-fs',k,o.label,list.filter(c=>c.status===k).length,o.color,f.cs===k)).join('')}</div>
   <div class="toolbar">
     <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar por nome, POS, telefone, placa..." value="${esc(f.cq)}"></label>
     <select class="sel" id="fl"><option value="">Todos os líderes</option>${opts(lid.map(p=>[p.id,p.nome]), f.cl)}</select>
-    <div class="tb-right"><button class="btn" data-act="c-csv">${ic('download',16)}<span class="hide-m">Exportar</span></button>${isAdmin()?`<button class="btn pri" data-act="c-new">${ic('plus',16)}Novo colaborador</button>`:''}</div>
+    <div class="tb-right">
+      <button class="btn" data-act="x-export" data-k="colab" title="Baixar a lista no formato da planilha modelo">${ic('download',16)}<span class="hide-m">Exportar Excel</span></button>
+      ${isAdmin()?`<button class="btn" data-act="x-import" data-k="colab">${ic('upload',16)}<span class="hide-m">Importar Excel</span></button><button class="btn pri" data-act="c-new">${ic('plus',16)}Novo colaborador</button>`:''}
+    </div>
   </div>
   <div class="card"><div class="card-b" id="list" style="padding-top:14px"></div></div>`;
   $('#q').oninput = e => { f.cq = e.target.value; colabList(); };
@@ -1031,21 +1349,22 @@ function pgColab(){
 }
 function colabFiltered(){
   const f = S.f, q = f.cq.toLowerCase().trim();
-  return S.colabs.filter(c => (!f.cs || c.status===f.cs) && (!f.cl || sameId(c.lider_id,f.cl)) &&
-    (!q || [c.nome,c.cargo,c.telefone,c.email,c.pos,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome].join(' ').toLowerCase().includes(q)));
+  return colabsV().filter(c => (!f.cs || c.status===f.cs) && (!f.cl || sameId(c.lider_id,f.cl)) &&
+    (!q || [c.nome,c.cargo,c.telefone,c.email,c.pos,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome,bName(c.base)].join(' ').toLowerCase().includes(q)));
 }
 function colabList(){
-  const list = colabFiltered(); const {col, dir} = S.sort;
-  const key = c => col==='veiculo' ? (V(c.veiculo_id)?.placa || '~') : col==='lider' ? (P(c.lider_id)?.nome || '~') : String(c[col] ?? '~');
+  const list = colabFiltered(); const {col, dir} = S.sort; const multi = !S.base && myBases().length > 1;
+  const key = c => col==='veiculo' ? (V(c.veiculo_id)?.placa || '~') : col==='lider' ? (P(c.lider_id)?.nome || '~') : col==='base' ? bName(c.base) : String(c[col] ?? '~');
   list.sort((a,b) => key(a).localeCompare(key(b),'pt',{numeric:true}) * dir);
   const th = (c,l,cls='') => `<th class="sort ${cls}" data-act="c-sort" data-col="${c}">${l}<span class="ar">${col===c?(dir>0?'▲':'▼'):'▲▼'}</span></th>`;
-  $('#list').innerHTML = list.length ? `<div class="tbl-wrap"><table><thead><tr>${th('nome','Colaborador')}${th('telefone','Contato','hide-m')}${th('pos','Nº POS')}${th('veiculo','Veículo')}${th('lider','Líder','hide-m')}${th('status','Status')}<th></th></tr></thead><tbody>${list.map(rowColab).join('')}</tbody></table></div><div class="tfoot">${list.length} de ${S.colabs.length} colaboradores</div>`
-    : empty('users','Nenhum colaborador encontrado', isAdmin() ? 'Ajuste os filtros ou clique em "Novo colaborador".' : 'Ajuste os filtros de busca.');
+  $('#list').innerHTML = list.length ? `<div class="tbl-wrap"><table><thead><tr>${th('nome','Colaborador')}${multi?th('base','Base'):''}${th('telefone','Contato','hide-m')}${th('pos','Nº POS')}${th('veiculo','Veículo')}${th('lider','Líder','hide-m')}${th('status','Status')}<th></th></tr></thead><tbody>${list.map(c => rowColab(c, multi)).join('')}</tbody></table></div><div class="tfoot">${list.length} de ${colabsV().length} colaboradores</div>`
+    : empty('users','Nenhum colaborador encontrado', isAdmin() ? 'Ajuste os filtros, cadastre em "Novo colaborador" ou use "Importar Excel".' : 'Ajuste os filtros de busca.');
 }
-function rowColab(c){
+function rowColab(c, multi){
   const v = V(c.veiculo_id), l = P(c.lider_id);
   return `<tr class="click" data-act="c-open" data-id="${c.id}">
     <td><div class="who">${avatar(c.nome)}<div style="min-width:0"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'Sem cargo')}${c.matricula?' — mat. '+esc(c.matricula):''}</small></div></div></td>
+    ${multi?`<td>${bTag(c.base)}</td>`:''}
     <td class="hide-m"><div>${esc(c.telefone||'—')}</div><div class="muted s">${esc(c.email||'')}</div></td>
     <td>${c.pos?`<span class="pos mono">${esc(c.pos)}</span> <button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar POS">${ic('copy',13)}</button>`:'<span class="muted">—</span>'}</td>
     <td>${v?`<span class="vlink">${plate(v.placa,true)}<i class="dot" style="--c:${VSTATUS[v.status]?.color}" title="${VSTATUS[v.status]?.label}"></i></span>`:'<span class="muted">Sem veículo</span>'}</td>
@@ -1057,11 +1376,11 @@ function openColab(id){
   const c = C(id); if (!c) return;
   const v = V(c.veiculo_id), l = P(c.lider_id);
   const evs = S.eventos.filter(e => sameId(e.colaborador_id,id)).sort((a,b) => b.data_inicio.localeCompare(a.data_inicio));
-  const chs = (isAdmin() ? S.chamados : S.chamados.filter(x => sameId(x.autor_id,S.profile.id))).filter(x => sameId(x.colaborador_id,id));
+  const chs = S.chamados.filter(x => sameId(x.colaborador_id,id) && allowed(x.base));
   const dig = String(c.telefone||'').replace(/\D/g,'');
   openModal({wide:true, title:'Ficha do colaborador', body:`
-    <div class="hero" style="padding:0 0 16px">${avatar(c.nome,58)}<div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])}</p></div></div>
-    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Chamados (${chs.length})</button></div>
+    <div class="hero" style="padding:0 0 16px">${avatar(c.nome,58)}<div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])} ${bTag(c.base)}</p></div></div>
+    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Diário (${chs.length})</button></div>
     <div data-pane="det">
       <div class="dl">
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
@@ -1076,34 +1395,44 @@ function openColab(id){
       ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.${isAdmin()?' Use "Editar" para vincular.':''}</div>`}
     </div>
     <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
-    <div data-pane="ch" hidden>${tableChamados(chs)}</div>`,
+    <div data-pane="ch" hidden>${tableChamados(sortCh(chs))}</div>`,
     foot: isAdmin() ? `<button class="btn danger left" data-act="c-del" data-id="${c.id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="c-edit" data-id="${c.id}">${ic('edit',15)}Editar</button>`
       : `<button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="modal-close">Fechar</button>`
   });
 }
+function colabSelects(base, c, id){
+  const vOpts = S.veics.filter(v => v.base === base || sameId(v.id, c.veiculo_id)).sort((a,b)=>a.placa.localeCompare(b.placa)).map(v => { const d = condutorOf(v.id); const busy = d && !sameId(d.id,id);
+    return [v.id, `${v.placa} — ${[v.marca,v.modelo].filter(Boolean).join(' ')}${busy?` (hoje com ${firstName(d.nome)})`:''}`]; });
+  const lid = lidersOf(base);
+  return {
+    lider: `<option value="">— Sem líder —</option>${opts(lid.map(p=>[p.id,p.nome]), c.lider_id)}`,
+    veic: `<option value="">— Sem veículo —</option>${opts(vOpts, c.veiculo_id)}`
+  };
+}
 function colabForm(id){
   if (!isAdmin()) return;
-  const c = id ? C(id) : {status:'ativo'};
-  const vOpts = S.veics.slice().sort((a,b)=>a.placa.localeCompare(b.placa)).map(v => { const d = condutorOf(v.id); const busy = d && !sameId(d.id,id);
-    return [v.id, `${v.placa} — ${[v.marca,v.modelo].filter(Boolean).join(' ')}${busy?` (hoje com ${firstName(d.nome)})`:''}`]; });
-  const lid = S.profiles.filter(p => p.role !== 'pendente');
+  const c = id ? C(id) : {status:'ativo', base:defBase()};
+  const sel = colabSelects(c.base, c, id);
   openModal({title: id ? 'Editar colaborador' : 'Novo colaborador', wide:true, body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Nome completo', inp('nome',c.nome,'required maxlength="120"'), true, true)}
+    ${fld('Base', `<select name="base" id="fbase" required>${baseOpts(c.base, !c.base)}</select>`, false, true)}
     ${fld('Cargo / função', inp('cargo',c.cargo,'placeholder="Ex: Técnico de campo"'))}
     ${fld('Matrícula', inp('matricula',c.matricula))}
     ${fld('Telefone', inp('telefone',c.telefone,'data-mask="phone" inputmode="tel" placeholder="(11) 90000-0000"'))}
     ${fld('E-mail', inp('email',c.email,'type="email" placeholder="nome@empresa.com"'))}
     ${fld('Nº da POS', inp('pos',c.pos,'class="mono" inputmode="numeric" placeholder="Número completo da POS"'), false, false, 'Pode colar o número inteiro, sem limite de dígitos.')}
     ${fld('Data de admissão', inp('admissao',c.admissao,'type="date"'))}
-    ${fld('Líder responsável', `<select name="lider_id"><option value="">— Sem líder —</option>${opts(lid.map(p=>[p.id,p.nome]), c.lider_id)}</select>`)}
-    ${fld('Veículo da frota', `<select name="veiculo_id"><option value="">— Sem veículo —</option>${opts(vOpts, c.veiculo_id)}</select>`, false, false, 'Se o veículo estiver com outra pessoa, ele é transferido.')}
+    ${fld('Líder responsável', `<select name="lider_id" id="flid">${sel.lider}</select>`)}
+    ${fld('Veículo da frota', `<select name="veiculo_id" id="fveic">${sel.veic}</select>`, false, false, 'Mostra os veículos da base escolhida. Se estiver com outra pessoa, é transferido.')}
     ${fld('Status', rchips('status',CSTATUS,c.status||'ativo'), true)}
     ${fld('Observações', `<textarea name="observacoes" rows="3">${esc(c.observacoes||'')}</textarea>`, true)}
-  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="c-save" data-id="${id||''}">${ic('check',15)}Salvar colaborador</button>`});
+  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="c-save" data-id="${id||''}">${ic('check',15)}Salvar colaborador</button>`,
+  onMount: ov => { $('#fbase',ov).onchange = e => { const s = colabSelects(e.target.value, {}, id); $('#flid',ov).innerHTML = s.lider; $('#fveic',ov).innerHTML = s.veic; }; }});
 }
 async function saveColab(id){
   const f = formObj(); if (!f.nome) return toast('Informe o nome do colaborador.','err');
-  const row = {nome:f.nome, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
+  if (!BASES[f.base]) return toast('Escolha a base do colaborador.','err');
+  const row = {nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
     admissao:f.admissao, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
   try {
     if (row.veiculo_id){ const other = condutorOf(row.veiculo_id); if (other && !sameId(other.id,id)) await DB.update('colaboradores', other.id, {veiculo_id:null}); }
@@ -1116,41 +1445,39 @@ async function delColab(id){
   if (!await confirmBox(`Excluir <b>${esc(c.nome)}</b>?<br><span class="muted">As ausências dele no calendário também serão removidas.</span>`)) return;
   try { await DB.remove('colaboradores', id); closeModal(); toast('Colaborador excluído.'); await reload(); } catch(e){ err(e); }
 }
-function exportColabs(){
-  const rows = [['Nome','Cargo','Matrícula','Telefone','E-mail','Nº POS','Veículo (placa)','Modelo','Líder','Status','Admissão']];
-  colabFiltered().forEach(c => { const v = V(c.veiculo_id); rows.push([c.nome,c.cargo,c.matricula,c.telefone,c.email,c.pos?`="${c.pos}"`:'',v?.placa,v?.modelo,P(c.lider_id)?.nome,CSTATUS[c.status]?.label,fmtD(c.admissao)]); });
-  downloadCSV(`colaboradores_${iso(new Date())}.csv`, rows);
-}
 
 /* ========================= FROTA ========================= */
 function pgFrota(){
-  const f = S.f; const base = S.veics.filter(v => !f.vt || v.tipo===f.vt);
+  const f = S.f; const base = veicsV().filter(v => !f.vt || v.tipo===f.vt);
   $('#page').innerHTML = `
-  <div class="filters">${fchip('v-fs','','Todos',base.length,'#4f5fd8',!f.vs)}${Object.entries(VSTATUS).map(([k,o]) => fchip('v-fs',k,o.label,base.filter(v=>v.status===k).length,o.color,f.vs===k)).join('')}</div>
+  <div class="filters">${fchip('v-fs','','Todos',base.length,theme().c,!f.vs)}${Object.entries(VSTATUS).map(([k,o]) => fchip('v-fs',k,o.label,base.filter(v=>v.status===k).length,o.color,f.vs===k)).join('')}</div>
   <div class="toolbar">
     <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar placa, modelo, condutor..." value="${esc(f.vq)}"></label>
     <div class="seg">${[['','Todos',''],['carro','Carros','car'],['moto','Motos','bike']].map(([k,l,i]) => `<button class="${f.vt===k?'on':''}" data-act="v-ft" data-k="${k}">${i?ic(i,15):''}${l}</button>`).join('')}</div>
-    <div class="tb-right"><button class="btn" data-act="v-csv">${ic('download',16)}<span class="hide-m">Exportar</span></button>${isAdmin()?`<button class="btn pri" data-act="v-new">${ic('plus',16)}Novo veículo</button>`:''}</div>
+    <div class="tb-right">
+      <button class="btn" data-act="x-export" data-k="veic">${ic('download',16)}<span class="hide-m">Exportar Excel</span></button>
+      ${isAdmin()?`<button class="btn" data-act="x-import" data-k="veic">${ic('upload',16)}<span class="hide-m">Importar Excel</span></button><button class="btn pri" data-act="v-new">${ic('plus',16)}Novo veículo</button>`:''}
+    </div>
   </div>
-  <p class="hint">${ic('info',14)}Clique no status de um veículo e escolha a nova situação — pronto, atualizado para todos. Clique no card para ver detalhes e histórico.</p>
+  <p class="hint">${ic('info',14)}Clique na situação de um veículo e escolha a nova — atualiza para todos na hora. Clique no card para ver detalhes e histórico.</p>
   <div id="list"></div>`;
   $('#q').oninput = e => { f.vq = e.target.value; frotaList(); };
   frotaList();
 }
 function frotaFiltered(){
   const f = S.f, q = f.vq.toLowerCase().trim();
-  return S.veics.filter(v => (!f.vt || v.tipo===f.vt) && (!f.vs || v.status===f.vs) &&
-    (!q || [v.placa,v.marca,v.modelo,v.cor,v.ano,condutorOf(v.id)?.nome].join(' ').toLowerCase().includes(q)))
+  return veicsV().filter(v => (!f.vt || v.tipo===f.vt) && (!f.vs || v.status===f.vs) &&
+    (!q || [v.placa,v.marca,v.modelo,v.cor,v.ano,condutorOf(v.id)?.nome,bName(v.base)].join(' ').toLowerCase().includes(q)))
     .sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
 }
 function frotaList(){
   const list = frotaFiltered();
-  $('#list').innerHTML = list.length ? `<div class="vgrid">${list.map(vcard).join('')}</div>` : `<div class="card">${empty('car','Nenhum veículo encontrado', isAdmin()?'Cadastre o primeiro em "Novo veículo".':'')}</div>`;
+  $('#list').innerHTML = list.length ? `<div class="vgrid">${list.map(vcard).join('')}</div>` : `<div class="card">${empty('car','Nenhum veículo encontrado', isAdmin()?'Cadastre em "Novo veículo" ou use "Importar Excel".':'')}</div>`;
 }
 function vcard(v){
-  const s = VSTATUS[v.status] || VSTATUS.ok, c = condutorOf(v.id);
+  const s = VSTATUS[v.status] || VSTATUS.ok, c = condutorOf(v.id), multi = !S.base && myBases().length > 1;
   return `<div class="card vcard" style="--c:${s.color}" data-act="v-open" data-id="${v.id}">
-    <div class="vtop"><div class="vico">${ic(v.tipo==='moto'?'bike':'car',20)}</div>
+    <div class="vtop"><div class="vico">${ic(v.tipo==='moto'?'bike':'car',20)}</div>${multi?bTag(v.base):''}
       <button class="chip" style="--c:${s.color}" data-act="v-status" data-id="${v.id}" title="Alterar situação"><i class="d"></i>${s.label}<span class="caret">▼</span></button></div>
     <div class="vmid">${plate(v.placa)}<div class="vmodel">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</div><div class="vmeta">${[v.ano,v.cor,fmtKm(v.km)].filter(Boolean).map(esc).join(' — ')}</div></div>
     ${v.status_obs?`<div class="vobs">${ic('alert',14)}<span>${esc(v.status_obs)}</span></div>`:''}
@@ -1188,7 +1515,7 @@ function openVeic(id){
   const v = V(id); if (!v) return; const s = VSTATUS[v.status] || VSTATUS.ok; const c = condutorOf(v.id);
   const hist = S.hist.filter(h => sameId(h.veiculo_id,id)).sort((a,b) => new Date(b.created_at)-new Date(a.created_at)).slice(0,25);
   openModal({wide:true, title: v.tipo==='moto' ? 'Detalhes da moto' : 'Detalhes do carro', body:`
-    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px">${plate(v.placa)}<div style="flex:1;min-width:180px"><h2 style="margin:0;font-size:17px;font-weight:600">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</h2><div class="muted">${[v.tipo==='moto'?'Moto':'Carro',v.ano,v.cor].filter(Boolean).map(esc).join(' — ')}</div></div>
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px">${plate(v.placa)}<div style="flex:1;min-width:180px"><h2 style="margin:0;font-size:17px;font-weight:600">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</h2><div class="muted">${[v.tipo==='moto'?'Moto':'Carro',v.ano,v.cor].filter(Boolean).map(esc).join(' — ')}</div><div style="margin-top:6px">${bTag(v.base)}</div></div>
       <button class="chip" style="--c:${s.color};font-size:12px;padding:7px 14px" data-act="v-status" data-id="${v.id}"><i class="d"></i>${s.label}<span class="caret">▼</span></button></div>
     ${v.status_obs?`<div class="vobs" style="--c:${s.color}">${ic('alert',14)}<span>${esc(v.status_obs)}</span></div>`:''}
     <div class="dl" style="margin-top:14px">
@@ -1203,27 +1530,33 @@ function openVeic(id){
 }
 function veicForm(id){
   if (!isAdmin()) return;
-  const v = id ? V(id) : {tipo:'carro', status:'ok'}; const cur = id ? condutorOf(id) : null;
+  const v = id ? V(id) : {tipo:'carro', status:'ok', base:defBase()}; const cur = id ? condutorOf(id) : null;
+  const condOpts = base => `<option value="">— Sem condutor —</option>${opts(colabsSorted(base).map(c => [c.id, c.nome + (c.veiculo_id && !sameId(c.veiculo_id,id) ? ` (tem ${V(c.veiculo_id)?.placa||'veículo'})` : '')]), cur?.id)}`;
   openModal({title: id ? 'Editar veículo' : 'Novo veículo', wide:true, body:`<form id="mf" class="form" autocomplete="off">
-    ${fld('Tipo', rchips('tipo',TIPOV,v.tipo||'carro'), true, true)}
+    ${fld('Tipo', rchips('tipo',TIPOV,v.tipo||'carro'), false, true)}
+    ${fld('Base', `<select name="base" id="fbase" required>${baseOpts(v.base, !v.base)}</select>`, false, true)}
     ${fld('Placa', inp('placa',v.placa,'data-mask="upper" maxlength="8" placeholder="ABC1D23" class="mono" style="text-transform:uppercase;letter-spacing:2px"'), false, true, 'Mercosul (ABC1D23) ou antiga (ABC1234).')}
-    ${fld('Marca', inp('marca',v.marca,'placeholder="Ex: Fiat, Honda"'))}
     ${fld('Modelo', inp('modelo',v.modelo,'placeholder="Ex: Strada, CG 160"'), false, true)}
+    ${fld('Marca', inp('marca',v.marca,'placeholder="Ex: Fiat, Honda"'))}
     ${fld('Ano', inp('ano',v.ano,'type="number" min="1980" max="2100" inputmode="numeric"'))}
     ${fld('Cor', inp('cor',v.cor))}
     ${fld('Quilometragem', inp('km',v.km,'type="number" min="0" inputmode="numeric"'))}
-    ${fld('Condutor', `<select name="condutor"><option value="">— Sem condutor —</option>${opts(colabsSorted().map(c => [c.id, c.nome + (c.veiculo_id && !sameId(c.veiculo_id,id) ? ` (tem ${V(c.veiculo_id)?.placa||'veículo'})` : '')]), cur?.id)}</select>`, true)}
+    ${fld('Condutor', `<select name="condutor" id="fcond">${condOpts(v.base)}</select>`, true)}
     ${fld('Situação', rchips('status',VSTATUS,v.status||'ok'), true)}
     ${fld('Observações', `<textarea name="observacoes" rows="3" placeholder="Seguro, revisões, detalhes do veículo...">${esc(v.observacoes||'')}</textarea>`, true)}
-  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="v-save" data-id="${id||''}">${ic('check',15)}Salvar veículo</button>`});
+  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="v-save" data-id="${id||''}">${ic('check',15)}Salvar veículo</button>`,
+  onMount: ov => { $('#fbase',ov).onchange = e => { $('#fcond',ov).innerHTML = condOpts(e.target.value); }; }});
 }
+const placaOk = p => /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(p);
+const normPlaca = p => String(p||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
 async function saveVeic(id){
-  const f = formObj(); const placa = String(f.placa||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
-  if (!/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(placa)) return toast('Placa inválida. Use ABC1D23 ou ABC1234.','err');
+  const f = formObj(); const placa = normPlaca(f.placa);
+  if (!placaOk(placa)) return toast('Placa inválida. Use ABC1D23 ou ABC1234.','err');
   if (!f.modelo) return toast('Informe o modelo do veículo.','err');
+  if (!BASES[f.base]) return toast('Escolha a base do veículo.','err');
   if (S.veics.some(v => v.placa===placa && !sameId(v.id,id))) return toast('Já existe um veículo com essa placa.','err');
   const old = id ? V(id) : null;
-  const row = {tipo:f.tipo||'carro', placa, marca:f.marca, modelo:f.modelo, ano:f.ano?parseInt(f.ano):null, cor:f.cor, km:f.km?parseInt(f.km):null, status:f.status||'ok', observacoes:f.observacoes};
+  const row = {tipo:f.tipo||'carro', base:f.base, placa, marca:f.marca, modelo:f.modelo, ano:f.ano?parseInt(f.ano):null, cor:f.cor, km:f.km?parseInt(f.km):null, status:f.status||'ok', observacoes:f.observacoes};
   const stChanged = !old || old.status !== row.status;
   if (stChanged){ row.status_em = nowISO(); row.status_por = S.profile.nome; row.status_obs = null; }
   try {
@@ -1243,28 +1576,290 @@ async function delVeic(id){
   if (!await confirmBox(`Excluir o veículo <b>${esc(v.placa)}</b>?<br><span class="muted">O condutor fica sem veículo e o histórico é apagado.</span>`)) return;
   try { await DB.remove('veiculos', id); closeModal(); toast('Veículo excluído.'); await reload(); } catch(e){ err(e); }
 }
-function exportVeics(){
-  const rows = [['Placa','Tipo','Marca','Modelo','Ano','Cor','KM','Situação','Observação da situação','Atualizado em','Atualizado por','Condutor']];
-  frotaFiltered().forEach(v => rows.push([v.placa,v.tipo==='moto'?'Moto':'Carro',v.marca,v.modelo,v.ano,v.cor,v.km,VSTATUS[v.status]?.label,v.status_obs,fmtDT(v.status_em),v.status_por,condutorOf(v.id)?.nome]));
-  downloadCSV(`frota_${iso(new Date())}.csv`, rows);
+
+
+/* ========================= EXCEL: modelo, exportação e importação ========================= */
+let XLSXP = null;
+function loadXLSX(){
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  if (XLSXP) return XLSXP;
+  XLSXP = new Promise((res, rej) => {
+    const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
+    s.onload = () => res(window.XLSX);
+    s.onerror = () => { XLSXP = null; rej(new Error('Não foi possível carregar o leitor de Excel. Verifique a internet e tente de novo.')); };
+    document.head.appendChild(s);
+  });
+  return XLSXP;
 }
+const nk = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+const IMP = {
+  colab: {
+    nome:'colaboradores', sheet:'Colaboradores', modelo:'Modelo_Colaboradores.xlsx',
+    cols:[
+      {k:'nome', h:'Nome', req:true, w:30, al:['nome','nomecompleto','colaborador','funcionario']},
+      {k:'base', h:'Base', req:true, w:14, al:['base','setor','unidade','polo']},
+      {k:'cargo', h:'Cargo', w:20, al:['cargo','funcao']},
+      {k:'matricula', h:'Matrícula', w:12, text:true, al:['matricula','mat','re','registro']},
+      {k:'telefone', h:'Telefone', w:17, text:true, al:['telefone','celular','fone','tel','whatsapp']},
+      {k:'email', h:'E-mail', w:28, al:['email','emailcorporativo']},
+      {k:'pos', h:'Nº POS', w:22, text:true, al:['npos','pos','numeropos','numerodapos','nposterminal']},
+      {k:'placa', h:'Placa do veículo', w:16, al:['placadoveiculo','placa','veiculo']},
+      {k:'admissao', h:'Admissão', w:12, al:['admissao','dataadmissao','datadeadmissao']},
+      {k:'status', h:'Status', w:12, al:['status','situacao']},
+      {k:'observacoes', h:'Observações', w:32, al:['observacoes','observacao','obs']}
+    ],
+    exemplo:['Maria da Silva','Pinheiros','Técnica de campo','10234','(11) 98765-4321','maria.silva@empresa.com','0012345678901234','ABC1D23','15/03/2021','Ativo','']
+  },
+  veic: {
+    nome:'veículos', sheet:'Frota', modelo:'Modelo_Frota.xlsx',
+    cols:[
+      {k:'placa', h:'Placa', req:true, w:12, al:['placa']},
+      {k:'tipo', h:'Tipo', req:true, w:10, al:['tipo','carromoto']},
+      {k:'base', h:'Base', req:true, w:14, al:['base','setor','unidade','polo']},
+      {k:'marca', h:'Marca', w:14, al:['marca','fabricante']},
+      {k:'modelo', h:'Modelo', req:true, w:20, al:['modelo']},
+      {k:'ano', h:'Ano', w:8, al:['ano','anomodelo']},
+      {k:'cor', h:'Cor', w:12, al:['cor']},
+      {k:'km', h:'KM', w:10, al:['km','quilometragem','kilometragem','odometro']},
+      {k:'situacao', h:'Situação', w:16, al:['situacao','status','estado']},
+      {k:'observacoes', h:'Observações', w:32, al:['observacoes','observacao','obs']}
+    ],
+    exemplo:['ABC1D23','Carro','Pinheiros','Fiat','Strada',2022,'Branco',48000,'Operando','']
+  }
+};
+function cellStr(v){
+  if (v == null) return '';
+  if (v instanceof Date){ const d = new Date(v.getTime() + 12*3600e3); return iso(d); }
+  if (typeof v === 'number') return Number.isInteger(v) ? v.toLocaleString('fullwide',{useGrouping:false}) : String(v);
+  return String(v).trim();
+}
+function parseDate(s){
+  if (!s) return null;
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
+  const m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
+  if (m){ let y = +m[3]; if (y < 100) y += 2000; const d = new Date(y, +m[2]-1, +m[1]); if (d.getMonth() === +m[2]-1) return iso(d); }
+  return undefined;
+}
+const mapStatusC = s => { const n = nk(s); if (!n) return 'ativo'; return Object.keys(CSTATUS).find(k => nk(CSTATUS[k].label) === n || k === n) || (n.startsWith('afast')?'afastado':n.startsWith('desl')?'desligado':n.startsWith('fer')?'ferias':undefined); };
+const mapStatusV = s => { const n = nk(s); if (!n) return 'ok'; if (['ok','operando','funcionando','bom','normal'].includes(n)) return 'ok';
+  if (n.startsWith('aten')) return 'atencao'; if (n.includes('problema') || n.includes('defeito') || n.includes('avaria')) return 'problema';
+  if (n.includes('manut') || n.includes('oficina')) return 'manutencao'; if (n.startsWith('parad') || n.includes('foradeuso')) return 'parado'; return undefined; };
+const mapTipo = s => { const n = nk(s); if (n.startsWith('moto')) return 'moto'; if (n.startsWith('carro') || n.startsWith('auto') || n.startsWith('utilit')) return 'carro'; return n ? undefined : 'carro'; };
+
+function rowsExport(kind){
+  if (kind === 'veic') return frotaFiltered().map(v => [v.placa, v.tipo==='moto'?'Moto':'Carro', bName(v.base), v.marca||'', v.modelo||'', v.ano||'', v.cor||'', v.km ?? '', VSTATUS[v.status]?.label||'', v.observacoes||'']);
+  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', V(c.veiculo_id)?.placa||'', c.admissao?fmtD(c.admissao):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
+}
+async function excelFile(kind, withData){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const sc = IMP[kind];
+  const rows = [sc.cols.map(c => c.h + (c.req ? ' *' : ''))];
+  if (withData) rows.push(...rowsExport(kind)); else rows.push(sc.exemplo);
+  const ws = X.utils.aoa_to_sheet(rows);
+  ws['!cols'] = sc.cols.map(c => ({wch:c.w}));
+  const last = Math.max(rows.length - 1, 300);
+  sc.cols.forEach((c, ci) => { if (!c.text) return;
+    for (let r = 1; r <= last; r++){ const a = X.utils.encode_cell({r, c:ci}); const cell = ws[a];
+      if (cell){ cell.t = 's'; cell.v = String(cell.v ?? ''); cell.z = '@'; delete cell.w; } else ws[a] = {t:'s', v:'', z:'@'}; } });
+  ws['!ref'] = X.utils.encode_range({s:{r:0,c:0}, e:{r:last, c:sc.cols.length-1}});
+  ws['!autofilter'] = {ref: X.utils.encode_range({s:{r:0,c:0}, e:{r:Math.max(rows.length-1,1), c:sc.cols.length-1}})};
+  const info = [
+    [`Como preencher — ${sc.nome}`], [''],
+    ['• Colunas com * são obrigatórias.'],
+    ['• Base: ' + BKEYS.map(k => BASES[k].nome).join(', ') + '.'],
+    kind === 'colab'
+      ? ['• Status: Ativo, Afastado, Férias ou Desligado (vazio = Ativo).']
+      : ['• Tipo: Carro ou Moto.   Situação: Operando, Atenção, Com problema, Em manutenção ou Parado (vazio = Operando).'],
+    kind === 'colab' ? ['• Nº POS, Matrícula e Telefone já estão como texto: cole o número inteiro, sem perder dígitos.'] : ['• Placa: ABC1D23 (Mercosul) ou ABC1234.'],
+    kind === 'colab' ? ['• Placa do veículo: use uma placa já cadastrada na Frota (importe a frota primeiro).'] : ['• Placa já cadastrada é atualizada; placa nova é criada.'],
+    kind === 'colab' ? ['• Quem já existe (mesma Matrícula, Nº POS ou Nome) é atualizado; o resto é criado.'] : [''],
+    ['• Apague a linha de exemplo antes de importar.'],
+    ['• Depois da importação, tudo pode ser editado normalmente no painel.']
+  ];
+  const wsI = X.utils.aoa_to_sheet(info); wsI['!cols'] = [{wch:110}];
+  const wb = X.utils.book_new();
+  X.utils.book_append_sheet(wb, ws, sc.sheet);
+  X.utils.book_append_sheet(wb, wsI, 'Instruções');
+  const name = withData ? `${sc.sheet}_${curBaseKey() ? BASES[curBaseKey()].nome.replace(/\s/g,'') + '_' : ''}${iso(new Date())}.xlsx` : sc.modelo;
+  X.writeFile(wb, name);
+  toast(withData ? 'Planilha exportada.' : 'Modelo baixado.');
+}
+
+function openImport(kind){
+  if (!isAdmin()) return;
+  const sc = IMP[kind];
+  openModal({wide:true, title:`Importar ${sc.nome} do Excel`, body:`
+    <div class="imp-steps">
+      <div class="imp-step"><span>1</span><div><b>Baixe a planilha modelo</b><p>Já vem com as colunas certas e uma linha de exemplo.</p><button class="btn sm" data-act="x-model" data-k="${kind}">${ic('download',14)}Baixar modelo</button></div></div>
+      <div class="imp-step"><span>2</span><div><b>Preencha no Excel</b><p>Uma linha por ${kind==='colab'?'colaborador':'veículo'}. Também serve uma planilha exportada daqui.</p></div></div>
+      <div class="imp-step"><span>3</span><div><b>Envie o arquivo</b><p>Você confere tudo antes de gravar.</p></div></div>
+    </div>
+    <label class="drop" id="drop">${ic('file',28)}<b>Arraste a planilha aqui ou clique para escolher</b><span>.xlsx, .xls ou .csv</span><input type="file" id="xfile" accept=".xlsx,.xls,.csv" hidden></label>
+    <div id="impres"></div>`,
+    foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" id="impgo" data-act="x-apply" data-k="${kind}" disabled>${ic('check',15)}Importar</button>`,
+    onMount: ov => {
+      const inp = $('#xfile', ov), dr = $('#drop', ov);
+      inp.onchange = () => inp.files[0] && readImport(kind, inp.files[0]);
+      ['dragover','dragenter'].forEach(e => dr.addEventListener(e, ev => { ev.preventDefault(); dr.classList.add('over'); }));
+      ['dragleave','drop'].forEach(e => dr.addEventListener(e, ev => { ev.preventDefault(); dr.classList.remove('over'); }));
+      dr.addEventListener('drop', ev => { const f = ev.dataTransfer.files[0]; if (f) readImport(kind, f); });
+    }});
+}
+let IMPST = null;
+async function readImport(kind, file){
+  const box = $('#impres'); box.innerHTML = `<div class="muted" style="padding:14px 0">Lendo ${esc(file.name)}...</div>`;
+  try {
+    const X = await loadXLSX();
+    const wb = X.read(await file.arrayBuffer(), {type:'array', cellDates:true});
+    const sn = wb.SheetNames.find(n => !/instru/i.test(n)) || wb.SheetNames[0];
+    const aoa = X.utils.sheet_to_json(wb.Sheets[sn], {header:1, raw:true, defval:''});
+    const sc = IMP[kind];
+    let hr = -1, map = null;
+    for (let r = 0; r < Math.min(aoa.length, 8); r++){
+      const m = {}; aoa[r].forEach((h, ci) => { const n = nk(h); const col = sc.cols.find(c => c.al.includes(n)); if (col && m[col.k] == null) m[col.k] = ci; });
+      if (Object.keys(m).length >= 2){ hr = r; map = m; break; }
+    }
+    if (hr < 0) throw new Error('Não encontrei os títulos das colunas. Use a planilha modelo.');
+    const miss = sc.cols.filter(c => c.req && map[c.k] == null && !(c.k === 'base'));
+    if (miss.length) throw new Error('Faltam as colunas: ' + miss.map(c => c.h).join(', ') + '.');
+    const raw = [];
+    for (let r = hr + 1; r < aoa.length; r++){
+      const o = {_line: r + 1}; let any = false;
+      sc.cols.forEach(c => { const ci = map[c.k]; const v = ci == null ? '' : cellStr(aoa[r][ci]); o[c.k] = v; if (v) any = true;
+        if (c.k === 'pos' && ci != null && typeof aoa[r][ci] === 'number' && aoa[r][ci] >= 1e15) o._posRisk = true; });
+      if (any) raw.push(o);
+    }
+    if (!raw.length) throw new Error('A planilha não tem linhas preenchidas.');
+    IMPST = {kind, file:file.name, raw, baseDef: curBaseKey() || ''};
+    validateImport(); drawImport();
+  } catch(e){ box.innerHTML = `<div class="imp-err">${ic('alert',16)}${esc(e.message || String(e))}</div>`; $('#impgo').disabled = true; }
+}
+function validateImport(){
+  const st = IMPST, out = [];
+  if (st.kind === 'veic'){
+    const seen = new Set();
+    st.raw.forEach(o => {
+      const r = {line:o._line, errs:[], warns:[], d:{}};
+      const placa = normPlaca(o.placa), tipo = mapTipo(o.tipo), base = baseKey(o.base) ?? null, status = mapStatusV(o.situacao);
+      const b = base || (o.base ? null : st.baseDef);
+      if (!placaOk(placa)) r.errs.push('placa inválida');
+      else if (seen.has(placa)) r.errs.push('placa repetida na planilha');
+      seen.add(placa);
+      if (!tipo) r.errs.push('tipo deve ser Carro ou Moto');
+      if (!b) r.errs.push(o.base ? `base "${o.base}" não existe` : 'sem base');
+      const ex = S.veics.find(v => v.placa === placa);
+      if (!o.modelo && !ex) r.errs.push('falta o modelo');
+      if (status === undefined){ r.warns.push(`situação "${o.situacao}" não reconhecida, ficou Operando`); }
+      const ano = o.ano ? parseInt(o.ano) : null, km = o.km ? parseInt(String(o.km).replace(/\D/g,'')) : null;
+      r.d = {placa, tipo, base:b, marca:o.marca||null, modelo:o.modelo||null, ano:isNaN(ano)?null:ano, cor:o.cor||null, km:isNaN(km)?null:km, status:status||'ok', observacoes:o.observacoes||null};
+      r.match = ex || null; r.act = ex ? 'atualizar' : 'novo';
+      r.show = [placa || o.placa, o.modelo || ex?.modelo || '', b ? BASES[b].nome : (o.base||'—'), VSTATUS[r.d.status].label];
+      out.push(r);
+    });
+  } else {
+    const placas = new Map();
+    st.raw.forEach(o => {
+      const r = {line:o._line, errs:[], warns:[], d:{}};
+      const base = baseKey(o.base) ?? null, b = base || (o.base ? null : st.baseDef);
+      const status = mapStatusC(o.status), adm = parseDate(o.admissao), pos = o.pos ? o.pos.replace(/\s+/g,'') : null;
+      if (!o.nome) r.errs.push('falta o nome');
+      if (!b) r.errs.push(o.base ? `base "${o.base}" não existe` : 'sem base');
+      if (status === undefined) r.warns.push(`status "${o.status}" não reconhecido, ficou Ativo`);
+      if (adm === undefined) r.warns.push(`data de admissão "${o.admissao}" ignorada`);
+      if (o._posRisk) r.warns.push('Nº POS veio como número no Excel e pode ter perdido dígitos — confira');
+      let veiculo_id;
+      if (o.placa){
+        const p = normPlaca(o.placa), v = S.veics.find(x => x.placa === p);
+        if (!v) r.warns.push(`placa ${p} não está na frota, ficou sem veículo`);
+        else if (placas.has(p)) r.warns.push(`placa ${p} já usada na linha ${placas.get(p)}`);
+        else { veiculo_id = v.id; placas.set(p, o._line); if (b && v.base !== b) r.warns.push(`veículo ${p} é da base ${bName(v.base)}`); }
+      }
+      const nn = nk(o.nome);
+      const ex = (o.matricula && S.colabs.find(c => c.matricula && String(c.matricula) === o.matricula))
+        || (pos && S.colabs.find(c => c.pos && c.pos === pos))
+        || (nn && S.colabs.find(c => nk(c.nome) === nn)) || null;
+      r.d = {nome:o.nome||null, base:b, cargo:o.cargo||null, matricula:o.matricula||null, telefone:o.telefone ? fmtPhone(o.telefone) : null, email:o.email||null, pos,
+        admissao:adm||null, status:status||'ativo', observacoes:o.observacoes||null};
+      if (veiculo_id) r.d.veiculo_id = veiculo_id;
+      r.match = ex; r.act = ex ? 'atualizar' : 'novo';
+      r.show = [o.nome || '—', b ? BASES[b].nome : (o.base||'—'), pos || '—', o.placa ? normPlaca(o.placa) : '—'];
+      out.push(r);
+    });
+  }
+  st.rows = out;
+}
+function drawImport(){
+  const st = IMPST, rows = st.rows, ok = rows.filter(r => !r.errs.length);
+  const nNovo = ok.filter(r => r.act === 'novo').length, nUp = ok.filter(r => r.act === 'atualizar').length, nErr = rows.length - ok.length;
+  const semBase = st.raw.some(o => !o.base);
+  const heads = st.kind === 'veic' ? ['Placa','Modelo','Base','Situação'] : ['Nome','Base','Nº POS','Veículo'];
+  $('#impres').innerHTML = `
+    <div class="imp-sum"><span class="imp-f">${ic('file',16)}${esc(st.file)} — ${rows.length} linha(s)</span>
+      <span class="chip" style="--c:#22c55e">${nNovo} novo(s)</span><span class="chip" style="--c:#4f63d6">${nUp} atualizado(s)</span>${nErr?`<span class="chip" style="--c:#ef4444">${nErr} com erro (não entram)</span>`:''}</div>
+    ${semBase ? `<div class="imp-base">${ic('map',16)}<span>Linhas sem base vão para:</span><select class="sel sm" id="impbase">${baseOpts(st.baseDef, true)}</select></div>` : ''}
+    <div class="tbl-wrap imp-tbl"><table><thead><tr><th>Linha</th>${heads.map(h => `<th>${h}</th>`).join('')}<th>Ação</th><th>Observação</th></tr></thead><tbody>
+    ${rows.map(r => `<tr class="${r.errs.length?'bad':''}"><td class="muted">${r.line}</td>${r.show.map((v,i) => `<td>${i===0&&st.kind==='veic'?`<span class="mono">${esc(v)}</span>`:esc(v)}</td>`).join('')}
+      <td>${r.errs.length?'<span class="chip" style="--c:#ef4444">Erro</span>':r.act==='novo'?'<span class="chip" style="--c:#22c55e">Novo</span>':'<span class="chip" style="--c:#4f63d6">Atualizar</span>'}</td>
+      <td class="s">${[...r.errs.map(e => `<span class="e">${esc(e)}</span>`), ...r.warns.map(w => `<span class="w">${esc(w)}</span>`)].join('<br>') || '<span class="muted">—</span>'}</td></tr>`).join('')}
+    </tbody></table></div>`;
+  const s = $('#impbase'); if (s) s.onchange = e => { st.baseDef = e.target.value; validateImport(); drawImport(); };
+  const btn = $('#impgo'); btn.disabled = !ok.length; btn.innerHTML = `${ic('check',15)}Importar ${ok.length} registro(s)`;
+}
+async function applyImport(){
+  const st = IMPST; if (!st) return;
+  const ok = st.rows.filter(r => !r.errs.length); if (!ok.length) return;
+  const btn = $('#impgo'); btn.disabled = true; btn.textContent = 'Importando...';
+  const clean = d => Object.fromEntries(Object.entries(d).filter(([k,v]) => v !== null && v !== '' && v !== undefined));
+  try {
+    if (st.kind === 'veic'){
+      const novos = ok.filter(r => r.act === 'novo').map(r => ({...r.d, status_em:nowISO(), status_por:S.profile.nome}));
+      const ins = await DB.insertMany('veiculos', novos);
+      await DB.insertMany('veiculo_historico', ins.map(v => ({veiculo_id:v.id, status:v.status, obs:'Importado do Excel', por_id:S.profile.id, por_nome:S.profile.nome})));
+      for (const r of ok.filter(r => r.act === 'atualizar')){
+        const patch = clean(r.d); delete patch.placa;
+        if (patch.status && patch.status !== r.match.status){ patch.status_em = nowISO(); patch.status_por = S.profile.nome;
+          await DB.insert('veiculo_historico', {veiculo_id:r.match.id, status:patch.status, obs:'Atualizado pelo Excel', por_id:S.profile.id, por_nome:S.profile.nome}); }
+        else delete patch.status;
+        await DB.update('veiculos', r.match.id, patch);
+      }
+    } else {
+      for (const r of ok){ const vid = r.d.veiculo_id; if (!vid) continue;
+        const holder = condutorOf(vid); if (holder && !(r.match && sameId(holder.id, r.match.id))){ await DB.update('colaboradores', holder.id, {veiculo_id:null}); holder.veiculo_id = null; } }
+      await DB.insertMany('colaboradores', ok.filter(r => r.act === 'novo').map(r => ({...r.d, veiculo_id:r.d.veiculo_id || null})));
+      for (const r of ok.filter(r => r.act === 'atualizar')) await DB.update('colaboradores', r.match.id, clean(r.d));
+    }
+    closeModal(); IMPST = null;
+    toast(`Importação concluída: ${ok.length} registro(s).`); await reload();
+  } catch(e){ err(e); btn.disabled = false; btn.innerHTML = `${ic('check',15)}Tentar de novo`; await loadAll(); }
+}
+
 
 /* ========================= DIÁRIO DE BORDO ========================= */
 function pgDiario(){
-  const f = S.f, mine = myChamados();
-  const base = mine.filter(c => !f.tl || sameId(c.autor_id,f.tl));
+  const f = S.f, adm = isAdmin(), tt = f.tt;
+  const probs = chsV('problema'), peds = chsV('pedido');
+  const nP = probs.filter(c => c.status !== 'resolvido').length, nD = peds.filter(c => c.status !== 'resolvido').length;
+  const list = tt === 'pedido' ? peds : probs;
+  const base = list.filter(c => !f.tl || sameId(c.autor_id,f.tl) || sameId(c.destinatario_id,f.tl));
   let leaders = '';
-  if (isAdmin()){
-    const autores = S.profiles.filter(p => p.role==='lider' || S.chamados.some(c => sameId(c.autor_id,p.id)));
-    leaders = `<div class="leaders">${autores.map(p => { const l = S.chamados.filter(c => sameId(c.autor_id,p.id)); const n = k => l.filter(c => c.status===k).length;
-      return `<button class="card ld ${sameId(f.tl,p.id)?'on':''}" data-act="t-fl" data-k="${p.id}">${avatar(p.nome,38)}<div style="min-width:0"><b>${esc(p.nome)}</b><div class="nums"><span><i class="dot" style="--c:${CH.aberto.color}"></i><b>${n('aberto')}</b> abertos</span><span><i class="dot" style="--c:${CH.andamento.color}"></i><b>${n('andamento')}</b></span><span><i class="dot" style="--c:${CH.resolvido.color}"></i><b>${n('resolvido')}</b></span></div></div></button>`; }).join('')}</div>`;
+  if (adm){
+    const ls = S.profiles.filter(p => p.role === 'lider' && (p.bases||[]).some(inScope));
+    leaders = ls.length ? `<div class="leaders">${ls.map(p => {
+      const l = tt === 'pedido' ? peds.filter(c => sameId(c.destinatario_id,p.id) || (!c.destinatario_id && (p.bases||[]).includes(c.base))) : probs.filter(c => sameId(c.autor_id,p.id));
+      const n = k => l.filter(c => c.status===k).length;
+      return `<button class="card ld ${sameId(f.tl,p.id)?'on':''}" data-act="t-fl" data-k="${p.id}">${emblem((p.bases||[])[0],36,10)}<div style="min-width:0"><b>${esc(p.nome)}</b><div class="nums"><span><i class="dot" style="--c:${CH.aberto.color}"></i><b>${n('aberto')}</b> ${CHL[tt].aberto.toLowerCase()}</span><span><i class="dot" style="--c:${CH.andamento.color}"></i><b>${n('andamento')}</b></span><span><i class="dot" style="--c:${CH.resolvido.color}"></i><b>${n('resolvido')}</b></span></div></div></button>`; }).join('')}</div>` : '';
   }
-  $('#page').innerHTML = `${leaders}
+  $('#page').innerHTML = `
+  <div class="dtabs" role="tablist">
+    <button class="dtab ${tt==='problema'?'on':''}" data-act="t-tt" data-k="problema" role="tab"><span class="dt-i">${ic('inbox',20)}</span><span><b>Problemas das bases</b><small>${adm?'Os líderes relatam, só você responde e resolve':'Relate problemas da equipe ao gestor'}</small></span>${nP?`<em>${nP}</em>`:''}</button>
+    <button class="dtab ${tt==='pedido'?'on':''}" data-act="t-tt" data-k="pedido" role="tab"><span class="dt-i">${ic('flag',20)}</span><span><b>Pedidos do gestor</b><small>${adm?'Você pede, a base responde e conclui':'Solicitações do gestor para sua base'}</small></span>${nD?`<em>${nD}</em>`:''}</button>
+  </div>
+  ${leaders}
   <div class="toolbar">
-    <div class="seg">${[['','Todos'],['aberto','Abertos'],['andamento','Em andamento'],['resolvido','Resolvidos']].map(([k,l]) => `<button class="${f.ts===k?'on':''}" data-act="t-fs" data-k="${k}">${l} <b style="font-weight:600">${k?base.filter(c=>c.status===k).length:base.length}</b></button>`).join('')}</div>
+    <div class="seg">${['', 'aberto','andamento','resolvido'].map(k => `<button class="${f.ts===k?'on':''}" data-act="t-fs" data-k="${k}">${k?CHL[tt][k]:'Todos'} <b style="font-weight:600">${k?base.filter(c=>c.status===k).length:base.length}</b></button>`).join('')}</div>
     <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar no diário..." value="${esc(f.tq)}"></label>
-    <select class="sel" id="fc"><option value="">Todas as categorias</option>${opts(CATS.map(c=>[c,c]), f.tc)}</select>
-    <div class="tb-right"><button class="btn pri" data-act="t-new">${ic('plus',16)}Novo registro</button></div>
+    <select class="sel" id="fc"><option value="">Todas as categorias</option>${opts((tt==='pedido'?CATS_P:CATS).map(c=>[c,c]), f.tc)}</select>
+    <div class="tb-right">${tt==='problema' && !adm ? `<button class="btn pri" data-act="t-new">${ic('plus',16)}Registrar problema</button>` : ''}${tt==='pedido' && adm ? `<button class="btn pri" data-act="p-new">${ic('flag',16)}Novo pedido</button>` : ''}</div>
   </div>
   <div class="card" id="list" style="overflow:hidden"></div>`;
   $('#q').oninput = e => { f.tq = e.target.value; diarioList(); };
@@ -1272,74 +1867,144 @@ function pgDiario(){
   diarioList();
 }
 function diarioList(){
-  const f = S.f, q = f.tq.toLowerCase().trim();
-  const list = myChamados().filter(c => (!f.tl || sameId(c.autor_id,f.tl)) && (!f.ts || c.status===f.ts) && (!f.tc || c.categoria===f.tc) &&
-    (!q || [c.titulo,c.descricao,c.resposta,c.autor_nome,'#'+c.id,C(c.colaborador_id)?.nome,V(c.veiculo_id)?.placa].join(' ').toLowerCase().includes(q)));
-  $('#list').innerHTML = list.length ? list.map(c => { const col = C(c.colaborador_id), v = V(c.veiculo_id);
+  const f = S.f, q = f.tq.toLowerCase().trim(), tt = f.tt, today = iso(new Date()), multi = !S.base && myBases().length > 1;
+  const list = chsV(tt).filter(c => (!f.tl || sameId(c.autor_id,f.tl) || sameId(c.destinatario_id,f.tl) || (tt==='pedido' && !c.destinatario_id && (P(f.tl)?.bases||[]).includes(c.base))) && (!f.ts || c.status===f.ts) && (!f.tc || c.categoria===f.tc) &&
+    (!q || [c.titulo,c.descricao,c.autor_nome,'#'+c.id,C(c.colaborador_id)?.nome,V(c.veiculo_id)?.placa,bName(c.base),...msgsOf(c.id).map(m=>m.texto)].join(' ').toLowerCase().includes(q)));
+  $('#list').innerHTML = list.length ? list.map(c => { const col = C(c.colaborador_id), v = V(c.veiculo_id), ms = msgsOf(c.id), lastM = ms[ms.length-1];
+    const late = tt === 'pedido' && c.status !== 'resolvido' && c.prazo && c.prazo < today;
+    const novo = lastM && !sameId(lastM.autor_id, S.profile.id) && c.status !== 'resolvido';
+    const dest = tt === 'pedido' ? (c.destinatario_id ? P(c.destinatario_id)?.nome : 'Todos os líderes da base') : null;
     return `<div class="tk" style="--c:${PRIOR[c.prioridade]?.color}" data-act="ch-open" data-id="${c.id}" role="button" tabindex="0">
-      <span class="num">#${c.id}</span>${avatar(c.autor_nome,34)}
-      <div class="body"><div class="t">${esc(c.titulo)}</div><div class="m"><span>${esc(c.autor_nome)}</span><span>${ago(c.created_at)}</span><span class="tag" style="--c:#4f5fd8">#${esc(c.categoria)}</span>${col?`<span>${ic('user',12)} ${esc(col.nome)}</span>`:''}${v?plate(v.placa,true):''}</div></div>
+      <span class="num">#${c.id}</span>${multi ? emblem(c.base,34,10) : avatar(c.autor_nome,34)}
+      <div class="body"><div class="t">${esc(c.titulo)}</div><div class="m">${multi?`<span class="fw5" style="color:${bOf(c.base)?.c||'inherit'}">${bName(c.base)}</span>`:''}<span>${tt==='pedido' ? 'Para ' + esc(dest||'—') : esc(c.autor_nome)}</span><span>${ago(c.created_at)}</span><span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${col?`<span>${ic('user',12)} ${esc(col.nome)}</span>`:''}${v?plate(v.placa,true):''}${c.prazo && tt==='pedido'?`<span class="${late?'late':''}">${ic('clock',12)} ${late?'Venceu':'Prazo'} ${fmtD(c.prazo)}</span>`:''}</div></div>
       <span class="hide-m">${chip(PRIOR[c.prioridade],false)}</span>
-      ${c.resposta?`<span class="replied" title="Respondido pelo administrador">${ic('msg',17)}</span>`:''}
-      ${chip(CH[c.status])}</div>`; }).join('')
-    : empty('book','Nenhum registro encontrado', 'Use "Novo registro" para relatar um problema ou reclamação da equipe.');
+      ${ms.length?`<span class="mcount ${novo?'new':''}" title="${novo?'Mensagem nova':'Mensagens'}">${ic('msg',15)}${ms.length}</span>`:''}
+      ${chip(chSt(c))}</div>`; }).join('')
+    : empty(tt==='pedido'?'flag':'inbox', tt==='pedido' ? 'Nenhum pedido por aqui' : 'Nenhum problema registrado', tt==='pedido' ? (isAdmin() ? 'Use "Novo pedido" para pedir algo a uma base.' : 'Quando o gestor fizer um pedido para sua base, ele aparece aqui.') : (isAdmin() ? 'Quando os líderes relatarem problemas, eles aparecem aqui.' : 'Use "Registrar problema" para relatar algo ao gestor.'));
+}
+function baseField(cur, id='fbase'){
+  const bs = myBases();
+  if (bs.length === 1) return `<input type="hidden" name="base" value="${bs[0]}">${fld('Base', `<div class="fixed-base">${bTag(bs[0])}</div>`)}`;
+  return fld('Base', `<select name="base" id="${id}" required>${baseOpts(cur, !cur)}</select>`, false, true);
 }
 function chForm(){
-  openModal({title:'Novo registro no diário de bordo', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+  const b = defBase();
+  const colOpts = base => `<option value="">— Nenhum —</option>${opts(colabsSorted(base).map(c=>[c.id,c.nome]))}`;
+  const veiOpts = base => `<option value="">— Nenhum —</option>${opts(S.veics.filter(v => v.base === base).map(v=>[v.id,`${v.placa} — ${v.modelo}`]))}`;
+  openModal({title:'Registrar problema para o gestor', wide:true, body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Título', inp('titulo','','maxlength="120" placeholder="Resuma o problema em poucas palavras"'), true, true)}
+    ${baseField(b)}
     ${fld('Categoria', `<select name="categoria">${opts(CATS.map(c=>[c,c]),'Equipe')}</select>`)}
-    ${fld('Colaborador envolvido', `<select name="colaborador_id"><option value="">— Nenhum —</option>${opts(colabsSorted().map(c=>[c.id,c.nome]))}</select>`)}
     ${fld('Prioridade', rchips('prioridade',PRIOR,'media'), true)}
-    ${fld('Veículo relacionado', `<select name="veiculo_id"><option value="">— Nenhum —</option>${opts(S.veics.map(v=>[v.id,`${v.placa} — ${v.modelo}`]))}</select>`, true)}
+    ${fld('Colaborador envolvido', `<select name="colaborador_id" id="fcol">${colOpts(b)}</select>`)}
+    ${fld('Veículo relacionado', `<select name="veiculo_id" id="fvei">${veiOpts(b)}</select>`)}
     ${fld('Descrição', `<textarea name="descricao" rows="5" placeholder="O que aconteceu, quem está envolvido e o que é preciso para resolver."></textarea>`, true, true)}
-  </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="t-save">${ic('check',15)}Registrar</button>`});
+  </form><p class="f-hint">Só o gestor pode responder e marcar como resolvido. Você pode complementar com mensagens depois.</p>`,
+  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="t-save">${ic('send',15)}Enviar ao gestor</button>`,
+  onMount: ov => { const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fcol',ov).innerHTML = colOpts(e.target.value); $('#fvei',ov).innerHTML = veiOpts(e.target.value); }; }});
 }
-async function saveCh(){
+function pedidoForm(){
+  if (!isAdmin()) return;
+  const b = curBaseKey();
+  const destOpts = base => `<option value="">Todos os líderes da base</option>${opts(lidersOf(base).map(p=>[p.id,p.nome]))}`;
+  const d3 = new Date(); d3.setDate(d3.getDate()+3);
+  openModal({title:'Novo pedido para a base', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('O que você precisa', inp('titulo','','maxlength="120" placeholder="Ex: Enviar relatório de produtividade da semana"'), true, true)}
+    ${fld('Base', `<select name="base" id="fbase" required>${baseOpts(b, !b)}</select>`, false, true)}
+    ${fld('Para quem', `<select name="destinatario_id" id="fdest">${destOpts(b)}</select>`)}
+    ${fld('Categoria', `<select name="categoria">${opts(CATS_P.map(c=>[c,c]),'Relatório')}</select>`)}
+    ${fld('Prazo', inp('prazo',iso(d3),'type="date"'))}
+    ${fld('Prioridade', rchips('prioridade',PRIOR,'media'), true)}
+    ${fld('Detalhes', `<textarea name="descricao" rows="5" placeholder="Explique o pedido, o formato esperado e qualquer informação útil."></textarea>`, true, true)}
+  </form>`,
+  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="p-save">${ic('send',15)}Enviar pedido</button>`,
+  onMount: ov => { $('#fbase',ov).onchange = e => { $('#fdest',ov).innerHTML = destOpts(e.target.value); }; }});
+}
+async function saveCh(tipo){
   const f = formObj();
   if (!f.titulo) return toast('Informe o título.','err');
-  if (!f.descricao) return toast('Descreva o problema.','err');
+  if (!BASES[f.base]) return toast('Escolha a base.','err');
+  if (!f.descricao) return toast(tipo === 'pedido' ? 'Descreva o pedido.' : 'Descreva o problema.','err');
   try {
-    const r = await DB.insert('chamados', {titulo:f.titulo, descricao:f.descricao, categoria:f.categoria||'Outro', prioridade:f.prioridade||'media', status:'aberto',
-      colaborador_id:f.colaborador_id, veiculo_id:f.veiculo_id, autor_id:S.profile.id, autor_nome:S.profile.nome, updated_at:nowISO()});
-    closeModal(); toast(`Registro #${r.id} criado.`); await reload();
+    const row = {tipo, base:f.base, titulo:f.titulo, descricao:f.descricao, categoria:f.categoria||'Outro', prioridade:f.prioridade||'media', status:'aberto',
+      autor_id:S.profile.id, autor_nome:S.profile.nome, updated_at:nowISO()};
+    if (tipo === 'pedido'){ row.destinatario_id = f.destinatario_id; row.prazo = f.prazo; }
+    else { row.colaborador_id = f.colaborador_id; row.veiculo_id = f.veiculo_id; }
+    const r = await DB.insert('chamados', row);
+    closeModal(); toast(tipo === 'pedido' ? `Pedido #${r.id} enviado para ${bName(f.base)}.` : `Problema #${r.id} enviado ao gestor.`); S.f.tt = tipo; await reload();
   } catch(e){ err(e); }
 }
-const step = (l, d, done) => `<div class="step ${done?'done':''}"><i></i><b>${l}</b><small>${d?fmtDT(d):'—'}</small></div>`;
+const stepEl = (l, d, done) => `<div class="step ${done?'done':''}"><i></i><b>${l}</b><small>${d?fmtDT(d):'—'}</small></div>`;
 function openCh(id){
-  const c = S.chamados.find(x => sameId(x.id,id)); if (!c) return;
-  const col = C(c.colaborador_id), v = V(c.veiculo_id), adm = isAdmin();
-  openModal({wide:true, title:`Chamado #${c.id}`, body:`
-    <div class="ch-head"><h2>${esc(c.titulo)}</h2><div class="chips">${chip(CH[c.status])}${chip(PRIOR[c.prioridade],false)}<span class="tag" style="--c:#4f5fd8">#${esc(c.categoria)}</span></div></div>
+  const c = CHM(id); if (!c) return;
+  const tp = tipoOf(c), adm = isAdmin(), col = C(c.colaborador_id), v = V(c.veiculo_id), ms = msgsOf(c.id), today = iso(new Date());
+  const firstResp = ms.find(m => !sameId(m.autor_id, c.autor_id));
+  const legacy = c.resposta && !ms.length ? [{id:'legacy', autor_id:null, autor_nome:c.respondido_por||'Gestor', texto:c.resposta, created_at:c.respondido_em||c.updated_at}] : [];
+  const thread = [...legacy, ...ms];
+  const canStatus = adm || tp === 'pedido';
+  const dest = tp === 'pedido' ? (c.destinatario_id ? P(c.destinatario_id)?.nome : 'Todos os líderes da base') : null;
+  const late = tp === 'pedido' && c.status !== 'resolvido' && c.prazo && c.prazo < today;
+  let actions = '';
+  if (c.status === 'resolvido'){
+    actions = adm ? `<button class="btn" data-act="ch-reopen" data-id="${c.id}">Reabrir</button>` : '';
+  } else if (adm){
+    actions = `<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="resolvido">${ic('check',15)}${tp==='pedido'?'Enviar e concluir':'Responder e resolver'}</button><button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar resposta</button>`;
+  } else if (tp === 'pedido'){
+    actions = `${c.status==='aberto'?`<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="andamento">Marcar em andamento</button>`:''}<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="resolvido">${ic('check',15)}Concluir pedido</button><button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar mensagem</button>`;
+  } else {
+    actions = `<button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar complemento</button>`;
+  }
+  openModal({wide:true, title:`${tp==='pedido'?'Pedido':'Problema'} #${c.id}`, body:`
+    <div class="ch-head"><div class="chips" style="margin-bottom:10px">${bTag(c.base)}${tipoTag(c)}</div><h2>${esc(c.titulo)}</h2><div class="chips">${chip(chSt(c))}${chip(PRIOR[c.prioridade],false)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${late?`<span class="chip" style="--c:#ef4444">Prazo vencido</span>`:''}</div></div>
     <div class="dl" style="margin:18px 0 0">
-      <div><small>Registrado por</small><div class="who">${avatar(c.autor_nome,26)}<b>${esc(c.autor_nome)}</b></div></div>
+      <div><small>${tp==='pedido'?'Pedido por':'Registrado por'}</small><div class="who">${avatar(c.autor_nome,26)}<b>${esc(c.autor_nome)}</b></div></div>
       <div><small>Data</small><b>${fmtDT(c.created_at)}</b></div>
+      ${tp==='pedido'?`<div><small>Para</small><b>${esc(dest||'—')}</b></div><div><small>Prazo</small><b class="${late?'late':''}">${c.prazo?fmtD(c.prazo):'Sem prazo'}</b></div>`:''}
       ${col?`<div><small>Colaborador envolvido</small><span class="lnk" data-act="c-open" data-id="${col.id}">${esc(col.nome)}</span></div>`:''}
       ${v?`<div><small>Veículo</small><span class="lnk" data-act="v-open" data-id="${v.id}">${plate(v.placa,true)} ${esc(v.modelo)}</span></div>`:''}
     </div>
     <div class="sec">Descrição</div><div class="box">${esc(c.descricao||'—')}</div>
-    <div class="sec">Resposta do administrador</div>
-    ${adm ? `<textarea id="resp" class="ta" rows="4" placeholder="Escreva a resposta ou as providências tomadas...">${esc(c.resposta||'')}</textarea>
-      ${c.respondido_em?`<div class="f-hint" style="margin-top:4px">Última resposta em ${fmtDT(c.respondido_em)} por ${esc(c.respondido_por||'')}</div>`:''}
-      <div class="sec">Situação</div>${rchips('st',CH,c.status)}`
-      : c.resposta ? `<div class="box resp">${esc(c.resposta)}<div class="resp-by">${esc(c.respondido_por||'Administrador')} — ${fmtDT(c.respondido_em)}</div></div>`
-      : `<div class="box muted">Aguardando análise do administrador.</div>`}
-    <div class="steps">${step('Aberto',c.created_at,true)}${step('Respondido',c.respondido_em,!!c.respondido_em)}${step('Resolvido',c.resolvido_em,c.status==='resolvido')}</div>`,
-    foot: adm ? `<button class="btn danger left" data-act="ch-del" data-id="${c.id}">${ic('trash',15)}Excluir</button>${c.status!=='resolvido'?`<button class="btn" data-act="ch-resolve" data-id="${c.id}">${ic('check',15)}Responder e resolver</button>`:''}<button class="btn pri" data-act="ch-resp" data-id="${c.id}">Salvar resposta</button>`
-      : `<button class="btn pri" data-act="modal-close">Fechar</button>`});
+    <div class="sec">Conversa</div>
+    <div class="thread">${thread.length ? thread.map(m => { const mine = sameId(m.autor_id, S.profile.id); const isG = m.autor_id == null || P(m.autor_id)?.role === 'admin';
+      return `<div class="msg ${mine?'me':''} ${isG?'g':''}">${avatar(m.autor_nome,28)}<div class="bub"><div class="mh"><b>${esc(m.autor_nome)}</b>${isG?'<span class="gtag">Gestor</span>':''}<small>${fmtDT(m.created_at)}</small></div><p>${esc(m.texto)}</p></div></div>`; }).join('')
+      : `<div class="box muted">${tp==='problema' ? (adm ? 'Ainda sem resposta. Escreva abaixo para responder ao líder.' : 'Aguardando resposta do gestor.') : (adm ? 'A base ainda não respondeu.' : 'Responda abaixo quando tiver novidades.')}</div>`}</div>
+    ${c.status !== 'resolvido' ? `<textarea id="resp" class="ta" rows="3" placeholder="${adm ? (tp==='pedido'?'Mensagem para a base...':'Sua resposta ou as providências tomadas...') : (tp==='pedido'?'Responda ao gestor: o que foi feito, quando fica pronto...':'Complemente o problema com novas informações...')}"></textarea>` : ''}
+    ${adm && c.status !== 'resolvido' ? `<div class="sec">Situação</div>${rchipsL('st',c)}` : ''}
+    ${!adm && tp==='problema' ? '<p class="f-hint" style="margin-top:8px">Só o gestor responde e marca problemas como resolvidos.</p>' : ''}
+    <div class="steps">${tp==='pedido'
+      ? stepEl('Enviado',c.created_at,true) + stepEl('Base respondeu',firstResp?.created_at,!!firstResp) + stepEl('Concluído',c.resolvido_em,c.status==='resolvido')
+      : stepEl('Aberto',c.created_at,true) + stepEl('Gestor respondeu',firstResp?.created_at || (legacy[0]?.created_at),!!firstResp || !!legacy.length) + stepEl('Resolvido',c.resolvido_em,c.status==='resolvido')}</div>`,
+    foot: `${adm?`<button class="btn danger left" data-act="ch-del" data-id="${c.id}">${ic('trash',15)}Excluir</button>`:''}${actions || '<button class="btn pri" data-act="modal-close">Fechar</button>'}`,
+    onMount: ov => { const b = $('.thread', ov); if (b) b.scrollTop = b.scrollHeight; }});
 }
-async function saveResp(id, force){
-  const c = S.chamados.find(x => sameId(x.id,id)); if (!c) return;
-  const resp = ($('#resp')?.value || '').trim() || null;
-  let st = force || $('input[name=st]:checked')?.value || c.status;
-  if (st === 'aberto' && resp && !c.resposta) st = 'andamento';
-  const n = nowISO(); const patch = {resposta:resp, status:st, updated_at:n};
-  if (resp && resp !== c.resposta){ patch.respondido_por = S.profile.nome; patch.respondido_em = n; }
-  patch.resolvido_em = st === 'resolvido' ? (c.resolvido_em || n) : null;
-  try { await DB.update('chamados', id, patch); closeModal(); toast(st==='resolvido' ? `Chamado #${id} resolvido.` : `Chamado #${id} atualizado.`); await reload(); } catch(e){ err(e); }
+function rchipsL(name, c){
+  return `<div class="radios">${['aberto','andamento','resolvido'].map(k => `<label class="rchip" style="--c:${CH[k].color}"><input type="radio" name="${name}" value="${k}" ${k===c.status?'checked':''}><span><i class="d"></i>${CHL[tipoOf(c)][k]}</span></label>`).join('')}</div>`;
+}
+async function sendCh(id, force){
+  const c = CHM(id); if (!c) return;
+  const tp = tipoOf(c), adm = isAdmin();
+  const txt = ($('#resp')?.value || '').trim();
+  let st = force || (adm ? ($('input[name=st]:checked')?.value || c.status) : c.status);
+  if (!txt && st === c.status) return toast('Escreva uma mensagem.','err');
+  if (!adm && tp === 'problema') st = c.status;
+  if (txt && st === 'aberto' && (adm ? tp === 'problema' : tp === 'pedido')) st = 'andamento';
+  try {
+    if (txt) await DB.insert('mensagens', {chamado_id:c.id, autor_id:S.profile.id, autor_nome:S.profile.nome, texto:txt});
+    if (st !== c.status || adm){
+      const n = nowISO();
+      await DB.update('chamados', c.id, {status:st, updated_at:n, resolvido_em: st === 'resolvido' ? (c.resolvido_em || n) : null});
+    }
+    closeModal();
+    toast(st === 'resolvido' ? `${tp==='pedido'?'Pedido':'Problema'} #${id} ${tp==='pedido'?'concluído':'resolvido'}.` : txt ? 'Mensagem enviada.' : 'Situação atualizada.');
+    await reload();
+  } catch(e){ err(e); }
+}
+async function reopenCh(id){
+  try { await DB.update('chamados', id, {status:'andamento', resolvido_em:null, updated_at:nowISO()}); closeModal(); toast(`#${id} reaberto.`); await reload(); } catch(e){ err(e); }
 }
 async function delCh(id){
-  if (!await confirmBox(`Excluir o chamado <b>#${id}</b>? Esta ação não pode ser desfeita.`)) return;
-  try { await DB.remove('chamados', id); closeModal(); toast('Chamado excluído.'); await reload(); } catch(e){ err(e); }
+  if (!await confirmBox(`Excluir o registro <b>#${id}</b> e as mensagens dele? Esta ação não pode ser desfeita.`)) return;
+  try { await DB.remove('chamados', id); closeModal(); toast('Registro excluído.'); await reload(); } catch(e){ err(e); }
 }
 
 /* ========================= CALENDÁRIO ========================= */
@@ -1348,12 +2013,12 @@ function pgCal(){
   const c = S.cal, first = new Date(c.y, c.m, 1);
   const mName = cap(first.toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
   const mStart = iso(first), mEnd = iso(new Date(c.y, c.m+1, 0));
-  const inMonth = S.eventos.filter(e => e.data_inicio<=mEnd && e.data_fim>=mStart);
+  const inMonth = evsV().filter(e => e.data_inicio<=mEnd && e.data_fim>=mStart);
   const off = first.getDay(), dim = new Date(c.y, c.m+1, 0).getDate(), cells = Math.ceil((off+dim)/7)*7, today = iso(new Date());
   let days = '';
   for (let i = 0; i < cells; i++){
     const d = new Date(c.y, c.m, 1-off+i), ds = iso(d);
-    const evs = S.eventos.filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds).sort((a,b)=>a.tipo.localeCompare(b.tipo));
+    const evs = evsV().filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds).sort((a,b)=>a.tipo.localeCompare(b.tipo));
     days += `<div class="day ${d.getMonth()!==c.m?'out':''} ${ds===today?'today':''} ${[0,6].includes(d.getDay())?'we':''}" data-act="cal-cell" data-date="${ds}" title="Clique para marcar em ${fmtD(ds)}"><span class="dn">${d.getDate()}</span>
       ${evs.slice(0,3).map(e => { const o = EV[e.tipo]||EV.outro, n = C(e.colaborador_id)?.nome; return `<div class="ev" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}" title="${esc(n||'')} — ${o.label}">${esc(firstName(n))} · ${o.label}</div>`; }).join('')}
       ${evs.length>3?`<span class="more" data-act="cal-day" data-date="${ds}">+${evs.length-3} mais</span>`:''}</div>`;
@@ -1375,7 +2040,7 @@ function pgCal(){
   $('#calc').onchange = e => { S.cal.colab = e.target.value; pgCal(); };
 }
 function calDay(ds){
-  const evs = S.eventos.filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds);
+  const evs = evsV().filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds);
   openModal({title:`Ausências em ${fmtD(ds)}`, body: agendaList(evs), foot:`<button class="btn" data-act="modal-close">Fechar</button><button class="btn pri" data-act="ev-new" data-date="${ds}">${ic('plus',15)}Marcar ausência</button>`});
 }
 function evForm(id, date, colId){
@@ -1387,7 +2052,7 @@ function evForm(id, date, colId){
     return openModal({title:'Ausência', body:`<div class="who" style="margin-bottom:16px">${avatar(c?.nome,44)}<div><b style="font-size:15px">${esc(c?.nome||'—')}</b><small>${esc(c?.cargo||'')}</small></div></div>
       <div class="dl"><div><small>Tipo</small>${chip(o)}</div><div><small>Período</small><b>${rangeTxt(e.data_inicio,e.data_fim)} (${daysBetween(e.data_inicio,e.data_fim)} dia(s))</b></div>
       <div><small>Registrado por</small><b>${esc(e.criado_por_nome||'—')}</b></div>${e.observacao?`<div class="full"><small>Observação</small><div class="box">${esc(e.observacao)}</div></div>`:''}</div>
-      <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o administrador pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+      <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o gestor pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
   }
   openModal({title: id ? 'Editar ausência' : 'Marcar ausência', body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Colaborador', `<select name="colaborador_id" required><option value="">Selecione...</option>${opts(colabsSorted().filter(c=>c.status!=='desligado'||sameId(c.id,e.colaborador_id)).map(c=>[c.id,c.nome]), e.colaborador_id)}</select>`, true, true)}
@@ -1420,26 +2085,34 @@ async function delEv(id){
   try { await DB.remove('eventos', id); closeModal(); toast('Ausência excluída.'); await reload(); } catch(e){ err(e); }
 }
 
-/* ========================= USUÁRIOS ========================= */
+
+
+/* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
-  const list = S.profiles.slice().sort((a,b) => (a.role==='pendente'?0:1)-(b.role==='pendente'?0:1) || a.nome.localeCompare(b.nome,'pt'));
+  const list = S.profiles.slice().sort((a,b) => (a.role==='pendente'?0:1)-(b.role==='pendente'?0:1) || (a.role==='admin'?0:1)-(b.role==='admin'?0:1) || a.nome.localeCompare(b.nome,'pt'));
   const pend = list.filter(p => p.role==='pendente').length;
+  const cover = BKEYS.map(k => ({k, n:lidersOf(k).length}));
   $('#page').innerHTML = `
-  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Como dar acesso a um líder</b>
-    <p>${DEMO ? 'No modo demonstração você cria usuários aqui mesmo. Com o Supabase configurado, a pessoa abre o link do painel e clica em <b>Criar conta</b>.' : 'Envie o link do painel. A pessoa clica em <b>Criar conta</b> na tela de entrada e aparece aqui como <b>Aguardando</b>.'}
-    Mude o perfil para <b>Líder</b> para liberar. Líderes registram ocorrências no diário, marcam ausências e atualizam a situação da frota. Cadastrar e editar colaboradores e veículos e responder chamados é exclusivo do administrador.</p></div></div></div></div>
-  <div class="card" style="margin-top:18px"><div class="card-h"><h3>Usuários (${list.length})${pend?` <span class="chip" style="--c:#f5a623;margin-left:6px">${pend} aguardando</span>`:''}</h3>${DEMO?`<button class="btn pri sm" data-act="u-new">${ic('plus',14)}Novo usuário</button>`:''}</div>
-  <div class="card-b"><div class="tbl-wrap"><table><thead><tr><th>Usuário</th><th>Perfil</th><th>Acesso ativo</th><th class="hide-m">Registros no diário</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
-  ${list.map(p => `<tr><td><div class="who">${avatar(p.nome)}<div style="min-width:0"><b>${esc(p.nome)}${sameId(p.id,S.profile.id)?' <span class="muted">(você)</span>':''}</b><small>${esc(p.email||'')}</small></div></div></td>
-    <td><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Administrador'],['lider','Líder'],['pendente','Aguardando']],p.role)}</select></td>
+  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Como liberar um líder</b>
+    <p>Envie o link do painel. A pessoa clica em <b>Criar conta</b>, escolhe a base dela e aparece aqui como <b>Aguardando</b>. Mude o perfil para <b>Líder de base</b> e confira as bases marcadas. O líder vê apenas os dados das bases marcadas; o gestor vê todas.</p></div></div>
+    <div class="cover">${cover.map(x => `<div class="cv ${x.n?'':'none'}" style="--c:${BASES[x.k].c}">${emblem(x.k,30,9)}<span><b>${BASES[x.k].nome}</b><small>${x.n ? x.n + ' líder(es)' : 'Sem líder'}</small></span></div>`).join('')}</div>
+  </div></div>
+  <div class="card" style="margin-top:18px"><div class="card-h"><h3>Usuários (${list.length})${pend?` <span class="chip" style="--c:#f5a623;margin-left:6px">${pend} aguardando</span>`:''}</h3></div>
+  <div class="card-b"><div class="tbl-wrap"><table class="utbl"><thead><tr><th>Usuário</th><th>Perfil</th><th>Bases que pode ver</th><th>Acesso</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
+  ${list.map(p => { const me = sameId(p.id,S.profile.id); const bs = p.bases || [];
+    return `<tr class="${p.role==='pendente'?'pend':''}"><td><div class="who">${avatar(p.nome)}<div style="min-width:0"><b>${esc(p.nome)}${me?' <span class="muted">(você)</span>':''}</b><small>${esc(p.email||'')}</small></div></div></td>
+    <td><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Gestor'],['lider','Líder de base'],['pendente','Aguardando']],p.role)}</select></td>
+    <td>${p.role==='admin' ? '<span class="muted">Todas as bases</span>' : `<div class="bpick">${BKEYS.map(k => `<button class="bp ${bs.includes(k)?'on':''}" style="--c:${BASES[k].c}" data-act="u-base" data-id="${p.id}" data-k="${k}" aria-pressed="${bs.includes(k)}" title="${BASES[k].nome}">${emblem(k,18,5)}<span>${BASES[k].nome}</span></button>`).join('')}</div>${p.role==='lider' && !bs.length ? '<div class="late s" style="margin-top:4px">Escolha pelo menos uma base</div>' : ''}`}</td>
     <td><label class="sw" title="${p.ativo?'Ativo':'Bloqueado'}"><input type="checkbox" data-chg="u-ativo" data-id="${p.id}" ${p.ativo?'checked':''}><span></span></label></td>
-    <td class="hide-m">${S.chamados.filter(c=>sameId(c.autor_id,p.id)).length}</td><td class="hide-m">${fmtD(p.created_at)}</td></tr>`).join('')}
+    <td class="hide-m">${fmtD(p.created_at)}</td></tr>`; }).join('')}
   </tbody></table></div></div></div>`;
 }
 const CHG = {
   'u-role': async t => {
-    if (sameId(t.dataset.id,S.profile.id) && t.value !== 'admin'){ toast('Você não pode tirar o próprio acesso de administrador.','err'); t.value = 'admin'; return; }
+    if (sameId(t.dataset.id,S.profile.id) && t.value !== 'admin'){ toast('Você não pode tirar o próprio acesso de gestor.','err'); t.value = 'admin'; return; }
+    const p = P(t.dataset.id);
+    if (t.value === 'lider' && !(p?.bases||[]).length) toast('Agora marque a base desse líder.', 'ok');
     try { await DB.update('profiles', t.dataset.id, {role:t.value}); toast('Perfil atualizado.'); await reload(); } catch(e){ err(e); reload(); }
   },
   'u-ativo': async t => {
@@ -1447,38 +2120,44 @@ const CHG = {
     try { await DB.update('profiles', t.dataset.id, {ativo:t.checked}); toast(t.checked ? 'Acesso liberado.' : 'Acesso bloqueado.'); await reload(); } catch(e){ err(e); reload(); }
   }
 };
-function userForm(){
-  openModal({title:'Novo usuário (demonstração)', body:`<form id="mf" class="form">${fld('Nome', inp('nome','','required'), true, true)}${fld('E-mail', inp('email','','type="email"'), true)}${fld('Perfil', rchips('role',{lider:{label:'Líder',color:'#4f5fd8'},admin:{label:'Administrador',color:'#d94ee8'}},'lider'), true)}</form>`,
-    foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="u-save">Criar usuário</button>`});
-}
-async function saveUser(){
-  const f = formObj(); if (!f.nome) return toast('Informe o nome.','err');
-  try { await DB.insert('profiles', {nome:f.nome, email:f.email, role:f.role||'lider', ativo:true}); closeModal(); toast('Usuário criado.'); await reload(); } catch(e){ err(e); }
+async function toggleUserBase(id, k){
+  const p = P(id); if (!p) return;
+  const bs = new Set(p.bases || []); bs.has(k) ? bs.delete(k) : bs.add(k);
+  const arr = BKEYS.filter(x => bs.has(x));
+  p.bases = arr; pgUsers();
+  try { await DB.update('profiles', id, {bases:arr}); toast(`${firstName(p.nome)}: ${arr.length ? arr.map(bName).join(', ') : 'sem base'}`); await reload(); } catch(e){ err(e); reload(); }
 }
 
-/* ========================= LOGIN / SESSÃO ========================= */
+/* ========================= LOGIN (Supabase) ========================= */
+function loginShell(inner, cls=''){
+  $('#root').innerHTML = `<div class="login"><div class="card lcard ${cls}"><div class="brand">${logoMark(54)}${wordmark()}</div>${baseStripe()}${inner}</div><p class="lfoot">Primarização v${APP_VERSION}</p></div>`;
+}
+function renderSetup(){
+  const url = cleanUrl(CONFIG.SUPABASE_URL), key = String(CONFIG.SUPABASE_ANON_KEY||'').trim();
+  const loaded = !!window.PAINEL_CONFIG;
+  const row = (ok, t) => `<li class="${ok?'ok':'no'}">${ic(ok?'check':'x',15)}${t}</li>`;
+  loginShell(`<h2>Falta conectar ao Supabase</h2><p class="muted" style="line-height:1.6;margin:0 0 14px">O painel não encontrou a configuração do banco. Confira:</p>
+    <ul class="chk">${row(loaded,'Arquivo <code>config.js</code> encontrado ao lado do index.html')}${row(!!url,'SUPABASE_URL preenchida')}${row(!!key,'SUPABASE_ANON_KEY preenchida')}${row(!!window.supabase,'Biblioteca do Supabase carregou (internet)')}</ul>
+    <p class="f-hint" style="margin-top:14px">Depois de corrigir e subir no GitHub, espere 2 minutos e recarregue com Ctrl + F5.</p>`, 'center-l');
+}
 function renderLogin(msg=''){
-  S.profile = null; closeModal(); closePop();
-  let inner;
-  if (DEMO){
+  S.profile = null; closeModal(); closePop(); applyTheme();
+  if (TEST){
     const ps = Store.load().profiles;
-    inner = `<div class="notice">${ic('info',16)}<div><b>Modo demonstração.</b> Os dados ficam só neste navegador. Para usar com a equipe, preencha <code>SUPABASE_URL</code> e <code>SUPABASE_ANON_KEY</code> no início do arquivo.</div></div>
-      <p class="lbl">Entrar como:</p>
-      <div class="demo-list">${ps.map(p => `<button class="demo-btn" data-act="demo-login" data-id="${p.id}">${avatar(p.nome,36)}<div><b>${esc(p.nome)}</b><small>${ROLE[p.role]}${p.ativo?'':' — bloqueado'}</small></div>${ic('chevR',16)}</button>`).join('')}</div>
-      <button class="linkbtn" data-act="demo-reset" style="margin-top:12px">Restaurar dados de exemplo</button>`;
-  } else {
-    inner = `<div class="seg full" id="lmode"><button class="on" data-m="in" type="button">Entrar</button><button data-m="up" type="button">Criar conta</button></div>
-      <form id="lf" class="lform">
-        <div class="f up" hidden><label>Nome completo</label><input name="nome" autocomplete="name"></div>
-        <div class="f"><label>E-mail</label><input name="email" type="email" required autocomplete="email"></div>
-        <div class="f"><label>Senha</label><input name="senha" type="password" required minlength="6" autocomplete="current-password"></div>
-        <div class="lmsg" id="lmsg">${esc(msg)}</div>
-        <button class="btn pri full" type="submit" id="lbtn">Entrar</button>
-        <button type="button" class="linkbtn" id="lforgot">Esqueci minha senha</button>
-      </form>`;
+    return loginShell(`<p class="lbl">Entrar como (teste):</p><div class="demo-list">${ps.map(p => `<button class="demo-btn" data-act="test-login" data-id="${p.id}">${emblem((p.bases||[])[0],34,10)}<div><b>${esc(p.nome)}</b><small>${ROLE[p.role]}${p.bases?.length?' — '+p.bases.map(bName).join(', '):''}</small></div>${ic('chevR',16)}</button>`).join('')}</div>`);
   }
-  $('#root').innerHTML = `<div class="login"><div class="card lcard"><div class="brand"><span class="logo">pc</span><div><b>Painel de Controle</b><small>Equipe, frota e diário de bordo</small></div></div>${inner}</div></div>`;
-  if (!DEMO) bindLogin();
+  if (!CFG_OK || !sb) return renderSetup();
+  loginShell(`<div class="seg full" id="lmode"><button class="on" data-m="in" type="button">Entrar</button><button data-m="up" type="button">Criar conta</button></div>
+    <form id="lf" class="lform">
+      <div class="f up" hidden><label>Nome completo</label><input name="nome" autocomplete="name"></div>
+      <div class="f up" hidden><label>Sua base</label><div class="lbases">${BKEYS.map((k,i) => `<label class="lb" style="--c:${BASES[k].c}"><input type="radio" name="base" value="${k}" ${i===0?'':''}><span>${emblem(k,26,8)}${BASES[k].nome}</span></label>`).join('')}</div><span class="f-hint">O gestor confirma sua base ao liberar o acesso.</span></div>
+      <div class="f"><label>E-mail</label><input name="email" type="email" required autocomplete="email"></div>
+      <div class="f"><label>Senha</label><input name="senha" type="password" required minlength="6" autocomplete="current-password"></div>
+      <div class="lmsg" id="lmsg">${esc(msg)}</div>
+      <button class="btn pri full" type="submit" id="lbtn">Entrar</button>
+      <button type="button" class="linkbtn" id="lforgot">Esqueci minha senha</button>
+    </form>`);
+  bindLogin();
 }
 function bindLogin(){
   let mode = 'in';
@@ -1486,6 +2165,7 @@ function bindLogin(){
     mode = b.dataset.m; $$('#lmode button').forEach(x => x.classList.toggle('on', x === b));
     $$('.up').forEach(x => x.hidden = mode !== 'up'); $('#lbtn').textContent = mode === 'in' ? 'Entrar' : 'Criar conta';
     $('#lforgot').hidden = mode !== 'in'; $('#lmsg').textContent = '';
+    $('[name=senha]').autocomplete = mode === 'in' ? 'current-password' : 'new-password';
   });
   $('#lf').onsubmit = async e => {
     e.preventDefault(); const f = formObj('#lf'), m = $('#lmsg'), btn = $('#lbtn'); m.className = 'lmsg'; m.textContent = ''; btn.disabled = true;
@@ -1495,7 +2175,8 @@ function bindLogin(){
         await afterLogin(data.user);
       } else {
         if (!f.nome) throw new Error('Informe seu nome completo.');
-        const {data, error} = await sb.auth.signUp({email:f.email, password:f.senha, options:{data:{nome:f.nome}, emailRedirectTo:location.href.split('#')[0]}});
+        if (!f.base) throw new Error('Escolha sua base.');
+        const {data, error} = await sb.auth.signUp({email:f.email, password:f.senha, options:{data:{nome:f.nome, base:f.base}, emailRedirectTo:location.href.split('#')[0]}});
         if (error) throw error;
         if (data.session) await afterLogin(data.user);
         else { m.className = 'lmsg ok'; m.textContent = 'Conta criada! Abra o link enviado ao seu e-mail para confirmar e depois entre.'; }
@@ -1512,14 +2193,16 @@ function bindLogin(){
 }
 function renderPending(){
   const blocked = S.profile && !S.profile.ativo;
-  $('#root').innerHTML = `<div class="login"><div class="card lcard center"><div class="pend-ico">${ic(blocked?'shield':'clock',28)}</div>
+  applyTheme();
+  loginShell(`<div class="pend-ico">${ic(blocked?'shield':'clock',28)}</div>
     <h2>${blocked?'Acesso bloqueado':'Acesso aguardando liberação'}</h2>
-    <p class="muted" style="line-height:1.6">Olá${S.profile?', '+esc(firstName(S.profile.nome)):''}! ${blocked?'Seu acesso foi bloqueado pelo administrador.':'Seu cadastro foi recebido. O administrador precisa liberar seu perfil para você usar o painel.'}</p>
-    <div class="row-c"><button class="btn" data-act="logout">Sair</button><button class="btn pri" data-act="recheck">Verificar novamente</button></div></div></div>`;
+    <p class="muted" style="line-height:1.6">Olá${S.profile?', '+esc(firstName(S.profile.nome)):''}! ${blocked?'Seu acesso foi bloqueado pelo gestor.':'Seu cadastro foi recebido. O gestor precisa liberar seu perfil e confirmar sua base.'}</p>
+    ${(S.profile?.bases||[]).length ? `<div class="chips" style="justify-content:center;margin-top:10px">${S.profile.bases.map(bTag).join('')}</div>` : ''}
+    <div class="row-c"><button class="btn" data-act="logout">Sair</button><button class="btn pri" data-act="recheck">Verificar novamente</button></div>`, 'center-l');
 }
 async function afterLogin(user){
   try {
-    if (DEMO){ S.profile = Store.load().profiles.find(p => sameId(p.id,user.id)); try{ sessionStorage.setItem('pc_demo_user', user.id); }catch(e){} }
+    if (TEST){ S.profile = Store.load().profiles.find(p => sameId(p.id,user.id)); try{ sessionStorage.setItem('prim_test_user', user.id); }catch(e){} }
     else {
       const {data, error} = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
       if (error) throw error;
@@ -1528,25 +2211,30 @@ async function afterLogin(user){
     }
     if (!S.profile || S.profile.role === 'pendente' || !S.profile.ativo) return renderPending();
     const h = location.hash.slice(1); if (PAGES[h]) S.page = h;
-    await loadAll(); render(); subscribeRealtime();
+    let sv = ''; try { sv = sessionStorage.getItem('prim_base') || ''; } catch(e){}
+    await loadAll(); S.base = sv && allowed(sv) && myBases().length > 1 ? sv : '';
+    render(); subscribeRealtime();
   } catch(e){ err(e); renderLogin(traduz(e.message)); }
 }
 let rtTimer = null;
 function subscribeRealtime(){
-  if (DEMO || S.rt) return;
-  S.rt = sb.channel('painel-controle').on('postgres_changes', {event:'*', schema:'public'}, () => {
+  if (TEST || S.rt) return;
+  S.rt = sb.channel('primarizacao').on('postgres_changes', {event:'*', schema:'public'}, () => {
     clearTimeout(rtTimer);
     rtTimer = setTimeout(async () => { if (!S.profile) return; if ($('#ov')){ S.stale = true; return; } await loadAll(); if ($('#rail')) render(); }, 500);
-  }).subscribe();
+  }).subscribe(status => {
+    const ok = status === 'SUBSCRIBED' ? true : (['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status) ? false : S.rtOk);
+    if (ok !== S.rtOk){ S.rtOk = ok; const tb = $('#topbar .right .live'); if (tb) tb.outerHTML = liveTag(); }
+  });
 }
 async function logout(){
-  if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; }
-  if (!DEMO) await sb.auth.signOut();
-  try { sessionStorage.removeItem('pc_demo_user'); } catch(e){}
-  renderLogin();
+  if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; S.rtOk = null; }
+  if (!TEST && sb) await sb.auth.signOut();
+  try { sessionStorage.removeItem('prim_test_user'); sessionStorage.removeItem('prim_base'); } catch(e){}
+  S.base = ''; renderLogin();
 }
 function askNewPassword(){
-  openModal({title:'Definir nova senha', body:`<form id="mf" class="form">${fld('Nova senha', inp('senha','','type="password" minlength="6" required'), true, true)}</form>`,
+  openModal({title:'Definir nova senha', body:`<form id="mf" class="form">${fld('Nova senha', inp('senha','','type="password" minlength="6" required autocomplete="new-password"'), true, true)}</form>`,
     foot:`<button class="btn pri" data-act="pw-save">Salvar senha</button>`});
 }
 
@@ -1555,24 +2243,28 @@ const ACT = {
   'modal-close': () => closeModal(),
   'logout': () => logout(),
   'copy': a => copyText(a.dataset.v),
+  'base': a => setBase(a.dataset.k),
   'mtab': a => { const m = a.closest('.modal'); $$('.mtab',m).forEach(b => b.classList.toggle('on', b === a)); $$('[data-pane]',m).forEach(p => p.hidden = p.dataset.pane !== a.dataset.k); },
-  'dash-tab': a => { S.f.dash = a.dataset.k; render(); },
-  'dash-go': a => { const k = a.dataset.k, t = S.f.dash;
-    if (t === 'frota'){ S.f.vs = k; go('frota'); } else if (t === 'equipe'){ S.f.cs = k; go('colaboradores'); }
-    else if (t === 'chamados'){ S.f.ts = k; go('diario'); } else { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); S.cal.tipos = new Set([k]); go('calendario'); } },
+  'dash-v': a => { S.f.vs = a.dataset.k; S.f.vt = ''; go('frota'); },
+  'dash-cat': a => { S.f.tt = 'problema'; S.f.tc = a.dataset.k; S.f.ts = ''; go('diario'); },
+  'dash-tt': a => { S.f.tt = a.dataset.k; S.f.ts = ''; S.f.tc = ''; go('diario'); },
   'c-fs': a => { S.f.cs = a.dataset.k; pgColab(); },
   'c-sort': a => { const c = a.dataset.col; S.sort = {col:c, dir: S.sort.col === c ? -S.sort.dir : 1}; colabList(); },
   'c-new': () => colabForm(), 'c-edit': a => colabForm(a.dataset.id), 'c-open': a => openColab(a.dataset.id),
-  'c-save': a => saveColab(a.dataset.id || null), 'c-del': a => delColab(a.dataset.id), 'c-csv': () => exportColabs(),
+  'c-save': a => saveColab(a.dataset.id || null), 'c-del': a => delColab(a.dataset.id),
+  'x-export': a => excelFile(a.dataset.k, true), 'x-model': a => excelFile(a.dataset.k, false),
+  'x-import': a => openImport(a.dataset.k), 'x-apply': () => applyImport(),
   'v-fs': a => { S.f.vs = a.dataset.k; pgFrota(); }, 'v-ft': a => { S.f.vt = a.dataset.k; pgFrota(); },
   'v-status': a => openStatusPop(a, a.dataset.id), 'v-set': a => setVeicStatus(a.dataset.id, a.dataset.k),
   'v-open': a => openVeic(a.dataset.id), 'v-new': () => veicForm(), 'v-edit': a => veicForm(a.dataset.id),
-  'v-save': a => saveVeic(a.dataset.id || null), 'v-del': a => delVeic(a.dataset.id), 'v-csv': () => exportVeics(),
-  't-fs': a => { S.f.ts = a.dataset.k; pgDiario(); }, 't-fl': a => { if (a.dataset.go){ S.f.tl = a.dataset.k; S.f.ts = ''; return go('diario'); } S.f.tl = sameId(S.f.tl, a.dataset.k) ? '' : a.dataset.k; pgDiario(); },
-  'dash-v': a => { S.f.vs = a.dataset.k; S.f.vt = ''; go('frota'); },
-  'dash-cat': a => { S.f.tc = a.dataset.k; S.f.ts = ''; go('diario'); },
-  't-new': () => chForm(), 't-save': () => saveCh(), 'ch-open': a => openCh(a.dataset.id),
-  'ch-resp': a => saveResp(a.dataset.id), 'ch-resolve': a => saveResp(a.dataset.id, 'resolvido'), 'ch-del': a => delCh(a.dataset.id),
+  'v-save': a => saveVeic(a.dataset.id || null), 'v-del': a => delVeic(a.dataset.id),
+  't-tt': a => { S.f.tt = a.dataset.k; S.f.ts = ''; S.f.tc = ''; pgDiario(); },
+  't-fs': a => { S.f.ts = a.dataset.k; pgDiario(); },
+  't-fl': a => { if (a.dataset.go){ S.f.tl = a.dataset.k; S.f.ts = ''; S.f.tt = 'problema'; return go('diario'); } S.f.tl = sameId(S.f.tl, a.dataset.k) ? '' : a.dataset.k; pgDiario(); },
+  't-new': () => chForm(), 't-save': () => saveCh('problema'),
+  'p-new': () => pedidoForm(), 'p-save': () => saveCh('pedido'),
+  'ch-open': a => openCh(a.dataset.id),
+  'ch-send': a => sendCh(a.dataset.id, a.dataset.st), 'ch-reopen': a => reopenCh(a.dataset.id), 'ch-del': a => delCh(a.dataset.id),
   'cal-prev': () => { const c = S.cal; c.m--; if (c.m < 0){ c.m = 11; c.y--; } pgCal(); },
   'cal-next': () => { const c = S.cal; c.m++; if (c.m > 11){ c.m = 0; c.y++; } pgCal(); },
   'cal-today': () => { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); pgCal(); },
@@ -1581,10 +2273,9 @@ const ACT = {
   'cal-cell': a => evForm(null, a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
   'ev-new': a => evForm(null, a.dataset.date, a.dataset.col), 'ev-open': a => evForm(a.dataset.id),
   'ev-save': a => saveEv(a.dataset.id || null), 'ev-del': a => delEv(a.dataset.id),
-  'u-new': () => userForm(), 'u-save': () => saveUser(),
-  'demo-login': a => afterLogin({id:a.dataset.id}),
-  'demo-reset': async () => { if (await confirmBox('Apagar tudo e restaurar os dados de exemplo?','Restaurar')){ Store.reset(); renderLogin(); toast('Dados de exemplo restaurados.'); } },
-  'recheck': async () => { if (DEMO){ const id = S.profile?.id; return id ? afterLogin({id}) : renderLogin(); } const {data} = await sb.auth.getUser(); data?.user ? afterLogin(data.user) : renderLogin(); },
+  'u-base': a => toggleUserBase(a.dataset.id, a.dataset.k),
+  'test-login': a => afterLogin({id:a.dataset.id}),
+  'recheck': async () => { if (TEST){ const id = S.profile?.id; return id ? afterLogin({id}) : renderLogin(); } const {data} = await sb.auth.getUser(); data?.user ? afterLogin(data.user) : renderLogin(); },
   'pw-save': async () => { const f = formObj(); if (!f.senha || f.senha.length < 6) return toast('A senha precisa ter pelo menos 6 caracteres.','err');
     const {error} = await sb.auth.updateUser({password:f.senha}); if (error) return err(error); closeModal(); toast('Senha alterada.'); }
 };
@@ -1605,11 +2296,11 @@ window.addEventListener('resize', closePop);
 
 /* ========================= Início ========================= */
 (async function boot(){
-  if (!DEMO && !sb){ $('#root').innerHTML = `<div class="login"><div class="card lcard center"><div class="pend-ico">${ic('alert',28)}</div><h2>Não foi possível conectar</h2><p class="muted">A biblioteca do Supabase não carregou. Verifique a internet e recarregue a página.</p></div></div>`; return; }
-  if (DEMO){
-    let id = null; try { id = sessionStorage.getItem('pc_demo_user'); } catch(e){}
+  if (TEST){
+    let id = null; try { id = sessionStorage.getItem('prim_test_user'); } catch(e){}
     return id && Store.load().profiles.find(p => p.id === id) ? afterLogin({id}) : renderLogin();
   }
+  if (!CFG_OK || !sb) return renderSetup();
   sb.auth.onAuthStateChange(ev => { if (ev === 'PASSWORD_RECOVERY') setTimeout(askNewPassword, 300); });
   const {data:{session}} = await sb.auth.getSession();
   session ? await afterLogin(session.user) : renderLogin();
