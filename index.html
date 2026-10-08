@@ -900,6 +900,166 @@ button,a,[data-act],[data-nav],label,input,select,textarea{touch-action:manipula
   .qbtn{background:var(--accent-soft)}
 }
 
+/* ================= v2.3 ================= */
+/* Menu com cor própria por seção */
+.rail .nav-btn{color:var(--nc,#94a3b8);background:color-mix(in srgb,var(--nc,#94a3b8) 9%,transparent)}
+.rail .nav-btn:hover{background:color-mix(in srgb,var(--nc) 16%,#fff);color:var(--nc)}
+.rail .nav-btn.on{background:var(--nc)!important;color:#fff!important;box-shadow:0 6px 16px color-mix(in srgb,var(--nc) 40%,transparent)!important}
+.rail .nav-btn.on .badge{color:var(--nc)!important;border-color:var(--nc)!important}
+.rail .nav-btn.out{background:transparent}
+.pg-ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--nc) 12%,#fff);color:var(--nc);flex:none}
+.more-i .mi-i{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--nc) 12%,#fff);color:var(--nc)}
+.more-i.on{border-color:var(--nc);background:color-mix(in srgb,var(--nc) 6%,#fff)}
+.more-i.on .mi-i{background:var(--nc);color:#fff}
+.fresh{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:8px;border:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:24px;font-size:12px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:up .2s}
+
+/* Escalas */
+.sat-r{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#9a3412;background:#fff7ed;border-radius:8px;padding:4px 8px}
+.sat-r.none{color:#b42318;background:#fdeeee}
+.sat-r b{font-weight:600}
+.esc-r{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#9a3412}
+.esc-r.none{color:#b42318;font-weight:500}
+.esc-r b{font-weight:600}
+.ek small{display:block;color:var(--muted);font-size:10.5px;margin-top:2px}
+.ek[role=button]{cursor:pointer}
+.resp-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px}
+.resp-box label{display:flex;align-items:center;gap:6px;color:#9a3412!important}
+.resp-box.need{border-color:#ef4444;background:#fef2f2;animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pick-tools{display:flex;gap:10px;align-items:center}
+.tgl{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2);white-space:nowrap}
+.rk-t{font-style:normal;font-weight:600;color:var(--ink);margin-left:4px}
+.esc-tb .sel{min-width:0}
+button.ac-row{width:100%;border:0;border-bottom:1px solid var(--line);background:none;text-align:left}
+button.ac-row:hover b{color:var(--accent)}
+
+/* Estoque */
+.est-top{margin-bottom:4px}
+.est-q{padding:14px 16px}
+.est-q-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#a16207}
+.est-q-h > div{flex:1;min-width:200px;color:var(--ink)}
+.est-q-h b{display:block;font-weight:600}
+.est-q-h small{color:var(--muted);font-size:11.5px}
+.est-q-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.vq{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:20px;padding:5px 12px;font-size:12px}
+.vq .emb{border-radius:50%!important}
+.vq b{font-weight:500;color:#b42318;display:inline-flex;align-items:center;gap:3px}
+.vq.ok b{color:#15803d}
+.est-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.est{padding:16px;display:flex;flex-direction:column;gap:12px;border-top:3px solid var(--cc);transition:box-shadow .15s,transform .15s}
+.est:hover{box-shadow:0 12px 28px rgba(20,24,60,.09);transform:translateY(-1px)}
+.est.hot{box-shadow:0 0 0 1px #fecaca,var(--shadow)}
+.est-h{display:flex;align-items:center;gap:11px}
+.est-ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--cc) 14%,#fff);color:var(--cc);font-weight:700;font-size:13px;flex:none}
+.est-ic.lg{width:54px;height:54px;font-size:17px;border-radius:15px}
+.est-n{flex:1;min-width:0}
+.est-n b{display:block;font-weight:600;font-size:14px;line-height:1.3}
+.est-n small{color:var(--muted);font-size:11px}
+.est-tot b{font-size:30px;font-weight:600;letter-spacing:-1px;line-height:1}
+.est-tot span{color:var(--muted);font-size:12px;margin-left:6px}
+.est-tot small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.est-bar{display:flex;gap:2px;height:10px;border-radius:6px;overflow:hidden;background:#f1f2f6}
+.est-bar i{display:block}
+.est-rows{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.est-h .chip{flex:none;font-size:10.5px;padding:3px 8px}
+.est-r{display:flex;align-items:center;gap:6px;font-size:12px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.est-r > span{display:flex;align-items:center;gap:6px;flex:1;color:var(--ink2);min-width:0;white-space:nowrap;overflow:hidden}
+.est-r .emb,.vq .emb,.ini .emb,.sat-h .emb{flex:none!important}
+.est-r .emb{border-radius:50%!important}
+.est-r b{font-weight:600}
+.est-r small{color:var(--muted);font-size:10px}
+.est-r.baixo b,.est-r.zero b{color:#dc2626}
+.est-r svg{color:#dc2626}
+.est-r .dotw{width:7px;height:7px;border-radius:50%;background:#f59e0b}
+.est-f{display:flex;align-items:center;gap:6px;margin-top:auto}
+.est-u{margin-left:auto;color:var(--muted);font-size:10.5px}
+.alert-box{background:#fefce8;border:1px solid #fde68a;border-radius:12px;padding:12px}
+.alert-box label{display:flex;align-items:center;gap:6px;color:#854d0e!important}
+.ab-row{display:flex;align-items:center;gap:12px}
+.ab-row input{width:130px;flex:none}
+.ab-row span{font-size:11.5px;color:var(--ink2);line-height:1.45}
+.est-ini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ini{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-left:3px solid var(--c);border-radius:10px;padding:8px}
+.ini > span{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500}
+.ini .emb{border-radius:50%!important}
+.ini input{border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;outline:0}
+.ini.off{opacity:.5}
+.est-dh{display:flex;align-items:center;gap:14px}
+.est-dh b{display:block;font-size:26px;font-weight:600;letter-spacing:-.5px}
+.est-dh small{color:var(--muted);font-size:12px}
+.est-tbl{display:flex;flex-direction:column;gap:8px}
+.et-r{display:grid;grid-template-columns:130px 1fr 92px auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.et-r.baixo,.et-r.zero{border-color:#fecaca;background:#fffafa}
+.et-b{display:flex;align-items:center;gap:7px}
+.et-b b{font-weight:600;font-size:12.5px}
+.et-q b{font-size:16px;font-weight:600}
+.et-q small{font-size:10.5px;color:var(--muted)}
+.et-bar{position:relative;display:block;height:6px;background:#f1f2f6;border-radius:4px;margin:5px 0 4px}
+.et-bar i{display:block;height:100%;border-radius:4px}
+.et-bar em{position:absolute;top:-3px;bottom:-3px;width:2px;background:#334155;border-radius:1px}
+.et-m small{display:block;font-size:10px;color:var(--muted)}
+.et-m input{width:80px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;outline:0}
+.et-a{display:flex;gap:4px}
+.mv-list{display:flex;flex-direction:column}
+.mv{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.mv-i{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 13%,#fff);color:var(--c);flex:none}
+.mv-t{flex:1;min-width:0}
+.mv-t b{display:block;font-weight:500;font-size:12.5px}
+.mv-t small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mv-q{text-align:right}
+.mv-q b{display:block;color:var(--c);font-weight:600}
+.mv-q small{color:var(--muted);font-size:10.5px}
+.mv-seg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mvs input{position:absolute;opacity:0;pointer-events:none}
+.mvs span{display:flex;flex-direction:column;align-items:center;gap:4px;border:1px solid var(--line);border-radius:12px;padding:10px 4px;font-size:11.5px;font-weight:500;color:var(--ink2);text-align:center}
+.mvs span svg{color:var(--c)}
+.mvs input:checked+span{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);color:var(--ink)}
+.mv-prev{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--soft);border-radius:10px;padding:11px 14px;font-size:12.5px}
+.conf{display:flex;flex-direction:column;gap:6px;max-height:420px;overflow-y:auto}
+.cf{display:grid;grid-template-columns:1fr 110px 64px;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.cf-n b{display:block;font-weight:500;font-size:12.5px}
+.cf-n small{color:var(--muted);font-size:11px}
+.cf input{border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;outline:0;text-align:right}
+.cf input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cf-d{font-style:normal;font-size:12px;font-weight:600;color:var(--muted)}
+.cf-d.up{color:#16a34a}.cf-d.dn{color:#dc2626}
+.rv{display:flex;flex-direction:column;gap:8px}
+.rv-i{display:flex;align-items:center;gap:12px;border:1px solid #fde68a;background:#fffdf5;border-radius:12px;padding:10px 12px}
+.rv-i.ok{border-color:var(--line);background:#fff}
+.rv-s{color:#d97706;flex:none}.rv-i.ok .rv-s{color:#16a34a}
+.rv-t{flex:1;min-width:0}
+.rv-t b{display:block;font-weight:500;font-size:12.5px}
+.rv-t small{color:var(--muted);font-size:11px}
+.rv-n{background:#f59e0b;color:#fff;border-radius:10px;font-size:11px;font-weight:600;padding:1px 8px}
+
+@media (max-width:720px){
+  .rail .nav-btn{background:transparent}
+  .rail .nav-btn.on{background:color-mix(in srgb,var(--nc) 14%,#fff)!important;color:var(--nc)!important;box-shadow:none!important}
+  .rail .nav-btn:not(.on){color:color-mix(in srgb,var(--nc) 70%,#94a3b8)}
+  .rail .nav-btn .lbl-m{font-size:9.5px}
+  .pg-ic{display:none}
+  .fresh{top:auto;bottom:calc(76px + env(safe-area-inset-bottom));font-size:11.5px;white-space:nowrap}
+  .est-grid{grid-template-columns:1fr;gap:12px}
+  .est-tot b{font-size:26px}
+  .est-ini{grid-template-columns:1fr 1fr}
+  .et-r{grid-template-columns:1fr auto;gap:8px}
+  .et-q{grid-column:1/-1;order:3}
+  .et-m{order:2}
+  .et-a{grid-column:1/-1;order:4}
+  .et-a .icon-btn{flex:1;height:38px}
+  .mv-seg{grid-template-columns:repeat(2,1fr)}
+  .cf{grid-template-columns:1fr 90px;}
+  .cf-d{grid-column:2;text-align:right}
+  .ab-row{flex-direction:column;align-items:stretch}.ab-row input{width:100%}
+  .esc-tb .sel{flex:1 1 calc(50% - 4px)}
+  .pick-tools{flex-wrap:wrap}
+}
+@supports not (color: color-mix(in srgb, red 50%, blue)){
+  .rail .nav-btn{background:transparent}
+  .rail .nav-btn.on{background:var(--nc)!important}
+  .pg-ic,.more-i .mi-i,.est-ic,.mv-i{background:#f1f3f9}
+}
+
 </style>
 </head>
 <body>
@@ -907,12 +1067,12 @@ button,a,[data-act],[data-nav],label,input,select,textarea{touch-action:manipula
 <div class="toasts" id="toasts"></div>
 <script>
 /* =====================================================================
-   PRIMARIZAÇÃO · Painel de Controle — v2.2
+   PRIMARIZAÇÃO · Painel de Controle — v2.3
    A configuração fica no config.js (separado). O login é feito só
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.2';
+const APP_VERSION = '2.3';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -985,7 +1145,7 @@ const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes'];
 const ESC_T = {plantao:{label:'Plantão de sábado', short:'Plantão', color:'#0b4ea2', icon:'shift'}, hora_extra:{label:'Hora extra', short:'Hora extra', color:'#d97706', icon:'bolt'}};
 const ESC_S = {planejada:{label:'Planejada', color:'#94a3b8'}, confirmada:{label:'Confirmada', color:'#4f63d6'}, realizada:{label:'Realizada', color:'#22c55e'}, cancelada:{label:'Cancelada', color:'#ef4444'}};
 const ACOES_CORES = ['#d97706','#7c3aed','#0891b2','#db2777','#65a30d','#dc2626','#2563eb','#0d9488'];
@@ -1118,7 +1278,17 @@ Object.assign(ICONS, {
   bolt:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
   menu:'<line x1="4" x2="20" y1="7" y2="7"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="17" y2="17"/>',
   tag:'<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r=".5"/>',
-  dup:'<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16V4a2 2 0 0 1 2-2h10"/>'
+  dup:'<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16V4a2 2 0 0 1 2-2h10"/>',
+  box:'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.7 4.73a2 2 0 0 0 2 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>',
+  minus:'<path d="M5 12h14"/>',
+  swap:'<path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/>',
+  gauge:'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',
+  idcard:'<rect width="20" height="16" x="2" y="4" rx="2"/><circle cx="8.5" cy="11" r="2.5"/><path d="M5 17c.6-1.7 2-2.6 3.5-2.6S11.4 15.3 12 17"/><path d="M15 9h4M15 13h4"/>',
+  truck:'<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>',
+  notebook:'<path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/><path d="M2 6h4M2 10h4M2 14h4M2 18h4"/><path d="M21.38 5.63a2.12 2.12 0 1 0-3-3l-5 5a2 2 0 0 0-.51.85l-.84 2.87a.5.5 0 0 0 .62.62l2.87-.84a2 2 0 0 0 .85-.5z"/>',
+  calclock:'<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4M8 2v4M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>',
+  calx:'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m14 14-4 4M10 14l4 4"/>',
+  shieldu:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><circle cx="12" cy="10.5" r="2.5"/><path d="M8.2 17a4 4 0 0 1 7.6 0"/>'
 });
 
 /* ========================= Dados de teste (somente testes automatizados) ========================= */
@@ -1201,11 +1371,18 @@ function seed(){
     ES('s5','pinheiros','hora_extra',dOff(-8),'17:00','20:00','a3',['c1','c2'],'u-carlos','realizada',null,'u-carlos','Carlos Lima'),
     ES('s6','pinheiros','plantao',sat(1),'07:00','13:00',null,['c7'],'u-carlos','planejada',null,'u-carlos','Carlos Lima')
   ];
-  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes};
+  const IT = (id,nome,categoria,unidade,min) => ({id,nome,categoria,unidade,minimo_padrao:min,descricao:null,ativo:true,criado_por:'u-admin',criado_por_nome:'Encarregado Principal',created_at:h(500)});
+  const estoque_itens = [IT('i1','Lacre azul','Lacres','un',150), IT('i2','Lacre vermelho','Lacres','un',100), IT('i3','Luva de vaqueta','EPI','par',10), IT('i4','Fita isolante','Elétrico','rolo',15), IT('i5','Cone de sinalização','Sinalização','un',4)];
+  const SQ = {i1:{'pinheiros':1000,'santo-andre':100,'ipiranga':200,'sao-mateus':200}, i2:{'pinheiros':80,'ipiranga':300,'sao-mateus':0,'santo-andre':120}, i3:{'pinheiros':6,'ipiranga':25,'sao-mateus':12,'santo-andre':18}, i4:{'pinheiros':40,'ipiranga':12,'sao-mateus':30,'santo-andre':22}, i5:{'pinheiros':10,'ipiranga':8,'sao-mateus':5,'santo-andre':6}};
+  const estoque_saldos = [], estoque_movs = [];
+  Object.entries(SQ).forEach(([it, m]) => Object.entries(m).forEach(([b, q]) => { estoque_saldos.push({id:'sd-'+it+b, item_id:it, base:b, quantidade:q, minimo:null, atualizado_em:h(48), atualizado_por:'Carga inicial'});
+    estoque_movs.push({id:'mv-'+it+b, item_id:it, base:b, tipo:'entrada', quantidade:q, saldo_apos:q, motivo:'Saldo inicial', base_destino:null, por_id:null, por_nome:'Carga inicial', created_at:h(48)}); }));
+  const revisoes = [{id:'r1', tipo:'estoque', base:'ipiranga', quinzena:qKey(new Date()), por_id:'u-fernanda', por_nome:'Fernanda Souza', created_at:h(20)}];
+  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes};
 }
 const FILES = {};
 const Store = {
-  key:'primarizacao_teste_v22', mem:null,
+  key:'primarizacao_teste_v23', mem:null,
   load(){ if (this.mem) return this.mem; let d = null; try { d = JSON.parse(localStorage.getItem(this.key)); } catch(e){} this.mem = d || seed(); this.save(); return this.mem; },
   save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e){} }
 };
@@ -1216,6 +1393,7 @@ const DB = {
     if (TEST) return JSON.parse(JSON.stringify(Store.load()[t] || []));
     let q = sb.from(t).select('*');
     if (t === 'veiculo_historico') q = q.order('created_at', {ascending:false}).limit(3000);
+    if (t === 'estoque_movs') q = q.order('created_at', {ascending:false}).limit(2000);
     const {data, error} = await q; if (error) throw error; return data;
   },
   async insert(t, row){ return (await this.insertMany(t, [row]))[0]; },
@@ -1257,12 +1435,13 @@ const DB = {
 const today0 = new Date();
 const S = {
   page:'dashboard', profile:null, rt:null, rtOk:null, stale:false, schemaOld:false,
-  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[], anexos:[], escalas:[], acoes:[], lastLoad:0,
+  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[], anexos:[], escalas:[], acoes:[], estItens:[], estSaldos:[], estMovs:[], revisoes:[], colabsAll:[], lastLoad:0, sig:'',
   base:'',
   f:{cq:'', cl:'', cs:'', vq:'', vs:'', vt:'', tq:'', ts:'', tl:'', tc:'', tt:'problema'},
   sort:{col:'nome', dir:1},
   cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''},
-  esc:{y:today0.getFullYear(), m:today0.getMonth(), t:'', st:'', q:''}
+  esc:{y:today0.getFullYear(), m:today0.getMonth(), t:'', st:'', q:'', ac:'', b:''},
+  est:{q:'', c:'', b:'', al:false}
 };
 const isAdmin = () => S.profile?.role === 'admin';
 const myBases = () => isAdmin() ? BKEYS.slice() : (S.profile?.bases || []).filter(b => BASES[b]);
@@ -1297,12 +1476,14 @@ function applyTheme(){
 }
 
 async function loadAll(){
-  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes'].includes(t)) S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes] = res; S.lastLoad = Date.now();
+  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; })));
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes] = res;
+  try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status}) => ({id,nome,base,cargo,status})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
   if (S.profile && S.profile.bases === undefined) S.schemaOld = true;
   if (S.base && !allowed(S.base)) S.base = '';
+  S.sig = dataSig();
 }
 async function reload(){
   await loadAll();
@@ -1313,15 +1494,16 @@ async function reload(){
 
 /* ========================= Navegação / shell ========================= */
 const NAV = [
-  {id:'dashboard',label:'Visão geral',short:'Início',icon:'dash',m:1},
-  {id:'colaboradores',label:'Colaboradores',short:'Equipe',icon:'users'},
-  {id:'frota',label:'Frota',short:'Frota',icon:'car',m:1, badge:() => veicsV().filter(v => v.status==='problema').length},
-  {id:'diario',label:'Diário de bordo',short:'Diário',icon:'book',m:1, badge:() => isAdmin()
+  {id:'dashboard',label:'Visão geral',short:'Início',icon:'gauge',color:'#2563eb',m:1},
+  {id:'colaboradores',label:'Colaboradores',short:'Equipe',icon:'idcard',color:'#7c3aed'},
+  {id:'frota',label:'Frota',short:'Frota',icon:'truck',color:'#0891b2',m:1, badge:() => veicsV().filter(v => v.status==='problema').length},
+  {id:'diario',label:'Diário de bordo',short:'Diário',icon:'notebook',color:'#e11d48',m:1, badge:() => isAdmin()
       ? chsV('problema').filter(c => c.status==='aberto').length
       : chsV('pedido').filter(c => c.status==='aberto').length},
-  {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'shift',m:1, badge:() => escalasV().filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1))).length},
-  {id:'calendario',label:'Calendário',short:'Ausências',icon:'cal'},
-  {id:'usuarios',label:'Usuários e bases',short:'Usuários',icon:'shield',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
+  {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'calclock',color:'#ea580c',m:1, badge:() => S.escalas.filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1)) && (allowed(e.base) || sameId(e.responsavel_id, S.profile.id))).length},
+  {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04',m:1, badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
+  {id:'calendario',label:'Ausências',short:'Ausências',icon:'calx',color:'#16a34a'},
+  {id:'usuarios',label:'Usuários e bases',short:'Usuários',icon:'shieldu',color:'#475569',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
 ];
 const SUBS = {
   dashboard:'Resumo da equipe, da frota e das ocorrências',
@@ -1329,10 +1511,11 @@ const SUBS = {
   frota:'Carros e motos com a situação atualizada pelas bases',
   diario:'Problemas das bases e pedidos do encarregado',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
-  escalas:'Plantões de sábado e ações de hora extra: quem vai, quando e quantas horas',
+  escalas:'Plantões de sábado e ações de hora extra: quem vai, quem é o responsável e quantas horas',
+  estoque:'Estoque total e de cada base, com avisos quando um item estiver acabando',
   usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
-const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, calendario:pgCal, usuarios:pgUsers};
+const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
 
 function go(page){ if ($('#ov')) closeModal(); $('#npanel')?.remove(); S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
@@ -1358,17 +1541,17 @@ function liveTag(){
 }
 function setLive(v){ S.rtOk = v; const el = $('#topbar .live'); if (el) el.outerHTML = liveTag(); }
 function render(){
-  applyTheme();
+  applyTheme(); $('#fresh')?.remove(); S.stale = false;
   if (!$('#rail')) $('#root').innerHTML = `<div class="app"><nav class="rail" id="rail"></nav><main class="main"><header class="topbar" id="topbar"></header><div id="bbar"></div><section id="page"></section></main></div>`;
   const nav = NAV.filter(n => !n.admin || isAdmin());
   if (!nav.find(n => n.id === S.page)) S.page = 'dashboard';
   $('#rail').innerHTML = `<div class="logo" title="Primarização">${logoMark(42)}</div>` + nav.map(n => {
     const b = n.badge ? n.badge() : 0;
-    return `<button class="nav-btn ${S.page===n.id?'on':''} ${n.m?'':'m-hide'}" data-nav="${n.id}" aria-label="${n.label}">${ic(n.icon,20)}${b?`<span class="badge">${b}</span>`:''}<span class="tip">${n.label}</span><span class="lbl-m">${n.short}</span></button>`;
-  }).join('') + `<button class="nav-btn m-only ${nav.find(n => n.id === S.page && !n.m) ? 'on' : ''}" data-act="more" aria-label="Mais opções">${ic('menu',20)}<span class="lbl-m">Mais</span></button><div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button><span class="ver" title="Versão do painel">v${APP_VERSION}</span>`;
+    return `<button class="nav-btn ${S.page===n.id?'on':''} ${n.m?'':'m-hide'}" style="--nc:${n.color}" data-nav="${n.id}" aria-label="${n.label}">${ic(n.icon,20)}${b?`<span class="badge">${b}</span>`:''}<span class="tip">${n.label}</span><span class="lbl-m">${n.short}</span></button>`;
+  }).join('') + `<button class="nav-btn m-only ${nav.find(n => n.id === S.page && !n.m) ? 'on' : ''}" style="--nc:#475569" data-act="more" aria-label="Mais opções">${ic('menu',20)}<span class="lbl-m">Mais</span></button><div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button><span class="ver" title="Versão do painel">v${APP_VERSION}</span>`;
   const cur = NAV.find(n => n.id === S.page), t = theme(), ck = curBaseKey();
   const nn = notifCount();
-  $('#topbar').innerHTML = `<div class="tb-logo-m">${logoMark(34)}</div><div class="tb-title"><div class="tb-brand">${wordmark(ck ? 'Base ' + BASES[ck].nome : (isAdmin() ? 'Todas as bases' : 'Controle de equipe e frota'))}</div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
+  $('#topbar').innerHTML = `<div class="tb-logo-m">${logoMark(34)}</div><span class="pg-ic" style="--nc:${cur.color}">${ic(cur.icon,20)}</span><div class="tb-title"><div class="tb-brand">${wordmark(ck ? 'Base ' + BASES[ck].nome : (isAdmin() ? 'Todas as bases' : 'Controle de equipe e frota'))}</div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
     <div class="right">${liveTag()}
     <button class="bell ${nn?'has':''}" data-act="notif" aria-label="Avisos${nn?': '+nn+' novos':''}">${ic('bell',19)}${nn?`<span class="badge">${nn>9?'9+':nn}</span>`:''}</button>
     <div class="userchip" data-act="me" role="button" tabindex="0" title="Sua conta">${emblem(ck,30,9)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}${ownBases().length ? ' · ' + ownBases().map(bName).join(', ') : ''}</small></div></div></div>`;
@@ -2444,7 +2627,7 @@ function buildNotifs(){
     if (mine && after(c.resolvido_em) && c.status === 'resolvido')
       news.push({key:`ch:${c.id}:done`, icon:'check', c:'#22c55e', t:`Concluída${tp==='pedido' && P(c.destinatario_id) ? ' por ' + firstName(P(c.destinatario_id).nome) : ''}`, s:`#${c.id} ${c.titulo}`, when:c.resolvido_em, act:'ch-open', id:c.id});
   });
-  escalasV().forEach(e => { if (!sameId(e.criado_por, me) && after(e.created_at) && (e.data >= today))
+  S.escalas.filter(e => allowed(e.base) || sameId(e.responsavel_id, me)).forEach(e => { if (!sameId(e.criado_por, me) && after(e.created_at) && (e.data >= today))
     news.push({key:`esc:${e.id}:new`, icon:ESC_T[e.tipo].icon, c:escColor(e), t:`Nova escala — ${bName(e.base)}`, s:`${escTitle(e)} ${fmtD(e.data)} ${hhmm(e.hora_inicio)}`, when:e.created_at, act:'esc-open', id:e.id}); });
   const seenMsg = new Set();
   S.msgs.slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).forEach(m => {
@@ -2471,7 +2654,8 @@ function buildNotifs(){
     const ab = chsV('problema').filter(c => c.status === 'aberto');
     if (ab.length) rem.push({icon:'inbox', c:'#ef4444', urgent:true, t:`${ab.length} problema(s) aguardando sua ciência`, s:'Abra o diário de bordo', act:'dash-tt', k:'problema', w:0});
   }
-  escalasV().filter(e => e.status !== 'cancelada' && (e.data === today || e.data === tom)).forEach(e => {
+  S.escalas.filter(e => e.status !== 'cancelada' && (e.data === today || e.data === tom) && (allowed(e.base) || sameId(e.responsavel_id, me))).forEach(e => {
+    if (sameId(e.responsavel_id, me)) rem.push({icon:'shield', c:'#ea580c', urgent:true, t:`Você é o responsável: ${escTitle(e)} ${e.data === today ? 'hoje' : 'amanhã'} — ${bName(e.base)}`, s:`${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}, ${(e.membros||[]).length} pessoa(s)`, act:'esc-open', id:e.id, w:0, key:`rem:resp:${e.id}`});
     const nomes = (e.membros||[]).map(cid => firstName(C(cid)?.nome || '')).filter(Boolean);
     rem.push({icon:ESC_T[e.tipo].icon, c:escColor(e), urgent: e.data === today && e.status === 'planejada', t:`${e.data === today ? 'Hoje' : 'Amanhã'}: ${escTitle(e)} ${hhmm(e.hora_inicio)}${myBases().length > 1 ? ' — ' + bName(e.base) : ''}`, s: nomes.length ? nomes.join(', ') : 'Ninguém escalado', act:'esc-open', id:e.id, w:1});
   });
@@ -2481,6 +2665,16 @@ function buildNotifs(){
     if (!S.escalas.some(e => e.base === k && e.tipo === 'plantao' && e.data === sat && e.status !== 'cancelada'))
       rem.push({icon:'shift', c:'#ef4444', urgent:true, t:`Sem plantão para sábado ${fmtD(sat)} — ${BASES[k].nome}`, s:'Toque para escalar', act:'esc-new', k:'plantao', base:k, date:sat, w:0});
   });
+  // Estoque: itens no mínimo ou zerados nas bases sob minha responsabilidade
+  const estB = isAdmin() ? BKEYS.filter(inScope) : myBases();
+  const al = alertasEstoque(estB);
+  if (al.length > 3) rem.push({icon:'box', c:'#ef4444', urgent:true, t:`${al.length} itens de estoque no mínimo`, s:al.slice(0,4).map(x => x.item.nome + ' (' + bName(x.base) + ')').join(', '), act:'est-alerta', w:0, key:'rem:est:muitos:' + al.length});
+  else al.forEach(x => rem.push({icon:'box', c:NIV[x.n].color, urgent:true, t:`${x.item.nome} ${x.n === 'zero' ? 'acabou' : 'acabando'} — ${bName(x.base)}`, s:`${fmtQ(x.q, x.item.unidade)} em estoque, aviso em ${fmtQ(x.m)}`, act:'est-open', id:x.item.id, w:0, key:`rem:est:${x.item.id}:${x.base}:${x.q}`}));
+  // Conferência de estoque e revisão de cadastros: a cada quinzena
+  const qb = isAdmin() ? BKEYS.filter(inScope) : myBases(), ql = qLabel(qKey(now));
+  const pe = qb.filter(k => !revFeita('estoque', k)), pc = qb.filter(k => !revFeita('cadastro', k));
+  if (pe.length) rem.push({icon:'checks', c:'#ca8a04', urgent:!isAdmin(), t: isAdmin() && qb.length > 1 ? `Conferência de estoque pendente: ${pe.map(bName).join(', ')}` : `Confira o estoque da sua base (${ql})`, s:'Conferência quinzenal', act:'est-conf', k:pe.length === 1 ? pe[0] : '', w:1, key:'rem:qest:' + pe.join(',')});
+  if (pc.length) rem.push({icon:'idcard', c:'#9333ea', urgent:!isAdmin(), t: isAdmin() && qb.length > 1 ? `Revisão de cadastros pendente: ${pc.map(bName).join(', ')}` : `Revise os dados da sua base (${ql})`, s:'Contatos, POS, veículos e estoque', act:'rev-open', k:pc.length === 1 ? pc[0] : '', w:1, key:'rem:qcad:' + pc.join(',')});
   const vp = veicsV().filter(v => v.status === 'problema');
   if (vp.length) rem.push({icon:'car', c:'#ef4444', t:`${vp.length} veículo(s) com problema`, s:vp.map(v => v.placa).join(', '), act:'dash-v', k:'problema', w:1});
   if (adm){
@@ -2647,12 +2841,27 @@ async function cleanQuinzena(key){
 }
 
 /* ========================= CONEXÃO ========================= */
-let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null;
+let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
+function dataSig(){
+  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length]);
+  let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length;
+}
+function showFresh(){
+  if ($('#fresh')) return;
+  const el = document.createElement('button'); el.id = 'fresh'; el.className = 'fresh'; el.dataset.act = 'fresh';
+  el.innerHTML = `${ic('refresh',14)}Há informações novas — tocar para atualizar`; document.body.appendChild(el);
+}
+// Atualiza os dados em segundo plano SEM redesenhar a tela quando nada mudou.
+// Se você estiver no meio de algo (janela aberta, digitando), só mostra o aviso "Há informações novas".
 async function refreshData(silent){
-  const before = notifCount();
+  const before = notifCount(), sig0 = S.sig;
   await loadAll();
   if (!S.profile) return;
-  if ($('#ov')) S.stale = true; else if ($('#rail')) render();
+  if (S.sig === sig0) return;
+  const ae = document.activeElement;
+  const busy = $('#ov') || $('#pop') || $('#npanel') || (ae && /INPUT|TEXTAREA|SELECT/.test(ae.tagName) && ae.id !== 'fresh');
+  if (busy){ S.stale = true; refreshBell(); if (!$('#ov')) showFresh(); }
+  else if ($('#rail')){ const y = window.scrollY; render(); window.scrollTo(0, y); }
   const after = notifCount();
   if (!silent && after > before) toast(`${after - before} aviso(s) novo(s) — veja no sino.`);
 }
@@ -2661,61 +2870,80 @@ function subscribeRealtime(){
   if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; }
   S.rt = sb.channel('primarizacao-' + Date.now()).on('postgres_changes', {event:'*', schema:'public'}, () => {
     clearTimeout(rtTimer);
-    rtTimer = setTimeout(() => refreshData(false), 600);
+    rtTimer = setTimeout(() => refreshData(false), 1200);
   }).subscribe(status => {
     if (status === 'SUBSCRIBED'){ rtTries = 0; setLive(true); }
     else if (['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){
       setLive(false);
       clearTimeout(rtRetry);
-      if (status !== 'CLOSED' || rtTries < 6) rtRetry = setTimeout(() => reconnect(true), Math.min(30000, 2000 * 2 ** rtTries++));
+      if (rtTries < 5) rtRetry = setTimeout(() => resubscribe(), Math.min(60000, 3000 * 2 ** rtTries++));
     }
   });
   clearInterval(hbTimer);
   hbTimer = setInterval(() => {
     if (document.hidden || !S.profile) return;
-    const st = S.rt?.state;
-    if (st && st !== 'joined' && st !== 'joining') reconnect(true);
-    else if (Date.now() - S.lastLoad > 5 * 60e3) refreshData(true);
-  }, 45000);
+    if (S.rtOk === false && rtTries < 5) resubscribe();
+    if (Date.now() - S.lastLoad > 10 * 60e3) refreshData(true);
+  }, 60000);
+}
+async function resubscribe(){
+  if (TEST || !sb || !S.profile) return;
+  try { const {data} = await sb.auth.getSession(); if (data?.session) try { sb.realtime.setAuth(data.session.access_token); } catch(e){} } catch(e){}
+  subscribeRealtime();
 }
 async function reconnect(silent){
   if (!S.profile) return;
+  $('#fresh')?.remove();
   if (TEST){ await refreshData(true); if (!silent) toast('Dados atualizados.'); return; }
   setLive('busy');
   try {
     const {data, error} = await sb.auth.getSession();
     if (error || !data.session){ toast('Sua sessão expirou. Entre de novo.', 'err'); return logout(); }
     try { sb.realtime.setAuth(data.session.access_token); } catch(e){}
-    await refreshData(true);
+    rtTries = 0;
+    if (!silent){ await loadAll(); if (!$('#ov')){ const y = window.scrollY; render(); window.scrollTo(0, y); } } else await refreshData(true);
     subscribeRealtime();
-    if (!silent) toast('Reconectado e atualizado.');
+    if (!silent) toast('Dados atualizados.');
   } catch(e){ setLive(false); if (!silent) err(e); }
 }
-document.addEventListener('visibilitychange', () => { if (!document.hidden && S.profile && $('#rail') && (S.rtOk !== true || Date.now() - S.lastLoad > 60e3)) reconnect(true); });
-window.addEventListener('online', () => { if (S.profile) reconnect(true); });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden){ hiddenAt = Date.now(); return; }
+  if (!S.profile || !$('#rail') || Date.now() - hiddenAt < 60e3) return;
+  if (S.rtOk !== true){ rtTries = 0; resubscribe(); }
+  if (Date.now() - S.lastLoad > 2 * 60e3) refreshData(true);
+});
+window.addEventListener('online', () => { if (S.profile){ rtTries = 0; resubscribe(); refreshData(true); } });
 window.addEventListener('offline', () => { if (S.profile) setLive(false); });
 
 
 /* ========================= ESCALAS E PLANTÕES ========================= */
-const escalasV = () => S.escalas.filter(e => inScope(e.base));
+// Painel aberto a todos os líderes: todos veem as escalas de todas as bases.
+// Horas: turnos com mais de 6 h descontam 1 h de almoço.
+const CX = id => C(id) || S.colabsAll.find(c => sameId(c.id, id));
+const escalasV = () => S.escalas.filter(e => (!S.esc.b || e.base === S.esc.b) && (!S.base || e.base === S.base));
 const acaoOf = id => S.acoes.find(a => sameId(a.id, id));
 const tMin = t => { const [h,m] = String(t||'0:0').slice(0,5).split(':').map(Number); return (h||0)*60 + (m||0); };
-const durH = e => { if (!e.hora_inicio || !e.hora_fim) return 0; let d = tMin(e.hora_fim) - tMin(e.hora_inicio); if (d <= 0) d += 1440; return d / 60; };
+const durBruta = e => { if (!e.hora_inicio || !e.hora_fim) return 0; let d = tMin(e.hora_fim) - tMin(e.hora_inicio); if (d <= 0) d += 1440; return d / 60; };
+const ALMOCO_ACIMA = 6;
+const durH = e => { const b = durBruta(e); return b > ALMOCO_ACIMA ? b - 1 : b; };
+const durTxt = e => { const b = durBruta(e); return b > ALMOCO_ACIMA ? `${fmtH(b - 1)} (− 1 h almoço)` : fmtH(b); };
 const fmtH = h => (Math.round(h*10)/10).toLocaleString('pt-BR') + ' h';
 const hhmm = t => t ? String(t).slice(0,5) : '';
 const nextSat = () => { const d = new Date(); d.setDate(d.getDate() + ((6 - d.getDay() + 7) % 7)); return iso(d); };
-const canEditEsc = e => isAdmin() || allowed(e.base);
+const canEditEsc = e => isAdmin() || allowed(e.base) || sameId(e.responsavel_id, S.profile.id) || sameId(e.criado_por, S.profile.id);
 const escTitle = e => e.tipo === 'plantao' ? 'Plantão de sábado' : (acaoOf(e.acao_id)?.nome || 'Hora extra');
 const escColor = e => e.tipo === 'plantao' ? ESC_T.plantao.color : (acaoOf(e.acao_id)?.cor || ESC_T.hora_extra.color);
 const ausenteEm = (cid, ds) => S.eventos.find(e => sameId(e.colaborador_id, cid) && e.data_inicio <= ds && e.data_fim >= ds);
 const monthRange = () => { const {y,m} = S.esc; return [iso(new Date(y,m,1)), iso(new Date(y,m+1,0))]; };
+const respList = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || p.role === 'lider')).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
 function escStats(list){
   const per = {};
   list.filter(e => e.status !== 'cancelada').forEach(e => (e.membros||[]).forEach(cid => {
-    const p = per[cid] = per[cid] || {cid, he:0, nHe:0, pl:0};
-    if (e.tipo === 'hora_extra'){ p.he += durH(e); p.nHe++; } else p.pl++;
+    const p = per[cid] = per[cid] || {cid, he:0, nHe:0, pl:0, hPl:0};
+    const h = durH(e);
+    if (e.tipo === 'hora_extra'){ p.he += h; p.nHe++; } else { p.pl++; p.hPl += h; }
   }));
-  return Object.values(per);
+  return Object.values(per).map(p => ({...p, total: p.he + p.hPl}));
 }
 function pgEscalas(){
   const st = S.esc, [a,b] = monthRange(), today = iso(new Date());
@@ -2724,21 +2952,23 @@ function pgEscalas(){
   const ativos = month.filter(e => e.status !== 'cancelada');
   const pl = ativos.filter(e => e.tipo === 'plantao'), he = ativos.filter(e => e.tipo === 'hora_extra');
   const pessoas = new Set(ativos.flatMap(e => e.membros || []));
-  const horas = he.reduce((s,e) => s + durH(e) * (e.membros||[]).length, 0);
+  const horas = ativos.reduce((s,e) => s + durH(e) * (e.membros||[]).length, 0);
   const sat = nextSat();
-  const bases = BKEYS.filter(inScope);
+  const bases = BKEYS.filter(k => (!S.base || k === S.base) && (!st.b || k === st.b));
   const satCards = bases.map(k => {
-    const es = all.filter(e => e.base === k && e.tipo === 'plantao' && e.data === sat && e.status !== 'cancelada');
-    if (!es.length) return `<button class="sat-c empty" style="--c:${BASES[k].c}" ${allowed(k)?`data-act="esc-new" data-k="plantao" data-base="${k}" data-date="${sat}"`:''}>
-      <span class="sat-h">${emblem(k,12,4)}<b>${BASES[k].nome}</b></span><span class="sat-e">${ic('alert',15)}Ninguém escalado</span>${allowed(k)?`<span class="sat-go">${ic('plus',14)}Escalar</span>`:''}</button>`;
-    return es.map(e => `<button class="sat-c" style="--c:${BASES[k].c}" data-act="esc-open" data-id="${e.id}">
+    const es = S.escalas.filter(e => e.base === k && e.tipo === 'plantao' && e.data === sat && e.status !== 'cancelada');
+    if (!es.length) return `<button class="sat-c empty" style="--c:${BASES[k].c}" data-act="esc-new" data-k="plantao" data-base="${k}" data-date="${sat}">
+      <span class="sat-h">${emblem(k,12,4)}<b>${BASES[k].nome}</b></span><span class="sat-e">${ic('alert',15)}Ninguém escalado</span><span class="sat-go">${ic('plus',14)}Escalar</span></button>`;
+    return es.map(e => { const r = P(e.responsavel_id); return `<button class="sat-c" style="--c:${BASES[k].c}" data-act="esc-open" data-id="${e.id}">
       <span class="sat-h">${emblem(k,12,4)}<b>${BASES[k].nome}</b>${chip(ESC_S[e.status])}</span>
-      <span class="sat-t">${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}${P(e.responsavel_id) ? ' — resp. ' + esc(firstName(P(e.responsavel_id).nome)) : ''}</span>
-      <span class="sat-m">${(e.membros||[]).map(cid => `<span class="pp">${avatar(C(cid)?.nome,22)}${esc(firstName(C(cid)?.nome))}</span>`).join('') || '<span class="muted">Sem pessoas</span>'}</span></button>`).join('');
+      <span class="sat-r ${r?'':'none'}">${ic('shield',13)}${r ? 'Responsável: <b>' + esc(r.nome) + '</b>' + (sameId(r.id, S.profile.id) ? ' (você)' : '') : 'Sem responsável definido'}</span>
+      <span class="sat-t">${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)} — ${durTxt(e)}</span>
+      <span class="sat-m">${(e.membros||[]).map(cid => `<span class="pp">${avatar(CX(cid)?.nome,22)}${esc(firstName(CX(cid)?.nome))}</span>`).join('') || '<span class="muted">Sem pessoas</span>'}</span></button>`; }).join('');
   }).join('');
-  const rank = escStats(month).sort((x,y) => (y.he + y.pl*6) - (x.he + x.pl*6)).slice(0, 10);
-  const maxR = Math.max(1, ...rank.map(r => r.he + r.pl*6));
-  const porAcao = {}; he.forEach(e => { const k = e.acao_id || '_'; const o = porAcao[k] = porAcao[k] || {e, n:0, h:0}; o.n++; o.h += durH(e) * (e.membros||[]).length; });
+  const rank = escStats(month).sort((x,y) => y.total - x.total).slice(0, 10);
+  const maxR = Math.max(1, ...rank.map(r => r.total));
+  const porAcao = {}; ativos.forEach(e => { const k = e.tipo === 'plantao' ? '_pl' : (e.acao_id || '_'); const o = porAcao[k] = porAcao[k] || {e, n:0, h:0}; o.n++; o.h += durH(e) * (e.membros||[]).length; });
+  const acoesUsadas = S.acoes.filter(x => S.escalas.some(e => sameId(e.acao_id, x.id)) || x.ativo !== false).sort((x,y) => x.nome.localeCompare(y.nome,'pt'));
   $('#page').innerHTML = `
   <div class="esc-head">
     <div class="cal-h" style="margin:0">
@@ -2752,55 +2982,59 @@ function pgEscalas(){
       <button class="btn pri" data-act="esc-new" data-k="plantao">${ic('plus',16)}Plantão</button>
     </div>
   </div>
+  <p class="hint" style="margin:10px 0 0">${ic('info',14)}Painel aberto para todos os líderes. Horas contam plantões e ações; turnos acima de 6 h descontam 1 h de almoço.</p>
   <div class="sec-h"><h3>Plantão de sábado, ${fmtD(sat)}</h3><span>${sat === today ? 'é hoje' : 'próximo sábado'}</span></div>
   <div class="sat-grid">${satCards}</div>
   <div class="esc-kpis">
     <div class="card ek" style="--c:${ESC_T.plantao.color}"><span>${ic('shift',16)}Plantões no mês</span><b>${pl.length}</b></div>
     <div class="card ek" style="--c:${ESC_T.hora_extra.color}"><span>${ic('bolt',16)}Ações de hora extra</span><b>${he.length}</b></div>
     <div class="card ek" style="--c:#4f63d6"><span>${ic('users',16)}Pessoas escaladas</span><b>${pessoas.size}</b></div>
-    <div class="card ek" style="--c:#16a34a"><span>${ic('clock',16)}Horas extras (pessoa × hora)</span><b>${fmtH(horas)}</b></div>
+    <div class="card ek" style="--c:#16a34a"><span>${ic('clock',16)}Horas extras no mês</span><b>${fmtH(horas)}</b><small>plantões + ações, já sem almoço</small></div>
   </div>
   <div class="esc-wrap">
     <div>
-      <div class="toolbar">
+      <div class="toolbar esc-tb">
         <div class="seg">${[['','Todas'],['plantao','Plantões'],['hora_extra','Horas extras']].map(([k,l]) => `<button class="${st.t===k?'on':''}" data-act="esc-ft" data-k="${k}">${l}</button>`).join('')}</div>
+        <select class="sel" id="escac"><option value="">Todas as ações</option>${opts(acoesUsadas.map(x => [x.id, x.nome]), st.ac)}</select>
+        ${!S.base ? `<select class="sel" id="escb"><option value="">Todas as bases</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), st.b)}</select>` : ''}
         <select class="sel" id="escst"><option value="">Todas as situações</option>${opts(Object.entries(ESC_S).map(([k,o]) => [k,o.label]), st.st)}</select>
         <label class="search">${ic('search',16)}<input id="escq" placeholder="Buscar pessoa, ação..." value="${esc(st.q)}"></label>
       </div>
       <div id="esclist"></div>
     </div>
     <div class="esc-side">
-      <div class="card"><div class="card-h"><div><h3>Quem foi escalado no mês</h3><p class="ch-sub">Para revezar com justiça</p></div></div><div class="card-b">
-        ${rank.length ? `<div class="rk">${rank.map(r => { const c = C(r.cid); return `<button class="rk-i" data-act="c-open" data-id="${r.cid}"><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')}</b><small>${[r.pl ? r.pl + (r.pl > 1 ? ' plantões' : ' plantão') : '', r.nHe ? fmtH(r.he) + ' de hora extra (' + r.nHe + (r.nHe > 1 ? ' ações)' : ' ação)') : ''].filter(Boolean).join(' — ')}</small></span></span><span class="rk-b"><i style="width:${Math.round((r.pl*6)/maxR*100)}%;background:${ESC_T.plantao.color}"></i><i style="width:${Math.round(r.he/maxR*100)}%;background:${ESC_T.hora_extra.color}"></i></span></button>`; }).join('')}</div>
-          <div class="lg2" style="margin-top:12px"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Horas extras</span></div>` : empty('users','Ninguém escalado neste mês')}
+      <div class="card"><div class="card-h"><div><h3>Horas por pessoa no mês</h3><p class="ch-sub">Plantões + ações, sem a hora de almoço</p></div></div><div class="card-b">
+        ${rank.length ? `<div class="rk">${rank.map(r => { const c = CX(r.cid); return `<button class="rk-i" ${C(r.cid)?`data-act="c-open" data-id="${r.cid}"`:''}><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')} <em class="rk-t">${fmtH(r.total)}</em></b><small>${[r.pl ? r.pl + (r.pl > 1 ? ' plantões' : ' plantão') + ' (' + fmtH(r.hPl) + ')' : '', r.nHe ? r.nHe + (r.nHe > 1 ? ' ações' : ' ação') + ' (' + fmtH(r.he) + ')' : ''].filter(Boolean).join(' — ')}${c && !C(r.cid) ? ' — ' + bName(c.base) : ''}</small></span></span><span class="rk-b"><i style="width:${Math.round(r.hPl/maxR*100)}%;background:${ESC_T.plantao.color}"></i><i style="width:${Math.round(r.he/maxR*100)}%;background:${ESC_T.hora_extra.color}"></i></span></button>`; }).join('')}</div>
+          <div class="lg2" style="margin-top:12px"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span></div>` : empty('users','Ninguém escalado neste mês')}
       </div></div>
-      <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>Ações de hora extra</h3><p class="ch-sub">Neste mês</p></div><button class="btn sm" data-act="acoes-open">Gerenciar</button></div><div class="card-b">
-        ${Object.keys(porAcao).length ? Object.values(porAcao).sort((x,y) => y.h - x.h).map(o => `<div class="ac-row"><span class="ac-dot" style="background:${escColor(o.e)}"></span><b>${esc(escTitle(o.e))}</b><span class="muted">${o.n}×</span><span class="fw5">${fmtH(o.h)}</span></div>`).join('') : '<p class="muted" style="margin:0">Nenhuma hora extra neste mês.</p>'}
+      <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>Horas por tipo e ação</h3><p class="ch-sub">Neste mês — toque para filtrar</p></div><button class="btn sm" data-act="acoes-open">Gerenciar</button></div><div class="card-b">
+        ${Object.keys(porAcao).length ? Object.entries(porAcao).sort((x,y) => y[1].h - x[1].h).map(([k,o]) => `<button class="ac-row" ${k!=='_pl' && k!=='_' ? `data-act="esc-fa" data-k="${k}"` : `data-act="esc-ft" data-k="plantao"`}><span class="ac-dot" style="background:${escColor(o.e)}"></span><b>${esc(k==='_pl' ? 'Plantões de sábado' : escTitle(o.e))}</b><span class="muted">${o.n}×</span><span class="fw5">${fmtH(o.h)}</span></button>`).join('') : '<p class="muted" style="margin:0">Nenhuma escala neste mês.</p>'}
       </div></div>
     </div>
   </div>`;
   $('#escst').onchange = e => { st.st = e.target.value; escList(); };
+  $('#escac').onchange = e => { st.ac = e.target.value; if (st.ac) st.t = ''; pgEscalas(); };
+  const eb = $('#escb'); if (eb) eb.onchange = e => { st.b = e.target.value; pgEscalas(); };
   $('#escq').oninput = e => { st.q = e.target.value; escList(); };
   escList();
 }
 function escList(){
-  const st = S.esc, [a,b] = monthRange(), q = st.q.toLowerCase().trim(), today = iso(new Date()), multi = !S.base && myBases().length > 1;
-  const list = escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.st || e.status === st.st) &&
-    (!q || [escTitle(e), e.observacao, bName(e.base), ...(e.membros||[]).map(cid => C(cid)?.nome)].join(' ').toLowerCase().includes(q)))
+  const st = S.esc, [a,b] = monthRange(), q = st.q.toLowerCase().trim(), today = iso(new Date());
+  const list = escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.st || e.status === st.st) && (!st.ac || sameId(e.acao_id, st.ac)) &&
+    (!q || [escTitle(e), e.observacao, bName(e.base), P(e.responsavel_id)?.nome, ...(e.membros||[]).map(cid => CX(cid)?.nome)].join(' ').toLowerCase().includes(q)))
     .sort((x,y) => x.data.localeCompare(y.data) || tMin(x.hora_inicio) - tMin(y.hora_inicio));
-  if (!list.length){ $('#esclist').innerHTML = `<div class="card">${empty('shift','Nenhuma escala neste mês','Use "Plantão" ou "Hora extra" para escalar a equipe.')}</div>`; return; }
-  let last = '';
+  if (!list.length){ $('#esclist').innerHTML = `<div class="card">${empty('shift','Nenhuma escala encontrada', st.ac || st.st || q ? 'Ajuste os filtros acima.' : 'Use "Plantão" ou "Hora extra" para escalar a equipe.')}</div>`; return; }
   $('#esclist').innerHTML = list.map(e => {
     const d = parseISO(e.data), wk = cap(d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.',''));
-    const past = e.data < today, isToday = e.data === today, h = durH(e), n = (e.membros||[]).length;
+    const past = e.data < today, isToday = e.data === today, h = durH(e), n = (e.membros||[]).length, r = P(e.responsavel_id);
     const nextSt = e.status === 'planejada' ? 'confirmada' : e.status === 'confirmada' && e.data <= today ? 'realizada' : null;
-    const head = e.data !== last ? (last = e.data, '') : '';
     return `<div class="card esc ${e.status==='cancelada'?'cancel':''} ${past && e.status!=='realizada' && e.status!=='cancelada'?'late-e':''}" style="--c:${escColor(e)}" data-act="esc-open" data-id="${e.id}" role="button" tabindex="0">
       <div class="esc-d ${isToday?'today':''}"><small>${wk}</small><b>${d.getDate()}</b></div>
       <div class="esc-b">
-        <div class="esc-t"><span class="esc-tipo">${ic(ESC_T[e.tipo].icon,13)}${ESC_T[e.tipo].short}</span><b>${esc(escTitle(e))}</b></div>
-        <div class="esc-m"><span>${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)} (${fmtH(h)})</span>${multi?bTag(e.base):''}${P(e.responsavel_id)?`<span>Resp. ${esc(firstName(P(e.responsavel_id).nome))}</span>`:''}${e.tipo==='hora_extra' && n ? `<span class="fw5">${fmtH(h*n)} no total</span>` : ''}</div>
-        <div class="esc-p">${(e.membros||[]).slice(0,8).map(cid => { const c = C(cid), aus = ausenteEm(cid, e.data); return `<span class="pp ${aus?'warn':''}" title="${aus?'Ausente: '+(EV[aus.tipo]||EV.outro).label:''}">${avatar(c?.nome,22)}${esc(firstName(c?.nome||'—'))}${aus?ic('alert',12):''}</span>`; }).join('')}${n>8?`<span class="pp more">+${n-8}</span>`:''}${!n?'<span class="muted s">Ninguém escalado ainda</span>':''}</div>
+        <div class="esc-t"><span class="esc-tipo">${ic(ESC_T[e.tipo].icon,13)}${ESC_T[e.tipo].short}</span><b>${esc(escTitle(e))}</b>${bTag(e.base)}</div>
+        <div class="esc-m"><span>${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)} — ${durTxt(e)}</span>${n ? `<span class="fw5">${fmtH(h*n)} no total</span>` : ''}</div>
+        <div class="esc-r ${r?'':'none'}">${ic('shield',12)}${r ? 'Responsável: <b>' + esc(r.nome) + '</b>' : (e.tipo === 'plantao' ? 'Sem responsável — defina um' : 'Sem responsável')}</div>
+        <div class="esc-p">${(e.membros||[]).slice(0,8).map(cid => { const c = CX(cid), aus = ausenteEm(cid, e.data); return `<span class="pp ${aus?'warn':''}" title="${aus?'Ausente: '+(EV[aus.tipo]||EV.outro).label:''}">${avatar(c?.nome,22)}${esc(firstName(c?.nome||'—'))}${aus?ic('alert',12):''}</span>`; }).join('')}${n>8?`<span class="pp more">+${n-8}</span>`:''}${!n?'<span class="muted s">Ninguém escalado ainda</span>':''}</div>
       </div>
       <div class="esc-s">${chip(ESC_S[e.status])}${canEditEsc(e) && nextSt ? `<button class="qbtn" data-act="esc-st" data-id="${e.id}" data-k="${nextSt}">${ic('check',14)}<span>${nextSt==='confirmada'?'Confirmar':'Realizada'}</span></button>` : ''}</div>
     </div>`; }).join('');
@@ -2808,57 +3042,75 @@ function escList(){
 function escForm(id, preset={}){
   const e0 = id ? S.escalas.find(x => sameId(x.id, id)) : null;
   if (id) markReadPrefix(`esc:${id}:`);
-  if (e0 && !canEditEsc(e0)) return;
+  const ro = e0 && !canEditEsc(e0);
   const tipo = e0?.tipo || preset.tipo || 'plantao';
-  const e = e0 || {tipo, base:preset.base || defBase(), data:preset.data || (tipo === 'plantao' ? nextSat() : iso(new Date())), hora_inicio: tipo === 'plantao' ? '07:00' : '17:00', hora_fim: tipo === 'plantao' ? '13:00' : '21:00', status:'planejada', membros:preset.membros || [], acao_id:preset.acao_id || null, responsavel_id:null};
-  if (!e0 && !e.responsavel_id) e.responsavel_id = liderOf(e.base)?.id || null;
-  const respOpts = base => `<option value="">— Sem responsável —</option>${opts(S.profiles.filter(p => p.ativo && (p.role === 'admin' || (p.role === 'lider' && (p.bases||[]).includes(base)))).map(p => [p.id, p.nome + (p.role==='admin'?' (encarregado)':'')]), e.responsavel_id)}`;
+  const e = e0 || {tipo, base:preset.base || defBase() || BKEYS[0], data:preset.data || (tipo === 'plantao' ? nextSat() : iso(new Date())), hora_inicio: tipo === 'plantao' ? '07:00' : '17:00', hora_fim: tipo === 'plantao' ? '13:00' : '21:00', status:'planejada', membros:preset.membros || [], acao_id:preset.acao_id || null, responsavel_id:null};
+  if (!e0) e.responsavel_id = preset.responsavel_id || liderOf(e.base)?.id || null;
+  if (ro){
+    const r = P(e.responsavel_id);
+    return openModal({wide:true, title:escTitle(e), body:`<div class="chips" style="margin-bottom:12px">${bTag(e.base)}${chip(ESC_S[e.status])}</div>
+      <div class="dl"><div><small>Data</small><b>${fmtD(e.data)}</b></div><div><small>Horário</small><b>${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)} — ${durTxt(e)}</b></div>
+      <div><small>Responsável</small><b>${esc(r?.nome || '—')}</b></div><div><small>Criado por</small><b>${esc(e.criado_por_nome || '—')}</b></div>
+      ${e.observacao ? `<div class="full"><small>Observação</small><div class="box">${esc(e.observacao)}</div></div>` : ''}</div>
+      <div class="sec">Quem vai (${(e.membros||[]).length})</div><div class="esc-p">${(e.membros||[]).map(cid => `<span class="pp">${avatar(CX(cid)?.nome,22)}${esc(CX(cid)?.nome||'—')}</span>`).join('')}</div>
+      <p class="f-hint" style="margin-top:14px">Quem pode editar: o líder da base, o responsável e o encarregado.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+  }
+  const respOpts = cur => { const list = respList(); return `<option value="">— Escolha o responsável —</option>${opts(list.map(p => [p.id, p.nome + (p.role === 'admin' ? ' (encarregado)' : (p.bases||[])[0] ? ' — líder ' + bName(p.bases[0]) : '')]), cur)}`; };
   const acaoOpts = cur => `<option value="">— Escolha a ação —</option>${opts(S.acoes.filter(a => a.ativo !== false || sameId(a.id, cur)).sort((x,y) => x.nome.localeCompare(y.nome,'pt')).map(a => [a.id, a.nome]), cur)}<option value="__nova">+ Nova ação...</option>`;
   openModal({wide:true, title: e0 ? 'Editar escala' : (tipo === 'plantao' ? 'Novo plantão de sábado' : 'Nova hora extra'), body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Tipo', rchips('tipo', Object.fromEntries(Object.entries(ESC_T).map(([k,o]) => [k,{label:o.label,color:o.color}])), tipo), true, true)}
+    <div class="f full resp-box" id="frespbox"><label>${ic('shield',14)} Responsável <span id="frespreq">${tipo==='plantao'?'pelo plantão <em>*</em>':'pela ação (opcional)'}</span></label>
+      <select name="responsavel_id" id="fresp">${respOpts(e.responsavel_id)}</select>
+      <span class="f-hint" id="fresphint">${tipo==='plantao' ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.'}</span></div>
     <div class="f full" id="facao" ${tipo==='hora_extra'?'':'hidden'}><label>Ação <em>*</em></label>
       <select name="acao_id" id="facs">${acaoOpts(e.acao_id)}</select>
       <input name="acao_nova" id="fnova" placeholder="Nome da nova ação (ex: Ação Noturna, Mutirão de cortes)" hidden maxlength="60" style="margin-top:8px"></div>
-    ${myBases().length === 1 && !isAdmin() ? `<input type="hidden" name="base" value="${myBases()[0]}">${fld('Base', `<div class="fixed-base">${bTag(myBases()[0])}</div>`)}` : fld('Base', `<select name="base" id="fbase" required>${baseOpts(e.base, !e.base)}</select>`, false, true)}
+    ${fld('Base', `<select name="base" id="fbase" required>${BKEYS.map(k => `<option value="${k}" ${k===e.base?'selected':''}>${BASES[k].nome}</option>`).join('')}</select>`, false, true)}
     ${fld('Data', inp('data', e.data, 'type="date" required id="fdata"'), false, true)}
-    ${fld('Início', inp('hora_inicio', hhmm(e.hora_inicio), 'type="time" required'), false, true)}
-    ${fld('Fim', inp('hora_fim', hhmm(e.hora_fim), 'type="time" required'), false, true)}
-    ${fld('Responsável no dia', `<select name="responsavel_id" id="fresp">${respOpts(e.base)}</select>`)}
+    ${fld('Início', inp('hora_inicio', hhmm(e.hora_inicio), 'type="time" required id="fhi"'), false, true)}
+    ${fld('Fim', inp('hora_fim', hhmm(e.hora_fim), 'type="time" required id="fhf"'), false, true, '<span id="fdur"></span>')}
     ${fld('Situação', rchips('status', ESC_S, e.status), true)}
     <div class="f full"><label>Quem vai <em>*</em> <span class="muted" id="fcount"></span></label>
-      <label class="search" style="max-width:none">${ic('search',16)}<input id="fps" placeholder="Filtrar pessoas..."></label>
+      <div class="pick-tools"><label class="search" style="max-width:none;flex:1">${ic('search',16)}<input id="fps" placeholder="Filtrar pessoas..."></label><label class="tgl"><input type="checkbox" id="fall"> Outras bases</label></div>
       <div class="pick" id="fpick"></div></div>
     ${fld('Observação', `<textarea name="observacao" rows="2" placeholder="Ex: ponto de encontro, viatura, atividade...">${esc(e.observacao||'')}</textarea>`, true)}
   </form>`,
   foot:`${e0 && (isAdmin() || sameId(e0.criado_por, S.profile.id)) ? `<button class="btn danger left" data-act="esc-del" data-id="${e0.id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}${e0 ? `<button class="btn" data-act="esc-dup" data-id="${e0.id}">${ic('dup',15)}<span class="hide-s">Duplicar</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="esc-save" data-id="${e0?.id||''}">${ic('check',15)}Salvar escala</button>`,
   onMount: ov => {
     const sel = new Set((e.membros||[]).map(String));
+    const pool = () => S.colabsAll.length ? S.colabsAll : S.colabs;
+    const showDur = () => { const x = {hora_inicio:$('#fhi',ov).value, hora_fim:$('#fhf',ov).value}; $('#fdur',ov).textContent = x.hora_inicio && x.hora_fim ? 'Conta ' + durTxt(x) : ''; };
     const draw = () => {
-      const base = $('[name=base]',ov).value, ds = $('#fdata',ov).value, q = ($('#fps',ov).value||'').toLowerCase();
+      const base = $('#fbase',ov).value, ds = $('#fdata',ov).value, q = ($('#fps',ov).value||'').toLowerCase(), outras = $('#fall',ov).checked;
       const [ma, mb] = [ds.slice(0,8)+'01', iso(new Date(+ds.slice(0,4), +ds.slice(5,7), 0))];
-      const st = Object.fromEntries(escStats(S.escalas.filter(x => x.base === base && x.data >= ma && x.data <= mb && !sameId(x.id, id))).map(r => [String(r.cid), r]));
-      const people = S.colabs.filter(c => (c.base === base || sel.has(String(c.id))) && (c.status !== 'desligado' || sel.has(String(c.id)))).sort((x,y) => x.nome.localeCompare(y.nome,'pt'));
+      const st = Object.fromEntries(escStats(S.escalas.filter(x => x.data >= ma && x.data <= mb && !sameId(x.id, id))).map(r => [String(r.cid), r]));
+      const people = pool().filter(c => (outras || c.base === base || sel.has(String(c.id))) && (c.status !== 'desligado' || sel.has(String(c.id))))
+        .sort((x,y) => (x.base === base ? 0 : 1) - (y.base === base ? 0 : 1) || x.nome.localeCompare(y.nome,'pt'));
       $('#fpick',ov).innerHTML = people.filter(c => !q || c.nome.toLowerCase().includes(q)).map(c => {
         const aus = ausenteEm(c.id, ds), dup = S.escalas.find(x => !sameId(x.id, id) && x.data === ds && x.status !== 'cancelada' && (x.membros||[]).map(String).includes(String(c.id)));
         const r = st[String(c.id)];
-        return `<label class="pk ${sel.has(String(c.id))?'on':''}"><input type="checkbox" value="${c.id}" ${sel.has(String(c.id))?'checked':''}>${avatar(c.nome,30)}<span class="pk-t"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'')}${r ? ` — no mês: ${r.pl} plantão(ões), ${fmtH(r.he)} HE` : ''}</small>
-          ${aus?`<em class="w">${ic('alert',12)} ${(EV[aus.tipo]||EV.outro).label} nesta data</em>`:''}${dup?`<em class="w">${ic('alert',12)} Já escalado: ${esc(escTitle(dup))}</em>`:''}${c.status!=='ativo'?`<em class="w">${CSTATUS[c.status]?.label}</em>`:''}</span><i class="pk-c">${ic('check',14)}</i></label>`; }).join('') || '<p class="muted" style="margin:8px 0">Nenhum colaborador nesta base.</p>';
+        return `<label class="pk ${sel.has(String(c.id))?'on':''}"><input type="checkbox" value="${c.id}" ${sel.has(String(c.id))?'checked':''}>${avatar(c.nome,30)}<span class="pk-t"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'')}${c.base !== base ? ' — ' + bName(c.base) : ''}${r ? ` — no mês: ${fmtH(r.total)}` : ''}</small>
+          ${aus?`<em class="w">${ic('alert',12)} ${(EV[aus.tipo]||EV.outro).label} nesta data</em>`:''}${dup?`<em class="w">${ic('alert',12)} Já escalado: ${esc(escTitle(dup))}</em>`:''}${c.status && c.status!=='ativo'?`<em class="w">${CSTATUS[c.status]?.label}</em>`:''}</span><i class="pk-c">${ic('check',14)}</i></label>`; }).join('') || '<p class="muted" style="margin:8px 0">Nenhum colaborador nesta base. Marque "Outras bases" para escolher de outra.</p>';
       $('#fcount',ov).textContent = sel.size ? `(${sel.size} selecionado${sel.size>1?'s':''})` : '';
       $$('#fpick input',ov).forEach(i => i.onchange = () => { i.checked ? sel.add(i.value) : sel.delete(i.value); i.closest('.pk').classList.toggle('on', i.checked); $('#fcount',ov).textContent = sel.size ? `(${sel.size} selecionado${sel.size>1?'s':''})` : ''; });
     };
-    ov._sel = sel; draw();
-    $('#fps',ov).oninput = draw; $('#fdata',ov).onchange = draw;
-    const fb = $('#fbase',ov); if (fb) fb.onchange = () => { $('#fresp',ov).innerHTML = respOpts(fb.value); const l = liderOf(fb.value); if (l) $('#fresp',ov).value = l.id; draw(); };
-    $$('[name=tipo]',ov).forEach(r => r.onchange = () => { $('#facao',ov).hidden = r.value !== 'hora_extra';
-      if (!id){ const t = r.value === 'plantao'; $('[name=hora_inicio]',ov).value = t ? '07:00' : '17:00'; $('[name=hora_fim]',ov).value = t ? '13:00' : '21:00'; $('#fdata',ov).value = t ? nextSat() : iso(new Date()); draw(); } });
+    ov._sel = sel; draw(); showDur();
+    $('#fps',ov).oninput = draw; $('#fdata',ov).onchange = draw; $('#fall',ov).onchange = draw;
+    $('#fhi',ov).oninput = showDur; $('#fhf',ov).oninput = showDur;
+    $('#fbase',ov).onchange = () => { if (!$('#fresp',ov).value){ const l = liderOf($('#fbase',ov).value); if (l) $('#fresp',ov).value = l.id; } draw(); };
+    $$('[name=tipo]',ov).forEach(r => r.onchange = () => { const pl = r.value === 'plantao'; $('#facao',ov).hidden = pl;
+      $('#frespreq',ov).innerHTML = pl ? 'pelo plantão <em>*</em>' : 'pela ação (opcional)';
+      $('#fresphint',ov).textContent = pl ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.';
+      if (!id){ $('#fhi',ov).value = pl ? '07:00' : '17:00'; $('#fhf',ov).value = pl ? '13:00' : '21:00'; $('#fdata',ov).value = pl ? nextSat() : iso(new Date()); showDur(); draw(); } });
     $('#facs',ov).onchange = ev => { const n = ev.target.value === '__nova'; $('#fnova',ov).hidden = !n; if (n) $('#fnova',ov).focus(); };
   }});
 }
 async function saveEsc(id){
   const f = formObj(), ov = $('#ov'), membros = [...(ov?._sel || [])];
-  if (!BASES[f.base] || !allowed(f.base)) return toast('Escolha a base.','err');
+  if (!BASES[f.base]) return toast('Escolha a base.','err');
   if (!f.data) return toast('Informe a data.','err');
   if (!f.hora_inicio || !f.hora_fim) return toast('Informe o horário de início e fim.','err');
+  if (f.tipo === 'plantao' && !f.responsavel_id){ $('#frespbox')?.classList.add('need'); $('#fresp')?.focus(); return toast('Todo plantão precisa de um responsável.','err'); }
   if (!membros.length) return toast('Escolha quem vai.','err');
   let acao_id = null;
   if (f.tipo === 'hora_extra'){
@@ -2870,7 +3122,7 @@ async function saveEsc(id){
     } else acao_id = f.acao_id;
     if (!acao_id) return toast('Escolha a ação da hora extra.','err');
   }
-  const aus = membros.map(cid => [C(cid), ausenteEm(cid, f.data)]).filter(x => x[1]);
+  const aus = membros.map(cid => [CX(cid), ausenteEm(cid, f.data)]).filter(x => x[1]);
   if (aus.length && !await confirmBox(`Estas pessoas estão ausentes em ${fmtD(f.data)}:<br><b>${aus.map(([c,a]) => esc(c?.nome) + ' (' + (EV[a.tipo]||EV.outro).label + ')').join('<br>')}</b><br>Salvar mesmo assim?`, 'Salvar')) return;
   const row = {tipo:f.tipo, base:f.base, data:f.data, hora_inicio:f.hora_inicio, hora_fim:f.hora_fim, acao_id, membros, responsavel_id:f.responsavel_id, status:f.status || 'planejada', observacao:f.observacao, updated_at:nowISO()};
   try {
@@ -2882,13 +3134,14 @@ async function saveEsc(id){
 }
 async function setEscStatus(id, st){
   const e = S.escalas.find(x => sameId(x.id, id)); if (!e) return;
+  if (st !== 'cancelada' && e.tipo === 'plantao' && !e.responsavel_id){ toast('Defina o responsável do plantão antes.','err'); return escForm(id); }
   try { await DB.update('escalas', id, {status:st, updated_at:nowISO()}); toast(`${escTitle(e)} ${fmtD(e.data)}: ${ESC_S[st].label.toLowerCase()}.`); await reload(); } catch(er){ err(er); }
 }
 function dupEsc(id){
   const e = S.escalas.find(x => sameId(x.id, id)); if (!e) return;
   const d = parseISO(e.data); d.setDate(d.getDate() + 7);
-  closeModal(); escForm(null, {tipo:e.tipo, base:e.base, data:iso(d), membros:e.membros || [], acao_id:e.acao_id});
-  setTimeout(() => { const ov = $('#ov'); if (!ov) return; $('[name=hora_inicio]',ov).value = hhmm(e.hora_inicio); $('[name=hora_fim]',ov).value = hhmm(e.hora_fim); }, 0);
+  closeModal(); escForm(null, {tipo:e.tipo, base:e.base, data:iso(d), membros:e.membros || [], acao_id:e.acao_id, responsavel_id:e.responsavel_id});
+  setTimeout(() => { const ov = $('#ov'); if (!ov) return; $('#fhi',ov).value = hhmm(e.hora_inicio); $('#fhf',ov).value = hhmm(e.hora_fim); $('#fhi',ov).dispatchEvent(new Event('input')); }, 0);
 }
 async function delEsc(id){
   if (!await confirmBox('Excluir esta escala?')) return;
@@ -2901,7 +3154,7 @@ function openAcoes(){
     <p class="f-hint" style="margin:0 0 12px">Nomes usados para identificar as horas extras (ex: Ação Noturna, Ação MI). ${adm ? 'Você pode renomear e desativar.' : 'Só o encarregado renomeia ou desativa.'}</p>
     <div class="ac-add"><input id="anova" class="ta" style="min-height:0;padding:10px 12px" placeholder="Nova ação" maxlength="60"><button class="btn pri" data-act="acao-add">${ic('plus',15)}Adicionar</button></div>
     <div class="ac-list">${S.acoes.slice().sort((a,b) => (b.ativo!==false)-(a.ativo!==false) || a.nome.localeCompare(b.nome,'pt')).map(a => `<div class="ac-item ${a.ativo===false?'off':''}"><span class="ac-dot" style="background:${a.cor||'#d97706'}"></span>
-      ${adm ? `<input class="ac-in" value="${esc(a.nome)}" data-id="${a.id}" maxlength="60">` : `<b>${esc(a.nome)}</b>`}<span class="muted s">${uses(a.id)} uso(s)</span>
+      ${adm ? `<input class="ac-in" value="${esc(a.nome)}" data-id="${a.id}" maxlength="60">` : `<b>${esc(a.nome)}</b>`}<button class="linkbtn s" data-act="esc-fa" data-k="${a.id}">${uses(a.id)} uso(s)</button>
       ${adm ? `<label class="sw" title="${a.ativo===false?'Desativada':'Ativa'}"><input type="checkbox" data-chg="acao-ativo" data-id="${a.id}" ${a.ativo===false?'':'checked'}><span></span></label>` : ''}</div>`).join('') || '<p class="muted">Nenhuma ação cadastrada.</p>'}</div>`,
     foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`,
     onMount: ov => { $$('.ac-in',ov).forEach(i => i.addEventListener('change', async () => { const nome = i.value.trim(); if (!nome) return;
@@ -2915,29 +3168,299 @@ async function addAcao(){
 }
 async function exportEsc(){
   let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
-  const [a,b] = monthRange();
-  const list = escalasV().filter(e => e.data >= a && e.data <= b).sort((x,y) => x.data.localeCompare(y.data));
-  const rows = [['Data','Dia','Tipo','Ação','Base','Início','Fim','Horas','Pessoas','Qtde','Horas totais','Responsável','Situação','Observação']];
+  const [a,b] = monthRange(), st = S.esc;
+  const list = escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.ac || sameId(e.acao_id, st.ac))).sort((x,y) => x.data.localeCompare(y.data));
+  const rows = [['Data','Dia','Tipo','Ação','Base','Início','Fim','Horas (sem almoço)','Pessoas','Qtde','Horas totais','Responsável','Situação','Observação']];
   list.forEach(e => { const h = durH(e), n = (e.membros||[]).length;
-    rows.push([fmtD(e.data), cap(parseISO(e.data).toLocaleDateString('pt-BR',{weekday:'long'})), ESC_T[e.tipo].label, e.tipo==='hora_extra' ? (acaoOf(e.acao_id)?.nome||'') : '', bName(e.base), hhmm(e.hora_inicio), hhmm(e.hora_fim), Math.round(h*100)/100, (e.membros||[]).map(cid => C(cid)?.nome || '').join(', '), n, Math.round(h*n*100)/100, P(e.responsavel_id)?.nome || '', ESC_S[e.status]?.label, e.observacao || '']); });
-  const per = escStats(list).map(r => [C(r.cid)?.nome || '', bName(C(r.cid)?.base), r.pl, r.nHe, Math.round(r.he*100)/100]).sort((x,y) => y[4]-x[4]);
+    rows.push([fmtD(e.data), cap(parseISO(e.data).toLocaleDateString('pt-BR',{weekday:'long'})), ESC_T[e.tipo].label, e.tipo==='hora_extra' ? (acaoOf(e.acao_id)?.nome||'') : '', bName(e.base), hhmm(e.hora_inicio), hhmm(e.hora_fim), Math.round(h*100)/100, (e.membros||[]).map(cid => CX(cid)?.nome || '').join(', '), n, Math.round(h*n*100)/100, P(e.responsavel_id)?.nome || '', ESC_S[e.status]?.label, e.observacao || '']); });
+  const per = escStats(list).map(r => [CX(r.cid)?.nome || '', bName(CX(r.cid)?.base), r.pl, Math.round(r.hPl*100)/100, r.nHe, Math.round(r.he*100)/100, Math.round(r.total*100)/100]).sort((x,y) => y[6]-x[6]);
   const wb = X.utils.book_new();
-  const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [10,12,16,20,13,7,7,7,40,6,10,20,12,30].map(w => ({wch:w}));
-  const ws2 = X.utils.aoa_to_sheet([['Colaborador','Base','Plantões','Ações de HE','Horas extras'], ...per]); ws2['!cols'] = [30,14,10,12,12].map(w => ({wch:w}));
-  X.utils.book_append_sheet(wb, ws, 'Escalas'); X.utils.book_append_sheet(wb, ws2, 'Resumo por pessoa');
-  X.writeFile(wb, `Escalas_${a.slice(0,7)}${curBaseKey() ? '_' + BASES[curBaseKey()].nome.replace(/\s/g,'') : ''}.xlsx`);
+  const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [10,12,16,20,13,7,7,10,40,6,10,20,12,30].map(w => ({wch:w}));
+  const ws2 = X.utils.aoa_to_sheet([['Colaborador','Base','Plantões','Horas em plantão','Ações de HE','Horas em ações','Total de horas'], ...per]); ws2['!cols'] = [30,14,10,14,12,14,12].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Escalas'); X.utils.book_append_sheet(wb, ws2, 'Horas por pessoa');
+  X.writeFile(wb, `Escalas_${a.slice(0,7)}.xlsx`);
   toast('Planilha de escalas exportada.');
 }
 function openMore(){
   const items = NAV.filter(n => !n.m && (!n.admin || isAdmin()));
   openModal({title:'Mais opções', body:`<div class="more-g">
-    ${items.map(n => { const b = n.badge ? n.badge() : 0; return `<button class="more-i ${S.page===n.id?'on':''}" data-nav="${n.id}">${ic(n.icon,22)}<b>${n.label}</b>${b?`<span class="badge">${b}</span>`:''}</button>`; }).join('')}
-    <button class="more-i" data-act="anx-open">${ic('clip',22)}<b>Atestados</b></button>
-    <button class="more-i" data-act="notif">${ic('bell',22)}<b>Avisos</b></button>
-    <button class="more-i" data-act="reconnect">${ic('refresh',22)}<b>Atualizar dados</b></button>
-    <button class="more-i out" data-act="logout">${ic('logout',22)}<b>Sair</b></button>
+    ${items.map(n => { const b = n.badge ? n.badge() : 0; return `<button class="more-i ${S.page===n.id?'on':''}" data-nav="${n.id}" style="--nc:${n.color}"><span class="mi-i">${ic(n.icon,22)}</span><b>${n.label}</b>${b?`<span class="badge">${b}</span>`:''}</button>`; }).join('')}
+    <button class="more-i" data-act="anx-open" style="--nc:#0f766e"><span class="mi-i">${ic('clip',22)}</span><b>Atestados</b></button>
+    <button class="more-i" data-act="rev-open" style="--nc:#9333ea"><span class="mi-i">${ic('checks',22)}</span><b>Revisão quinzenal</b></button>
+    <button class="more-i" data-act="notif" style="--nc:#e11d48"><span class="mi-i">${ic('bell',22)}</span><b>Avisos</b></button>
+    <button class="more-i" data-act="reconnect" style="--nc:#475569"><span class="mi-i">${ic('refresh',22)}</span><b>Atualizar dados</b></button>
+    <button class="more-i out" data-act="logout" style="--nc:#ef4444"><span class="mi-i">${ic('logout',22)}</span><b>Sair</b></button>
   </div>
   <div class="more-me">${avatar(S.profile.nome,36)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}${ownBases().length ? ' — ' + ownBases().map(bName).join(', ') : ''} — v${APP_VERSION}</small></div></div>`});
+}
+
+
+/* ========================= ESTOQUE ========================= */
+// Estoque total = soma dos estoques de cada base. Todos os líderes veem tudo;
+// cada um movimenta só a sua base (o encarregado movimenta todas).
+const EST_CATS = ['Lacres','EPI','Ferramentas','Hidráulico','Elétrico','Sinalização','Escritório','Limpeza','Outros'];
+const EST_UN = ['un','cx','pct','par','m','rolo','kg','L'];
+const EST_CAT_COR = {'Lacres':'#2563eb','EPI':'#ea580c','Ferramentas':'#475569','Hidráulico':'#0891b2','Elétrico':'#ca8a04','Sinalização':'#dc2626','Escritório':'#7c3aed','Limpeza':'#16a34a','Outros':'#64748b'};
+const catCor = c => EST_CAT_COR[c] || '#64748b';
+const MOV = {entrada:{label:'Entrada', color:'#16a34a', icon:'plus'}, saida:{label:'Saída', color:'#dc2626', icon:'minus'}, ajuste:{label:'Contagem', color:'#4f63d6', icon:'checks'}, transferencia:{label:'Transferência', color:'#9333ea', icon:'swap'}};
+const fmtQ = (n, un) => (Math.round((+n||0)*100)/100).toLocaleString('pt-BR') + (un ? ' ' + un : '');
+const itemOf = id => S.estItens.find(i => sameId(i.id, id));
+const saldoOf = (item, base) => S.estSaldos.find(s => sameId(s.item_id, item.id) && s.base === base) || null;
+const qtdOf = (item, base) => +(saldoOf(item, base)?.quantidade || 0);
+const minOf = (item, base) => { const s = saldoOf(item, base); return s && s.minimo != null ? +s.minimo : +(item.minimo_padrao || 0); };
+const nivel = (q, m) => q <= 0 ? 'zero' : (m > 0 && q <= m) ? 'baixo' : (m > 0 && q <= m * 1.5) ? 'atencao' : 'ok';
+const NIV = {zero:{label:'Zerado', color:'#dc2626'}, baixo:{label:'Abaixo do mínimo', color:'#ef4444'}, atencao:{label:'Perto do mínimo', color:'#f59e0b'}, ok:{label:'Ok', color:'#22c55e'}};
+const estBasesView = () => BKEYS.filter(k => (!S.base || k === S.base) && (!S.est.b || k === S.est.b));
+const alertasEstoque = (bases) => { const out = [];
+  S.estItens.filter(i => i.ativo !== false).forEach(i => bases.forEach(k => { const q = qtdOf(i, k), m = minOf(i, k); const n = nivel(q, m);
+    if ((n === 'zero' && m > 0) || n === 'baixo') out.push({item:i, base:k, q, m, n}); }));
+  return out; };
+const quinzenaAtual = () => qKey(new Date());
+const revFeita = (tipo, base, q = quinzenaAtual()) => S.revisoes.find(r => r.tipo === tipo && r.base === base && r.quinzena === q);
+
+async function estRpc(fn, args){
+  if (!TEST){ const {data, error} = await sb.rpc(fn, args); if (error) throw error; return data; }
+  const d = Store.load(); d.estoque_saldos = d.estoque_saldos || []; d.estoque_movs = d.estoque_movs || [];
+  const getS = (item, base) => { let s = d.estoque_saldos.find(x => x.item_id === item && x.base === base);
+    if (!s){ s = {id:uid(), item_id:item, base, quantidade:0, minimo:null, atualizado_em:nowISO(), atualizado_por:S.profile.nome}; d.estoque_saldos.push(s); } return s; };
+  const mov = (item, base, tipo, qtd, saldo, motivo, dest) => d.estoque_movs.push({id:uid(), item_id:item, base, tipo, quantidade:qtd, saldo_apos:saldo, motivo, base_destino:dest||null, por_id:S.profile.id, por_nome:S.profile.nome, created_at:nowISO()});
+  if (fn === 'estoque_definir_minimo'){ const s = getS(args.p_item, args.p_base); s.minimo = args.p_minimo; Store.save(); return null; }
+  const {p_item:it, p_base:b, p_tipo:t, p_qtd:q, p_motivo:mo, p_destino:de} = args;
+  if (!allowed(b)) throw new Error('Seu perfil não tem permissão para esta ação.');
+  const s = getS(it, b);
+  if (t === 'entrada') s.quantidade = +s.quantidade + q;
+  else if (t === 'ajuste') s.quantidade = q;
+  else { if (+s.quantidade < q) throw new Error('Saldo insuficiente'); s.quantidade = +s.quantidade - q; }
+  s.atualizado_em = nowISO(); s.atualizado_por = S.profile.nome;
+  mov(it, b, t, q, s.quantidade, mo, de);
+  if (t === 'transferencia'){ const s2 = getS(it, de); s2.quantidade = +s2.quantidade + q; s2.atualizado_em = nowISO(); mov(it, de, 'entrada', q, s2.quantidade, 'Transferência de ' + bName(b) + (mo ? ' — ' + mo : ''), null); }
+  Store.save(); return s.quantidade;
+}
+
+function pgEstoque(){
+  const st = S.est, bases = estBasesView(), q = quinzenaAtual();
+  const itens = S.estItens.filter(i => i.ativo !== false);
+  const cats = [...new Set(itens.map(i => i.categoria).filter(Boolean))].sort();
+  const al = alertasEstoque(bases);
+  const myB = myBases();
+  const verif = BKEYS.filter(k => !S.base || k === S.base).map(k => ({k, r:revFeita('estoque', k)}));
+  const movMes = S.estMovs.filter(m => m.created_at >= iso(new Date(new Date().getFullYear(), new Date().getMonth(), 1)) && bases.includes(m.base)).length;
+  $('#page').innerHTML = `
+  <div class="est-top">
+    <div class="card est-q"><div class="est-q-h">${ic('checks',18)}<div><b>Conferência de estoque — ${qLabel(q)}</b><small>A cada quinzena, cada base confere e atualiza a contagem.</small></div>
+      <button class="btn sm pri" data-act="est-conf">${ic('checks',14)}Conferir ${myB.length === 1 ? 'minha base' : 'estoque'}</button></div>
+      <div class="est-q-b">${verif.map(v => `<span class="vq ${v.r?'ok':''}" style="--c:${BASES[v.k].c}">${emblem(v.k,10,3)}${BASES[v.k].nome}<b>${v.r ? ic('check',13) + ' ' + fmtD(v.r.created_at) : 'pendente'}</b></span>`).join('')}</div></div>
+  </div>
+  <div class="esc-kpis">
+    <div class="card ek" style="--c:#ca8a04"><span>${ic('box',16)}Itens cadastrados</span><b>${itens.length}</b></div>
+    <div class="card ek" style="--c:#ef4444" data-act="est-alerta" role="button"><span>${ic('alert',16)}Alertas de estoque</span><b>${al.length}</b><small>${al.length ? 'toque para ver só os itens em alerta' : 'tudo acima do mínimo'}</small></div>
+    <div class="card ek" style="--c:#16a34a"><span>${ic('checks',16)}Bases conferidas</span><b>${verif.filter(v => v.r).length}/${verif.length}</b><small>nesta quinzena</small></div>
+    <div class="card ek" style="--c:#4f63d6"><span>${ic('swap',16)}Movimentações no mês</span><b>${movMes}</b></div>
+  </div>
+  <div class="toolbar">
+    <label class="search">${ic('search',16)}<input id="estq" placeholder="Buscar item..." value="${esc(st.q)}"></label>
+    <select class="sel" id="estc"><option value="">Todas as categorias</option>${opts(cats.map(c => [c,c]), st.c)}</select>
+    ${!S.base ? `<select class="sel" id="estb"><option value="">Todas as bases (total)</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), st.b)}</select>` : ''}
+    <button class="fchip ${st.al?'on':''}" style="--c:#ef4444" data-act="est-alerta"><i class="d"></i>Só em alerta<b>${al.length}</b></button>
+    <div class="tb-right">
+      <button class="btn" data-act="est-hist">${ic('clock',16)}<span class="hide-s">Histórico</span></button>
+      <button class="btn" data-act="est-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button>
+      <button class="btn" data-act="est-mov">${ic('swap',16)}<span class="hide-s">Movimentar</span></button>
+      <button class="btn pri" data-act="est-new">${ic('plus',16)}Novo item</button>
+    </div>
+  </div>
+  <div id="estlist"></div>`;
+  $('#estq').oninput = e => { st.q = e.target.value; estList(); };
+  $('#estc').onchange = e => { st.c = e.target.value; estList(); };
+  const eb = $('#estb'); if (eb) eb.onchange = e => { st.b = e.target.value; pgEstoque(); };
+  estList();
+}
+function estList(){
+  const st = S.est, bases = estBasesView(), q = st.q.toLowerCase().trim();
+  const al = new Set(alertasEstoque(bases).map(a => String(a.item.id)));
+  const list = S.estItens.filter(i => i.ativo !== false && (!st.c || i.categoria === st.c) && (!st.al || al.has(String(i.id))) &&
+    (!q || [i.nome, i.categoria, i.descricao].join(' ').toLowerCase().includes(q)))
+    .sort((a,b) => (al.has(String(b.id)) - al.has(String(a.id))) || a.nome.localeCompare(b.nome,'pt'));
+  if (!list.length){ $('#estlist').innerHTML = `<div class="card">${empty('box', S.estItens.length ? 'Nenhum item encontrado' : 'Nenhum item no estoque ainda', S.estItens.length ? 'Ajuste a busca ou os filtros.' : 'Clique em "Novo item" para cadastrar o primeiro (ex: Lacre azul).')}</div>`; return; }
+  const single = bases.length === 1;
+  $('#estlist').innerHTML = `<div class="est-grid">${list.map(i => {
+    const per = bases.map(k => ({k, q:qtdOf(i,k), m:minOf(i,k)}));
+    const tot = per.reduce((s,x) => s + x.q, 0), totAll = BKEYS.reduce((s,k) => s + qtdOf(i,k), 0);
+    const worst = per.map(x => nivel(x.q, x.m)).sort((a,b) => ['zero','baixo','atencao','ok'].indexOf(a) - ['zero','baixo','atencao','ok'].indexOf(b))[0] || 'ok';
+    const hot = al.has(String(i.id)), cc = catCor(i.categoria);
+    return `<div class="card est ${hot?'hot':''}" style="--cc:${cc}" data-act="est-open" data-id="${i.id}" role="button" tabindex="0">
+      <div class="est-h"><span class="est-ic">${esc((i.nome||'?').trim().slice(0,2).toUpperCase())}</span><div class="est-n"><b>${esc(i.nome)}</b><small>${esc(i.categoria||'Sem categoria')} — ${esc(i.unidade||'un')}</small></div>${hot ? `<span class="chip" style="--c:${NIV[worst].color}"><i class="d"></i>${NIV[worst].label}</span>` : ''}</div>
+      <div class="est-tot"><b>${fmtQ(tot)}</b><span>${esc(i.unidade||'un')} ${single ? 'em ' + BASES[bases[0]].nome : 'no estoque total'}</span>${single ? `<small>${fmtQ(totAll, i.unidade)} somando todas as bases</small>` : ''}</div>
+      ${!single ? `<div class="est-bar">${per.map(x => x.q > 0 ? `<i style="flex:${x.q};background:${BASES[x.k].c}" title="${BASES[x.k].nome}: ${fmtQ(x.q, i.unidade)}"></i>` : '').join('') || '<i style="flex:1;background:#e5e7eb"></i>'}</div>` : ''}
+      <div class="est-rows">${per.map(x => { const n = nivel(x.q, x.m); return `<div class="est-r ${n}" title="${BASES[x.k].nome}: ${fmtQ(x.q, i.unidade)}${x.m ? ' — aviso em ' + fmtQ(x.m) : ''}"><span>${emblem(x.k,8,2)}${BASES[x.k].nome}</span><b>${fmtQ(x.q)}</b>${n==='zero'||n==='baixo'?ic('alert',13):n==='atencao'?'<i class="dotw"></i>':''}</div>`; }).join('')}</div>
+      <div class="est-f">${myBases().some(k => bases.includes(k)) ? `<button class="btn sm" data-act="est-mov" data-id="${i.id}" data-k="entrada">${ic('plus',14)}Entrada</button><button class="btn sm" data-act="est-mov" data-id="${i.id}" data-k="saida">${ic('minus',14)}Saída</button>` : ''}<span class="est-u">${(() => { const u = S.estMovs.filter(m => sameId(m.item_id, i.id)).sort((a,b) => b.created_at.localeCompare(a.created_at))[0]; return u ? 'Mov. ' + ago(u.created_at) : 'Sem movimentação'; })()}</span></div>
+    </div>`; }).join('')}</div>`;
+}
+function estItemForm(id){
+  const it = id ? itemOf(id) : null;
+  if (it && !(isAdmin() || sameId(it.criado_por, S.profile.id))) return toast('Só quem cadastrou o item ou o encarregado pode editar.','err');
+  const cats = [...new Set([...EST_CATS, ...S.estItens.map(i => i.categoria).filter(Boolean)])];
+  openModal({wide:true, title: it ? 'Editar item' : 'Novo item de estoque', body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Nome do item', inp('nome', it?.nome, 'required maxlength="80" placeholder="Ex: Lacre azul, Luva de vaqueta, Fita isolante"'), true, true)}
+    ${fld('Categoria', `<input name="categoria" list="estcats" value="${esc(it?.categoria||'')}" placeholder="Escolha ou digite"><datalist id="estcats">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist>`)}
+    ${fld('Unidade', `<select name="unidade">${opts(EST_UN.map(u => [u,u]), it?.unidade || 'un')}</select>`)}
+    <div class="f full alert-box"><label>${ic('bell',14)} Avisar quando o estoque de uma base chegar a <em>*</em></label>
+      <div class="ab-row"><input name="minimo_padrao" type="number" min="0" step="any" inputmode="decimal" value="${it?.minimo_padrao ?? ''}" required placeholder="Ex: 100"><span>ou menos — vale para todas as bases. Cada base pode ajustar o seu mínimo depois, nos detalhes do item.</span></div></div>
+    ${fld('Descrição', `<textarea name="descricao" rows="2" placeholder="Opcional: cor, tamanho, fornecedor, onde fica guardado...">${esc(it?.descricao||'')}</textarea>`, true)}
+    ${!it ? `<div class="f full"><label>Quantidade inicial por base</label><div class="est-ini">${BKEYS.map(k => `<label class="ini ${allowed(k)?'':'off'}" style="--c:${BASES[k].c}"><span>${emblem(k,10,3)}${BASES[k].nome}</span><input name="ini_${k}" type="number" min="0" step="any" inputmode="decimal" placeholder="0" ${allowed(k)?'':'disabled title="Só o líder da base ou o encarregado"'}></label>`).join('')}</div><span class="f-hint">Você preenche as bases que você controla. As outras bases lançam o saldo delas depois.</span></div>` : ''}
+  </form>`,
+  foot:`${it && isAdmin() ? `<button class="btn danger left" data-act="est-del" data-id="${it.id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="est-save" data-id="${it?.id||''}">${ic('check',15)}Salvar item</button>`});
+}
+async function estSaveItem(id){
+  const f = formObj();
+  if (!f.nome) return toast('Informe o nome do item.','err');
+  if (f.minimo_padrao == null || isNaN(+f.minimo_padrao)) return toast('Informe a partir de quanto avisar (alerta de estoque).','err');
+  if (!id && S.estItens.some(i => i.ativo !== false && nk(i.nome) === nk(f.nome))) return toast('Já existe um item com esse nome.','err');
+  const row = {nome:f.nome, categoria:f.categoria || 'Outros', unidade:f.unidade || 'un', minimo_padrao:+f.minimo_padrao, descricao:f.descricao};
+  try {
+    if (id){ await DB.update('estoque_itens', id, row); closeModal(); toast('Item atualizado.'); return reload(); }
+    const it = await DB.insert('estoque_itens', {...row, ativo:true, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
+    for (const k of BKEYS){ const v = +(f['ini_' + k] || 0); if (v > 0 && allowed(k)) await estRpc('estoque_movimentar', {p_item:it.id, p_base:k, p_tipo:'entrada', p_qtd:v, p_motivo:'Saldo inicial', p_destino:null}); }
+    closeModal(); toast(`"${f.nome}" cadastrado no estoque.`); await reload();
+  } catch(e){ err(e); }
+}
+async function estDelItem(id){
+  const it = itemOf(id); if (!it) return;
+  if (!await confirmBox(`Excluir <b>${esc(it.nome)}</b> do estoque?<br><span class="muted">O histórico de movimentações também é apagado.</span>`)) return;
+  try { await DB.remove('estoque_itens', id); closeModal(); toast('Item excluído.'); await reload(); } catch(e){ err(e); }
+}
+function estOpen(id){
+  const it = itemOf(id); if (!it) return;
+  const movs = S.estMovs.filter(m => sameId(m.item_id, id)).sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0, 40);
+  const tot = BKEYS.reduce((s,k) => s + qtdOf(it,k), 0);
+  const canEdit = isAdmin() || sameId(it.criado_por, S.profile.id);
+  openModal({wide:true, title:esc(it.nome), body:`
+    <div class="est-dh" style="--cc:${catCor(it.categoria)}"><span class="est-ic lg">${esc(it.nome.trim().slice(0,2).toUpperCase())}</span><div><b>${fmtQ(tot, it.unidade)}</b><small>estoque total — ${esc(it.categoria||'Sem categoria')}${it.criado_por_nome ? ' — cadastrado por ' + esc(firstName(it.criado_por_nome)) : ''}</small></div></div>
+    ${it.descricao ? `<div class="box" style="margin-top:12px">${esc(it.descricao)}</div>` : ''}
+    <div class="sec">Por base</div>
+    <div class="est-tbl">${BKEYS.map(k => { const q = qtdOf(it,k), m = minOf(it,k), n = nivel(q,m), pc = m ? Math.min(100, Math.round(q / (m*3) * 100)) : (q ? 100 : 0), s = saldoOf(it,k), can = allowed(k);
+      return `<div class="et-r ${n}"><div class="et-b">${emblem(k,12,4)}<b>${BASES[k].nome}</b></div>
+        <div class="et-q"><b>${fmtQ(q)}</b> <small>${esc(it.unidade||'un')}</small><span class="et-bar"><i style="width:${pc}%;background:${NIV[n].color}"></i>${m ? `<em style="left:${Math.min(100, Math.round(100/3))}%"></em>` : ''}</span><small class="${n==='ok'?'muted':''}" style="color:${n==='ok'?'':NIV[n].color}">${NIV[n].label}${s?.atualizado_em ? ' — atualizado ' + ago(s.atualizado_em) : ''}</small></div>
+        <div class="et-m"><small>Avisar com</small>${can ? `<input type="number" min="0" step="any" class="et-min" data-id="${it.id}" data-k="${k}" value="${m}">` : `<b>${fmtQ(m)}</b>`}</div>
+        <div class="et-a">${can ? `<button class="icon-btn bord" data-act="est-mov" data-id="${it.id}" data-k="entrada" data-base="${k}" title="Entrada">${ic('plus',15)}</button><button class="icon-btn bord" data-act="est-mov" data-id="${it.id}" data-k="saida" data-base="${k}" title="Saída">${ic('minus',15)}</button><button class="icon-btn bord" data-act="est-mov" data-id="${it.id}" data-k="ajuste" data-base="${k}" title="Contagem">${ic('checks',15)}</button>` : ''}</div></div>`; }).join('')}</div>
+    <p class="f-hint">O aviso aparece no sino do líder da base quando a quantidade chega ao mínimo. A linha no gráfico marca o mínimo.</p>
+    <div class="sec">Movimentações</div>
+    ${movs.length ? `<div class="mv-list">${movs.map(movRow).join('')}</div>` : '<div class="box muted">Nenhuma movimentação ainda.</div>'}`,
+    foot:`${canEdit ? `<button class="btn" data-act="est-edit" data-id="${it.id}">${ic('edit',15)}Editar item</button>` : ''}<button class="btn" data-act="est-mov" data-id="${it.id}" data-k="transferencia">${ic('swap',15)}<span class="hide-s">Transferir</span></button><button class="btn pri" data-act="est-mov" data-id="${it.id}" data-k="entrada">${ic('plus',15)}Movimentar</button>`,
+    onMount: ov => $$('.et-min', ov).forEach(i => i.addEventListener('change', async () => {
+      const v = +i.value; if (isNaN(v) || v < 0) return toast('Mínimo inválido.','err');
+      try { await estRpc('estoque_definir_minimo', {p_item:i.dataset.id, p_base:i.dataset.k, p_minimo:v}); toast(`Aviso de ${BASES[i.dataset.k].nome}: ${fmtQ(v, it.unidade)}.`); await loadAll(); estOpen(id); } catch(e){ err(e); } }))});
+}
+function movRow(m){
+  const it = itemOf(m.item_id), o = MOV[m.tipo] || MOV.ajuste;
+  const q = m.tipo === 'saida' || m.tipo === 'transferencia' ? '−' + fmtQ(m.quantidade) : m.tipo === 'ajuste' ? '= ' + fmtQ(m.quantidade) : '+' + fmtQ(m.quantidade);
+  return `<div class="mv" style="--c:${o.color}"><span class="mv-i">${ic(o.icon,14)}</span><div class="mv-t"><b>${o.label}${m.tipo==='transferencia' ? ' para ' + bName(m.base_destino) : ''} — ${bName(m.base)}</b><small>${it && S.page === 'estoque' && $('#ov .est-dh') ? '' : esc(it?.nome || '') + ' — '}${esc(m.motivo || '')}${m.motivo ? ' — ' : ''}${esc(firstName(m.por_nome||''))}, ${fmtDT(m.created_at)}</small></div><div class="mv-q"><b>${q}</b><small>saldo ${fmtQ(m.saldo_apos)}</small></div></div>`;
+}
+function estMovForm(id, tipo, base){
+  const myB = myBases(); if (!myB.length) return toast('Você não tem base para movimentar.','err');
+  const its = S.estItens.filter(i => i.ativo !== false).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  if (!its.length) return toast('Cadastre um item primeiro.','err');
+  const b0 = base && allowed(base) ? base : (curBaseKey() && allowed(curBaseKey()) ? curBaseKey() : myB[0]);
+  openModal({title:'Movimentar estoque', body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Item', `<select name="item_id" id="mitem" required>${opts(its.map(i => [i.id, i.nome + ' (' + (i.unidade||'un') + ')']), id || its[0].id)}</select>`, true, true)}
+    ${fld('Tipo', `<div class="mv-seg">${Object.entries(MOV).map(([k,o]) => `<label class="mvs" style="--c:${o.color}"><input type="radio" name="tipo" value="${k}" ${k===(tipo||'entrada')?'checked':''}><span>${ic(o.icon,15)}${o.label}</span></label>`).join('')}</div>`, true)}
+    ${fld('Base', myB.length === 1 ? `<input type="hidden" name="base" value="${myB[0]}"><div class="fixed-base">${bTag(myB[0])}</div>` : `<select name="base" id="mbase">${myB.map(k => `<option value="${k}" ${k===b0?'selected':''}>${BASES[k].nome}</option>`).join('')}</select>`)}
+    <div class="f" id="mdestw" hidden><label>Para a base <em>*</em></label><select name="destino" id="mdest">${BKEYS.map(k => `<option value="${k}">${BASES[k].nome}</option>`).join('')}</select></div>
+    <div class="f"><label id="mqlbl">Quantidade <em>*</em></label><input name="quantidade" id="mq" type="number" min="0" step="any" inputmode="decimal" required></div>
+    ${fld('Motivo / observação', inp('motivo','','maxlength="120" placeholder="Ex: compra, uso na OS 123, devolução..."'), true)}
+    <div class="f full"><div class="mv-prev" id="mprev"></div></div>
+  </form>`,
+  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="est-mov-save">${ic('check',15)}Confirmar</button>`,
+  onMount: ov => {
+    const prev = () => { const it = itemOf($('#mitem',ov).value), t = $('[name=tipo]:checked',ov).value, b = $('[name=base]',ov).value, q = +($('#mq',ov).value || 0);
+      $('#mdestw',ov).hidden = t !== 'transferencia'; $('#mqlbl',ov).innerHTML = (t === 'ajuste' ? 'Quantidade contada agora' : 'Quantidade') + ' <em>*</em>';
+      if ($('#mdest',ov).value === b) $('#mdest',ov).value = BKEYS.find(k => k !== b);
+      const cur = qtdOf(it, b), m = minOf(it, b);
+      const nv = t === 'entrada' ? cur + q : t === 'ajuste' ? q : cur - q;
+      const n = nivel(nv, m);
+      $('#mprev',ov).innerHTML = `<span>Saldo em ${bName(b)}: <b>${fmtQ(cur, it.unidade)}</b></span>${q || t === 'ajuste' ? `<span>${ic('chevR',14)}</span><span>Fica: <b style="color:${nv < 0 ? '#dc2626' : NIV[n].color}">${nv < 0 ? 'saldo insuficiente' : fmtQ(nv, it.unidade)}</b>${nv >= 0 && n !== 'ok' ? ' — ' + NIV[n].label.toLowerCase() : ''}</span>` : ''}`; };
+    $$('input,select', ov).forEach(x => { x.addEventListener('input', prev); x.addEventListener('change', prev); }); prev();
+    setTimeout(() => $('#mq',ov).focus(), 50);
+  }});
+}
+async function estMovSave(){
+  const f = formObj(), it = itemOf(f.item_id), q = +f.quantidade;
+  if (!it) return toast('Escolha o item.','err');
+  if (f.quantidade == null || isNaN(q) || q < 0 || (q === 0 && f.tipo !== 'ajuste')) return toast('Informe a quantidade.','err');
+  if (f.tipo === 'transferencia' && (!f.destino || f.destino === f.base)) return toast('Escolha a base de destino.','err');
+  if ((f.tipo === 'saida' || f.tipo === 'transferencia') && q > qtdOf(it, f.base)) return toast(`Saldo insuficiente em ${bName(f.base)}.`,'err');
+  try {
+    const nv = await estRpc('estoque_movimentar', {p_item:it.id, p_base:f.base, p_tipo:f.tipo, p_qtd:q, p_motivo:f.motivo, p_destino:f.tipo === 'transferencia' ? f.destino : null});
+    closeModal(); toast(`${MOV[f.tipo].label} registrada. ${it.nome} em ${bName(f.base)}: ${fmtQ(nv, it.unidade)}.`); await reload();
+  } catch(e){ err(e); }
+}
+function estConferir(base){
+  const myB = myBases(); if (!myB.length) return toast('Você não tem base para conferir.','err');
+  const b = base && allowed(base) ? base : (curBaseKey() && allowed(curBaseKey()) ? curBaseKey() : (ownBases()[0] || myB[0]));
+  const its = S.estItens.filter(i => i.ativo !== false).sort((x,y) => (x.categoria||'').localeCompare(y.categoria||'') || x.nome.localeCompare(y.nome,'pt'));
+  const r = revFeita('estoque', b);
+  openModal({wide:true, title:`Conferir estoque — ${BASES[b].nome}`, body:`
+    ${myB.length > 1 ? `<div class="chips" style="margin-bottom:12px">${myB.map(k => `<button class="bs ${k===b?'on':''}" style="--c:${BASES[k].c}" data-act="est-conf" data-k="${k}">${emblem(k,14,4)}<span><b>${BASES[k].nome}</b><small>${revFeita('estoque',k)?'conferida':'pendente'}</small></span></button>`).join('')}</div>` : ''}
+    <p class="f-hint" style="margin:0 0 12px">${r ? `Já conferida nesta quinzena por ${esc(r.por_nome)} em ${fmtDT(r.created_at)}. Pode conferir de novo se precisar.` : 'Conte cada item e digite a quantidade encontrada. Deixe em branco o que não mudou.'}</p>
+    ${its.length ? `<div class="conf">${its.map(i => { const q = qtdOf(i,b); return `<label class="cf"><span class="cf-n"><b>${esc(i.nome)}</b><small>${esc(i.categoria||'')} — no sistema: ${fmtQ(q, i.unidade)}</small></span><input type="number" min="0" step="any" inputmode="decimal" data-id="${i.id}" data-q="${q}" placeholder="${fmtQ(q)}"><em class="cf-d"></em></label>`; }).join('')}</div>` : empty('box','Nenhum item cadastrado','Cadastre os itens antes de conferir.')}`,
+    foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="est-conf-save" data-k="${b}">${ic('checks',15)}Concluir conferência</button>`,
+    onMount: ov => $$('.cf input', ov).forEach(i => i.addEventListener('input', () => { const d = i.value === '' ? null : +i.value - +i.dataset.q; const el = i.parentElement.querySelector('.cf-d');
+      el.textContent = d == null || d === 0 ? (d === 0 ? 'igual' : '') : (d > 0 ? '+' : '') + fmtQ(d); el.className = 'cf-d ' + (d > 0 ? 'up' : d < 0 ? 'dn' : ''); }))});
+}
+async function estConfSave(base){
+  const ch = $$('#ov .cf input').filter(i => i.value !== '' && +i.value !== +i.dataset.q);
+  try {
+    for (const i of ch) await estRpc('estoque_movimentar', {p_item:i.dataset.id, p_base:base, p_tipo:'ajuste', p_qtd:+i.value, p_motivo:'Conferência quinzenal', p_destino:null});
+    await DB.insert('revisoes', {tipo:'estoque', base, quinzena:quinzenaAtual(), por_id:S.profile.id, por_nome:S.profile.nome});
+    closeModal(); toast(`Conferência de ${bName(base)} concluída${ch.length ? ': ' + ch.length + ' item(ns) ajustado(s)' : ', sem diferenças'}.`); await reload();
+  } catch(e){ err(e); }
+}
+function estHist(){
+  const bases = estBasesView();
+  const movs = S.estMovs.filter(m => bases.includes(m.base)).sort((a,b) => b.created_at.localeCompare(a.created_at)).slice(0, 150);
+  openModal({wide:true, title:'Histórico de movimentações', body: movs.length ? `<div class="mv-list">${movs.map(movRow).join('')}</div>` : empty('clock','Nenhuma movimentação ainda'), foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+async function estXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const its = S.estItens.filter(i => i.ativo !== false).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  const rows = [['Item','Categoria','Unidade', ...BKEYS.map(k => BASES[k].nome), 'Total', 'Mínimo (aviso)', 'Em alerta']];
+  its.forEach(i => { const q = BKEYS.map(k => qtdOf(i,k)); const al = BKEYS.filter(k => ['zero','baixo'].includes(nivel(qtdOf(i,k), minOf(i,k))) && minOf(i,k) > 0).map(bName);
+    rows.push([i.nome, i.categoria||'', i.unidade||'un', ...q, q.reduce((a,b)=>a+b,0), i.minimo_padrao ?? '', al.join(', ')]); });
+  const mv = [['Data','Item','Base','Tipo','Quantidade','Saldo após','Destino','Motivo','Por']];
+  S.estMovs.slice().sort((a,b) => b.created_at.localeCompare(a.created_at)).forEach(m => mv.push([fmtDT(m.created_at), itemOf(m.item_id)?.nome||'', bName(m.base), MOV[m.tipo]?.label||m.tipo, m.quantidade, m.saldo_apos, m.base_destino ? bName(m.base_destino) : '', m.motivo||'', m.por_nome||'']));
+  const wb = X.utils.book_new();
+  const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [28,14,8,...BKEYS.map(() => 12),10,14,24].map(w => ({wch:w}));
+  const ws2 = X.utils.aoa_to_sheet(mv); ws2['!cols'] = [17,26,13,13,11,11,13,30,18].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Estoque'); X.utils.book_append_sheet(wb, ws2, 'Movimentações');
+  X.writeFile(wb, `Estoque_${iso(new Date())}.xlsx`); toast('Estoque exportado.');
+}
+
+/* ========================= REVISÃO QUINZENAL DOS CADASTROS ========================= */
+function revChecks(base){
+  const cs = S.colabs.filter(c => c.base === base && c.status !== 'desligado'), vs = S.veics.filter(v => v.base === base);
+  const lim = new Date(Date.now() - 15*864e5).toISOString();
+  return [
+    {t:'Colaboradores sem telefone', l:cs.filter(c => !c.telefone), nav:'colaboradores'},
+    {t:'Colaboradores sem Nº POS', l:cs.filter(c => !c.pos), nav:'colaboradores'},
+    {t:'Colaboradores sem e-mail', l:cs.filter(c => !c.email), nav:'colaboradores'},
+    {t:'Colaboradores sem veículo ou líder', l:cs.filter(c => c.status === 'ativo' && (!c.lider_id)), nav:'colaboradores'},
+    {t:'Veículos sem quilometragem', l:vs.filter(v => !v.km), nav:'frota', v:true},
+    {t:'Veículos sem atualização há 15 dias ou mais', l:vs.filter(v => !v.status_em || v.status_em < lim), nav:'frota', v:true},
+    {t:'Itens de estoque sem conferência nesta quinzena', l: revFeita('estoque', base) ? [] : S.estItens.filter(i => i.ativo !== false), nav:'estoque', it:true}
+  ];
+}
+function openRevisao(base){
+  const myB = myBases(); if (!myB.length) return;
+  const b = base && allowed(base) ? base : (ownBases()[0] || (curBaseKey() && allowed(curBaseKey()) ? curBaseKey() : myB[0]));
+  const r = revFeita('cadastro', b), ch = revChecks(b), pend = ch.filter(c => c.l.length).length;
+  openModal({wide:true, title:`Revisão quinzenal — ${BASES[b].nome}`, body:`
+    ${myB.length > 1 ? `<div class="chips" style="margin-bottom:12px">${myB.map(k => `<button class="bs ${k===b?'on':''}" style="--c:${BASES[k].c}" data-act="rev-open" data-k="${k}">${emblem(k,14,4)}<span><b>${BASES[k].nome}</b><small>${revFeita('cadastro',k)?'revisada':'pendente'}</small></span></button>`).join('')}</div>` : ''}
+    <p class="f-hint" style="margin:0 0 12px">A cada quinzena, confira se as informações da base estão em dia: contatos, POS, veículos e estoque. ${r ? `<b>Revisada por ${esc(r.por_nome)} em ${fmtDT(r.created_at)}.</b>` : ''}</p>
+    <div class="rv">${ch.map(c => `<div class="rv-i ${c.l.length?'':'ok'}"><span class="rv-s">${ic(c.l.length?'alert':'check',15)}</span><div class="rv-t"><b>${c.t}</b><small>${c.l.length ? c.l.slice(0,6).map(x => esc(c.v ? x.placa : c.it ? x.nome : x.nome)).join(', ') + (c.l.length > 6 ? ` e mais ${c.l.length-6}` : '') : 'Tudo certo'}</small></div>${c.l.length ? `<span class="rv-n">${c.l.length}</span><button class="btn sm" data-nav="${c.nav}">Abrir</button>` : ''}</div>`).join('')}</div>`,
+    foot:`<button class="btn" data-act="modal-close">Fechar</button><button class="btn pri" data-act="rev-save" data-k="${b}">${ic('checks',15)}${pend ? 'Revisei (' + pend + ' ponto(s) em aberto)' : 'Revisão feita'}</button>`});
+}
+async function revSave(base){
+  try { await DB.insert('revisoes', {tipo:'cadastro', base, quinzena:quinzenaAtual(), por_id:S.profile.id, por_nome:S.profile.nome}); closeModal(); toast(`Revisão de ${bName(base)} registrada.`); await reload(); } catch(e){ err(e); }
 }
 
 
@@ -3120,6 +3643,13 @@ const ACT = {
   'esc-next': () => { const c = S.esc; c.m++; if (c.m > 11){ c.m = 0; c.y++; } pgEscalas(); },
   'esc-today': () => { const d = new Date(); S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); pgEscalas(); },
   'acoes-open': () => openAcoes(), 'acao-add': () => addAcao(),
+  'esc-fa': a => { closeModal(); S.esc.ac = a.dataset.k; S.esc.t = ''; S.page === 'escalas' ? pgEscalas() : go('escalas'); },
+  'fresh': () => { $('#fresh')?.remove(); const y = window.scrollY; render(); window.scrollTo(0, y); },
+  'est-new': () => estItemForm(), 'est-edit': a => { closeModal(); estItemForm(a.dataset.id); }, 'est-save': a => estSaveItem(a.dataset.id || null), 'est-del': a => estDelItem(a.dataset.id),
+  'est-open': a => estOpen(a.dataset.id), 'est-mov': a => estMovForm(a.dataset.id, a.dataset.k, a.dataset.base), 'est-mov-save': () => estMovSave(),
+  'est-conf': a => estConferir(a.dataset.k), 'est-conf-save': a => estConfSave(a.dataset.k), 'est-hist': () => estHist(), 'est-xls': () => estXls(),
+  'est-alerta': () => { S.est.al = !S.est.al || S.page !== 'estoque'; S.page === 'estoque' ? pgEstoque() : go('estoque'); },
+  'rev-open': a => openRevisao(a.dataset.k), 'rev-save': a => revSave(a.dataset.k),
   'notif': () => { if ($('#ov')) closeModal(); openNotif(); }, 'notif-close': () => $('#npanel')?.remove(), 'notif-read': () => marcarLidos(), 'notif-rem': () => dispensarLembretes(),
   'anx-open': () => openAtestados(), 'anx-view': a => openAnexo(a.dataset.id),
   'anx-zip': a => zipQuinzena(a.dataset.k), 'anx-clean': a => cleanQuinzena(a.dataset.k),
