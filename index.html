@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
 <style>
 :root{
   --bg:#f4f5fa;--card:#fff;--ink:#1d2033;--ink2:#4a4f66;--muted:#8b90a6;--line:#eceef5;--soft:#f6f7fb;
@@ -481,6 +482,8 @@ button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
   .hc{aspect-ratio:1;padding:4px 5px;font-size:10px}.hc b{font-size:12px}
 }
 
+.ver{font-size:9.5px;color:#b4b8cc;margin-top:6px}
+@media (max-width:720px){.ver{display:none}}
 </style>
 </head>
 <body>
@@ -488,14 +491,12 @@ button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
 <div class="toasts" id="toasts"></div>
 <script>
 /* =====================================================================
-   CONFIGURAÇÃO — cole aqui os dados do seu projeto Supabase
-   (Supabase > Project Settings > API). Se ficar vazio, o painel roda
-   em MODO DEMONSTRAÇÃO, com dados salvos só neste navegador.
+   CONFIGURAÇÃO — fica no arquivo config.js (separado), assim você pode
+   trocar este index.html por versões novas sem perder suas chaves.
+   Sem config.js preenchido, o painel abre em MODO DEMONSTRAÇÃO.
    ===================================================================== */
-const CONFIG = {
-  SUPABASE_URL: '',        // ex: 'https://abcdefgh.supabase.co'
-  SUPABASE_ANON_KEY: ''    // chave "anon public" (ou "publishable")
-};
+const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:''}, window.PAINEL_CONFIG || {});
+const APP_VERSION = '1.1';
 
 /* ========================= Constantes ========================= */
 const DEMO = !CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY;
@@ -801,7 +802,7 @@ function render(){
   $('#rail').innerHTML = `<div class="logo">pc</div>` + nav.map(n => {
     const b = n.badge ? n.badge() : 0;
     return `<button class="nav-btn ${S.page===n.id?'on':''}" data-nav="${n.id}" aria-label="${n.label}">${ic(n.icon,20)}${b?`<span class="badge">${b}</span>`:''}<span class="tip">${n.label}</span></button>`;
-  }).join('') + `<div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button>`;
+  }).join('') + `<div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button><span class="ver" title="Versão do painel">v${APP_VERSION}</span>`;
   const cur = NAV.find(n => n.id === S.page);
   $('#topbar').innerHTML = `<div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
     <div class="right">${DEMO ? '<span class="demo-tag">Modo demonstração</span>' : '<span class="live"><i></i>Sincronizado</span>'}
