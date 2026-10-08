@@ -902,13 +902,14 @@ button,a,[data-act],[data-nav],label,input,select,textarea{touch-action:manipula
 
 /* ================= v2.3 ================= */
 /* Menu com cor própria por seção */
-.rail .nav-btn{color:var(--nc,#94a3b8);background:color-mix(in srgb,var(--nc,#94a3b8) 9%,transparent)}
-.rail .nav-btn:hover{background:color-mix(in srgb,var(--nc) 16%,#fff);color:var(--nc)}
+.rail .nav-btn{color:#a3a8bd;background:transparent;transition:background .18s,color .18s}
+.rail .nav-btn:hover{background:color-mix(in srgb,var(--nc) 14%,#fff);color:var(--nc)}
 .rail .nav-btn.on{background:var(--nc)!important;color:#fff!important;box-shadow:0 6px 16px color-mix(in srgb,var(--nc) 40%,transparent)!important}
 .rail .nav-btn.on .badge{color:var(--nc)!important;border-color:var(--nc)!important}
 .rail .nav-btn.out{background:transparent}
 .pg-ic{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--nc) 12%,#fff);color:var(--nc);flex:none}
-.more-i .mi-i{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--nc) 12%,#fff);color:var(--nc)}
+.more-i .mi-i{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--soft);color:#64748b;transition:.18s}
+.more-i:hover .mi-i,.more-i:active .mi-i{background:color-mix(in srgb,var(--nc) 12%,#fff);color:var(--nc)}
 .more-i.on{border-color:var(--nc);background:color-mix(in srgb,var(--nc) 6%,#fff)}
 .more-i.on .mi-i{background:var(--nc);color:#fff}
 .fresh{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:8px;border:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:24px;font-size:12px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:up .2s}
@@ -1035,7 +1036,7 @@ button.ac-row:hover b{color:var(--accent)}
 @media (max-width:720px){
   .rail .nav-btn{background:transparent}
   .rail .nav-btn.on{background:color-mix(in srgb,var(--nc) 14%,#fff)!important;color:var(--nc)!important;box-shadow:none!important}
-  .rail .nav-btn:not(.on){color:color-mix(in srgb,var(--nc) 70%,#94a3b8)}
+  .rail .nav-btn:not(.on){color:#94a3b8}
   .rail .nav-btn .lbl-m{font-size:9.5px}
   .pg-ic{display:none}
   .fresh{top:auto;bottom:calc(76px + env(safe-area-inset-bottom));font-size:11.5px;white-space:nowrap}
