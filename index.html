@@ -2,9 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Primarização</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Painel de Controle</title>
 <meta name="theme-color" content="#0a2a5e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Painel de Controle">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Crect width=%2248%22 height=%2248%22 rx=%2214%22 fill=%22%230b4ea2%22/%3E%3Cpath d=%22M24 8.5s-11.2 12.6-11.2 20.2a11.2 11.2 0 0 0 22.4 0C35.2 21.1 24 8.5 24 8.5z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,6 +52,7 @@ input,select,textarea{font-family:inherit;font-size:13px;color:var(--ink)}
 .topbar .sub{color:var(--muted);font-size:12px}
 .topbar .right{margin-left:auto;display:flex;align-items:center;gap:12px}
 .userchip{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);padding:4px 14px 4px 4px;border-radius:30px}
+.userchip{cursor:pointer}
 .userchip b{font-weight:600;font-size:12px;display:block;line-height:1.25}
 .userchip small{color:var(--muted);font-size:10.5px}
 .live{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11px}
@@ -377,7 +382,7 @@ button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
 .dhero-date{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding-left:28px;border-left:1px solid rgba(255,255,255,.14);min-width:170px;text-align:right}
 .dhero-date b{font-size:62px;font-weight:600;line-height:1;letter-spacing:-2px}
 .dhero-date span{font-size:14px;margin-top:6px;font-weight:500}
-.dhero-date small{color:rgba(255,255,255,.65);font-size:12px;margin-top:2px}
+.dhero-date small{color:#a9afe6;font-size:12px;margin-top:2px}
 
 .dgrid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin-top:18px}
 .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
@@ -633,21 +638,163 @@ button.chip:hover{background:color-mix(in srgb,var(--c) 22%,#fff)}
   .lbases{grid-template-columns:1fr 1fr}
 }
 
-</style>
+/* ================= v2.1 ================= */
+.emb{display:inline-block;flex:none;vertical-align:middle}
+.btag{padding:3px 10px 3px 8px}
+.btag .emb{width:8px!important;height:8px!important;border-radius:50%!important}
+.mine{font-style:normal;font-size:9.5px;font-weight:600;background:var(--c);color:#fff;padding:1px 6px;border-radius:8px;margin-left:4px;vertical-align:1px}
+button.live{border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 12px;font-size:11px;color:var(--ink2);cursor:pointer;transition:background .15s}
+button.live:hover{background:var(--soft)}
+button.live.off{border-color:#f8cfcf;background:#fdeeee;color:#b42318;font-weight:500}
+.bell{position:relative;width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:var(--ink2)}
+.bell:hover{background:var(--soft)}
+.bell.has{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,#fff)}
+.bell .badge{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:600;min-width:19px;height:19px;border-radius:10px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff}
+.tb-logo-m{display:none}
+.npanel{position:fixed;top:72px;right:24px;width:390px;max-height:min(70vh,620px);background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(20,24,60,.22);border:1px solid var(--line);z-index:65;display:flex;flex-direction:column;animation:pop .14s ease}
+.np-h{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.np-h b{font-size:14px;font-weight:600;margin-right:auto}
+.np-b{overflow-y:auto;padding:6px 8px 12px}
+.np-s{font-size:11px;font-weight:600;color:var(--muted);padding:12px 8px 6px;display:flex;align-items:center;gap:6px}
+.np-s em{font-style:normal;background:var(--red);color:#fff;border-radius:9px;padding:0 6px;font-size:10px}
+.np-empty{color:var(--muted);font-size:12px;padding:4px 8px 6px;margin:0}
+.ni{display:flex;align-items:center;gap:11px;width:100%;border:0;background:none;text-align:left;padding:9px 8px;border-radius:10px;position:relative}
+.ni:hover{background:var(--soft)}
+.ni.unread{background:color-mix(in srgb,var(--accent) 6%,#fff)}
+.ni.unread::after{content:'';position:absolute;left:2px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);transform:translateY(-50%)}
+.ni-i{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);flex:none}
+.ni-t{flex:1;min-width:0}
+.ni-t b{display:block;font-weight:500;font-size:12.5px;line-height:1.3}
+.ni-t small{display:block;color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ni-w{color:var(--muted);font-size:10.5px;white-space:nowrap}
 
+.pipe{display:inline-flex;gap:3px;margin-right:8px;vertical-align:middle}
+.pipe i{width:14px;height:5px;border-radius:3px;background:#e4e6ef}
+.pipe i.on{background:var(--c)}
+.tk-st{display:flex;align-items:center;white-space:nowrap}
+.qbtn{display:inline-flex;align-items:center;gap:5px;border:1px solid color-mix(in srgb,var(--accent) 35%,#fff);background:var(--accent-soft);color:var(--accent);border-radius:9px;padding:6px 10px;font-size:11.5px;font-weight:500;white-space:nowrap}
+.qbtn:hover{background:var(--accent);color:#fff}
+.qbtn.ok{border-color:#bfe9cf;background:#ecfdf3;color:#15803d}
+.qbtn.ok:hover{background:#16a34a;color:#fff}
+.seen{color:#16a34a;display:inline-flex;align-items:center;gap:3px;font-weight:500}
+.whohandles{display:flex;gap:8px;align-items:center;background:var(--soft);border-radius:10px;padding:9px 12px;font-size:12px;color:var(--ink2);margin-top:14px}
+.whohandles b{color:var(--ink)}
+.ch-head .chips{width:100%}
+.ld .ld-b{display:block;color:var(--muted);font-size:10.5px}
+.steps{margin-top:18px!important}
+
+.upl{display:flex;align-items:center;gap:9px;border:1.5px dashed #d6d9e6;border-radius:10px;padding:11px 14px;cursor:pointer;color:var(--ink2);font-size:12.5px;transition:.15s}
+.upl:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.anx{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.anx-i{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;text-align:left;color:var(--accent)}
+.anx-i b{display:block;color:var(--ink);font-weight:500;font-size:12.5px}
+.anx-i small{color:var(--muted);font-size:11px}
+.anx-i:hover{background:var(--soft)}
+.anx-i.gone{opacity:.6}
+.clip{color:var(--muted);margin-right:6px;display:grid;place-items:center}
+.anx-top{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.anx-top div{background:var(--soft);border-radius:12px;padding:12px}
+.anx-top b{display:block;font-size:18px;font-weight:600}
+.anx-top span{color:var(--muted);font-size:11px}
+.qz{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.qz.cur{border-color:color-mix(in srgb,var(--accent) 35%,#fff)}
+.qz-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qz-h > div:first-child{flex:1;min-width:180px}
+.qz-h b{display:block;font-weight:600}
+.qz-h small{color:var(--muted);font-size:11.5px}
+.qz-a{display:flex;gap:6px;align-items:center}
+.qz details{margin-top:8px}
+.qz summary{cursor:pointer;color:var(--accent);font-size:12px;font-weight:500}
+.qz-f{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12px}
+.qz-f small{color:var(--muted)}
+.bp.taken:not(.on){border-style:dashed}
+.btn.danger:disabled{opacity:.45;cursor:not-allowed}
+
+/* ---------- Celular ---------- */
+@media (max-width:720px){
+  body{font-size:13.5px}
+  input,select,textarea,.f input,.f select,.f textarea{font-size:16px!important}
+  .main{padding:0 12px calc(90px + env(safe-area-inset-bottom))}
+  .rail{height:calc(62px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -6px 20px rgba(20,24,60,.06)}
+  .nav-btn{width:46px;height:46px}
+  .rail .ver,.rail .out{display:none}
+  .topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin:0 -12px 12px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;gap:10px;flex-wrap:nowrap;border-bottom:1px solid var(--line)}
+  .tb-logo-m{display:block}
+  .tb-logo-m .logo-svg{border-radius:10px}
+  .topbar h1{font-size:16px}
+  .topbar .sub{display:none}
+  .topbar .right{gap:8px}
+  .topbar .right .live{padding:0;width:14px;height:14px;border:0;background:none;font-size:0;display:grid;place-items:center;min-height:0}
+  .topbar .right .live i{width:10px;height:10px;display:block}
+  .userchip{padding:3px;border:0;background:none}
+  .bswitch{margin:0 -12px 14px;padding:2px 12px 6px}
+  .bs{padding:7px 12px 7px 8px;border-radius:12px}
+  .npanel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:82vh;border-radius:20px 20px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+  .ov{align-items:flex-end;padding:0}
+  .modal,.modal.wide{max-width:none;border-radius:20px 20px 0 0;max-height:94vh;display:flex;flex-direction:column}
+  .m-h{padding:14px 16px}
+  .m-b{overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch}
+  .m-f{border-radius:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));gap:8px}
+  .m-f .btn{flex:1;justify-content:center;min-height:44px}
+  .m-f .left{flex:0 0 auto}
+  .pop{left:8px!important;right:8px;width:auto}
+  .toolbar{gap:8px}
+  .search{max-width:none;min-width:0;flex:1 1 100%}
+  .toolbar .sel{flex:1}
+  .tb-right{margin-left:auto;flex-wrap:wrap}
+  .hide-s{display:none}
+  .btn{min-height:40px}
+  .seg-st{width:100%;overflow-x:auto}
+  .seg-st button{flex:1;white-space:nowrap}
+  .filters{flex-wrap:nowrap;overflow-x:auto;margin:0 -12px 14px;padding:0 12px 4px}
+  .fchip{flex:none}
+  .card-h{padding:14px 14px 0}.card-b{padding:14px}
+  table.mcards thead{display:none}
+  table.mcards,table.mcards tbody{display:block}
+  table.mcards tr{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:12px 2px;border-bottom:1px solid var(--line);position:relative}
+  table.mcards td{display:flex;align-items:center;gap:6px;border:0;padding:0;font-size:12px}
+  table.mcards td[data-l]:not([data-l=""])::before{content:attr(data-l);color:var(--muted);font-size:10.5px}
+  table.mcards td.mc-main{flex:1 1 100%}
+  table.mcards td.mc-act{position:absolute;top:8px;right:0}
+  table.mcards td.hide-m{display:none}
+  .tk{flex-wrap:wrap;padding:12px 12px 12px 16px;gap:8px 10px}
+  .tk .num{width:auto}
+  .tk .body{flex:1 1 calc(100% - 80px)}
+  .tk-st{margin-left:auto}
+  .qbtn{padding:8px 12px}
+  .dtab{padding:12px}
+  .dtab small{display:none}
+  .leaders{grid-template-columns:1fr 1fr;gap:8px}
+  .ld{padding:10px;gap:8px}
+  .ld .nums{gap:6px}
+  .vgrid{grid-template-columns:1fr}
+  .cal .day{min-height:54px}
+  .cal-h h2{min-width:0;font-size:15px}
+  .anx-top{grid-template-columns:1fr 1fr 1fr}
+  .anx-top b{font-size:15px}
+  .lcard{padding:22px}
+  .bcards{grid-template-columns:1fr 1fr}
+  .dhero{border-radius:16px}
+  .dhero h2{font-size:20px}
+  .dhero-act .hbtn{flex:1 1 calc(50% - 6px);justify-content:center}
+  .kpi,.k2{padding:14px}
+  .thread{max-height:none}
+  .msg{max-width:96%}
+}
+
+</style>
 </head>
 <body>
 <div id="root"><div class="loading"><div><div class="spin"></div>Carregando painel...</div></div></div>
 <div class="toasts" id="toasts"></div>
-
 <script>
 /* =====================================================================
-   PRIMARIZAÇÃO · Painel de Controle — v2.0
+   PRIMARIZAÇÃO · Painel de Controle — v2.1
    A configuração fica no config.js (separado). O login é feito só
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.0';
+const APP_VERSION = '2.1';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -662,17 +809,10 @@ const BASES = {
   'santo-andre': {nome:'Santo André', c:'#0e7c9a', d:'#0a3c4b', soft:'#e4f2f6', icon:'cross', sub:'ABC'}
 };
 const BKEYS = Object.keys(BASES);
-const ALLB = {nome:'Todas as bases', c:'#0b4ea2', d:'#0a2a5e', soft:'#e8effa', icon:'drop', sub:'Visão do gestor'};
-const BG = {
-  pine:'<path d="M12 3 7 9.6h2.7L6 14.6h4.2V20h3.6v-5.4H18l-3.7-5H17z" fill="#fff"/>',
-  river:'<path d="M4 9.2c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0 3.2-1.4 4.8 0M4 14.8c1.6-1.4 3.2-1.4 4.8 0s3.2 1.4 4.8 0 3.2-1.4 4.8 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/>',
-  star:'<path d="M12 4.2l1.9 5.1 5.1 1.9-5.1 1.9L12 18.2l-1.9-5.1L5 11.2l5.1-1.9z" fill="#fff"/>',
-  cross:'<path d="M7.5 7.5l9 9M16.5 7.5l-9 9" stroke="#fff" stroke-width="3" stroke-linecap="round"/>',
-  drop:'<path d="M12 4s-5.6 6.1-5.6 9.7a5.6 5.6 0 0 0 11.2 0C17.6 10.1 12 4 12 4z" fill="#fff"/>'
-};
+const ALLB = {nome:'Todas as bases', c:'#0b4ea2', d:'#0a2a5e', soft:'#e8effa', icon:'drop', sub:'Visão do encarregado'};
 const bOf = k => BASES[k] || null;
 const bName = k => bOf(k)?.nome || 'Sem base';
-const emblem = (k, s=28, r=8) => { const b = bOf(k) || ALLB; return `<svg class="emb" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="${r*24/s}" fill="${b.c}"/>${BG[b.icon]}</svg>`; };
+const emblem = (k, s=28, r=8) => { const b = bOf(k) || ALLB; return `<span class="emb" style="width:${s}px;height:${s}px;border-radius:${r}px;background:${b.c}" aria-hidden="true"></span>`; };
 const bTag = k => bOf(k) ? `<span class="btag" style="--c:${BASES[k].c}">${emblem(k,16,5)}${esc(BASES[k].nome)}</span>` : `<span class="btag none">Sem base</span>`;
 function baseKey(v){
   const n = String(v || '').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]/g,'');
@@ -713,10 +853,8 @@ const EV = {
   falta:{label:'Falta',color:'#f5a623'}, outro:{label:'Outro',color:'#94a3b8'}
 };
 const CH = {aberto:{color:'#ef4444'}, andamento:{color:'#f5a623'}, resolvido:{color:'#22c55e'}};
-const CHL = {
-  problema:{aberto:'Aberto', andamento:'Em andamento', resolvido:'Resolvido'},
-  pedido:{aberto:'Pendente', andamento:'Em andamento', resolvido:'Concluído'}
-};
+const CHL0 = {aberto:'Aberta', andamento:'Em tratamento', resolvido:'Concluída'};
+const CHL = {problema:CHL0, pedido:CHL0};
 const tipoOf = c => c.tipo === 'pedido' ? 'pedido' : 'problema';
 const chSt = (c, st) => ({label: CHL[tipoOf(c)][st || c.status], color: CH[st || c.status]?.color || '#94a3b8'});
 const PRIOR = {
@@ -728,8 +866,8 @@ const CHW = {aberto:0,andamento:1,resolvido:2};
 const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'#d94ee8'}};
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
-const ROLE = {admin:'Gestor', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico'];
+const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos'];
 
 /* ========================= Ícones ========================= */
 const ICONS = {
@@ -848,7 +986,13 @@ Object.assign(ICONS, {
   inbox:'<polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
   flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/>',
   file:'<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M8 13h8"/><path d="M8 17h8"/>',
-  map:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>'
+  map:'<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+  bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  clip:'<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+  refresh:'<path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>',
+  zip:'<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><path d="M10 6h1M11 8h1M10 10h1M11 12h1M10 14h2v3h-2z"/>',
+  eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+  checks:'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>'
 });
 
 /* ========================= Dados de teste (somente testes automatizados) ========================= */
@@ -856,22 +1000,22 @@ function seed(){
   const h = n => new Date(Date.now() - n*3600e3).toISOString();
   const dOff = n => { const d = new Date(); d.setDate(d.getDate()+n); return iso(d); };
   const profiles = [
-    {id:'u-admin',   nome:'Gestor Principal', email:'gestor@empresa.com',   role:'admin',   ativo:true, bases:[], created_at:h(2000)},
+    {id:'u-admin',   nome:'Encarregado Principal', email:'encarregado@empresa.com',   role:'admin',   ativo:true, bases:[], created_at:h(2000)},
     {id:'u-carlos',  nome:'Carlos Lima',    email:'carlos@empresa.com',   role:'lider',   ativo:true, bases:['pinheiros'], created_at:h(1900)},
     {id:'u-fernanda',nome:'Fernanda Souza', email:'fernanda@empresa.com', role:'lider',   ativo:true, bases:['ipiranga'], created_at:h(1800)},
     {id:'u-rafael',  nome:'Rafael Mendes',  email:'rafael@empresa.com',   role:'lider',   ativo:true, bases:['sao-mateus'], created_at:h(1700)},
-    {id:'u-paula',   nome:'Paula Ribeiro',  email:'paula@empresa.com',    role:'lider',   ativo:true, bases:['santo-andre','sao-mateus'], created_at:h(1600)},
+    {id:'u-paula',   nome:'Paula Ribeiro',  email:'paula@empresa.com',    role:'lider',   ativo:true, bases:['santo-andre'], created_at:h(1600)},
     {id:'u-juliana', nome:'Juliana Prado',  email:'juliana@empresa.com',  role:'pendente',ativo:true, bases:['santo-andre'], created_at:h(3)}
   ];
   const V = (id,base,tipo,marca,modelo,placa,ano,cor,km,status,obs,hrs,por) => ({id,base,tipo,marca,modelo,placa,ano,cor,km,status,status_obs:obs,status_em:h(hrs),status_por:por,observacoes:null,created_at:h(2000)});
   const veiculos = [
     V('v1','pinheiros','carro','Fiat','Strada Endurance','FTR2A41',2022,'Branco',48210,'ok',null,30,'Carlos Lima'),
     V('v2','pinheiros','carro','Volkswagen','Saveiro Robust','BRA2E19',2021,'Prata',73550,'atencao','Revisão dos 75 mil km se aproximando',8,'Carlos Lima'),
-    V('v3','ipiranga','carro','Fiat','Fiorino','QWE4R56',2020,'Branco',98400,'manutencao','Troca de embreagem na oficina',50,'Gestor Principal'),
+    V('v3','ipiranga','carro','Fiat','Fiorino','QWE4R56',2020,'Branco',98400,'manutencao','Troca de embreagem na oficina',50,'Encarregado Principal'),
     V('v4','sao-mateus','carro','Chevrolet','Onix','RTY7U89',2023,'Cinza',21300,'ok',null,70,'Rafael Mendes'),
     V('v5','ipiranga','moto','Honda','CG 160 Cargo','MOT0A12',2023,'Vermelha',15800,'ok',null,20,'Fernanda Souza'),
     V('v6','ipiranga','moto','Yamaha','Factor 150','JKL3M45',2021,'Preta',41200,'problema','Freio traseiro com ruído',4,'Fernanda Souza'),
-    V('v7','pinheiros','moto','Honda','Pop 110i','PQA9B87',2022,'Branca',30500,'parado','Aguardando documentação',120,'Gestor Principal'),
+    V('v7','pinheiros','moto','Honda','Pop 110i','PQA9B87',2022,'Branca',30500,'parado','Aguardando documentação',120,'Encarregado Principal'),
     V('v8','santo-andre','carro','Renault','Kangoo','SAN1D23',2022,'Branco',55100,'ok',null,10,'Paula Ribeiro'),
     V('v9','santo-andre','moto','Honda','Biz 125','TMD4E56',2024,'Azul',8200,'ok',null,12,'Paula Ribeiro')
   ];
@@ -888,20 +1032,20 @@ function seed(){
     C('c9','santo-andre','João Pedro Lima','Técnico de campo','(11) 90987-6543','0012345678904567','10455','2022-08-08','v8','u-paula','ativo'),
     C('c10','santo-andre','Larissa Moura','Motociclista','(11) 99876-5432','0012345678908901','10460','2023-06-12','v9','u-paula','ativo')
   ];
-  const CHM = (id,tipo,base,autor,autorNome,dest,titulo,descricao,categoria,prioridade,status,col,vei,hrs,prazo) => ({id,tipo,base,autor_id:autor,autor_nome:autorNome,destinatario_id:dest,titulo,descricao,categoria,prioridade,status,colaborador_id:col,veiculo_id:vei,prazo:prazo||null,resolvido_em:status==='resolvido'?h(hrs-20):null,created_at:h(hrs),updated_at:h(Math.max(0,hrs-2))});
+  const CHM = (id,tipo,base,autor,autorNome,dest,titulo,descricao,categoria,prioridade,status,col,vei,hrs,prazo) => ({id,tipo,base,autor_id:autor,autor_nome:autorNome,destinatario_id:dest,titulo,descricao,categoria,prioridade,status,colaborador_id:col,veiculo_id:vei,prazo:prazo||null,lido_em:status!=='aberto'?h(hrs-1):null,lido_por:status!=='aberto'?(tipo==='pedido'?'Líder':'Encarregado Principal'):null,resolvido_em:status==='resolvido'?h(hrs-20):null,created_at:h(hrs),updated_at:h(Math.max(0,hrs-2))});
   const chamados = [
     CHM(1,'problema','sao-mateus','u-rafael','Rafael Mendes',null,'Solicitação de troca de escala no sábado','Eduardo pediu troca da escala de sábado com a Gabriela por motivo familiar. Os dois concordam.','Equipe','media','resolvido','c5',null,80),
     CHM(2,'problema','ipiranga','u-fernanda','Fernanda Souza',null,'Moto JKL3M45 com freio fazendo barulho','O Diego relatou ruído forte no freio traseiro desde ontem. Por segurança está rodando devagar.','Veículo','urgente','andamento','c4','v6',5),
     CHM(3,'problema','pinheiros','u-carlos','Carlos Lima',null,'Falta de material: lacres e fita','Estoque de lacres e fita isolante acabou na base. Equipe precisa para amanhã cedo.','Material','alta','aberto',null,null,26),
     CHM(4,'problema','pinheiros','u-carlos','Carlos Lima',null,'Equipe sem EPI completo','Bruno está sem luva de vaqueta e o capacete está com a jugular quebrada.','Segurança','alta','aberto','c2',null,3),
-    CHM(5,'pedido','pinheiros','u-admin','Gestor Principal','u-carlos','Enviar relatório de produtividade da semana','Preciso do fechamento de produtividade da equipe até sexta, com as OS executadas por pessoa.','Relatório','media','aberto',null,null,6,dOff(2)),
-    CHM(6,'pedido','santo-andre','u-admin','Gestor Principal',null,'Atualizar escala de sábado','Conferir e mandar a escala dos próximos dois sábados.','Escala','alta','andamento',null,null,30,dOff(-1)),
-    CHM(7,'pedido','ipiranga','u-admin','Gestor Principal','u-fernanda','Checklist dos veículos','Fazer checklist de pneus e documentação de todos os veículos da base.','Frota','baixa','resolvido',null,null,90,dOff(-5))
+    CHM(5,'pedido','pinheiros','u-admin','Encarregado Principal','u-carlos','Enviar relatório de produtividade da semana','Preciso do fechamento de produtividade da equipe até sexta, com as OS executadas por pessoa.','Relatório','media','aberto',null,null,6,dOff(2)),
+    CHM(6,'pedido','santo-andre','u-admin','Encarregado Principal','u-paula','Atualizar escala de sábado','Conferir e mandar a escala dos próximos dois sábados.','Escala','alta','andamento',null,null,30,dOff(-1)),
+    CHM(7,'pedido','ipiranga','u-admin','Encarregado Principal','u-fernanda','Checklist dos veículos','Fazer checklist de pneus e documentação de todos os veículos da base.','Frota','baixa','resolvido',null,null,90,dOff(-5))
   ];
   const M = (id,cid,autor,nome,texto,hrs) => ({id,chamado_id:cid,autor_id:autor,autor_nome:nome,texto,created_at:h(hrs)});
   const mensagens = [
-    M('m1',1,'u-admin','Gestor Principal','Troca aprovada. Atualize a escala no grupo.',60),
-    M('m2',2,'u-admin','Gestor Principal','Agendado na oficina amanhã às 8h. Diego fica com a moto reserva.',2),
+    M('m1',1,'u-admin','Encarregado Principal','Troca aprovada. Atualize a escala no grupo.',60),
+    M('m2',2,'u-admin','Encarregado Principal','Agendado na oficina amanhã às 8h. Diego fica com a moto reserva.',2),
     M('m3',6,'u-paula','Paula Ribeiro','Estou fechando com a equipe, mando até amanhã.',20),
     M('m4',7,'u-fernanda','Fernanda Souza','Checklist feito, todos ok. Só a JKL3M45 precisa de freio.',70)
   ];
@@ -916,10 +1060,11 @@ function seed(){
     E('e7','c10','medico',dOff(0),dOff(0),'Exame periódico','u-paula','Paula Ribeiro')
   ];
   const veiculo_historico = veiculos.map((v,i) => ({id:'h'+i,veiculo_id:v.id,status:v.status,obs:v.status_obs,por_id:null,por_nome:v.status_por,created_at:v.status_em}));
-  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico};
+  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[]};
 }
+const FILES = {};
 const Store = {
-  key:'primarizacao_teste_v2', mem:null,
+  key:'primarizacao_teste_v21', mem:null,
   load(){ if (this.mem) return this.mem; let d = null; try { d = JSON.parse(localStorage.getItem(this.key)); } catch(e){} this.mem = d || seed(); this.save(); return this.mem; },
   save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e){} }
 };
@@ -971,7 +1116,7 @@ const DB = {
 const today0 = new Date();
 const S = {
   page:'dashboard', profile:null, rt:null, rtOk:null, stale:false, schemaOld:false,
-  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[],
+  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[], anexos:[], lastLoad:0,
   base:'',
   f:{cq:'', cl:'', cs:'', vq:'', vs:'', vt:'', tq:'', ts:'', tl:'', tc:'', tt:'problema'},
   sort:{col:'nome', dir:1},
@@ -980,6 +1125,10 @@ const S = {
 const isAdmin = () => S.profile?.role === 'admin';
 const myBases = () => isAdmin() ? BKEYS.slice() : (S.profile?.bases || []).filter(b => BASES[b]);
 const allowed = b => isAdmin() || myBases().includes(b);
+const ownBases = () => (S.profile?.bases || []).filter(b => BASES[b]);          // bases em que EU sou o líder
+const isSolicitado = c => tipoOf(c) === 'pedido' && (sameId(c.destinatario_id, S.profile.id) || (!c.destinatario_id && ownBases().includes(c.base)));
+const canHandle = c => tipoOf(c) === 'pedido' ? isSolicitado(c) : isAdmin();
+const canEditCh = c => c.status !== 'resolvido' && (isAdmin() || sameId(c.autor_id, S.profile.id));
 const inScope = b => S.base ? b === S.base : allowed(b);
 const P = id => S.profiles.find(x => sameId(x.id, id));
 const C = id => S.colabs.find(x => sameId(x.id, id));
@@ -994,7 +1143,8 @@ const chsV = tipo => sortCh(S.chamados.filter(c => inScope(c.base) && (!tipo || 
   (isAdmin() || tipoOf(c) === 'problema' || !c.destinatario_id || sameId(c.destinatario_id, S.profile.id))));
 const msgsOf = id => S.msgs.filter(m => sameId(m.chamado_id, id)).sort((a,b) => new Date(a.created_at)-new Date(b.created_at));
 const colabsSorted = (base) => S.colabs.filter(c => base ? c.base === base : inScope(c.base)).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
-const lidersOf = base => S.profiles.filter(p => p.role === 'lider' && p.ativo && (!base || (p.bases||[]).includes(base))).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const lidersOf = base => S.profiles.filter(p => (p.role === 'lider' || p.role === 'admin') && p.ativo && (p.bases||[]).length && (!base || (p.bases||[]).includes(base))).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const liderOf = base => lidersOf(base)[0] || null;
 const theme = () => { const b = S.base || (!isAdmin() && myBases().length === 1 ? myBases()[0] : ''); return bOf(b) || ALLB; };
 const curBaseKey = () => S.base || (!isAdmin() && myBases().length === 1 ? myBases()[0] : '');
 const defBase = () => curBaseKey() || myBases()[0] || '';
@@ -1005,8 +1155,8 @@ function applyTheme(){
 }
 
 async function loadAll(){
-  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (t === 'mensagens') S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist] = res;
+  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (t === 'mensagens' || t === 'anexos') S.schemaOld = true; return []; })));
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos] = res; S.lastLoad = Date.now();
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
   if (S.profile && S.profile.bases === undefined) S.schemaOld = true;
@@ -1034,7 +1184,7 @@ const SUBS = {
   dashboard:'Resumo da equipe, da frota e das ocorrências',
   colaboradores:'Cadastro da equipe, importação por Excel e vínculo com veículos',
   frota:'Carros e motos com a situação atualizada pelas bases',
-  diario:'Problemas das bases e pedidos do gestor',
+  diario:'Problemas das bases e pedidos do encarregado',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
   usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
@@ -1052,15 +1202,17 @@ function baseSwitch(){
   const bs = myBases(); if (bs.length < 2) return '';
   const count = k => S.colabs.filter(c => c.base === k && c.status === 'ativo').length;
   return `<div class="bswitch" role="tablist" aria-label="Escolher base">
-    <button class="bs ${!S.base?'on':''}" style="--c:${ALLB.c}" data-act="base" data-k="" role="tab">${emblem('',26,8)}<span><b>${isAdmin()?'Todas':'Minhas bases'}</b><small>${isAdmin()?'Visão do gestor':bs.length+' bases'}</small></span></button>
-    ${bs.map(k => `<button class="bs ${S.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="base" data-k="${k}" role="tab">${emblem(k,26,8)}<span><b>${BASES[k].nome}</b><small>${count(k)} ativos</small></span></button>`).join('')}
+    <button class="bs ${!S.base?'on':''}" style="--c:${ALLB.c}" data-act="base" data-k="" role="tab">${emblem('',22,7)}<span><b>${isAdmin()?'Todas':'Minhas bases'}</b><small>${isAdmin()?'Visão geral':bs.length+' bases'}</small></span></button>
+    ${bs.map(k => `<button class="bs ${S.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="base" data-k="${k}" role="tab">${emblem(k,22,7)}<span><b>${BASES[k].nome}${ownBases().includes(k)?' <i class="mine">sua base</i>':''}</b><small>${count(k)} ativos</small></span></button>`).join('')}
   </div>`;
 }
 function liveTag(){
-  if (TEST) return '<span class="live"><i></i>Modo de teste</span>';
-  if (S.rtOk === false) return '<span class="live off" title="As mudanças de outras pessoas só aparecem ao recarregar"><i></i>Sem tempo real</span>';
-  return `<span class="live ${S.rtOk?'':'wait'}"><i></i>${S.rtOk?'Conectado':'Conectando...'}</span>`;
+  if (TEST) return '<button class="live" data-act="reconnect" title="Recarregar dados"><i></i>Modo de teste</button>';
+  if (S.rtOk === false) return '<button class="live off" data-act="reconnect" title="Clique para reconectar"><i></i>Desconectado · reconectar</button>';
+  if (S.rtOk === 'busy') return '<button class="live wait" disabled><i></i>Reconectando...</button>';
+  return `<button class="live ${S.rtOk?'':'wait'}" data-act="reconnect" title="Clique para atualizar os dados agora"><i></i>${S.rtOk?'Conectado':'Conectando...'}</button>`;
 }
+function setLive(v){ S.rtOk = v; const el = $('#topbar .live'); if (el) el.outerHTML = liveTag(); }
 function render(){
   applyTheme();
   if (!$('#rail')) $('#root').innerHTML = `<div class="app"><nav class="rail" id="rail"></nav><main class="main"><header class="topbar" id="topbar"></header><div id="bbar"></div><section id="page"></section></main></div>`;
@@ -1071,15 +1223,17 @@ function render(){
     return `<button class="nav-btn ${S.page===n.id?'on':''}" data-nav="${n.id}" aria-label="${n.label}">${ic(n.icon,20)}${b?`<span class="badge">${b}</span>`:''}<span class="tip">${n.label}</span></button>`;
   }).join('') + `<div class="spacer"></div><button class="nav-btn out" data-act="logout" aria-label="Sair">${ic('logout',20)}<span class="tip">Sair</span></button><span class="ver" title="Versão do painel">v${APP_VERSION}</span>`;
   const cur = NAV.find(n => n.id === S.page), t = theme(), ck = curBaseKey();
-  $('#topbar').innerHTML = `<div class="tb-title"><div class="tb-brand">${wordmark(ck ? 'Base ' + BASES[ck].nome : (isAdmin() ? 'Todas as bases' : 'Controle de equipe e frota'))}</div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
+  const nn = notifCount();
+  $('#topbar').innerHTML = `<div class="tb-logo-m">${logoMark(34)}</div><div class="tb-title"><div class="tb-brand">${wordmark(ck ? 'Base ' + BASES[ck].nome : (isAdmin() ? 'Todas as bases' : 'Controle de equipe e frota'))}</div><h1>${cur.label}</h1><div class="sub">${SUBS[S.page]}</div></div>
     <div class="right">${liveTag()}
-    <div class="userchip">${emblem(ck,30,9)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}${!isAdmin() && myBases().length ? ' · ' + myBases().map(bName).join(', ') : ''}</small></div></div></div>`;
+    <button class="bell ${nn?'has':''}" data-act="notif" aria-label="Avisos${nn?': '+nn+' novos':''}">${ic('bell',19)}${nn?`<span class="badge">${nn>9?'9+':nn}</span>`:''}</button>
+    <div class="userchip" data-act="me" role="button" tabindex="0" title="Sua conta">${emblem(ck,30,9)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}${ownBases().length ? ' · ' + ownBases().map(bName).join(', ') : ''}</small></div></div></div>`;
   let bar = baseSwitch();
-  if (isAdmin() && S.schemaOld) bar += `<div class="warnbar">${ic('alert',16)}<span>O banco ainda está na versão antiga. Rode o <b>supabase_schema.sql</b> novo no SQL Editor do Supabase para liberar bases, pedidos e mensagens.</span></div>`;
+  if (isAdmin() && S.schemaOld) bar += `<div class="warnbar">${ic('alert',16)}<span>O banco ainda está na versão antiga. Rode o <b>supabase_schema.sql</b> novo no SQL Editor do Supabase para liberar bases, pedidos, mensagens e atestados.</span></div>`;
   $('#bbar').innerHTML = bar;
-  document.title = 'Primarização' + (ck ? ' · ' + BASES[ck].nome : '');
+  document.title = 'Painel de Controle';
   if (!isAdmin() && !myBases().length){
-    $('#page').innerHTML = `<div class="card">${empty('map','Seu acesso ainda não tem base definida','Peça ao gestor para escolher sua base em "Usuários e bases".')}</div>`; return;
+    $('#page').innerHTML = `<div class="card">${empty('map','Seu acesso ainda não tem base definida','Peça ao encarregado para escolher sua base em "Usuários e bases".')}</div>`; return;
   }
   PAGES[S.page]();
 }
@@ -1231,7 +1385,7 @@ function pgDashboard(){
   const pedLate = peds.filter(c => c.status !== 'resolvido' && c.prazo && c.prazo < today).length;
   const frases = [`<b>${disp} de ${ativos.length}</b> pessoas disponíveis`, vFora ? `<b>${vFora} veículo${vFora>1?'s':''}</b> fora de operação` : 'frota toda rodando'];
   if (adm) frases.push(semResp.length ? `<b>${semResp.length} problema${semResp.length>1?'s':''}</b> aguardando sua resposta` : 'nenhum problema sem resposta');
-  else frases.push(k3ab.length ? `<b>${k3ab.length} pedido${k3ab.length>1?'s':''}</b> do gestor em aberto${pedLate?` (${pedLate} atrasado${pedLate>1?'s':''})`:''}` : 'nenhum pedido do gestor em aberto');
+  else frases.push(k3ab.length ? `<b>${k3ab.length} pedido${k3ab.length>1?'s':''}</b> do encarregado em aberto${pedLate?` (${pedLate} atrasado${pedLate>1?'s':''})`:''}` : 'nenhum pedido do encarregado em aberto');
   const segs = VORDER.slice().reverse().map(k => ({k, n:veics.filter(v => v.status===k).length, ...VSTATUS[k]}));
   const yard = veics.slice().sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
   const catRows = CATS.map(k => { const l = probs.filter(c => c.categoria===k); return {label:esc(k), total:l.length, parts:['aberto','andamento','resolvido'].map(s => ({n:l.filter(c=>c.status===s).length, color:CH[s].color, name:CHL.problema[s]})), act:`data-act="dash-cat" data-k="${esc(k)}"`}; }).filter(r => r.total).sort((a,b) => b.total-a.total);
@@ -1243,13 +1397,13 @@ function pgDashboard(){
 
   $('#page').innerHTML = `
   <section class="dhero">
-    <div class="dhero-emb" aria-hidden="true">${emblem(ck,220,60)}</div>
     <div class="dhero-main">
-      <span class="dhero-tag">${emblem(ck,18,5)}${ck ? 'Base ' + BASES[ck].nome : (adm ? 'Gestor — todas as bases' : 'Suas bases: ' + myBases().map(bName).join(', '))}</span>
+      <span class="dhero-tag">${emblem(ck,12,4)}${ck ? 'Base ' + BASES[ck].nome : (adm ? 'Encarregado — todas as bases' : 'Suas bases: ' + myBases().map(bName).join(', '))}</span>
       <h2>${saud}, ${esc(firstName(me.nome))}.</h2>
       <p>Hoje: ${frases.join(', ').replace(/, ([^,]*)$/, ' e $1')}.</p>
       <div class="dhero-act">
         ${adm ? `<button class="hbtn pri" data-act="p-new">${ic('flag',15)}Novo pedido para base</button>` : `<button class="hbtn pri" data-act="t-new">${ic('plus',15)}Registrar problema</button>`}
+        <button class="hbtn" data-act="anx-open">${ic('clip',15)}Atestados</button>
         <button class="hbtn" data-act="ev-new">${ic('cal',15)}Marcar ausência</button>
         <button class="hbtn" data-nav="frota">${ic('car',15)}Atualizar frota</button>
       </div>
@@ -1266,7 +1420,7 @@ function pgDashboard(){
       <div style="flex:1"><span class="k2-l">${ic('car',15)}Frota operando</span><b class="k2-v">${vOk}<small>/${vt}</small></b>
       <div class="mini-seg">${segs.map(s => s.n ? `<i style="--c:${s.color};flex:${s.n}" title="${s.label}: ${s.n}"></i>` : '').join('') || '<i style="--c:#e4e6ef;flex:1"></i>'}</div><span class="k2-s">${vFora} fora de operação</span></div></div>
     <div class="card k2 span-3" data-act="dash-tt" data-k="${adm?'problema':'pedido'}" role="button" tabindex="0">
-      <div><span class="k2-l">${ic(adm?'book':'flag',15)}${adm?'Problemas em aberto':'Pedidos do gestor'}</span><b class="k2-v">${k3ab.length}</b><span class="k2-s">${sem7} novo(s) em 7 dias${ant7||sem7?` <em class="${sem7>ant7?'up':'down'}">${sem7>ant7?'▲':sem7<ant7?'▼':'='} ${Math.abs(sem7-ant7)}</em>`:''}</span></div>${sparkSVG(daily,adm?'#ef4444':t.c,96,40)}</div>
+      <div><span class="k2-l">${ic(adm?'book':'flag',15)}${adm?'Problemas em aberto':'Pedidos do encarregado'}</span><b class="k2-v">${k3ab.length}</b><span class="k2-s">${sem7} novo(s) em 7 dias${ant7||sem7?` <em class="${sem7>ant7?'up':'down'}">${sem7>ant7?'▲':sem7<ant7?'▼':'='} ${Math.abs(sem7-ant7)}</em>`:''}</span></div>${sparkSVG(daily,adm?'#ef4444':t.c,96,40)}</div>
     <div class="card k2 span-3" data-act="dash-tt" data-k="problema" role="button" tabindex="0">
       <div><span class="k2-l">${ic('clock',15)}Tempo médio de resposta</span><b class="k2-v">${fmtDur(avgH)}</b><span class="k2-s">${resolvidos} de ${probs.length} problema(s) resolvido(s)</span></div>${ringSVG(probs.length?resolvidos/probs.length:0,'#22c55e')}</div>
 
@@ -1316,14 +1470,14 @@ function tipoTag(c){ return tipoOf(c) === 'pedido' ? `<span class="tag" style="-
 function tableChamados(list){
   if (!list.length) return empty('book','Nada por aqui','Os registros do diário de bordo aparecem nesta lista.');
   const multi = !S.base && myBases().length > 1;
-  return `<div class="tbl-wrap"><table><thead><tr><th>Nº</th><th>Título</th>${multi?'<th class="hide-m">Base</th>':''}<th class="hide-m">Aberto por</th><th>Prioridade</th><th>Situação</th></tr></thead><tbody>${
-    list.map(c => `<tr class="click" data-act="ch-open" data-id="${c.id}"><td class="muted">#${c.id}</td><td><span class="fw5">${esc(c.titulo)}</span><div class="chips" style="margin-top:4px">${tipoTag(c)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span></div></td>${multi?`<td class="hide-m">${bTag(c.base)}</td>`:''}<td class="hide-m">${esc(c.autor_nome)}<div class="muted s">${fmtD(c.created_at)}</div></td><td>${chip(PRIOR[c.prioridade],false)}</td><td>${chip(chSt(c))}</td></tr>`).join('')
+  return `<div class="tbl-wrap"><table class="mcards"><thead><tr><th>Nº</th><th>Título</th>${multi?'<th class="hide-m">Base</th>':''}<th class="hide-m">Aberto por</th><th>Prioridade</th><th>Situação</th></tr></thead><tbody>${
+    list.map(c => `<tr class="click" data-act="ch-open" data-id="${c.id}"><td class="muted hide-m">#${c.id}</td><td data-l="" class="mc-main"><span class="fw5">${esc(c.titulo)}</span><div class="chips" style="margin-top:4px">${tipoTag(c)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span></div></td>${multi?`<td class="hide-m">${bTag(c.base)}</td>`:''}<td class="hide-m">${esc(c.autor_nome)}<div class="muted s">${fmtD(c.created_at)}</div></td><td data-l="Prioridade">${chip(PRIOR[c.prioridade],false)}</td><td data-l="Situação">${chip(chSt(c))}</td></tr>`).join('')
   }</tbody></table></div>`;
 }
 function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
   if (!evs.length) return empty('cal', emptyMsg);
   return evs.map(e => { const c = C(e.colaborador_id); const o = EV[e.tipo] || EV.outro;
-    return `<div class="agenda-item" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}"><span class="bar"></span>${avatar(c?.nome,32)}<div style="flex:1;min-width:0"><b>${esc(c?.nome || 'Colaborador removido')}</b><small>${rangeTxt(e.data_inicio,e.data_fim)}${e.observacao?' — '+esc(e.observacao):''}</small></div>${chip(o)}</div>`; }).join('');
+    return `<div class="agenda-item" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}"><span class="bar"></span>${avatar(c?.nome,32)}<div style="flex:1;min-width:0"><b>${esc(c?.nome || 'Colaborador removido')}</b><small>${rangeTxt(e.data_inicio,e.data_fim)}${e.observacao?' — '+esc(e.observacao):''}</small></div>${anexosOf(e.id).length?`<span class="clip" title="Atestado anexado">${ic('clip',14)}</span>`:''}${chip(o)}</div>`; }).join('');
 }
 
 
@@ -1357,20 +1511,20 @@ function colabList(){
   const key = c => col==='veiculo' ? (V(c.veiculo_id)?.placa || '~') : col==='lider' ? (P(c.lider_id)?.nome || '~') : col==='base' ? bName(c.base) : String(c[col] ?? '~');
   list.sort((a,b) => key(a).localeCompare(key(b),'pt',{numeric:true}) * dir);
   const th = (c,l,cls='') => `<th class="sort ${cls}" data-act="c-sort" data-col="${c}">${l}<span class="ar">${col===c?(dir>0?'▲':'▼'):'▲▼'}</span></th>`;
-  $('#list').innerHTML = list.length ? `<div class="tbl-wrap"><table><thead><tr>${th('nome','Colaborador')}${multi?th('base','Base'):''}${th('telefone','Contato','hide-m')}${th('pos','Nº POS')}${th('veiculo','Veículo')}${th('lider','Líder','hide-m')}${th('status','Status')}<th></th></tr></thead><tbody>${list.map(c => rowColab(c, multi)).join('')}</tbody></table></div><div class="tfoot">${list.length} de ${colabsV().length} colaboradores</div>`
+  $('#list').innerHTML = list.length ? `<div class="tbl-wrap"><table class="mcards"><thead><tr>${th('nome','Colaborador')}${multi?th('base','Base'):''}${th('telefone','Contato','hide-m')}${th('pos','Nº POS')}${th('veiculo','Veículo')}${th('lider','Líder','hide-m')}${th('status','Status')}<th></th></tr></thead><tbody>${list.map(c => rowColab(c, multi)).join('')}</tbody></table></div><div class="tfoot">${list.length} de ${colabsV().length} colaboradores</div>`
     : empty('users','Nenhum colaborador encontrado', isAdmin() ? 'Ajuste os filtros, cadastre em "Novo colaborador" ou use "Importar Excel".' : 'Ajuste os filtros de busca.');
 }
 function rowColab(c, multi){
   const v = V(c.veiculo_id), l = P(c.lider_id);
   return `<tr class="click" data-act="c-open" data-id="${c.id}">
-    <td><div class="who">${avatar(c.nome)}<div style="min-width:0"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'Sem cargo')}${c.matricula?' — mat. '+esc(c.matricula):''}</small></div></div></td>
-    ${multi?`<td>${bTag(c.base)}</td>`:''}
+    <td data-l="" class="mc-main"><div class="who">${avatar(c.nome)}<div style="min-width:0"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'Sem cargo')}${c.matricula?' — mat. '+esc(c.matricula):''}</small></div></div></td>
+    ${multi?`<td data-l="Base">${bTag(c.base)}</td>`:''}
     <td class="hide-m"><div>${esc(c.telefone||'—')}</div><div class="muted s">${esc(c.email||'')}</div></td>
-    <td>${c.pos?`<span class="pos mono">${esc(c.pos)}</span> <button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar POS">${ic('copy',13)}</button>`:'<span class="muted">—</span>'}</td>
-    <td>${v?`<span class="vlink">${plate(v.placa,true)}<i class="dot" style="--c:${VSTATUS[v.status]?.color}" title="${VSTATUS[v.status]?.label}"></i></span>`:'<span class="muted">Sem veículo</span>'}</td>
+    <td data-l="Nº POS">${c.pos?`<span class="pos mono">${esc(c.pos)}</span> <button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar POS">${ic('copy',13)}</button>`:'<span class="muted">—</span>'}</td>
+    <td data-l="Veículo">${v?`<span class="vlink">${plate(v.placa,true)}<i class="dot" style="--c:${VSTATUS[v.status]?.color}" title="${VSTATUS[v.status]?.label}"></i></span>`:'<span class="muted">Sem veículo</span>'}</td>
     <td class="hide-m">${l?esc(l.nome):'<span class="muted">—</span>'}</td>
-    <td>${chip(CSTATUS[c.status])}</td>
-    <td class="act">${isAdmin()?`<button class="icon-btn" data-act="c-edit" data-id="${c.id}" title="Editar">${ic('edit',16)}</button>`:''}</td></tr>`;
+    <td data-l="Status">${chip(CSTATUS[c.status])}</td>
+    <td class="act mc-act">${isAdmin()?`<button class="icon-btn" data-act="c-edit" data-id="${c.id}" title="Editar">${ic('edit',16)}</button>`:''}</td></tr>`;
 }
 function openColab(id){
   const c = C(id); if (!c) return;
@@ -1456,7 +1610,7 @@ function pgFrota(){
     <div class="seg">${[['','Todos',''],['carro','Carros','car'],['moto','Motos','bike']].map(([k,l,i]) => `<button class="${f.vt===k?'on':''}" data-act="v-ft" data-k="${k}">${i?ic(i,15):''}${l}</button>`).join('')}</div>
     <div class="tb-right">
       <button class="btn" data-act="x-export" data-k="veic">${ic('download',16)}<span class="hide-m">Exportar Excel</span></button>
-      ${isAdmin()?`<button class="btn" data-act="x-import" data-k="veic">${ic('upload',16)}<span class="hide-m">Importar Excel</span></button><button class="btn pri" data-act="v-new">${ic('plus',16)}Novo veículo</button>`:''}
+      <button class="btn" data-act="x-import" data-k="veic">${ic('upload',16)}<span class="hide-m">Importar Excel</span></button><button class="btn pri" data-act="v-new">${ic('plus',16)}<span class="hide-s">Novo veículo</span></button>
     </div>
   </div>
   <p class="hint">${ic('info',14)}Clique na situação de um veículo e escolha a nova — atualiza para todos na hora. Clique no card para ver detalhes e histórico.</p>
@@ -1472,7 +1626,7 @@ function frotaFiltered(){
 }
 function frotaList(){
   const list = frotaFiltered();
-  $('#list').innerHTML = list.length ? `<div class="vgrid">${list.map(vcard).join('')}</div>` : `<div class="card">${empty('car','Nenhum veículo encontrado', isAdmin()?'Cadastre em "Novo veículo" ou use "Importar Excel".':'')}</div>`;
+  $('#list').innerHTML = list.length ? `<div class="vgrid">${list.map(vcard).join('')}</div>` : `<div class="card">${empty('car','Nenhum veículo encontrado','Cadastre em "Novo veículo" ou use "Importar Excel".')}</div>`;
 }
 function vcard(v){
   const s = VSTATUS[v.status] || VSTATUS.ok, c = condutorOf(v.id), multi = !S.base && myBases().length > 1;
@@ -1526,26 +1680,27 @@ function openVeic(id){
     </div>
     <div class="sec">Histórico de situação</div>
     ${hist.length?`<div class="timeline">${hist.map(h => { const o = VSTATUS[h.status]||VSTATUS.ok; return `<div class="tl" style="--c:${o.color}"><b>${o.label}</b><small>${fmtDT(h.created_at)}${h.por_nome?' — '+esc(h.por_nome):''}</small>${h.obs?`<p>${esc(h.obs)}</p>`:''}</div>`; }).join('')}</div>`:'<div class="box muted">Sem histórico ainda.</div>'}`,
-    foot: isAdmin() ? `<button class="btn danger left" data-act="v-del" data-id="${v.id}">${ic('trash',15)}Excluir</button><button class="btn pri" data-act="v-edit" data-id="${v.id}">${ic('edit',15)}Editar veículo</button>` : `<button class="btn pri" data-act="modal-close">Fechar</button>`});
+    foot: `${isAdmin() ? `<button class="btn danger left" data-act="v-del" data-id="${v.id}">${ic('trash',15)}Excluir</button>` : ''}<button class="btn pri" data-act="v-edit" data-id="${v.id}">${ic('edit',15)}Editar veículo</button>`});
 }
 function veicForm(id){
-  if (!isAdmin()) return;
+  if (id && !allowed(V(id)?.base)) return;
+  const adm = isAdmin();
   const v = id ? V(id) : {tipo:'carro', status:'ok', base:defBase()}; const cur = id ? condutorOf(id) : null;
   const condOpts = base => `<option value="">— Sem condutor —</option>${opts(colabsSorted(base).map(c => [c.id, c.nome + (c.veiculo_id && !sameId(c.veiculo_id,id) ? ` (tem ${V(c.veiculo_id)?.placa||'veículo'})` : '')]), cur?.id)}`;
   openModal({title: id ? 'Editar veículo' : 'Novo veículo', wide:true, body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Tipo', rchips('tipo',TIPOV,v.tipo||'carro'), false, true)}
-    ${fld('Base', `<select name="base" id="fbase" required>${baseOpts(v.base, !v.base)}</select>`, false, true)}
+    ${adm || !id ? (myBases().length === 1 && !adm ? `<input type="hidden" name="base" value="${myBases()[0]}">${fld('Base', `<div class="fixed-base">${bTag(myBases()[0])}</div>`)}` : fld('Base', `<select name="base" id="fbase" required>${baseOpts(v.base, !v.base)}</select>`, false, true)) : `<input type="hidden" name="base" value="${v.base}">${fld('Base', `<div class="fixed-base">${bTag(v.base)}</div>`)}`}
     ${fld('Placa', inp('placa',v.placa,'data-mask="upper" maxlength="8" placeholder="ABC1D23" class="mono" style="text-transform:uppercase;letter-spacing:2px"'), false, true, 'Mercosul (ABC1D23) ou antiga (ABC1234).')}
     ${fld('Modelo', inp('modelo',v.modelo,'placeholder="Ex: Strada, CG 160"'), false, true)}
     ${fld('Marca', inp('marca',v.marca,'placeholder="Ex: Fiat, Honda"'))}
     ${fld('Ano', inp('ano',v.ano,'type="number" min="1980" max="2100" inputmode="numeric"'))}
     ${fld('Cor', inp('cor',v.cor))}
     ${fld('Quilometragem', inp('km',v.km,'type="number" min="0" inputmode="numeric"'))}
-    ${fld('Condutor', `<select name="condutor" id="fcond">${condOpts(v.base)}</select>`, true)}
+    ${adm ? fld('Condutor', `<select name="condutor" id="fcond">${condOpts(v.base)}</select>`, true) : ''}
     ${fld('Situação', rchips('status',VSTATUS,v.status||'ok'), true)}
     ${fld('Observações', `<textarea name="observacoes" rows="3" placeholder="Seguro, revisões, detalhes do veículo...">${esc(v.observacoes||'')}</textarea>`, true)}
   </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="v-save" data-id="${id||''}">${ic('check',15)}Salvar veículo</button>`,
-  onMount: ov => { $('#fbase',ov).onchange = e => { $('#fcond',ov).innerHTML = condOpts(e.target.value); }; }});
+  onMount: ov => { const fb = $('#fbase',ov), fc = $('#fcond',ov); if (fb && fc) fb.onchange = e => { fc.innerHTML = condOpts(e.target.value); }; }});
 }
 const placaOk = p => /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(p);
 const normPlaca = p => String(p||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -1553,7 +1708,7 @@ async function saveVeic(id){
   const f = formObj(); const placa = normPlaca(f.placa);
   if (!placaOk(placa)) return toast('Placa inválida. Use ABC1D23 ou ABC1234.','err');
   if (!f.modelo) return toast('Informe o modelo do veículo.','err');
-  if (!BASES[f.base]) return toast('Escolha a base do veículo.','err');
+  if (!BASES[f.base] || !allowed(f.base)) return toast('Escolha a base do veículo.','err');
   if (S.veics.some(v => v.placa===placa && !sameId(v.id,id))) return toast('Já existe um veículo com essa placa.','err');
   const old = id ? V(id) : null;
   const row = {tipo:f.tipo||'carro', base:f.base, placa, marca:f.marca, modelo:f.modelo, ano:f.ano?parseInt(f.ano):null, cor:f.cor, km:f.km?parseInt(f.km):null, status:f.status||'ok', observacoes:f.observacoes};
@@ -1564,7 +1719,7 @@ async function saveVeic(id){
     if (id) await DB.update('veiculos', id, row); else vid = (await DB.insert('veiculos', row)).id;
     if (stChanged) await DB.insert('veiculo_historico', {veiculo_id:vid, status:row.status, obs: old ? 'Alterado no cadastro' : 'Veículo cadastrado', por_id:S.profile.id, por_nome:S.profile.nome});
     const cur = condutorOf(vid), want = f.condutor || null;
-    if (!sameId(cur?.id ?? '', want ?? '')){
+    if (isAdmin() && !sameId(cur?.id ?? '', want ?? '')){
       if (cur) await DB.update('colaboradores', cur.id, {veiculo_id:null});
       if (want) await DB.update('colaboradores', want, {veiculo_id:vid});
     }
@@ -1686,7 +1841,7 @@ async function excelFile(kind, withData){
 }
 
 function openImport(kind){
-  if (!isAdmin()) return;
+  if (kind === 'colab' && !isAdmin()) return;
   const sc = IMP[kind];
   openModal({wide:true, title:`Importar ${sc.nome} do Excel`, body:`
     <div class="imp-steps">
@@ -1747,7 +1902,9 @@ function validateImport(){
       seen.add(placa);
       if (!tipo) r.errs.push('tipo deve ser Carro ou Moto');
       if (!b) r.errs.push(o.base ? `base "${o.base}" não existe` : 'sem base');
+      else if (!allowed(b)) r.errs.push(`base ${bName(b)} fora do seu acesso`);
       const ex = S.veics.find(v => v.placa === placa);
+      if (ex && !allowed(ex.base)) r.errs.push('placa já cadastrada em outra base');
       if (!o.modelo && !ex) r.errs.push('falta o modelo');
       if (status === undefined){ r.warns.push(`situação "${o.situacao}" não reconhecida, ficou Operando`); }
       const ano = o.ano ? parseInt(o.ano) : null, km = o.km ? parseInt(String(o.km).replace(/\D/g,'')) : null;
@@ -1816,7 +1973,7 @@ async function applyImport(){
       const ins = await DB.insertMany('veiculos', novos);
       await DB.insertMany('veiculo_historico', ins.map(v => ({veiculo_id:v.id, status:v.status, obs:'Importado do Excel', por_id:S.profile.id, por_nome:S.profile.nome})));
       for (const r of ok.filter(r => r.act === 'atualizar')){
-        const patch = clean(r.d); delete patch.placa;
+        const patch = clean(r.d); delete patch.placa; if (!isAdmin()) delete patch.base;
         if (patch.status && patch.status !== r.match.status){ patch.status_em = nowISO(); patch.status_por = S.profile.nome;
           await DB.insert('veiculo_historico', {veiculo_id:r.match.id, status:patch.status, obs:'Atualizado pelo Excel', por_id:S.profile.id, por_nome:S.profile.nome}); }
         else delete patch.status;
@@ -1835,6 +1992,17 @@ async function applyImport(){
 
 
 /* ========================= DIÁRIO DE BORDO ========================= */
+// Caminho de toda pendência: Aberta -> Em tratamento -> Concluída
+// Problema: o líder abre; só o encarregado dá ciência e conclui.
+// Pedido: o encarregado abre e edita; só o líder solicitado dá ciência e conclui.
+const pipe = c => { const n = c.status === 'resolvido' ? 3 : c.status === 'andamento' ? 2 : 1;
+  return `<span class="pipe" title="${chSt(c).label}" style="--c:${CH[c.status].color}">${[1,2,3].map(i => `<i class="${i<=n?'on':''}"></i>`).join('')}</span>`; };
+function quickBtns(c){
+  if (!canHandle(c) || c.status === 'resolvido') return '';
+  return c.status === 'aberto'
+    ? `<button class="qbtn" data-act="ch-quick" data-id="${c.id}" data-st="andamento" title="Marcar como lida e em tratamento">${ic('checks',15)}<span>Ciente</span></button>`
+    : `<button class="qbtn ok" data-act="ch-quick" data-id="${c.id}" data-st="resolvido" title="Concluir">${ic('check',15)}<span>Concluir</span></button>`;
+}
 function pgDiario(){
   const f = S.f, adm = isAdmin(), tt = f.tt;
   const probs = chsV('problema'), peds = chsV('pedido');
@@ -1843,20 +2011,20 @@ function pgDiario(){
   const base = list.filter(c => !f.tl || sameId(c.autor_id,f.tl) || sameId(c.destinatario_id,f.tl));
   let leaders = '';
   if (adm){
-    const ls = S.profiles.filter(p => p.role === 'lider' && (p.bases||[]).some(inScope));
-    leaders = ls.length ? `<div class="leaders">${ls.map(p => {
-      const l = tt === 'pedido' ? peds.filter(c => sameId(c.destinatario_id,p.id) || (!c.destinatario_id && (p.bases||[]).includes(c.base))) : probs.filter(c => sameId(c.autor_id,p.id));
-      const n = k => l.filter(c => c.status===k).length;
-      return `<button class="card ld ${sameId(f.tl,p.id)?'on':''}" data-act="t-fl" data-k="${p.id}">${emblem((p.bases||[])[0],36,10)}<div style="min-width:0"><b>${esc(p.nome)}</b><div class="nums"><span><i class="dot" style="--c:${CH.aberto.color}"></i><b>${n('aberto')}</b> ${CHL[tt].aberto.toLowerCase()}</span><span><i class="dot" style="--c:${CH.andamento.color}"></i><b>${n('andamento')}</b></span><span><i class="dot" style="--c:${CH.resolvido.color}"></i><b>${n('resolvido')}</b></span></div></div></button>`; }).join('')}</div>` : '';
+    const ls = BKEYS.filter(inScope).map(k => ({k, p:liderOf(k)})).filter(x => x.p && !sameId(x.p.id, S.profile.id));
+    leaders = ls.length ? `<div class="leaders">${ls.map(({k,p}) => {
+      const l = tt === 'pedido' ? peds.filter(c => c.base === k) : probs.filter(c => sameId(c.autor_id,p.id));
+      const n = s => l.filter(c => c.status===s).length;
+      return `<button class="card ld ${sameId(f.tl,p.id)?'on':''}" data-act="t-fl" data-k="${p.id}">${emblem(k,34,10)}<div style="min-width:0"><b>${esc(p.nome)}</b><small class="ld-b">${BASES[k].nome}</small><div class="nums"><span><i class="dot" style="--c:${CH.aberto.color}"></i><b>${n('aberto')}</b> abertas</span><span><i class="dot" style="--c:${CH.andamento.color}"></i><b>${n('andamento')}</b></span><span><i class="dot" style="--c:${CH.resolvido.color}"></i><b>${n('resolvido')}</b></span></div></div></button>`; }).join('')}</div>` : '';
   }
   $('#page').innerHTML = `
   <div class="dtabs" role="tablist">
-    <button class="dtab ${tt==='problema'?'on':''}" data-act="t-tt" data-k="problema" role="tab"><span class="dt-i">${ic('inbox',20)}</span><span><b>Problemas das bases</b><small>${adm?'Os líderes relatam, só você responde e resolve':'Relate problemas da equipe ao gestor'}</small></span>${nP?`<em>${nP}</em>`:''}</button>
-    <button class="dtab ${tt==='pedido'?'on':''}" data-act="t-tt" data-k="pedido" role="tab"><span class="dt-i">${ic('flag',20)}</span><span><b>Pedidos do gestor</b><small>${adm?'Você pede, a base responde e conclui':'Solicitações do gestor para sua base'}</small></span>${nD?`<em>${nD}</em>`:''}</button>
+    <button class="dtab ${tt==='problema'?'on':''}" data-act="t-tt" data-k="problema" role="tab"><span class="dt-i">${ic('inbox',20)}</span><span><b>Problemas das bases</b><small>${adm?'Os líderes relatam, você dá ciência e conclui':'Relate problemas da equipe ao encarregado'}</small></span>${nP?`<em>${nP}</em>`:''}</button>
+    <button class="dtab ${tt==='pedido'?'on':''}" data-act="t-tt" data-k="pedido" role="tab"><span class="dt-i">${ic('flag',20)}</span><span><b>Pedidos do encarregado</b><small>${adm?'Você pede, o líder da base dá ciência e conclui':'Solicitações do encarregado para você'}</small></span>${nD?`<em>${nD}</em>`:''}</button>
   </div>
   ${leaders}
   <div class="toolbar">
-    <div class="seg">${['', 'aberto','andamento','resolvido'].map(k => `<button class="${f.ts===k?'on':''}" data-act="t-fs" data-k="${k}">${k?CHL[tt][k]:'Todos'} <b style="font-weight:600">${k?base.filter(c=>c.status===k).length:base.length}</b></button>`).join('')}</div>
+    <div class="seg seg-st">${['', 'aberto','andamento','resolvido'].map(k => `<button class="${f.ts===k?'on':''}" data-act="t-fs" data-k="${k}">${k?CHL0[k]:'Todas'} <b>${k?base.filter(c=>c.status===k).length:base.length}</b></button>`).join('')}</div>
     <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar no diário..." value="${esc(f.tq)}"></label>
     <select class="sel" id="fc"><option value="">Todas as categorias</option>${opts((tt==='pedido'?CATS_P:CATS).map(c=>[c,c]), f.tc)}</select>
     <div class="tb-right">${tt==='problema' && !adm ? `<button class="btn pri" data-act="t-new">${ic('plus',16)}Registrar problema</button>` : ''}${tt==='pedido' && adm ? `<button class="btn pri" data-act="p-new">${ic('flag',16)}Novo pedido</button>` : ''}</div>
@@ -1868,139 +2036,145 @@ function pgDiario(){
 }
 function diarioList(){
   const f = S.f, q = f.tq.toLowerCase().trim(), tt = f.tt, today = iso(new Date()), multi = !S.base && myBases().length > 1;
-  const list = chsV(tt).filter(c => (!f.tl || sameId(c.autor_id,f.tl) || sameId(c.destinatario_id,f.tl) || (tt==='pedido' && !c.destinatario_id && (P(f.tl)?.bases||[]).includes(c.base))) && (!f.ts || c.status===f.ts) && (!f.tc || c.categoria===f.tc) &&
+  const list = chsV(tt).filter(c => (!f.tl || sameId(c.autor_id,f.tl) || sameId(c.destinatario_id,f.tl) || (tt==='pedido' && (P(f.tl)?.bases||[]).includes(c.base))) && (!f.ts || c.status===f.ts) && (!f.tc || c.categoria===f.tc) &&
     (!q || [c.titulo,c.descricao,c.autor_nome,'#'+c.id,C(c.colaborador_id)?.nome,V(c.veiculo_id)?.placa,bName(c.base),...msgsOf(c.id).map(m=>m.texto)].join(' ').toLowerCase().includes(q)));
   $('#list').innerHTML = list.length ? list.map(c => { const col = C(c.colaborador_id), v = V(c.veiculo_id), ms = msgsOf(c.id), lastM = ms[ms.length-1];
     const late = tt === 'pedido' && c.status !== 'resolvido' && c.prazo && c.prazo < today;
     const novo = lastM && !sameId(lastM.autor_id, S.profile.id) && c.status !== 'resolvido';
-    const dest = tt === 'pedido' ? (c.destinatario_id ? P(c.destinatario_id)?.nome : 'Todos os líderes da base') : null;
+    const dest = tt === 'pedido' ? (P(c.destinatario_id)?.nome || liderOf(c.base)?.nome || 'Líder da base') : null;
     return `<div class="tk" style="--c:${PRIOR[c.prioridade]?.color}" data-act="ch-open" data-id="${c.id}" role="button" tabindex="0">
-      <span class="num">#${c.id}</span>${multi ? emblem(c.base,34,10) : avatar(c.autor_nome,34)}
-      <div class="body"><div class="t">${esc(c.titulo)}</div><div class="m">${multi?`<span class="fw5" style="color:${bOf(c.base)?.c||'inherit'}">${bName(c.base)}</span>`:''}<span>${tt==='pedido' ? 'Para ' + esc(dest||'—') : esc(c.autor_nome)}</span><span>${ago(c.created_at)}</span><span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${col?`<span>${ic('user',12)} ${esc(col.nome)}</span>`:''}${v?plate(v.placa,true):''}${c.prazo && tt==='pedido'?`<span class="${late?'late':''}">${ic('clock',12)} ${late?'Venceu':'Prazo'} ${fmtD(c.prazo)}</span>`:''}</div></div>
+      <span class="num">#${c.id}</span>${multi ? emblem(c.base,30,9) : avatar(c.autor_nome,32)}
+      <div class="body"><div class="t">${esc(c.titulo)}</div><div class="m">${multi?`<span class="fw5" style="color:${bOf(c.base)?.c||'inherit'}">${bName(c.base)}</span>`:''}<span>${tt==='pedido' ? 'Para ' + esc(dest) : esc(c.autor_nome)}</span><span>${ago(c.created_at)}</span><span class="tag hide-s" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${col?`<span class="hide-s">${ic('user',12)} ${esc(col.nome)}</span>`:''}${v?plate(v.placa,true):''}${c.prazo && tt==='pedido'?`<span class="${late?'late':''}">${ic('clock',12)} ${late?'Venceu':'Prazo'} ${fmtD(c.prazo)}</span>`:''}${c.lido_em && c.status!=='aberto'?`<span class="seen" title="Ciente: ${esc(c.lido_por||'')} em ${fmtDT(c.lido_em)}">${ic('checks',13)} Visto</span>`:''}</div></div>
       <span class="hide-m">${chip(PRIOR[c.prioridade],false)}</span>
       ${ms.length?`<span class="mcount ${novo?'new':''}" title="${novo?'Mensagem nova':'Mensagens'}">${ic('msg',15)}${ms.length}</span>`:''}
-      ${chip(chSt(c))}</div>`; }).join('')
-    : empty(tt==='pedido'?'flag':'inbox', tt==='pedido' ? 'Nenhum pedido por aqui' : 'Nenhum problema registrado', tt==='pedido' ? (isAdmin() ? 'Use "Novo pedido" para pedir algo a uma base.' : 'Quando o gestor fizer um pedido para sua base, ele aparece aqui.') : (isAdmin() ? 'Quando os líderes relatarem problemas, eles aparecem aqui.' : 'Use "Registrar problema" para relatar algo ao gestor.'));
+      <span class="tk-st">${pipe(c)}${chip(chSt(c))}</span>
+      ${quickBtns(c)}</div>`; }).join('')
+    : empty(tt==='pedido'?'flag':'inbox', tt==='pedido' ? 'Nenhum pedido por aqui' : 'Nenhum problema registrado', tt==='pedido' ? (isAdmin() ? 'Use "Novo pedido" para pedir algo a uma base.' : 'Quando o encarregado fizer um pedido para você, ele aparece aqui.') : (isAdmin() ? 'Quando os líderes relatarem problemas, eles aparecem aqui.' : 'Use "Registrar problema" para relatar algo ao encarregado.'));
 }
-function baseField(cur, id='fbase'){
-  const bs = myBases();
+function baseField(cur, id='fbase', list){
+  const bs = list || myBases();
   if (bs.length === 1) return `<input type="hidden" name="base" value="${bs[0]}">${fld('Base', `<div class="fixed-base">${bTag(bs[0])}</div>`)}`;
-  return fld('Base', `<select name="base" id="${id}" required>${baseOpts(cur, !cur)}</select>`, false, true);
+  return fld('Base', `<select name="base" id="${id}" required>${(cur && bs.includes(cur) ? '' : '<option value="">— Escolha a base —</option>') + bs.map(k => `<option value="${k}" ${k===cur?'selected':''}>${BASES[k].nome}</option>`).join('')}</select>`, false, true);
 }
-function chForm(){
-  const b = defBase();
-  const colOpts = base => `<option value="">— Nenhum —</option>${opts(colabsSorted(base).map(c=>[c.id,c.nome]))}`;
-  const veiOpts = base => `<option value="">— Nenhum —</option>${opts(S.veics.filter(v => v.base === base).map(v=>[v.id,`${v.placa} — ${v.modelo}`]))}`;
-  openModal({title:'Registrar problema para o gestor', wide:true, body:`<form id="mf" class="form" autocomplete="off">
-    ${fld('Título', inp('titulo','','maxlength="120" placeholder="Resuma o problema em poucas palavras"'), true, true)}
-    ${baseField(b)}
-    ${fld('Categoria', `<select name="categoria">${opts(CATS.map(c=>[c,c]),'Equipe')}</select>`)}
-    ${fld('Prioridade', rchips('prioridade',PRIOR,'media'), true)}
-    ${fld('Colaborador envolvido', `<select name="colaborador_id" id="fcol">${colOpts(b)}</select>`)}
-    ${fld('Veículo relacionado', `<select name="veiculo_id" id="fvei">${veiOpts(b)}</select>`)}
-    ${fld('Descrição', `<textarea name="descricao" rows="5" placeholder="O que aconteceu, quem está envolvido e o que é preciso para resolver."></textarea>`, true, true)}
-  </form><p class="f-hint">Só o gestor pode responder e marcar como resolvido. Você pode complementar com mensagens depois.</p>`,
-  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="t-save">${ic('send',15)}Enviar ao gestor</button>`,
+const colOpts = (base, cur) => `<option value="">— Nenhum —</option>${opts(colabsSorted(base).map(c=>[c.id,c.nome]), cur)}`;
+const veiOpts = (base, cur) => `<option value="">— Nenhum —</option>${opts(S.veics.filter(v => v.base === base).map(v=>[v.id,`${v.placa} — ${v.modelo}`]), cur)}`;
+function chForm(id){
+  const c = id ? CHM(id) : null;
+  if (c && !canEditCh(c)) return;
+  const b = c ? c.base : defBase();
+  openModal({title: c ? `Editar problema #${c.id}` : 'Registrar problema para o encarregado', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Título', inp('titulo',c?.titulo||'','maxlength="120" placeholder="Resuma o problema em poucas palavras"'), true, true)}
+    ${c ? `<input type="hidden" name="base" value="${c.base}">${fld('Base', `<div class="fixed-base">${bTag(c.base)}</div>`)}` : baseField(b)}
+    ${fld('Categoria', `<select name="categoria">${opts(CATS.map(x=>[x,x]), c?.categoria||'Equipe')}</select>`)}
+    ${fld('Prioridade', rchips('prioridade',PRIOR,c?.prioridade||'media'), true)}
+    ${fld('Colaborador envolvido', `<select name="colaborador_id" id="fcol">${colOpts(b, c?.colaborador_id)}</select>`)}
+    ${fld('Veículo relacionado', `<select name="veiculo_id" id="fvei">${veiOpts(b, c?.veiculo_id)}</select>`)}
+    ${fld('Descrição', `<textarea name="descricao" rows="5" placeholder="O que aconteceu, quem está envolvido e o que é preciso para resolver.">${esc(c?.descricao||'')}</textarea>`, true, true)}
+  </form>${c ? '' : '<p class="f-hint">O encarregado dá ciência, trata e conclui. Você acompanha e pode complementar com mensagens.</p>'}`,
+  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="t-save" data-id="${c?.id||''}">${ic(c?'check':'send',15)}${c?'Salvar alterações':'Enviar ao encarregado'}</button>`,
   onMount: ov => { const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fcol',ov).innerHTML = colOpts(e.target.value); $('#fvei',ov).innerHTML = veiOpts(e.target.value); }; }});
 }
-function pedidoForm(){
+function pedidoForm(id){
   if (!isAdmin()) return;
-  const b = curBaseKey();
-  const destOpts = base => `<option value="">Todos os líderes da base</option>${opts(lidersOf(base).map(p=>[p.id,p.nome]))}`;
+  const c = id ? CHM(id) : null;
+  const avail = BKEYS.filter(k => !ownBases().includes(k));
+  const b = c ? c.base : (avail.includes(curBaseKey()) ? curBaseKey() : '');
+  const destInfo = base => { if (!base) return '<span class="muted">Escolha a base</span>'; const l = liderOf(base);
+    return l ? `<span class="who">${avatar(l.nome,24)}<b>${esc(l.nome)}</b></span>` : '<span class="late">Base sem líder: o pedido fica com o próximo líder</span>'; };
   const d3 = new Date(); d3.setDate(d3.getDate()+3);
-  openModal({title:'Novo pedido para a base', wide:true, body:`<form id="mf" class="form" autocomplete="off">
-    ${fld('O que você precisa', inp('titulo','','maxlength="120" placeholder="Ex: Enviar relatório de produtividade da semana"'), true, true)}
-    ${fld('Base', `<select name="base" id="fbase" required>${baseOpts(b, !b)}</select>`, false, true)}
-    ${fld('Para quem', `<select name="destinatario_id" id="fdest">${destOpts(b)}</select>`)}
-    ${fld('Categoria', `<select name="categoria">${opts(CATS_P.map(c=>[c,c]),'Relatório')}</select>`)}
-    ${fld('Prazo', inp('prazo',iso(d3),'type="date"'))}
-    ${fld('Prioridade', rchips('prioridade',PRIOR,'media'), true)}
-    ${fld('Detalhes', `<textarea name="descricao" rows="5" placeholder="Explique o pedido, o formato esperado e qualquer informação útil."></textarea>`, true, true)}
-  </form>`,
-  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="p-save">${ic('send',15)}Enviar pedido</button>`,
-  onMount: ov => { $('#fbase',ov).onchange = e => { $('#fdest',ov).innerHTML = destOpts(e.target.value); }; }});
+  openModal({title: c ? `Editar pedido #${c.id}` : 'Novo pedido para a base', wide:true, body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('O que você precisa', inp('titulo',c?.titulo||'','maxlength="120" placeholder="Ex: Enviar relatório de produtividade da semana"'), true, true)}
+    ${c ? `<input type="hidden" name="base" value="${c.base}">${fld('Base', `<div class="fixed-base">${bTag(c.base)}</div>`)}` : baseField(b, 'fbase', avail)}
+    ${fld('Para (líder da base)', `<div class="fixed-base" id="fdest">${destInfo(b)}</div>`)}
+    ${fld('Categoria', `<select name="categoria">${opts(CATS_P.map(x=>[x,x]), c?.categoria||'Relatório')}</select>`)}
+    ${fld('Prazo', inp('prazo',c ? c.prazo : iso(d3),'type="date"'))}
+    ${fld('Prioridade', rchips('prioridade',PRIOR,c?.prioridade||'media'), true)}
+    ${fld('Detalhes', `<textarea name="descricao" rows="5" placeholder="Explique o pedido, o formato esperado e qualquer informação útil.">${esc(c?.descricao||'')}</textarea>`, true, true)}
+  </form>${ownBases().length && !c ? `<p class="f-hint">${bName(ownBases()[0])} não aparece porque você é o líder dessa base.</p>` : ''}`,
+  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="p-save" data-id="${c?.id||''}">${ic(c?'check':'send',15)}${c?'Salvar alterações':'Enviar pedido'}</button>`,
+  onMount: ov => { const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fdest',ov).innerHTML = destInfo(e.target.value); }; }});
 }
-async function saveCh(tipo){
+async function saveCh(tipo, id){
   const f = formObj();
   if (!f.titulo) return toast('Informe o título.','err');
   if (!BASES[f.base]) return toast('Escolha a base.','err');
   if (!f.descricao) return toast(tipo === 'pedido' ? 'Descreva o pedido.' : 'Descreva o problema.','err');
+  if (tipo === 'pedido' && !id && ownBases().includes(f.base)) return toast('Você é o líder desta base: não dá para fazer pedido para você mesmo.','err');
   try {
-    const row = {tipo, base:f.base, titulo:f.titulo, descricao:f.descricao, categoria:f.categoria||'Outro', prioridade:f.prioridade||'media', status:'aberto',
-      autor_id:S.profile.id, autor_nome:S.profile.nome, updated_at:nowISO()};
-    if (tipo === 'pedido'){ row.destinatario_id = f.destinatario_id; row.prazo = f.prazo; }
+    const row = {titulo:f.titulo, descricao:f.descricao, categoria:f.categoria||'Outro', prioridade:f.prioridade||'media', updated_at:nowISO()};
+    if (tipo === 'pedido') row.prazo = f.prazo;
     else { row.colaborador_id = f.colaborador_id; row.veiculo_id = f.veiculo_id; }
+    if (id){ await DB.update('chamados', id, row); closeModal(); toast(`#${id} atualizado.`); return reload(); }
+    Object.assign(row, {tipo, base:f.base, status:'aberto', autor_id:S.profile.id, autor_nome:S.profile.nome});
+    if (tipo === 'pedido') row.destinatario_id = liderOf(f.base)?.id || null;
     const r = await DB.insert('chamados', row);
-    closeModal(); toast(tipo === 'pedido' ? `Pedido #${r.id} enviado para ${bName(f.base)}.` : `Problema #${r.id} enviado ao gestor.`); S.f.tt = tipo; await reload();
+    closeModal(); toast(tipo === 'pedido' ? `Pedido #${r.id} enviado para ${bName(f.base)}.` : `Problema #${r.id} enviado ao encarregado.`); S.f.tt = tipo; await reload();
   } catch(e){ err(e); }
 }
-const stepEl = (l, d, done) => `<div class="step ${done?'done':''}"><i></i><b>${l}</b><small>${d?fmtDT(d):'—'}</small></div>`;
+const stepEl = (l, d, done, sub='') => `<div class="step ${done?'done':''}"><i></i><b>${l}</b><small>${d?fmtDT(d):'—'}${sub?'<br>'+sub:''}</small></div>`;
 function openCh(id){
   const c = CHM(id); if (!c) return;
   const tp = tipoOf(c), adm = isAdmin(), col = C(c.colaborador_id), v = V(c.veiculo_id), ms = msgsOf(c.id), today = iso(new Date());
-  const firstResp = ms.find(m => !sameId(m.autor_id, c.autor_id));
-  const legacy = c.resposta && !ms.length ? [{id:'legacy', autor_id:null, autor_nome:c.respondido_por||'Gestor', texto:c.resposta, created_at:c.respondido_em||c.updated_at}] : [];
+  const legacy = c.resposta && !ms.length ? [{id:'legacy', autor_id:null, autor_nome:c.respondido_por||'Encarregado', texto:c.resposta, created_at:c.respondido_em||c.updated_at}] : [];
   const thread = [...legacy, ...ms];
-  const canStatus = adm || tp === 'pedido';
-  const dest = tp === 'pedido' ? (c.destinatario_id ? P(c.destinatario_id)?.nome : 'Todos os líderes da base') : null;
-  const late = tp === 'pedido' && c.status !== 'resolvido' && c.prazo && c.prazo < today;
+  const handle = canHandle(c), done = c.status === 'resolvido';
+  const dest = tp === 'pedido' ? (P(c.destinatario_id)?.nome || liderOf(c.base)?.nome || 'Líder da base') : 'Encarregado';
+  const late = tp === 'pedido' && !done && c.prazo && c.prazo < today;
   let actions = '';
-  if (c.status === 'resolvido'){
-    actions = adm ? `<button class="btn" data-act="ch-reopen" data-id="${c.id}">Reabrir</button>` : '';
-  } else if (adm){
-    actions = `<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="resolvido">${ic('check',15)}${tp==='pedido'?'Enviar e concluir':'Responder e resolver'}</button><button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar resposta</button>`;
-  } else if (tp === 'pedido'){
-    actions = `${c.status==='aberto'?`<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="andamento">Marcar em andamento</button>`:''}<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="resolvido">${ic('check',15)}Concluir pedido</button><button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar mensagem</button>`;
+  if (done){
+    if (adm || handle) actions = `<button class="btn" data-act="ch-reopen" data-id="${c.id}">${ic('refresh',15)}Reabrir</button>`;
   } else {
-    actions = `<button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar complemento</button>`;
+    if (handle && c.status === 'aberto') actions += `<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="andamento">${ic('checks',15)}Ciente / em tratamento</button>`;
+    if (handle) actions += `<button class="btn" data-act="ch-send" data-id="${c.id}" data-st="resolvido">${ic('check',15)}Concluir</button>`;
+    actions += `<button class="btn pri" data-act="ch-send" data-id="${c.id}">${ic('send',15)}Enviar mensagem</button>`;
   }
+  const who = handle ? 'você' : esc(dest);
   openModal({wide:true, title:`${tp==='pedido'?'Pedido':'Problema'} #${c.id}`, body:`
-    <div class="ch-head"><div class="chips" style="margin-bottom:10px">${bTag(c.base)}${tipoTag(c)}</div><h2>${esc(c.titulo)}</h2><div class="chips">${chip(chSt(c))}${chip(PRIOR[c.prioridade],false)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${late?`<span class="chip" style="--c:#ef4444">Prazo vencido</span>`:''}</div></div>
-    <div class="dl" style="margin:18px 0 0">
+    <div class="ch-head"><div class="chips" style="margin-bottom:10px">${bTag(c.base)}${tipoTag(c)}${canEditCh(c)?`<button class="btn sm" data-act="ch-edit" data-id="${c.id}" style="margin-left:auto">${ic('edit',13)}Editar</button>`:''}</div><h2>${esc(c.titulo)}</h2><div class="chips">${chip(chSt(c))}${chip(PRIOR[c.prioridade],false)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${late?`<span class="chip" style="--c:#ef4444">Prazo vencido</span>`:''}</div></div>
+    <div class="steps">${stepEl('Aberta',c.created_at,true,esc(c.autor_nome))}${stepEl('Em tratamento',c.lido_em,!!c.lido_em || c.status!=='aberto',c.lido_por?'Ciente: '+esc(c.lido_por):'')}${stepEl('Concluída',c.resolvido_em,done)}</div>
+    ${!done ? `<div class="whohandles">${ic('info',14)}<span>${tp==='pedido' ? `Quem conclui: <b>${who}</b> (líder solicitado).` : `Quem dá ciência e conclui: <b>${adm?'você':'o encarregado'}</b>.`}</span></div>` : ''}
+    <div class="dl" style="margin:16px 0 0">
       <div><small>${tp==='pedido'?'Pedido por':'Registrado por'}</small><div class="who">${avatar(c.autor_nome,26)}<b>${esc(c.autor_nome)}</b></div></div>
       <div><small>Data</small><b>${fmtDT(c.created_at)}</b></div>
-      ${tp==='pedido'?`<div><small>Para</small><b>${esc(dest||'—')}</b></div><div><small>Prazo</small><b class="${late?'late':''}">${c.prazo?fmtD(c.prazo):'Sem prazo'}</b></div>`:''}
+      ${tp==='pedido'?`<div><small>Para</small><b>${esc(dest)}</b></div><div><small>Prazo</small><b class="${late?'late':''}">${c.prazo?fmtD(c.prazo):'Sem prazo'}</b></div>`:''}
       ${col?`<div><small>Colaborador envolvido</small><span class="lnk" data-act="c-open" data-id="${col.id}">${esc(col.nome)}</span></div>`:''}
       ${v?`<div><small>Veículo</small><span class="lnk" data-act="v-open" data-id="${v.id}">${plate(v.placa,true)} ${esc(v.modelo)}</span></div>`:''}
     </div>
     <div class="sec">Descrição</div><div class="box">${esc(c.descricao||'—')}</div>
     <div class="sec">Conversa</div>
     <div class="thread">${thread.length ? thread.map(m => { const mine = sameId(m.autor_id, S.profile.id); const isG = m.autor_id == null || P(m.autor_id)?.role === 'admin';
-      return `<div class="msg ${mine?'me':''} ${isG?'g':''}">${avatar(m.autor_nome,28)}<div class="bub"><div class="mh"><b>${esc(m.autor_nome)}</b>${isG?'<span class="gtag">Gestor</span>':''}<small>${fmtDT(m.created_at)}</small></div><p>${esc(m.texto)}</p></div></div>`; }).join('')
-      : `<div class="box muted">${tp==='problema' ? (adm ? 'Ainda sem resposta. Escreva abaixo para responder ao líder.' : 'Aguardando resposta do gestor.') : (adm ? 'A base ainda não respondeu.' : 'Responda abaixo quando tiver novidades.')}</div>`}</div>
-    ${c.status !== 'resolvido' ? `<textarea id="resp" class="ta" rows="3" placeholder="${adm ? (tp==='pedido'?'Mensagem para a base...':'Sua resposta ou as providências tomadas...') : (tp==='pedido'?'Responda ao gestor: o que foi feito, quando fica pronto...':'Complemente o problema com novas informações...')}"></textarea>` : ''}
-    ${adm && c.status !== 'resolvido' ? `<div class="sec">Situação</div>${rchipsL('st',c)}` : ''}
-    ${!adm && tp==='problema' ? '<p class="f-hint" style="margin-top:8px">Só o gestor responde e marca problemas como resolvidos.</p>' : ''}
-    <div class="steps">${tp==='pedido'
-      ? stepEl('Enviado',c.created_at,true) + stepEl('Base respondeu',firstResp?.created_at,!!firstResp) + stepEl('Concluído',c.resolvido_em,c.status==='resolvido')
-      : stepEl('Aberto',c.created_at,true) + stepEl('Gestor respondeu',firstResp?.created_at || (legacy[0]?.created_at),!!firstResp || !!legacy.length) + stepEl('Resolvido',c.resolvido_em,c.status==='resolvido')}</div>`,
+      return `<div class="msg ${mine?'me':''} ${isG?'g':''}">${avatar(m.autor_nome,28)}<div class="bub"><div class="mh"><b>${esc(m.autor_nome)}</b>${isG?'<span class="gtag">Encarregado</span>':''}<small>${fmtDT(m.created_at)}</small></div><p>${esc(m.texto)}</p></div></div>`; }).join('')
+      : `<div class="box muted">Nenhuma mensagem ainda.</div>`}</div>
+    ${!done ? `<textarea id="resp" class="ta" rows="3" placeholder="${handle ? 'Escreva o retorno: o que foi feito, quando fica pronto...' : 'Mensagem para ' + (tp==='pedido' ? esc(dest) : 'o encarregado') + '...'}"></textarea>` : ''}`,
     foot: `${adm?`<button class="btn danger left" data-act="ch-del" data-id="${c.id}">${ic('trash',15)}Excluir</button>`:''}${actions || '<button class="btn pri" data-act="modal-close">Fechar</button>'}`,
     onMount: ov => { const b = $('.thread', ov); if (b) b.scrollTop = b.scrollHeight; }});
 }
-function rchipsL(name, c){
-  return `<div class="radios">${['aberto','andamento','resolvido'].map(k => `<label class="rchip" style="--c:${CH[k].color}"><input type="radio" name="${name}" value="${k}" ${k===c.status?'checked':''}><span><i class="d"></i>${CHL[tipoOf(c)][k]}</span></label>`).join('')}</div>`;
+async function setChStatus(c, st){
+  const n = nowISO(), patch = {status:st, updated_at:n, resolvido_em: st === 'resolvido' ? (c.resolvido_em || n) : null};
+  if (st !== 'aberto' && !c.lido_em){ patch.lido_em = n; patch.lido_por = S.profile.nome; }
+  await DB.update('chamados', c.id, patch);
 }
-async function sendCh(id, force){
+async function sendCh(id, st){
   const c = CHM(id); if (!c) return;
-  const tp = tipoOf(c), adm = isAdmin();
   const txt = ($('#resp')?.value || '').trim();
-  let st = force || (adm ? ($('input[name=st]:checked')?.value || c.status) : c.status);
-  if (!txt && st === c.status) return toast('Escreva uma mensagem.','err');
-  if (!adm && tp === 'problema') st = c.status;
-  if (txt && st === 'aberto' && (adm ? tp === 'problema' : tp === 'pedido')) st = 'andamento';
+  if (st && !canHandle(c)) st = null;
+  if (!st && !txt) return toast('Escreva uma mensagem.','err');
+  if (!st && txt && canHandle(c) && c.status === 'aberto') st = 'andamento';
   try {
     if (txt) await DB.insert('mensagens', {chamado_id:c.id, autor_id:S.profile.id, autor_nome:S.profile.nome, texto:txt});
-    if (st !== c.status || adm){
-      const n = nowISO();
-      await DB.update('chamados', c.id, {status:st, updated_at:n, resolvido_em: st === 'resolvido' ? (c.resolvido_em || n) : null});
-    }
+    if (st && st !== c.status) await setChStatus(c, st);
     closeModal();
-    toast(st === 'resolvido' ? `${tp==='pedido'?'Pedido':'Problema'} #${id} ${tp==='pedido'?'concluído':'resolvido'}.` : txt ? 'Mensagem enviada.' : 'Situação atualizada.');
+    toast(st === 'resolvido' ? `#${id} concluída.` : st === 'andamento' ? `#${id} em tratamento.` : 'Mensagem enviada.');
     await reload();
   } catch(e){ err(e); }
 }
+async function quickCh(id, st){
+  const c = CHM(id); if (!c || !canHandle(c)) return;
+  if (st === 'resolvido' && !await confirmBox(`Concluir <b>#${c.id}</b> — ${esc(c.titulo)}?`, 'Concluir')) return;
+  try { await setChStatus(c, st); toast(st === 'resolvido' ? `#${id} concluída.` : `#${id}: ciente, em tratamento.`); await reload(); } catch(e){ err(e); }
+}
 async function reopenCh(id){
-  try { await DB.update('chamados', id, {status:'andamento', resolvido_em:null, updated_at:nowISO()}); closeModal(); toast(`#${id} reaberto.`); await reload(); } catch(e){ err(e); }
+  try { await DB.update('chamados', id, {status:'andamento', resolvido_em:null, updated_at:nowISO()}); closeModal(); toast(`#${id} reaberta.`); await reload(); } catch(e){ err(e); }
 }
 async function delCh(id){
   if (!await confirmBox(`Excluir o registro <b>#${id}</b> e as mensagens dele? Esta ação não pode ser desfeita.`)) return;
@@ -2030,7 +2204,7 @@ function pgCal(){
     <h2>${mName}</h2>
     <button class="icon-btn bord" data-act="cal-next" aria-label="Próximo mês">${ic('chevR',18)}</button>
     <button class="btn sm" data-act="cal-today">Hoje</button>
-    <div class="tb-right"><select class="sel" id="calc"><option value="">Toda a equipe</option>${opts(colabsSorted().map(x=>[x.id,x.nome]), c.colab)}</select><button class="btn pri" data-act="ev-new">${ic('plus',16)}Marcar ausência</button></div>
+    <div class="tb-right"><select class="sel" id="calc"><option value="">Toda a equipe</option>${opts(colabsSorted().map(x=>[x.id,x.nome]), c.colab)}</select><button class="btn" data-act="anx-open">${ic('clip',16)}<span class="hide-s">Atestados</span></button><button class="btn pri" data-act="ev-new">${ic('plus',16)}<span class="hide-s">Marcar ausência</span></button></div>
   </div>
   <div class="filters">${Object.entries(EV).map(([k,o]) => fchip('cal-type',k,o.label,inMonth.filter(e=>e.tipo===k && (!c.colab||sameId(e.colaborador_id,c.colab))).length,o.color,c.tipos.has(k))).join('')}${c.tipos.size?`<button class="linkbtn" data-act="cal-clear">Limpar filtro</button>`:''}</div>
   <div class="cal-wrap">
@@ -2052,7 +2226,8 @@ function evForm(id, date, colId){
     return openModal({title:'Ausência', body:`<div class="who" style="margin-bottom:16px">${avatar(c?.nome,44)}<div><b style="font-size:15px">${esc(c?.nome||'—')}</b><small>${esc(c?.cargo||'')}</small></div></div>
       <div class="dl"><div><small>Tipo</small>${chip(o)}</div><div><small>Período</small><b>${rangeTxt(e.data_inicio,e.data_fim)} (${daysBetween(e.data_inicio,e.data_fim)} dia(s))</b></div>
       <div><small>Registrado por</small><b>${esc(e.criado_por_nome||'—')}</b></div>${e.observacao?`<div class="full"><small>Observação</small><div class="box">${esc(e.observacao)}</div></div>`:''}</div>
-      <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o gestor pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+      ${anexosOf(e.id).length ? `<div class="sec">Atestado anexado</div>${anexoList(anexosOf(e.id))}` : ''}
+      <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o encarregado pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
   }
   openModal({title: id ? 'Editar ausência' : 'Marcar ausência', body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Colaborador', `<select name="colaborador_id" required><option value="">Selecione...</option>${opts(colabsSorted().filter(c=>c.status!=='desligado'||sameId(c.id,e.colaborador_id)).map(c=>[c.id,c.nome]), e.colaborador_id)}</select>`, true, true)}
@@ -2060,9 +2235,15 @@ function evForm(id, date, colId){
     ${fld('Data inicial', inp('data_inicio',e.data_inicio,'type="date" required'), false, true)}
     ${fld('Data final', inp('data_fim',e.data_fim,'type="date" required'), false, true, 'Para um dia só, repita a data inicial.')}
     ${fld('Observação', `<textarea name="observacao" rows="3" placeholder="Ex: consulta às 14h, CID informado, folga compensatória...">${esc(e.observacao||'')}</textarea>`, true)}
+    <div class="f full" id="fanx" ${['atestado','medico'].includes(e.tipo)?'':'hidden'}><label>Atestado (PDF ou foto)</label>
+      ${id ? anexoList(anexosOf(id)) : ''}
+      <label class="upl">${ic('clip',16)}<span id="fanx-n">${id && anexosOf(id).length ? 'Anexar outro arquivo' : 'Escolher arquivo ou tirar foto'}</span><input type="file" name="arquivo" id="farq" accept="application/pdf,image/*" hidden></label>
+      <span class="f-hint">PDF até ${MAX_MB} MB. Fotos são reduzidas automaticamente.</span></div>
     ${id?`<p class="f-hint full">Registrado por ${esc(e.criado_por_nome||'—')} em ${fmtDT(e.created_at)}</p>`:''}
   </form>`, foot:`${id?`<button class="btn danger left" data-act="ev-del" data-id="${id}">${ic('trash',15)}Excluir</button>`:''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="ev-save" data-id="${id||''}">${ic('check',15)}Salvar</button>`,
-    onMount: ov => { const a = $('[name=data_inicio]',ov), b = $('[name=data_fim]',ov); a.addEventListener('change', () => { if (!b.value || b.value < a.value) b.value = a.value; }); }});
+    onMount: ov => { const a = $('[name=data_inicio]',ov), b = $('[name=data_fim]',ov); a.addEventListener('change', () => { if (!b.value || b.value < a.value) b.value = a.value; });
+      $$('[name=tipo]',ov).forEach(r => r.addEventListener('change', () => { $('#fanx',ov).hidden = !['atestado','medico'].includes(r.value) && !$('#farq',ov).files.length; }));
+      $('#farq',ov).addEventListener('change', ev => { const f = ev.target.files[0]; $('#fanx-n',ov).textContent = f ? f.name + ' (' + fmtMB(f.size) + ')' : 'Escolher arquivo ou tirar foto'; }); }});
 }
 async function saveEv(id){
   const f = formObj();
@@ -2072,13 +2253,19 @@ async function saveEv(id){
   const clash = S.eventos.find(e => !sameId(e.id,id) && sameId(e.colaborador_id,f.colaborador_id) && e.data_inicio<=f.data_fim && e.data_fim>=f.data_inicio);
   if (clash && !await confirmBox(`${esc(C(f.colaborador_id)?.nome)} já tem <b>${EV[clash.tipo].label}</b> em ${rangeTxt(clash.data_inicio,clash.data_fim)}. Salvar mesmo assim?`,'Salvar')) return;
   const row = {colaborador_id:f.colaborador_id, tipo:f.tipo||'outro', data_inicio:f.data_inicio, data_fim:f.data_fim, observacao:f.observacao};
+  const file = $('#farq')?.files?.[0];
+  if (file){ try { await prepFile(file); } catch(e){ return err(e); } }
+  const btn = $('.m-f .btn.pri'); if (btn){ btn.disabled = true; btn.textContent = file ? 'Enviando...' : 'Salvando...'; }
   try {
-    if (id) await DB.update('eventos', id, row);
-    else await DB.insert('eventos', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
-    closeModal(); toast('Ausência salva no calendário.');
+    let ev;
+    if (id){ await DB.update('eventos', id, row); ev = {id, ...row}; }
+    else ev = await DB.insert('eventos', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
+    let msg = 'Ausência salva no calendário.';
+    if (file){ try { const sz = await uploadAnexo(ev, file); msg = `Ausência salva com atestado (${fmtMB(sz)}).`; } catch(e){ await loadAll(); closeModal(); err(e); toast('A ausência foi salva, mas o arquivo não. Abra e tente anexar de novo.', 'err'); return reload(); } }
+    closeModal(); toast(msg);
     const d = parseISO(f.data_inicio); if (S.page === 'calendario'){ S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); }
     await reload();
-  } catch(e){ err(e); }
+  } catch(e){ err(e); if (btn){ btn.disabled = false; btn.innerHTML = `${ic('check',15)}Salvar`; } }
 }
 async function delEv(id){
   if (!await confirmBox('Excluir esta ausência do calendário?')) return;
@@ -2087,45 +2274,305 @@ async function delEv(id){
 
 
 
+/* ========================= AVISOS (sino) ========================= */
+const lsGet = k => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch(e){} };
+function lastSeen(){
+  const a = S.profile?.notif_lida_em, b = lsGet('prim_notif_' + S.profile?.id);
+  const t = [a, b].filter(Boolean).map(x => new Date(x).getTime());
+  return t.length ? Math.max(...t) : new Date(S.profile?.created_at || Date.now() - 3*864e5).getTime();
+}
+function buildNotifs(){
+  if (!S.profile) return {news:[], rem:[]};
+  const seen = lastSeen(), me = S.profile.id, adm = isAdmin(), now = new Date(), today = iso(now), tom = iso(addDays(now,1));
+  const news = [], rem = [];
+  const after = d => d && new Date(d).getTime() > seen;
+  chsV().forEach(c => {
+    const tp = tipoOf(c), mine = sameId(c.autor_id, me);
+    if (!mine && after(c.created_at) && (tp === 'problema' ? adm : isSolicitado(c)))
+      news.push({icon:tp==='pedido'?'flag':'inbox', c:PRIOR[c.prioridade]?.color, t: tp==='pedido' ? 'Novo pedido do encarregado' : `Novo problema — ${bName(c.base)}`, s:`#${c.id} ${c.titulo}`, when:c.created_at, act:'ch-open', id:c.id});
+    if (mine && after(c.lido_em) && c.lido_por !== S.profile.nome && c.status !== 'resolvido')
+      news.push({icon:'checks', c:'#f5a623', t:`${c.lido_por || 'Responsável'} está tratando`, s:`#${c.id} ${c.titulo}`, when:c.lido_em, act:'ch-open', id:c.id});
+    if (mine && after(c.resolvido_em) && c.status === 'resolvido')
+      news.push({icon:'check', c:'#22c55e', t:`Concluída${tp==='pedido' && P(c.destinatario_id) ? ' por ' + firstName(P(c.destinatario_id).nome) : ''}`, s:`#${c.id} ${c.titulo}`, when:c.resolvido_em, act:'ch-open', id:c.id});
+  });
+  const seenMsg = new Set();
+  S.msgs.forEach(m => {
+    const c = CHM(m.chamado_id); if (!c || !inScope(c.base) || seenMsg.has(c.id)) return;
+    if (sameId(m.autor_id, me) || !after(m.created_at)) return;
+    if (!(sameId(c.autor_id, me) || canHandle(c) || isAdmin())) return;
+    seenMsg.add(c.id);
+    news.push({icon:'msg', c:theme().c, t:`Mensagem de ${firstName(m.autor_nome)}`, s:`#${c.id} ${m.texto.slice(0,70)}`, when:m.created_at, act:'ch-open', id:c.id});
+  });
+  // Lembretes do dia
+  evsV().forEach(e => {
+    const c = C(e.colaborador_id), o = EV[e.tipo] || EV.outro; if (!c) return;
+    const nome = firstName(c.nome) + (c.nome.split(' ').length > 1 ? ' ' + c.nome.split(' ').slice(-1)[0] : '');
+    if (e.data_inicio <= today && e.data_fim >= today)
+      rem.push({icon:'cal', c:o.color, t:`${nome}: ${o.label.toLowerCase()} ${e.data_fim === today ? 'até hoje' : 'até ' + fmtD(e.data_fim)}`, s:e.observacao || bName(c.base), act:'ev-open', id:e.id, w:2});
+    else if (e.data_inicio === tom)
+      rem.push({icon:'cal', c:o.color, t:`${nome}: ${o.label.toLowerCase()} a partir de amanhã`, s:rangeTxt(e.data_inicio, e.data_fim), act:'ev-open', id:e.id, w:3});
+    if (e.data_fim === today && e.data_inicio < today && ['ferias','atestado'].includes(e.tipo))
+      rem.push({icon:'user', c:'#22c55e', t:`${nome} volta amanhã`, s:`Fim de ${o.label.toLowerCase()}`, act:'ev-open', id:e.id, w:3});
+  });
+  chsV('pedido').filter(c => c.status !== 'resolvido' && c.prazo && c.prazo <= today && (isSolicitado(c) || adm)).forEach(c =>
+    rem.push({icon:'clock', c:'#ef4444', urgent:true, t: c.prazo < today ? `Pedido atrasado desde ${fmtD(c.prazo)}` : 'Pedido vence hoje', s:`#${c.id} ${c.titulo}${adm ? ' — ' + bName(c.base) : ''}`, act:'ch-open', id:c.id, w:0}));
+  if (adm){
+    const ab = chsV('problema').filter(c => c.status === 'aberto');
+    if (ab.length) rem.push({icon:'inbox', c:'#ef4444', urgent:true, t:`${ab.length} problema(s) aguardando sua ciência`, s:'Abra o diário de bordo', act:'dash-tt', k:'problema', w:0});
+  }
+  const vp = veicsV().filter(v => v.status === 'problema');
+  if (vp.length) rem.push({icon:'car', c:'#ef4444', t:`${vp.length} veículo(s) com problema`, s:vp.map(v => v.placa).join(', '), act:'dash-v', k:'problema', w:1});
+  if (adm){
+    const pend = quinzenas().filter(q => q.key !== qKey(new Date()) && q.onServer.length);
+    if (pend.length) rem.push({icon:'zip', c:'#4f63d6', urgent:true, t:`Atestados para baixar: ${pend.length} quinzena(s)`, s:'Baixe o ZIP e libere espaço no servidor', act:'anx-open', w:1});
+  }
+  news.sort((a,b) => new Date(b.when) - new Date(a.when));
+  rem.sort((a,b) => a.w - b.w);
+  return {news, rem};
+}
+function notifCount(){ try { const n = buildNotifs(); return n.news.length + n.rem.filter(r => r.urgent).length; } catch(e){ return 0; } }
+function openNotif(){
+  const ex = $('#npanel'); if (ex){ ex.remove(); return; }
+  closePop();
+  const {news, rem} = buildNotifs();
+  const item = (n, unread) => `<button class="ni ${unread?'unread':''}" data-act="${n.act}" ${n.id!=null?`data-id="${n.id}"`:''} ${n.k?`data-k="${n.k}"`:''} style="--c:${n.c||'#64748b'}"><span class="ni-i">${ic(n.icon,16)}</span><span class="ni-t"><b>${esc(n.t)}</b><small>${esc(n.s||'')}</small></span>${n.when?`<span class="ni-w">${ago(n.when)}</span>`:''}</button>`;
+  const el = document.createElement('div'); el.id = 'npanel'; el.className = 'npanel';
+  el.innerHTML = `<div class="np-h"><b>Avisos</b>${news.length?`<button class="linkbtn" data-act="notif-read">${ic('checks',14)} Marcar como lidos</button>`:''}<button class="icon-btn" data-act="notif-close" aria-label="Fechar">${ic('x',16)}</button></div>
+    <div class="np-b">
+      <div class="np-s">Novidades${news.length?` <em>${news.length}</em>`:''}</div>
+      ${news.length ? news.slice(0,25).map(n => item(n,true)).join('') : '<p class="np-empty">Nada novo desde a última vez.</p>'}
+      <div class="np-s">Lembretes de hoje</div>
+      ${rem.length ? rem.map(n => item(n,false)).join('') : '<p class="np-empty">Nenhum lembrete para hoje.</p>'}
+    </div>`;
+  document.body.appendChild(el);
+}
+async function marcarLidos(){
+  const n = nowISO(); lsSet('prim_notif_' + S.profile.id, n); S.profile.notif_lida_em = n;
+  try {
+    if (TEST){ const d = Store.load(); const p = d.profiles.find(x => x.id === S.profile.id); if (p){ p.notif_lida_em = n; Store.save(); } }
+    else await sb.rpc('marcar_notificacoes_lidas');
+  } catch(e){ console.warn(e); }
+  $('#npanel')?.remove(); render();
+}
+
+/* ========================= ATESTADOS (arquivos) ========================= */
+const MAX_MB = 5;
+let JSZP = null;
+function loadJSZip(){
+  if (window.JSZip) return Promise.resolve(window.JSZip);
+  if (JSZP) return JSZP;
+  JSZP = new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+    s.onload = () => res(window.JSZip); s.onerror = () => { JSZP = null; rej(new Error('Não foi possível carregar o compactador. Verifique a internet.')); }; document.head.appendChild(s); });
+  return JSZP;
+}
+const qKey = d => { const x = new Date(d); return `${x.getFullYear()}-${pad(x.getMonth()+1)}-${x.getDate() <= 15 ? 1 : 2}`; };
+const qLabel = k => { const [y,m,q] = k.split('-'); const last = new Date(+y, +m, 0).getDate(); const mes = cap(new Date(+y, +m-1, 1).toLocaleDateString('pt-BR',{month:'long'}));
+  return q === '1' ? `1 a 15 de ${mes} ${y}` : `16 a ${last} de ${mes} ${y}`; };
+const fmtMB = b => b >= 1048576 ? (b/1048576).toFixed(1).replace('.',',') + ' MB' : Math.max(1, Math.round((b||0)/1024)) + ' KB';
+const anexosOf = evId => S.anexos.filter(a => sameId(a.evento_id, evId));
+function quinzenas(){
+  const map = {};
+  S.anexos.filter(a => inScope(a.base)).forEach(a => { const k = qKey(a.created_at); (map[k] = map[k] || {key:k, all:[]}).all.push(a); });
+  return Object.values(map).map(q => ({...q, onServer:q.all.filter(a => !a.removido_em), size:q.all.filter(a => !a.removido_em).reduce((s,a) => s + (a.tamanho||0), 0),
+    baixado:q.all.some(a => a.baixado_em) })).sort((a,b) => b.key.localeCompare(a.key));
+}
+async function prepFile(file){
+  const t = (file.type || '').toLowerCase();
+  if (t === 'application/pdf' || /\.pdf$/i.test(file.name)){
+    if (file.size > MAX_MB * 1048576) throw new Error(`O PDF tem ${fmtMB(file.size)}. O limite é ${MAX_MB} MB — tire uma foto do atestado ou reduza o PDF.`);
+    return {blob:file, ext:'pdf', mime:'application/pdf'};
+  }
+  if (/^image\//.test(t)){
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('Não consegui abrir a imagem.')); i.src = URL.createObjectURL(file); });
+    const k = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const cv = document.createElement('canvas'); cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+    const cx = cv.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0,0,cv.width,cv.height); cx.drawImage(img, 0, 0, cv.width, cv.height);
+    URL.revokeObjectURL(img.src);
+    const blob = await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.72));
+    if (!blob) throw new Error('Não consegui processar a imagem.');
+    return {blob, ext:'jpg', mime:'image/jpeg'};
+  }
+  throw new Error('Envie o atestado em PDF ou como foto (JPG/PNG).');
+}
+async function uploadAnexo(ev, file){
+  const c = C(ev.colaborador_id); if (!c) throw new Error('Colaborador não encontrado.');
+  const p = await prepFile(file);
+  const d = new Date(), path = `${c.base}/${d.getFullYear()}-${pad(d.getMonth()+1)}/${ev.id}-${Date.now()}.${p.ext}`;
+  if (TEST) FILES[path] = p.blob;
+  else { const {error} = await sb.storage.from('atestados').upload(path, p.blob, {contentType:p.mime, upsert:false}); if (error) throw error; }
+  await DB.insert('anexos', {evento_id:ev.id, colaborador_id:c.id, base:c.base, path, nome:file.name, tamanho:p.blob.size, mime:p.mime, enviado_por:S.profile.id, enviado_nome:S.profile.nome});
+  return p.blob.size;
+}
+async function getBlob(path){
+  if (TEST){ if (!FILES[path]) throw new Error('Arquivo de teste indisponível.'); return FILES[path]; }
+  const {data, error} = await sb.storage.from('atestados').download(path); if (error) throw error; return data;
+}
+async function openAnexo(id){
+  const a = S.anexos.find(x => sameId(x.id, id)); if (!a) return;
+  if (a.removido_em) return toast(`Arquivo já baixado e removido do servidor em ${fmtD(a.removido_em)}.`, 'err');
+  const w = window.open('', '_blank');
+  try {
+    let url;
+    if (TEST) url = URL.createObjectURL(await getBlob(a.path));
+    else { const {data, error} = await sb.storage.from('atestados').createSignedUrl(a.path, 300); if (error) throw error; url = data.signedUrl; }
+    if (w) w.location = url; else location.href = url;
+  } catch(e){ if (w) w.close(); err(e); }
+}
+function anexoList(list){
+  if (!list.length) return '';
+  return `<div class="anx">${list.map(a => `<button type="button" class="anx-i ${a.removido_em?'gone':''}" data-act="anx-view" data-id="${a.id}">${ic(a.mime==='application/pdf'?'file':'eye',15)}<span><b>${esc(a.nome||'Atestado')}</b><small>${fmtMB(a.tamanho)} — ${a.removido_em ? 'baixado e removido do servidor' : 'enviado ' + fmtD(a.created_at) + (a.enviado_nome ? ' por ' + esc(firstName(a.enviado_nome)) : '')}</small></span></button>`).join('')}</div>`;
+}
+function openAtestados(){
+  const qs = quinzenas(), cur = qKey(new Date()), adm = isAdmin();
+  const tot = qs.reduce((s,q) => s + q.size, 0);
+  openModal({wide:true, title:'Atestados enviados', body:`
+    <div class="anx-top"><div><b>${fmtMB(tot)}</b><span>ocupados no servidor</span></div><div><b>${qs.reduce((s,q)=>s+q.onServer.length,0)}</b><span>arquivos guardados</span></div><div><b>${MAX_MB} MB</b><span>limite por arquivo</span></div></div>
+    <p class="f-hint" style="margin:0 0 14px">A cada 15 dias, baixe o ZIP da quinzena e ${adm ? 'limpe os arquivos do servidor' : 'o encarregado limpa o servidor'} para não ocupar espaço. Fotos já são reduzidas no envio.</p>
+    ${qs.length ? qs.map(q => `<div class="qz ${q.key===cur?'cur':''}">
+      <div class="qz-h"><div><b>${qLabel(q.key)}</b><small>${q.key===cur?'Quinzena atual — ':''}${q.onServer.length} no servidor${q.all.length - q.onServer.length ? `, ${q.all.length - q.onServer.length} já limpo(s)` : ''} — ${fmtMB(q.size)}</small></div>
+        <div class="qz-a">${q.onServer.length ? `<button class="btn sm" data-act="anx-zip" data-k="${q.key}">${ic('download',14)}Baixar ZIP</button>` : '<span class="chip" style="--c:#22c55e">Limpa</span>'}${adm && q.onServer.length ? `<button class="btn sm danger" data-act="anx-clean" data-k="${q.key}" ${q.baixado?'':'disabled title="Baixe o ZIP primeiro"'}>${ic('trash',14)}Limpar servidor</button>` : ''}</div></div>
+      <details><summary>Ver arquivos (${q.all.length})</summary>${q.all.map(a => { const c = C(a.colaborador_id), e = S.eventos.find(x => sameId(x.id, a.evento_id));
+        return `<div class="qz-f"><span>${esc(c?.nome || '—')}${e?` <small>${(EV[e.tipo]||EV.outro).label} ${rangeTxt(e.data_inicio,e.data_fim)}</small>`:''}</span>${a.removido_em?'<small class="muted">removido</small>':`<button class="linkbtn" data-act="anx-view" data-id="${a.id}">Abrir</button>`}</div>`; }).join('')}</details>
+    </div>`).join('') : empty('clip','Nenhum atestado enviado ainda','Anexe o PDF ou a foto ao marcar um atestado no calendário.')}`,
+    foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+async function zipQuinzena(key){
+  const q = quinzenas().find(x => x.key === key); if (!q || !q.onServer.length) return;
+  const btn = $(`[data-act=anx-zip][data-k="${key}"]`); if (btn){ btn.disabled = true; btn.textContent = 'Preparando...'; }
+  try {
+    const Z = await loadJSZip(); const zip = new Z(); let n = 0; const used = new Set();
+    for (const a of q.onServer){
+      const c = C(a.colaborador_id), e = S.eventos.find(x => sameId(x.id, a.evento_id));
+      const ext = a.mime === 'application/pdf' ? 'pdf' : 'jpg';
+      let nm = `${c?.nome || 'Colaborador'} - ${e ? (EV[e.tipo]||EV.outro).label + ' ' + e.data_inicio + (e.data_fim !== e.data_inicio ? ' a ' + e.data_fim : '') : iso(new Date(a.created_at))}`.replace(/[\\/:*?"<>|]/g,'-');
+      let f = `${bName(a.base)}/${nm}.${ext}`, i = 2; while (used.has(f)) f = `${bName(a.base)}/${nm} (${i++}).${ext}`; used.add(f);
+      zip.file(f, await getBlob(a.path)); n++;
+    }
+    const blob = await zip.generateAsync({type:'blob'});
+    const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `Atestados_${key.replace(/-(\d)$/, '_q$1')}.zip`; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 4000);
+    if (isAdmin()){ const n2 = nowISO(); for (const a of q.onServer) await DB.update('anexos', a.id, {baixado_em:n2}); }
+    toast(`ZIP com ${n} arquivo(s) baixado.`); await loadAll(); openAtestados();
+  } catch(e){ err(e); if (btn){ btn.disabled = false; btn.textContent = 'Baixar ZIP'; } }
+}
+async function cleanQuinzena(key){
+  const q = quinzenas().find(x => x.key === key); if (!q || !isAdmin()) return;
+  if (!await confirmBox(`Remover do servidor os <b>${q.onServer.length}</b> arquivo(s) de <b>${qLabel(key)}</b>?<br><span class="muted">Confira se o ZIP foi salvo. Os registros no calendário continuam.</span>`, 'Remover')) return;
+  try {
+    const paths = q.onServer.map(a => a.path);
+    if (TEST) paths.forEach(p => delete FILES[p]);
+    else { for (let i = 0; i < paths.length; i += 100){ const {error} = await sb.storage.from('atestados').remove(paths.slice(i, i+100)); if (error) throw error; } }
+    const n = nowISO(); for (const a of q.onServer) await DB.update('anexos', a.id, {removido_em:n});
+    toast(`${paths.length} arquivo(s) removido(s) do servidor.`); await loadAll(); openAtestados(); render();
+  } catch(e){ err(e); }
+}
+
+/* ========================= CONEXÃO ========================= */
+let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null;
+async function refreshData(silent){
+  const before = notifCount();
+  await loadAll();
+  if (!S.profile) return;
+  if ($('#ov')) S.stale = true; else if ($('#rail')) render();
+  const after = notifCount();
+  if (!silent && after > before) toast(`${after - before} aviso(s) novo(s) — veja no sino.`);
+}
+function subscribeRealtime(){
+  if (TEST || !sb) return;
+  if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; }
+  S.rt = sb.channel('primarizacao-' + Date.now()).on('postgres_changes', {event:'*', schema:'public'}, () => {
+    clearTimeout(rtTimer);
+    rtTimer = setTimeout(() => refreshData(false), 600);
+  }).subscribe(status => {
+    if (status === 'SUBSCRIBED'){ rtTries = 0; setLive(true); }
+    else if (['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){
+      setLive(false);
+      clearTimeout(rtRetry);
+      if (status !== 'CLOSED' || rtTries < 6) rtRetry = setTimeout(() => reconnect(true), Math.min(30000, 2000 * 2 ** rtTries++));
+    }
+  });
+  clearInterval(hbTimer);
+  hbTimer = setInterval(() => {
+    if (document.hidden || !S.profile) return;
+    const st = S.rt?.state;
+    if (st && st !== 'joined' && st !== 'joining') reconnect(true);
+    else if (Date.now() - S.lastLoad > 5 * 60e3) refreshData(true);
+  }, 45000);
+}
+async function reconnect(silent){
+  if (!S.profile) return;
+  if (TEST){ await refreshData(true); if (!silent) toast('Dados atualizados.'); return; }
+  setLive('busy');
+  try {
+    const {data, error} = await sb.auth.getSession();
+    if (error || !data.session){ toast('Sua sessão expirou. Entre de novo.', 'err'); return logout(); }
+    try { sb.realtime.setAuth(data.session.access_token); } catch(e){}
+    await refreshData(true);
+    subscribeRealtime();
+    if (!silent) toast('Reconectado e atualizado.');
+  } catch(e){ setLive(false); if (!silent) err(e); }
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.profile && $('#rail') && (S.rtOk !== true || Date.now() - S.lastLoad > 60e3)) reconnect(true); });
+window.addEventListener('online', () => { if (S.profile) reconnect(true); });
+window.addEventListener('offline', () => { if (S.profile) setLive(false); });
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
   const list = S.profiles.slice().sort((a,b) => (a.role==='pendente'?0:1)-(b.role==='pendente'?0:1) || (a.role==='admin'?0:1)-(b.role==='admin'?0:1) || a.nome.localeCompare(b.nome,'pt'));
   const pend = list.filter(p => p.role==='pendente').length;
-  const cover = BKEYS.map(k => ({k, n:lidersOf(k).length}));
   $('#page').innerHTML = `
-  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Como liberar um líder</b>
-    <p>Envie o link do painel. A pessoa clica em <b>Criar conta</b>, escolhe a base dela e aparece aqui como <b>Aguardando</b>. Mude o perfil para <b>Líder de base</b> e confira as bases marcadas. O líder vê apenas os dados das bases marcadas; o gestor vê todas.</p></div></div>
-    <div class="cover">${cover.map(x => `<div class="cv ${x.n?'':'none'}" style="--c:${BASES[x.k].c}">${emblem(x.k,30,9)}<span><b>${BASES[x.k].nome}</b><small>${x.n ? x.n + ' líder(es)' : 'Sem líder'}</small></span></div>`).join('')}</div>
+  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Um líder por base</b>
+    <p>A pessoa cria a conta pelo link do painel, escolhe a base e aparece aqui como <b>Aguardando</b>. Mude o perfil para <b>Líder de base</b> e confirme a base. Cada base tem um único líder. Você, como encarregado, também pode ser o líder de uma base: os pedidos para essa base deixam de existir, porque seriam para você mesmo.</p></div></div>
+    <div class="cover">${BKEYS.map(k => { const l = liderOf(k); return `<div class="cv ${l?'':'none'}" style="--c:${BASES[k].c}">${emblem(k,30,9)}<span><b>${BASES[k].nome}</b><small>${l ? esc(l.nome) + (l.role==='admin'?' (encarregado)':'') : 'Sem líder'}</small></span></div>`; }).join('')}</div>
   </div></div>
   <div class="card" style="margin-top:18px"><div class="card-h"><h3>Usuários (${list.length})${pend?` <span class="chip" style="--c:#f5a623;margin-left:6px">${pend} aguardando</span>`:''}</h3></div>
-  <div class="card-b"><div class="tbl-wrap"><table class="utbl"><thead><tr><th>Usuário</th><th>Perfil</th><th>Bases que pode ver</th><th>Acesso</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
-  ${list.map(p => { const me = sameId(p.id,S.profile.id); const bs = p.bases || [];
-    return `<tr class="${p.role==='pendente'?'pend':''}"><td><div class="who">${avatar(p.nome)}<div style="min-width:0"><b>${esc(p.nome)}${me?' <span class="muted">(você)</span>':''}</b><small>${esc(p.email||'')}</small></div></div></td>
-    <td><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Gestor'],['lider','Líder de base'],['pendente','Aguardando']],p.role)}</select></td>
-    <td>${p.role==='admin' ? '<span class="muted">Todas as bases</span>' : `<div class="bpick">${BKEYS.map(k => `<button class="bp ${bs.includes(k)?'on':''}" style="--c:${BASES[k].c}" data-act="u-base" data-id="${p.id}" data-k="${k}" aria-pressed="${bs.includes(k)}" title="${BASES[k].nome}">${emblem(k,18,5)}<span>${BASES[k].nome}</span></button>`).join('')}</div>${p.role==='lider' && !bs.length ? '<div class="late s" style="margin-top:4px">Escolha pelo menos uma base</div>' : ''}`}</td>
-    <td><label class="sw" title="${p.ativo?'Ativo':'Bloqueado'}"><input type="checkbox" data-chg="u-ativo" data-id="${p.id}" ${p.ativo?'checked':''}><span></span></label></td>
+  <div class="card-b"><div class="tbl-wrap"><table class="utbl mcards"><thead><tr><th>Usuário</th><th>Perfil</th><th>Base que lidera</th><th>Acesso</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
+  ${list.map(p => { const me = sameId(p.id,S.profile.id); const b = (p.bases || [])[0] || '';
+    return `<tr class="${p.role==='pendente'?'pend':''}"><td data-l=""><div class="who">${avatar(p.nome)}<div style="min-width:0"><b>${esc(p.nome)}${me?' <span class="muted">(você)</span>':''}</b><small>${esc(p.email||'')}</small></div></div></td>
+    <td data-l="Perfil"><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Encarregado'],['lider','Líder de base'],['pendente','Aguardando']],p.role)}</select></td>
+    <td data-l="Base"><div class="bpick">${BKEYS.map(k => { const dono = liderOf(k); const taken = dono && !sameId(dono.id, p.id);
+      return `<button class="bp ${b===k?'on':''} ${taken?'taken':''}" style="--c:${BASES[k].c}" data-act="u-base" data-id="${p.id}" data-k="${k}" aria-pressed="${b===k}" title="${taken ? 'Líder atual: ' + esc(dono.nome) : BASES[k].nome}">${emblem(k,12,4)}<span>${BASES[k].nome}</span></button>`; }).join('')}</div>
+      ${p.role==='lider' && !b ? '<div class="late s" style="margin-top:4px">Escolha a base deste líder</div>' : p.role==='admin' && !b ? '<div class="muted s" style="margin-top:4px">Opcional: marque se você também lidera uma base</div>' : ''}</td>
+    <td data-l="Acesso"><label class="sw" title="${p.ativo?'Ativo':'Bloqueado'}"><input type="checkbox" data-chg="u-ativo" data-id="${p.id}" ${p.ativo?'checked':''}><span></span></label></td>
     <td class="hide-m">${fmtD(p.created_at)}</td></tr>`; }).join('')}
   </tbody></table></div></div></div>`;
 }
 const CHG = {
   'u-role': async t => {
-    if (sameId(t.dataset.id,S.profile.id) && t.value !== 'admin'){ toast('Você não pode tirar o próprio acesso de gestor.','err'); t.value = 'admin'; return; }
-    const p = P(t.dataset.id);
-    if (t.value === 'lider' && !(p?.bases||[]).length) toast('Agora marque a base desse líder.', 'ok');
-    try { await DB.update('profiles', t.dataset.id, {role:t.value}); toast('Perfil atualizado.'); await reload(); } catch(e){ err(e); reload(); }
+    const p = P(t.dataset.id); if (!p) return;
+    if (sameId(p.id,S.profile.id) && t.value !== 'admin'){ toast('Você não pode tirar o próprio acesso de encarregado.','err'); t.value = 'admin'; return; }
+    const b = (p.bases||[])[0];
+    if (t.value !== 'pendente' && b){ const dono = liderOf(b);
+      if (dono && !sameId(dono.id, p.id)){
+        if (!await confirmBox(`${esc(BASES[b].nome)} já tem líder: <b>${esc(dono.nome)}</b>.<br>Passar a base para <b>${esc(p.nome)}</b>?`, 'Passar a base')){ t.value = p.role; return; }
+        try { await DB.update('profiles', dono.id, {bases:[]}); } catch(e){ err(e); t.value = p.role; return; }
+      } }
+    if (t.value === 'lider' && !b) toast('Agora escolha a base desse líder.');
+    try { await DB.update('profiles', p.id, {role:t.value}); toast('Perfil atualizado.'); await reload(); } catch(e){ err(e); reload(); }
   },
   'u-ativo': async t => {
     if (sameId(t.dataset.id,S.profile.id) && !t.checked){ toast('Você não pode bloquear o próprio acesso.','err'); t.checked = true; return; }
     try { await DB.update('profiles', t.dataset.id, {ativo:t.checked}); toast(t.checked ? 'Acesso liberado.' : 'Acesso bloqueado.'); await reload(); } catch(e){ err(e); reload(); }
   }
 };
-async function toggleUserBase(id, k){
+async function setUserBase(id, k){
   const p = P(id); if (!p) return;
-  const bs = new Set(p.bases || []); bs.has(k) ? bs.delete(k) : bs.add(k);
-  const arr = BKEYS.filter(x => bs.has(x));
-  p.bases = arr; pgUsers();
-  try { await DB.update('profiles', id, {bases:arr}); toast(`${firstName(p.nome)}: ${arr.length ? arr.map(bName).join(', ') : 'sem base'}`); await reload(); } catch(e){ err(e); reload(); }
+  const cur = (p.bases || [])[0];
+  const novo = cur === k ? [] : [k];
+  const dono = novo.length ? liderOf(k) : null;
+  try {
+    if (dono && !sameId(dono.id, p.id) && p.role !== 'pendente'){
+      if (!await confirmBox(`${esc(BASES[k].nome)} já tem líder: <b>${esc(dono.nome)}</b>.<br>Passar a base para <b>${esc(p.nome)}</b>?`, 'Passar a base')) return;
+      await DB.update('profiles', dono.id, {bases:[]});
+    }
+    if (p.role === 'admin' && novo.length && S.chamados.some(c => tipoOf(c)==='pedido' && c.base===k && c.status!=='resolvido'))
+      toast(`Atenção: há pedidos em aberto para ${BASES[k].nome}. Você passa a ser o responsável por eles.`);
+    await DB.update('profiles', id, {bases:novo});
+    toast(`${firstName(p.nome)}: ${novo.length ? 'líder de ' + BASES[k].nome : 'sem base'}`); await reload();
+  } catch(e){ err(e); reload(); }
 }
 
 /* ========================= LOGIN (Supabase) ========================= */
@@ -2150,7 +2597,7 @@ function renderLogin(msg=''){
   loginShell(`<div class="seg full" id="lmode"><button class="on" data-m="in" type="button">Entrar</button><button data-m="up" type="button">Criar conta</button></div>
     <form id="lf" class="lform">
       <div class="f up" hidden><label>Nome completo</label><input name="nome" autocomplete="name"></div>
-      <div class="f up" hidden><label>Sua base</label><div class="lbases">${BKEYS.map((k,i) => `<label class="lb" style="--c:${BASES[k].c}"><input type="radio" name="base" value="${k}" ${i===0?'':''}><span>${emblem(k,26,8)}${BASES[k].nome}</span></label>`).join('')}</div><span class="f-hint">O gestor confirma sua base ao liberar o acesso.</span></div>
+      <div class="f up" hidden><label>Sua base</label><div class="lbases">${BKEYS.map((k,i) => `<label class="lb" style="--c:${BASES[k].c}"><input type="radio" name="base" value="${k}" ${i===0?'':''}><span>${emblem(k,26,8)}${BASES[k].nome}</span></label>`).join('')}</div><span class="f-hint">O encarregado confirma sua base ao liberar o acesso.</span></div>
       <div class="f"><label>E-mail</label><input name="email" type="email" required autocomplete="email"></div>
       <div class="f"><label>Senha</label><input name="senha" type="password" required minlength="6" autocomplete="current-password"></div>
       <div class="lmsg" id="lmsg">${esc(msg)}</div>
@@ -2196,7 +2643,7 @@ function renderPending(){
   applyTheme();
   loginShell(`<div class="pend-ico">${ic(blocked?'shield':'clock',28)}</div>
     <h2>${blocked?'Acesso bloqueado':'Acesso aguardando liberação'}</h2>
-    <p class="muted" style="line-height:1.6">Olá${S.profile?', '+esc(firstName(S.profile.nome)):''}! ${blocked?'Seu acesso foi bloqueado pelo gestor.':'Seu cadastro foi recebido. O gestor precisa liberar seu perfil e confirmar sua base.'}</p>
+    <p class="muted" style="line-height:1.6">Olá${S.profile?', '+esc(firstName(S.profile.nome)):''}! ${blocked?'Seu acesso foi bloqueado pelo encarregado.':'Seu cadastro foi recebido. O encarregado precisa liberar seu perfil e confirmar sua base.'}</p>
     ${(S.profile?.bases||[]).length ? `<div class="chips" style="justify-content:center;margin-top:10px">${S.profile.bases.map(bTag).join('')}</div>` : ''}
     <div class="row-c"><button class="btn" data-act="logout">Sair</button><button class="btn pri" data-act="recheck">Verificar novamente</button></div>`, 'center-l');
 }
@@ -2214,21 +2661,12 @@ async function afterLogin(user){
     let sv = ''; try { sv = sessionStorage.getItem('prim_base') || ''; } catch(e){}
     await loadAll(); S.base = sv && allowed(sv) && myBases().length > 1 ? sv : '';
     render(); subscribeRealtime();
+    const n = buildNotifs(); if (n.news.length) toast(`Você tem ${n.news.length} aviso(s) novo(s) — veja no sino.`);
   } catch(e){ err(e); renderLogin(traduz(e.message)); }
 }
-let rtTimer = null;
-function subscribeRealtime(){
-  if (TEST || S.rt) return;
-  S.rt = sb.channel('primarizacao').on('postgres_changes', {event:'*', schema:'public'}, () => {
-    clearTimeout(rtTimer);
-    rtTimer = setTimeout(async () => { if (!S.profile) return; if ($('#ov')){ S.stale = true; return; } await loadAll(); if ($('#rail')) render(); }, 500);
-  }).subscribe(status => {
-    const ok = status === 'SUBSCRIBED' ? true : (['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status) ? false : S.rtOk);
-    if (ok !== S.rtOk){ S.rtOk = ok; const tb = $('#topbar .right .live'); if (tb) tb.outerHTML = liveTag(); }
-  });
-}
 async function logout(){
-  if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; S.rtOk = null; }
+  clearInterval(hbTimer); clearTimeout(rtRetry);
+  if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; } S.rtOk = null; $('#npanel')?.remove();
   if (!TEST && sb) await sb.auth.signOut();
   try { sessionStorage.removeItem('prim_test_user'); sessionStorage.removeItem('prim_base'); } catch(e){}
   S.base = ''; renderLogin();
@@ -2244,6 +2682,15 @@ const ACT = {
   'logout': () => logout(),
   'copy': a => copyText(a.dataset.v),
   'base': a => setBase(a.dataset.k),
+  'reconnect': () => { closeModal(); reconnect(false); },
+  'me': () => openModal({title:'Sua conta', body:`<div class="who" style="margin-bottom:16px">${avatar(S.profile.nome,48)}<div><b style="font-size:15px">${esc(S.profile.nome)}</b><small>${esc(S.profile.email||'')}</small></div></div>
+      <div class="dl"><div><small>Perfil</small><b>${ROLE[S.profile.role]}</b></div><div><small>Base que lidera</small><b>${ownBases().map(bName).join(', ') || '—'}</b></div>
+      <div><small>Conexão</small><b>${TEST ? 'Modo de teste' : S.rtOk === true ? 'Conectado em tempo real' : 'Desconectado'}</b></div><div><small>Dados atualizados</small><b>${S.lastLoad ? fmtDT(new Date(S.lastLoad).toISOString()) : '—'}</b></div></div>`,
+    foot:`<button class="btn danger left" data-act="logout">${ic('logout',15)}Sair</button><button class="btn pri" data-act="reconnect">${ic('refresh',15)}Atualizar agora</button>`}),
+  'notif': () => openNotif(), 'notif-close': () => $('#npanel')?.remove(), 'notif-read': () => marcarLidos(),
+  'anx-open': () => openAtestados(), 'anx-view': a => openAnexo(a.dataset.id),
+  'anx-zip': a => zipQuinzena(a.dataset.k), 'anx-clean': a => cleanQuinzena(a.dataset.k),
+  'ch-quick': a => quickCh(a.dataset.id, a.dataset.st), 'ch-edit': a => { const c = CHM(a.dataset.id); if (c) tipoOf(c)==='pedido' ? pedidoForm(c.id) : chForm(c.id); },
   'mtab': a => { const m = a.closest('.modal'); $$('.mtab',m).forEach(b => b.classList.toggle('on', b === a)); $$('[data-pane]',m).forEach(p => p.hidden = p.dataset.pane !== a.dataset.k); },
   'dash-v': a => { S.f.vs = a.dataset.k; S.f.vt = ''; go('frota'); },
   'dash-cat': a => { S.f.tt = 'problema'; S.f.tc = a.dataset.k; S.f.ts = ''; go('diario'); },
@@ -2261,8 +2708,8 @@ const ACT = {
   't-tt': a => { S.f.tt = a.dataset.k; S.f.ts = ''; S.f.tc = ''; pgDiario(); },
   't-fs': a => { S.f.ts = a.dataset.k; pgDiario(); },
   't-fl': a => { if (a.dataset.go){ S.f.tl = a.dataset.k; S.f.ts = ''; S.f.tt = 'problema'; return go('diario'); } S.f.tl = sameId(S.f.tl, a.dataset.k) ? '' : a.dataset.k; pgDiario(); },
-  't-new': () => chForm(), 't-save': () => saveCh('problema'),
-  'p-new': () => pedidoForm(), 'p-save': () => saveCh('pedido'),
+  't-new': () => chForm(), 't-save': a => saveCh('problema', a.dataset.id || null),
+  'p-new': () => pedidoForm(), 'p-save': a => saveCh('pedido', a.dataset.id || null),
   'ch-open': a => openCh(a.dataset.id),
   'ch-send': a => sendCh(a.dataset.id, a.dataset.st), 'ch-reopen': a => reopenCh(a.dataset.id), 'ch-del': a => delCh(a.dataset.id),
   'cal-prev': () => { const c = S.cal; c.m--; if (c.m < 0){ c.m = 11; c.y--; } pgCal(); },
@@ -2270,10 +2717,10 @@ const ACT = {
   'cal-today': () => { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); pgCal(); },
   'cal-type': a => { const t = S.cal.tipos, k = a.dataset.k; t.has(k) ? t.delete(k) : t.add(k); pgCal(); },
   'cal-clear': () => { S.cal.tipos.clear(); pgCal(); },
-  'cal-cell': a => evForm(null, a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
+  'cal-cell': a => matchMedia('(max-width:720px)').matches ? calDay(a.dataset.date) : evForm(null, a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
   'ev-new': a => evForm(null, a.dataset.date, a.dataset.col), 'ev-open': a => evForm(a.dataset.id),
   'ev-save': a => saveEv(a.dataset.id || null), 'ev-del': a => delEv(a.dataset.id),
-  'u-base': a => toggleUserBase(a.dataset.id, a.dataset.k),
+  'u-base': a => setUserBase(a.dataset.id, a.dataset.k),
   'test-login': a => afterLogin({id:a.dataset.id}),
   'recheck': async () => { if (TEST){ const id = S.profile?.id; return id ? afterLogin({id}) : renderLogin(); } const {data} = await sb.auth.getUser(); data?.user ? afterLogin(data.user) : renderLogin(); },
   'pw-save': async () => { const f = formObj(); if (!f.senha || f.senha.length < 6) return toast('A senha precisa ter pelo menos 6 caracteres.','err');
@@ -2282,13 +2729,16 @@ const ACT = {
 document.addEventListener('click', e => {
   const pop = $('#pop');
   if (pop && !pop.contains(e.target) && !e.target.closest('[data-act="v-status"]')) closePop();
+  const np = $('#npanel');
+  if (np && !e.target.closest('#npanel') && !e.target.closest('[data-act=notif]')) np.remove();
+  else if (np && e.target.closest('#npanel [data-act]') && !e.target.closest('[data-act=notif-read]')) np.remove();
   const a = e.target.closest('[data-act]');
   if (a){ if (a.tagName === 'A') return; ACT[a.dataset.act]?.(a, e); return; }
   const n = e.target.closest('[data-nav]'); if (n) go(n.dataset.nav);
 });
 document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.chg) CHG[t.dataset.chg]?.(t); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape'){ if ($('#pop')) closePop(); else closeModal(); }
+  if (e.key === 'Escape'){ if ($('#npanel')) $('#npanel').remove(); else if ($('#pop')) closePop(); else closeModal(); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role=button][data-act],[role=button][data-nav]')){ e.preventDefault(); e.target.click(); }
 });
 window.addEventListener('scroll', closePop, true);
@@ -2301,7 +2751,11 @@ window.addEventListener('resize', closePop);
     return id && Store.load().profiles.find(p => p.id === id) ? afterLogin({id}) : renderLogin();
   }
   if (!CFG_OK || !sb) return renderSetup();
-  sb.auth.onAuthStateChange(ev => { if (ev === 'PASSWORD_RECOVERY') setTimeout(askNewPassword, 300); });
+  sb.auth.onAuthStateChange((ev, session) => {
+    if (ev === 'PASSWORD_RECOVERY') setTimeout(askNewPassword, 300);
+    if (ev === 'TOKEN_REFRESHED' && session){ try { sb.realtime.setAuth(session.access_token); } catch(e){} }
+    if (ev === 'SIGNED_OUT' && S.profile){ S.profile = null; renderLogin('Sua sessão terminou. Entre de novo.'); }
+  });
   const {data:{session}} = await sb.auth.getSession();
   session ? await afterLogin(session.user) : renderLogin();
 })();
