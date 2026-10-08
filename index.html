@@ -1120,6 +1120,18 @@ button.ac-row:hover b{color:var(--accent)}
   .ffp{flex-wrap:wrap}.ffp input[type=date]{flex:1}
 }
 
+/* ================= v2.5 ================= */
+.esc.man .esc-tipo{color:#0d9488}
+.rc{display:inline-block;background:#ecfdf5;color:#047857;border-radius:8px;padding:0 6px;font-size:10px;font-weight:600;margin-left:4px}
+.rc-tgl{margin-top:8px;color:#9a3412!important;font-weight:500;white-space:normal!important}
+.hm-h{display:flex;align-items:center;gap:8px}
+.hm-h input{width:110px;flex:none}
+.hm-h span:last-child{color:var(--muted);font-size:12px}
+.he-plus.big{font-size:16px;padding:4px 10px}
+.f .tgl input[type=checkbox]{width:auto!important;flex:none;margin:0}
+.rc-tgl{display:flex!important;align-items:flex-start!important;gap:8px;text-align:left;line-height:1.4}
+.rc-tgl input{margin-top:2px!important}
+
 </style>
 </head>
 <body>
@@ -1127,12 +1139,12 @@ button.ac-row:hover b{color:var(--accent)}
 <div class="toasts" id="toasts"></div>
 <script>
 /* =====================================================================
-   PRIMARIZAÇÃO · Painel de Controle — v2.4
+   PRIMARIZAÇÃO · Painel de Controle — v2.5
    A configuração fica no config.js (separado). O login é feito só
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.4';
+const APP_VERSION = '2.5';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1205,7 +1217,7 @@ const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais'];
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
   sex_seguinte:{label:'Sexta-feira seguinte', dow:5, dir:1},
@@ -1447,11 +1459,11 @@ function seed(){
     estoque_movs.push({id:'mv-'+it+b, item_id:it, base:b, tipo:'entrada', quantidade:q, saldo_apos:q, motivo:'Saldo inicial', base_destino:null, por_id:null, por_nome:'Carga inicial', created_at:h(48)}); }));
   const revisoes = [{id:'r1', tipo:'estoque', base:'ipiranga', quinzena:qKey(new Date()), por_id:'u-fernanda', por_nome:'Fernanda Souza', created_at:h(20)}];
   const config_bases = [{base:'pinheiros', folga_regra:'seg_seguinte', atualizado_por:'Carlos Lima', updated_at:h(100)}, {base:'ipiranga', folga_regra:'manual', atualizado_por:'Fernanda Souza', updated_at:h(100)}];
-  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases};
+  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
-  key:'primarizacao_teste_v24', mem:null,
+  key:'primarizacao_teste_v25', mem:null,
   load(){ if (this.mem) return this.mem; let d = null; try { d = JSON.parse(localStorage.getItem(this.key)); } catch(e){} this.mem = d || seed(); this.save(); return this.mem; },
   save(){ try { localStorage.setItem(this.key, JSON.stringify(this.mem)); } catch(e){} }
 };
@@ -1509,7 +1521,7 @@ const DB = {
 const today0 = new Date();
 const S = {
   page:'dashboard', profile:null, rt:null, rtOk:null, stale:false, schemaOld:false,
-  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[], anexos:[], escalas:[], acoes:[], estItens:[], estSaldos:[], estMovs:[], revisoes:[], cfgBases:[], colabsAll:[], lastLoad:0, sig:'',
+  profiles:[], colabs:[], veics:[], chamados:[], msgs:[], eventos:[], hist:[], anexos:[], escalas:[], acoes:[], estItens:[], estSaldos:[], estMovs:[], revisoes:[], cfgBases:[], horasMan:[], colabsAll:[], lastLoad:0, sig:'',
   base:'',
   f:{cq:'', cl:'', cs:'', vq:'', vs:'', vt:'', tq:'', ts:'', tl:'', tc:'', tt:'problema'},
   sort:{col:'nome', dir:1},
@@ -1532,7 +1544,10 @@ const CHM = id => S.chamados.find(x => sameId(x.id, id));
 const condutorOf = vid => S.colabs.find(c => c.veiculo_id && sameId(c.veiculo_id, vid));
 const colabsV = () => S.colabs.filter(c => inScope(c.base));
 const veicsV = () => S.veics.filter(v => inScope(v.base));
-const evsV = () => S.eventos.filter(e => { const c = C(e.colaborador_id); return c && inScope(c.base); });
+// Pessoa de um evento: colaborador ou, no caso de folga de plantão do líder, o próprio líder
+const profPessoa = id => { const p = id && P(id); return p ? {id:'p:' + p.id, nome:p.nome, base:(p.bases||[])[0] || '', cargo:p.role === 'admin' ? 'Encarregado' : 'Líder de base', status:'ativo', lider:true} : null; };
+const EVP = e => C(e.colaborador_id) || profPessoa(e.profile_id);
+const evsV = () => S.eventos.filter(e => { const c = EVP(e); return c && (c.lider ? (inScope(c.base) || sameId(e.profile_id, S.profile.id) || isAdmin()) : inScope(c.base)); });
 const sortCh = l => l.slice().sort((a,b) => CHW[a.status]-CHW[b.status] || PW[a.prioridade]-PW[b.prioridade] || new Date(b.updated_at||b.created_at)-new Date(a.updated_at||a.created_at));
 const chsV = tipo => sortCh(S.chamados.filter(c => inScope(c.base) && (!tipo || tipoOf(c) === tipo) &&
   (isAdmin() || tipoOf(c) === 'problema' || !c.destinatario_id || sameId(c.destinatario_id, S.profile.id))));
@@ -1551,7 +1566,7 @@ function applyTheme(){
 
 async function loadAll(){
   const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases] = res;
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan] = res;
   try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status}) => ({id,nome,base,cargo,status})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
@@ -1742,7 +1757,7 @@ function feedItems(){
   });
   escalasV().filter(e => e.data === today && e.status !== 'cancelada').forEach(e => out.push({w:1, icon:ESC_T[e.tipo].icon, color:escColor(e), title:`Hoje: ${escTitle(e)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}`, sub:(e.membros||[]).map(cid => firstName(C(cid)?.nome||'')).join(', ') || 'Ninguém escalado', act:'esc-open', id:e.id, when:null, base:e.base}));
   evsV().filter(e => e.data_inicio <= today && e.data_fim >= today).forEach(e => {
-    const o = EV[e.tipo] || EV.outro, c = C(e.colaborador_id); out.push({w:3, icon:'cal', color:o.color, title:`${c?.nome || '—'} — ${o.label}`, sub:`Até ${fmtD(e.data_fim)}`, act:'ev-open', id:e.id, when:null, base:c?.base});
+    const o = EV[e.tipo] || EV.outro, c = EVP(e); out.push({w:3, icon:'cal', color:o.color, title:`${c?.nome || '—'} — ${o.label}`, sub:`Até ${fmtD(e.data_fim)}`, act:'ev-open', id:e.id, when:null, base:c?.base});
   });
   return out.sort((a,b) => a.w-b.w).slice(0,8);
 }
@@ -1751,7 +1766,7 @@ function baseCards(){
   return `<div class="bcards">${BKEYS.map(k => {
     const b = BASES[k];
     const cs = S.colabs.filter(c => c.base === k), at = cs.filter(c => c.status === 'ativo');
-    const aus = new Set(S.eventos.filter(e => e.data_inicio <= today && e.data_fim >= today && C(e.colaborador_id)?.base === k).map(e => String(e.colaborador_id)));
+    const aus = new Set(S.eventos.filter(e => e.data_inicio <= today && e.data_fim >= today && EVP(e)?.base === k).map(e => String(e.colaborador_id || e.profile_id)));
     const disp = at.filter(c => !aus.has(String(c.id))).length;
     const vs = S.veics.filter(v => v.base === k), vok = vs.filter(v => v.status === 'ok').length;
     const pr = S.chamados.filter(c => c.base === k && tipoOf(c) === 'problema' && c.status !== 'resolvido').length;
@@ -1831,7 +1846,7 @@ function pgDashboard(){
       <div class="card-b">
         <div class="gauge-wrap">${gaugeSVG(pDisp, pDisp>=.85?'#22c55e':pDisp>=.65?'#f5a623':'#ef4444')}<div class="gauge-c"><b>${Math.round(pDisp*100)}%</b><span>disponível</span></div></div>
         <div class="trio"><div><b>${ativos.length}</b><span>Ativos</span></div><div><b>${ausAtivos.length}</b><span>Ausentes hoje</span></div><div><b>${outros}</b><span>Férias / afastados</span></div></div>
-        ${ausAtivos.length ? `<div class="aus-chips">${evsV().filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avatar(C(e.colaborador_id)?.nome,22)}${esc(firstName(C(e.colaborador_id)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
+        ${ausAtivos.length ? `<div class="aus-chips">${evsV().filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avatar(EVP(e)?.nome,22)}${esc(firstName(EVP(e)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
       </div>
     </div>
 
@@ -1878,7 +1893,7 @@ function tableChamados(list){
 }
 function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
   if (!evs.length) return empty('cal', emptyMsg);
-  return evs.map(e => { const c = C(e.colaborador_id); const o = EV[e.tipo] || EV.outro;
+  return evs.map(e => { const c = EVP(e); const o = EV[e.tipo] || EV.outro;
     return `<div class="agenda-item" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}"><span class="bar"></span>${avatar(c?.nome,32)}<div style="flex:1;min-width:0"><b>${esc(c?.nome || 'Colaborador removido')}</b><small>${rangeTxt(e.data_inicio,e.data_fim)}${e.observacao?' — '+esc(e.observacao):''}</small></div>${anexosOf(e.id).length?`<span class="clip" title="Atestado anexado">${ic('clip',14)}</span>`:''}${chip(o)}</div>`; }).join('');
 }
 
@@ -1945,8 +1960,8 @@ function openColab(id){
         <div><small>Matrícula</small><b>${esc(c.matricula||'—')}</b></div>
         <div><small>Admissão</small><b>${fmtD(c.admissao)}</b></div>
         <div><small>Líder responsável</small><b>${esc(l?.nome||'—')}</b></div>
-        ${(() => { const m0 = iso(new Date(new Date().getFullYear(), new Date().getMonth(), 1)); const r = escStats(S.escalas.filter(x => x.data >= m0 && x.data <= iso(new Date()))).find(x => sameId(x.cid, c.id));
-          return `<div><small>Escalas neste mês</small><b>${r ? `${r.pl} plantão(ões), ${fmtH(r.he)} de hora extra` : 'Nenhuma até hoje'}</b></div>`; })()}
+        ${(() => { const m0 = iso(new Date(new Date().getFullYear(), new Date().getMonth(), 1)); const r = escStats(S.escalas.filter(x => x.data >= m0 && x.data <= iso(new Date())), S.horasMan.filter(x => x.data >= m0)).find(x => sameId(x.cid, c.id));
+          return `<div><small>Escalas neste mês</small><b>${r ? `${r.pl} plantão(ões) — +${fmtH(r.total)} de hora extra` : 'Nenhuma até hoje'}</b></div>`; })()}
         ${c.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(c.observacoes)}</div></div>`:''}
       </div>
       <div class="sec">Veículo vinculado</div>
@@ -2599,7 +2614,7 @@ function pgCal(){
     const d = new Date(c.y, c.m, 1-off+i), ds = iso(d);
     const evs = evsV().filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds).sort((a,b)=>a.tipo.localeCompare(b.tipo));
     days += `<div class="day ${d.getMonth()!==c.m?'out':''} ${ds===today?'today':''} ${[0,6].includes(d.getDay())?'we':''}" data-act="cal-cell" data-date="${ds}" title="Clique para marcar em ${fmtD(ds)}"><span class="dn">${d.getDate()}</span>
-      ${evs.slice(0,3).map(e => { const o = EV[e.tipo]||EV.outro, n = C(e.colaborador_id)?.nome; return `<div class="ev" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}" title="${esc(n||'')} — ${o.label}">${esc(firstName(n))} · ${o.label}</div>`; }).join('')}
+      ${evs.slice(0,3).map(e => { const o = EV[e.tipo]||EV.outro, n = EVP(e)?.nome; return `<div class="ev" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}" title="${esc(n||'')} — ${o.label}">${esc(firstName(n))} · ${o.label}</div>`; }).join('')}
       ${evs.length>3?`<span class="more" data-act="cal-day" data-date="${ds}">+${evs.length-3} mais</span>`:''}</div>`;
   }
   const vis = inMonth.filter(calVisible).sort((a,b) => a.data_inicio.localeCompare(b.data_inicio));
@@ -2627,7 +2642,7 @@ function evForm(id, date, colId){
   if (!e) return;
   const can = !id || isAdmin() || sameId(e.criado_por, S.profile.id);
   if (!can){
-    const c = C(e.colaborador_id), o = EV[e.tipo]||EV.outro;
+    const c = EVP(e), o = EV[e.tipo]||EV.outro;
     return openModal({title:'Ausência', body:`<div class="who" style="margin-bottom:16px">${avatar(c?.nome,44)}<div><b style="font-size:15px">${esc(c?.nome||'—')}</b><small>${esc(c?.cargo||'')}</small></div></div>
       <div class="dl"><div><small>Tipo</small>${chip(o)}</div><div><small>Período</small><b>${rangeTxt(e.data_inicio,e.data_fim)} (${daysBetween(e.data_inicio,e.data_fim)} dia(s))</b></div>
       <div><small>Registrado por</small><b>${esc(e.criado_por_nome||'—')}</b></div>${e.observacao?`<div class="full"><small>Observação</small><div class="box">${esc(e.observacao)}</div></div>`:''}</div>
@@ -2635,7 +2650,8 @@ function evForm(id, date, colId){
       <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o encarregado pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
   }
   openModal({title: id ? 'Editar ausência' : 'Marcar ausência', body:`<form id="mf" class="form" autocomplete="off">
-    ${fld('Colaborador', `<select name="colaborador_id" required><option value="">Selecione...</option>${opts(colabsSorted().filter(c=>c.status!=='desligado'||sameId(c.id,e.colaborador_id)).map(c=>[c.id,c.nome]), e.colaborador_id)}</select>`, true, true)}
+    ${e.profile_id ? fld('Pessoa', `<div class="fixed-base"><span class="who">${avatar(EVP(e)?.nome,26)}<b>${esc(EVP(e)?.nome||'—')}</b><small style="margin-left:6px">${esc(EVP(e)?.cargo||'')}</small></span></div>`, true) : ''}
+    ${e.profile_id ? '' : fld('Colaborador', `<select name="colaborador_id" required><option value="">Selecione...</option>${opts(colabsSorted().filter(c=>c.status!=='desligado'||sameId(c.id,e.colaborador_id)).map(c=>[c.id,c.nome]), e.colaborador_id)}</select>`, true, true)}
     ${fld('Tipo', rchips('tipo',EV,e.tipo), true, true)}
     ${fld('Data inicial', inp('data_inicio',e.data_inicio,'type="date" required'), false, true)}
     ${fld('Data final', inp('data_fim',e.data_fim,'type="date" required'), false, true, 'Para um dia só, repita a data inicial.')}
@@ -2652,13 +2668,13 @@ function evForm(id, date, colId){
       $('#farq',ov).addEventListener('change', ev => { const f = ev.target.files[0]; $('#fanx-n',ov).textContent = f ? f.name + ' (' + fmtMB(f.size) + ')' : 'Escolher arquivo ou tirar foto'; }); }});
 }
 async function saveEv(id){
-  const f = formObj();
-  if (!f.colaborador_id) return toast('Selecione o colaborador.','err');
+  const f = formObj(), ev0 = id ? S.eventos.find(x => sameId(x.id, id)) : null, prof = ev0?.profile_id;
+  if (!prof && !f.colaborador_id) return toast('Selecione o colaborador.','err');
   if (!f.data_inicio || !f.data_fim) return toast('Informe as datas.','err');
   if (f.data_fim < f.data_inicio) return toast('A data final não pode ser antes da inicial.','err');
-  const clash = S.eventos.find(e => !sameId(e.id,id) && sameId(e.colaborador_id,f.colaborador_id) && e.data_inicio<=f.data_fim && e.data_fim>=f.data_inicio);
+  const clash = prof ? null : S.eventos.find(e => !sameId(e.id,id) && sameId(e.colaborador_id,f.colaborador_id) && e.data_inicio<=f.data_fim && e.data_fim>=f.data_inicio);
   if (clash && !await confirmBox(`${esc(C(f.colaborador_id)?.nome)} já tem <b>${EV[clash.tipo].label}</b> em ${rangeTxt(clash.data_inicio,clash.data_fim)}. Salvar mesmo assim?`,'Salvar')) return;
-  const row = {colaborador_id:f.colaborador_id, tipo:f.tipo||'outro', data_inicio:f.data_inicio, data_fim:f.data_fim, observacao:f.observacao};
+  const row = {...(prof ? {} : {colaborador_id:f.colaborador_id}), tipo:f.tipo||'outro', data_inicio:f.data_inicio, data_fim:f.data_fim, observacao:f.observacao};
   const file = $('#farq')?.files?.[0];
   if (file){ try { await prepFile(file); } catch(e){ return err(e); } }
   const btn = $('.m-f .btn.pri'); if (btn){ btn.disabled = true; btn.textContent = file ? 'Enviando...' : 'Salvando...'; }
@@ -2714,7 +2730,7 @@ function buildNotifs(){
   });
   // Lembretes do dia
   evsV().forEach(e => {
-    const c = C(e.colaborador_id), o = EV[e.tipo] || EV.outro; if (!c) return;
+    const c = EVP(e), o = EV[e.tipo] || EV.outro; if (!c) return;
     const nome = firstName(c.nome) + (c.nome.split(' ').length > 1 ? ' ' + c.nome.split(' ').slice(-1)[0] : '');
     if (e.data_inicio <= today && e.data_fim >= today)
       rem.push({icon:'cal', c:o.color, t:`${nome}: ${o.label.toLowerCase()} ${e.data_fim === today ? 'até hoje' : 'até ' + fmtD(e.data_fim)}`, s:e.observacao || bName(c.base), act:'ev-open', id:e.id, w:2});
@@ -3019,14 +3035,21 @@ const escColor = e => e.tipo === 'plantao' ? ESC_T.plantao.color : (acaoOf(e.aca
 const ausenteEm = (cid, ds) => S.eventos.find(e => sameId(e.colaborador_id, cid) && e.data_inicio <= ds && e.data_fim >= ds);
 const monthRange = () => { const {y,m} = S.esc; return [iso(new Date(y,m,1)), iso(new Date(y,m+1,0))]; };
 const respList = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || p.role === 'lider')).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
-function escStats(list){
-  const per = {};
-  list.filter(e => e.status !== 'cancelada').forEach(e => (e.membros||[]).forEach(cid => {
-    const p = per[cid] = per[cid] || {cid, he:0, nHe:0, pl:0, hPl:0};
-    const h = durH(e);
+// Responsável conta horas e folga? (padrão: sim no plantão, não nas ações)
+const respConta = e => e.resp_conta == null ? e.tipo === 'plantao' : !!e.resp_conta;
+const escPessoas = e => { const ks = (e.membros||[]).map(String); if (respConta(e) && e.responsavel_id) ks.push('p:' + e.responsavel_id); return [...new Set(ks)]; };
+const nPess = e => escPessoas(e).length;
+const PX = k => String(k).startsWith('p:') ? profPessoa(String(k).slice(2)) : CX(k);
+const manV = () => S.horasMan.filter(m => (!S.esc.b || m.base === S.esc.b) && (!S.base || m.base === S.base));
+const manKey = m => m.profile_id ? 'p:' + m.profile_id : String(m.colaborador_id);
+function escStats(list, man = []){
+  const per = {}, get = k => per[k] = per[k] || {cid:k, he:0, nHe:0, pl:0, hPl:0, man:0, nMan:0};
+  list.filter(e => e.status !== 'cancelada').forEach(e => escPessoas(e).forEach(k => {
+    const p = get(k), h = durH(e);
     if (e.tipo === 'hora_extra'){ p.he += h; p.nHe++; } else { p.pl++; p.hPl += h; }
   }));
-  return Object.values(per).map(p => ({...p, total: p.he + p.hPl}));
+  man.forEach(m => { const p = get(manKey(m)); p.man += +m.horas || 0; p.nMan++; });
+  return Object.values(per).map(p => ({...p, total: p.he + p.hPl + p.man}));
 }
 function pgEscalas(){
   const st = S.esc, [a,b] = monthRange(), today = iso(new Date());
@@ -3035,7 +3058,8 @@ function pgEscalas(){
   const ativos = month.filter(e => e.status !== 'cancelada');
   const pl = ativos.filter(e => e.tipo === 'plantao'), he = ativos.filter(e => e.tipo === 'hora_extra');
   const pessoas = new Set(ativos.flatMap(e => e.membros || []));
-  const horas = ativos.reduce((s,e) => s + durH(e) * (e.membros||[]).length, 0);
+  const manM = manV().filter(m => m.data >= a && m.data <= b);
+  const horas = ativos.reduce((s,e) => s + durH(e) * nPess(e), 0) + manM.reduce((s,m) => s + (+m.horas || 0), 0);
   const sat = nextSat();
   const bases = BKEYS.filter(k => (!S.base || k === S.base) && (!st.b || k === st.b));
   const satCards = bases.map(k => {
@@ -3048,9 +3072,10 @@ function pgEscalas(){
       <span class="sat-t">${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)} ${heTag(durH(e))} ${almocoTag(e)}${e.folga_data ? ` <span class="folga-t">${ic('cal',12)}Folga ${wdShort(e.folga_data)}</span>` : ''}</span>
       <span class="sat-m">${(e.membros||[]).map(cid => `<span class="pp">${avatar(CX(cid)?.nome,22)}${esc(firstName(CX(cid)?.nome))}</span>`).join('') || '<span class="muted">Sem pessoas</span>'}</span></button>`; }).join('');
   }).join('');
-  const rank = escStats(month).sort((x,y) => y.total - x.total).slice(0, 10);
+  const rank = escStats(month, manM).sort((x,y) => y.total - x.total).slice(0, 10);
   const maxR = Math.max(1, ...rank.map(r => r.total));
-  const porAcao = {}; ativos.forEach(e => { const k = e.tipo === 'plantao' ? '_pl' : (e.acao_id || '_'); const o = porAcao[k] = porAcao[k] || {e, n:0, h:0}; o.n++; o.h += durH(e) * (e.membros||[]).length; });
+  const porAcao = {}; ativos.forEach(e => { const k = e.tipo === 'plantao' ? '_pl' : (e.acao_id || '_'); const o = porAcao[k] = porAcao[k] || {e, n:0, h:0}; o.n++; o.h += durH(e) * nPess(e); });
+  if (manM.length) porAcao._man = {e:{tipo:'manual'}, n:manM.length, h:manM.reduce((s,m) => s + (+m.horas || 0), 0)};
   const acoesUsadas = S.acoes.filter(x => S.escalas.some(e => sameId(e.acao_id, x.id)) || x.ativo !== false).sort((x,y) => x.nome.localeCompare(y.nome,'pt'));
   $('#page').innerHTML = `
   <div class="esc-head">
@@ -3079,7 +3104,7 @@ function pgEscalas(){
   <div class="esc-wrap">
     <div>
       <div class="toolbar esc-tb">
-        <div class="seg">${[['','Todas'],['plantao','Plantões'],['hora_extra','Horas extras']].map(([k,l]) => `<button class="${st.t===k?'on':''}" data-act="esc-ft" data-k="${k}">${l}</button>`).join('')}</div>
+        <div class="seg">${[['','Todas'],['plantao','Plantões'],['hora_extra','Horas extras'],['manual','Manuais']].map(([k,l]) => `<button class="${st.t===k?'on':''}" data-act="esc-ft" data-k="${k}">${l}</button>`).join('')}</div>
         <select class="sel" id="escac"><option value="">Todas as ações</option>${opts(acoesUsadas.map(x => [x.id, x.nome]), st.ac)}</select>
         ${!S.base ? `<select class="sel" id="escb"><option value="">Todas as bases</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), st.b)}</select>` : ''}
         <select class="sel" id="escst"><option value="">Todas as situações</option>${opts(Object.entries(ESC_S).map(([k,o]) => [k,o.label]), st.st)}</select>
@@ -3088,12 +3113,12 @@ function pgEscalas(){
       <div id="esclist"></div>
     </div>
     <div class="esc-side">
-      <div class="card"><div class="card-h"><div><h3>Horas por pessoa no mês</h3><p class="ch-sub">Plantões + ações, sem a hora de almoço</p></div></div><div class="card-b">
-        ${rank.length ? `<div class="rk">${rank.map(r => { const c = CX(r.cid); return `<button class="rk-i" ${C(r.cid)?`data-act="c-open" data-id="${r.cid}"`:''}><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')} ${heTag(r.total)}</b><small>${[r.pl ? r.pl + (r.pl > 1 ? ' plantões' : ' plantão') + ' (' + fmtH(r.hPl) + ')' : '', r.nHe ? r.nHe + (r.nHe > 1 ? ' ações' : ' ação') + ' (' + fmtH(r.he) + ')' : ''].filter(Boolean).join(' — ')}${c && !C(r.cid) ? ' — ' + bName(c.base) : ''}</small></span></span><span class="rk-b"><i style="width:${Math.round(r.hPl/maxR*100)}%;background:${ESC_T.plantao.color}"></i><i style="width:${Math.round(r.he/maxR*100)}%;background:${ESC_T.hora_extra.color}"></i></span></button>`; }).join('')}</div>
-          <div class="lg2" style="margin-top:12px"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span></div>` : empty('users','Ninguém escalado neste mês')}
+      <div class="card"><div class="card-h"><div><h3>Horas por pessoa no mês</h3><p class="ch-sub">Plantões, ações e lançamentos manuais</p></div><button class="btn sm" data-act="hm-new">${ic('plus',14)}Lançar horas</button></div><div class="card-b">
+        ${rank.length ? `<div class="rk">${rank.map(r => { const c = PX(r.cid); return `<button class="rk-i" ${C(r.cid)?`data-act="c-open" data-id="${r.cid}"`:''}><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')} ${heTag(r.total)}</b><small>${[r.pl ? r.pl + (r.pl > 1 ? ' plantões' : ' plantão') + ' (' + fmtH(r.hPl) + ')' : '', r.nHe ? r.nHe + (r.nHe > 1 ? ' ações' : ' ação') + ' (' + fmtH(r.he) + ')' : '', r.nMan ? r.nMan + ' manual (' + fmtH(r.man) + ')' : ''].filter(Boolean).join(' — ')}${c?.lider ? ' — ' + esc(c.cargo) : c && !C(r.cid) ? ' — ' + bName(c.base) : ''}</small></span></span><span class="rk-b"><i style="width:${Math.round(r.hPl/maxR*100)}%;background:${ESC_T.plantao.color}"></i><i style="width:${Math.round(r.he/maxR*100)}%;background:${ESC_T.hora_extra.color}"></i><i style="width:${Math.round(r.man/maxR*100)}%;background:${MAN_COR}"></i></span></button>`; }).join('')}</div>
+          <div class="lg2" style="margin-top:12px"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span><span style="--c:${MAN_COR}"><i></i>Manuais</span></div>` : empty('users','Ninguém escalado neste mês')}
       </div></div>
       <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>Horas extras por tipo e ação</h3><p class="ch-sub">Neste mês — toque para filtrar</p></div><button class="btn sm" data-act="esc-bases">${ic('dash',14)}Por base</button></div><div class="card-b">
-        ${Object.keys(porAcao).length ? Object.entries(porAcao).sort((x,y) => y[1].h - x[1].h).map(([k,o]) => `<button class="ac-row" ${k!=='_pl' && k!=='_' ? `data-act="esc-fa" data-k="${k}"` : `data-act="esc-ft" data-k="plantao"`}><span class="ac-dot" style="background:${escColor(o.e)}"></span><b>${esc(k==='_pl' ? 'Plantões de sábado' : escTitle(o.e))}</b><span class="muted">${o.n}×</span>${heTag(o.h)}</button>`).join('') : '<p class="muted" style="margin:0">Nenhuma escala neste mês.</p>'}
+        ${Object.keys(porAcao).length ? Object.entries(porAcao).sort((x,y) => y[1].h - x[1].h).map(([k,o]) => `<button class="ac-row" ${k==='_man' ? `data-act="esc-ft" data-k="manual"` : k!=='_pl' && k!=='_' ? `data-act="esc-fa" data-k="${k}"` : `data-act="esc-ft" data-k="plantao"`}><span class="ac-dot" style="background:${o.e.tipo === 'manual' ? MAN_COR : escColor(o.e)}"></span><b>${esc(k==='_pl' ? 'Plantões de sábado' : k==='_man' ? 'Lançamentos manuais' : escTitle(o.e))}</b><span class="muted">${o.n}×</span>${heTag(o.h)}</button>`).join('') : '<p class="muted" style="margin:0">Nenhuma escala neste mês.</p>'}
       </div></div>
     </div>
   </div>`;
@@ -3105,24 +3130,38 @@ function pgEscalas(){
 }
 function escList(){
   const st = S.esc, [a,b] = monthRange(), q = st.q.toLowerCase().trim(), today = iso(new Date());
-  const list = escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.st || e.status === st.st) && (!st.ac || sameId(e.acao_id, st.ac)) &&
-    (!q || [escTitle(e), e.observacao, bName(e.base), P(e.responsavel_id)?.nome, ...(e.membros||[]).map(cid => CX(cid)?.nome)].join(' ').toLowerCase().includes(q)))
-    .sort((x,y) => x.data.localeCompare(y.data) || tMin(x.hora_inicio) - tMin(y.hora_inicio));
-  if (!list.length){ $('#esclist').innerHTML = `<div class="card">${empty('shift','Nenhuma escala encontrada', st.ac || st.st || q ? 'Ajuste os filtros acima.' : 'Use "Plantão" ou "Hora extra" para escalar a equipe.')}</div>`; return; }
-  $('#esclist').innerHTML = list.map(e => {
+  const list = (st.t === 'manual' ? [] : escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.st || e.status === st.st) && (!st.ac || sameId(e.acao_id, st.ac)) &&
+    (!q || [escTitle(e), e.observacao, bName(e.base), P(e.responsavel_id)?.nome, ...(e.membros||[]).map(cid => CX(cid)?.nome)].join(' ').toLowerCase().includes(q))));
+  const mans = (!st.t || st.t === 'manual') && !st.ac && !st.st ? manV().filter(m => m.data >= a && m.data <= b && (!q || [m.motivo, PX(manKey(m))?.nome, bName(m.base)].join(' ').toLowerCase().includes(q))) : [];
+  const items = [...list.map(e => ({d:e.data, t:tMin(e.hora_inicio), e})), ...mans.map(m => ({d:m.data, t:9999, m}))].sort((x,y) => x.d.localeCompare(y.d) || x.t - y.t);
+  if (!items.length){ $('#esclist').innerHTML = `<div class="card">${empty('shift','Nada encontrado neste mês', st.ac || st.st || q ? 'Ajuste os filtros acima.' : 'Use "Plantão", "Hora extra" ou "Lançar horas".')}</div>`; return; }
+  $('#esclist').innerHTML = items.map(({e, m}) => m ? manCard(m) : escCard(e, today)).join('');
+}
+function manCard(m){
+  const d = parseISO(m.data), wk = cap(d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')), p = PX(manKey(m));
+  return `<div class="card esc man" style="--c:${MAN_COR}" data-act="hm-open" data-id="${m.id}" role="button" tabindex="0">
+    <div class="esc-d"><small>${wk}</small><b>${d.getDate()}</b></div>
+    <div class="esc-b">
+      <div class="esc-t"><span class="esc-tipo">${ic('plus',13)}Manual</span><b>${esc(m.motivo || 'Hora extra lançada')}</b>${bTag(m.base)}</div>
+      <div class="esc-m"><span class="pp">${avatar(p?.nome,22)}${esc(p?.nome || '—')}</span>${heTag(+m.horas || 0)}<span>Lançado por ${esc(firstName(m.criado_por_nome || ''))}</span></div>
+    </div></div>`;
+}
+function escCard(e, today){
+  {
     const d = parseISO(e.data), wk = cap(d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.',''));
-    const past = e.data < today, isToday = e.data === today, h = durH(e), n = (e.membros||[]).length, r = P(e.responsavel_id);
+    const past = e.data < today, isToday = e.data === today, h = durH(e), n = nPess(e), r = P(e.responsavel_id);
     const nextSt = e.status === 'planejada' ? 'confirmada' : e.status === 'confirmada' && e.data <= today ? 'realizada' : null;
     return `<div class="card esc ${e.status==='cancelada'?'cancel':''} ${past && e.status!=='realizada' && e.status!=='cancelada'?'late-e':''}" style="--c:${escColor(e)}" data-act="esc-open" data-id="${e.id}" role="button" tabindex="0">
       <div class="esc-d ${isToday?'today':''}"><small>${wk}</small><b>${d.getDate()}</b></div>
       <div class="esc-b">
         <div class="esc-t"><span class="esc-tipo">${ic(ESC_T[e.tipo].icon,13)}${ESC_T[e.tipo].short}</span><b>${esc(escTitle(e))}</b>${bTag(e.base)}</div>
         <div class="esc-m"><span>${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}</span>${heTag(h, ' por pessoa')}${almocoTag(e)}${n > 1 ? `<span class="he-tot">${heTag(h*n)} no total</span>` : ''}${e.tipo === 'plantao' && e.folga_data ? `<span class="folga-t">${ic('cal',12)}Folga ${wdShort(e.folga_data)}</span>` : ''}</div>
-        <div class="esc-r ${r?'':'none'}">${ic('shield',12)}${r ? 'Responsável: <b>' + esc(r.nome) + '</b>' : (e.tipo === 'plantao' ? 'Sem responsável — defina um' : 'Sem responsável')}</div>
-        <div class="esc-p">${(e.membros||[]).slice(0,8).map(cid => { const c = CX(cid), aus = ausenteEm(cid, e.data); return `<span class="pp ${aus?'warn':''}" title="${aus?'Ausente: '+(EV[aus.tipo]||EV.outro).label:''}">${avatar(c?.nome,22)}${esc(firstName(c?.nome||'—'))}${aus?ic('alert',12):''}</span>`; }).join('')}${n>8?`<span class="pp more">+${n-8}</span>`:''}${!n?'<span class="muted s">Ninguém escalado ainda</span>':''}</div>
+        <div class="esc-r ${r?'':'none'}">${ic('shield',12)}${r ? 'Responsável: <b>' + esc(r.nome) + '</b>' + (respConta(e) ? ' <span class="rc">conta horas</span>' : '') : (e.tipo === 'plantao' ? 'Sem responsável — defina um' : 'Sem responsável')}</div>
+        <div class="esc-p">${(e.membros||[]).slice(0,8).map(cid => { const c = CX(cid), aus = ausenteEm(cid, e.data); return `<span class="pp ${aus?'warn':''}" title="${aus?'Ausente: '+(EV[aus.tipo]||EV.outro).label:''}">${avatar(c?.nome,22)}${esc(firstName(c?.nome||'—'))}${aus?ic('alert',12):''}</span>`; }).join('')}${(e.membros||[]).length>8?`<span class="pp more">+${(e.membros||[]).length-8}</span>`:''}${!(e.membros||[]).length?'<span class="muted s">Ninguém escalado ainda</span>':''}</div>
       </div>
       <div class="esc-s">${chip(ESC_S[e.status])}${canEditEsc(e) && nextSt ? `<button class="qbtn" data-act="esc-st" data-id="${e.id}" data-k="${nextSt}">${ic('check',14)}<span>${nextSt==='confirmada'?'Confirmar':'Realizada'}</span></button>` : ''}</div>
-    </div>`; }).join('');
+    </div>`;
+  }
 }
 function escForm(id, preset={}){
   const e0 = id ? S.escalas.find(x => sameId(x.id, id)) : null;
@@ -3146,7 +3185,8 @@ function escForm(id, preset={}){
     ${fld('Tipo', rchips('tipo', Object.fromEntries(Object.entries(ESC_T).map(([k,o]) => [k,{label:o.label,color:o.color}])), tipo), true, true)}
     <div class="f full resp-box" id="frespbox"><label>${ic('shield',14)} Responsável <span id="frespreq">${tipo==='plantao'?'pelo plantão <em>*</em>':'pela ação (opcional)'}</span></label>
       <select name="responsavel_id" id="fresp">${respOpts(e.responsavel_id)}</select>
-      <span class="f-hint" id="fresphint">${tipo==='plantao' ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.'}</span></div>
+      <span class="f-hint" id="fresphint">${tipo==='plantao' ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.'}</span>
+      <label class="tgl rc-tgl"><input type="checkbox" name="resp_conta" id="frc" ${respConta(e) ? 'checked' : ''}> O responsável também trabalha: conta horas extras${tipo==='plantao' ? ' e recebe folga' : ''}</label></div>
     <div class="f full" id="facao" ${tipo==='hora_extra'?'':'hidden'}><label>Ação <em>*</em></label>
       <select name="acao_id" id="facs">${acaoOpts(e.acao_id)}</select>
       <input name="acao_nova" id="fnova" placeholder="Nome da nova ação (ex: Ação Noturna, Mutirão de cortes)" hidden maxlength="60" style="margin-top:8px"></div>
@@ -3186,8 +3226,9 @@ function escForm(id, preset={}){
     };
     ov._sel = sel; ov._fp = {};
     const linked = id ? folgasDe(id) : [];
-    linked.forEach(ev => { if (!e.folga_data || ev.data_inicio !== e.folga_data) ov._fp[String(ev.colaborador_id)] = {on:true, d:ev.data_inicio}; });
-    if (e0 && e0.tipo === 'plantao' && e.folga_data) (e.membros||[]).forEach(cid => { if (!linked.some(ev => sameId(ev.colaborador_id, cid))) ov._fp[String(cid)] = {on:false, d:''}; });
+    const evKey = ev => ev.profile_id ? 'p:' + ev.profile_id : String(ev.colaborador_id);
+    linked.forEach(ev => { if (!e.folga_data || ev.data_inicio !== e.folga_data) ov._fp[evKey(ev)] = {on:true, d:ev.data_inicio}; });
+    if (e0 && e0.tipo === 'plantao' && e.folga_data) escPessoas(e0).forEach(k => { if (!linked.some(ev => evKey(ev) === k)) ov._fp[k] = {on:false, d:''}; });
     const regra = () => cfgOf($('#fbase',ov).value).folga_regra;
     const ffm = $('#ffm',ov), ffd = $('#ffd',ov);
     if (e0){ const pad = folgaPadrao(e0.base, e0.data); ffm.value = e0.folga_data ? (e0.folga_data === pad ? 'auto' : 'data') : (e0.tipo === 'plantao' ? 'nenhuma' : 'auto'); ffd.value = e0.folga_data || ''; }
@@ -3202,7 +3243,8 @@ function escForm(id, preset={}){
       const d = folgaDef();
       $('#ffh',ov).innerHTML = `Regra de ${BASES[base].nome}: <b>${rg ? rg.label : 'não definida'}</b>${S.cfgBases.find(c => c.base === base) ? '' : ' (defina em Escalas → Folgas)'}. ${d ? `Folga lançada no calendário em <b>${wdShort(d)}</b> para quem for escalado.` : ffm.value === 'nenhuma' ? 'Ninguém recebe folga por este plantão.' : 'Escolha a data da folga.'}`;
       const pool = S.colabsAll.length ? S.colabsAll : S.colabs;
-      $('#ffpl',ov).innerHTML = [...sel].map(cid => { const c = pool.find(x => sameId(x.id, cid)), o = ov._fp[cid] || {on:true, d:''};
+      const keys = [...sel]; const rid = $('#fresp',ov).value; if ($('#frc',ov).checked && rid) keys.push('p:' + rid);
+      $('#ffpl',ov).innerHTML = [...new Set(keys)].map(cid => { const c = String(cid).startsWith('p:') ? PX(cid) : pool.find(x => sameId(x.id, cid)), o = ov._fp[cid] || {on:true, d:''};
         return `<div class="ffp"><span>${avatar(c?.nome,22)}${esc(c?.nome||'—')}</span><label class="tgl"><input type="checkbox" data-cid="${cid}" class="ffp-on" ${o.on !== false ? 'checked' : ''}> Folga</label><input type="date" class="ffp-d" data-cid="${cid}" value="${o.d || d}" ${o.on === false || ffm.value === 'nenhuma' ? 'disabled' : ''}></div>`; }).join('') || '<p class="muted s" style="margin:6px 0">Escolha quem vai para ajustar a folga de cada um.</p>';
       $$('.ffp-on',ov).forEach(i => i.onchange = () => { const o = ov._fp[i.dataset.cid] = ov._fp[i.dataset.cid] || {on:true, d:''}; o.on = i.checked; drawFolga(); });
       $$('.ffp-d',ov).forEach(i => i.onchange = () => { const o = ov._fp[i.dataset.cid] = ov._fp[i.dataset.cid] || {on:true, d:''}; o.d = i.value === folgaDef() ? '' : i.value; });
@@ -3213,7 +3255,8 @@ function escForm(id, preset={}){
     $('#fps',ov).oninput = draw; $('#fdata',ov).onchange = () => { draw(); drawFolga(); }; $('#fall',ov).onchange = draw;
     $('#fhi',ov).oninput = showDur; $('#fhf',ov).oninput = showDur;
     $('#fbase',ov).onchange = () => { if (!$('#fresp',ov).value){ const l = liderOf($('#fbase',ov).value); if (l) $('#fresp',ov).value = l.id; } if (!id){ const r = regra(); ffm.value = r === 'nenhuma' ? 'nenhuma' : r === 'manual' ? 'data' : 'auto'; } draw(); drawFolga(); };
-    $$('[name=tipo]',ov).forEach(r => r.onchange = () => { const pl = r.value === 'plantao'; $('#facao',ov).hidden = pl; $('#ffolga',ov).hidden = !pl;
+    $('#frc',ov).onchange = () => drawFolga(); $('#fresp',ov).addEventListener('change', () => drawFolga());
+    $$('[name=tipo]',ov).forEach(r => r.onchange = () => { const pl = r.value === 'plantao'; $('#facao',ov).hidden = pl; $('#ffolga',ov).hidden = !pl; if (!id) $('#frc',ov).checked = pl;
       $('#frespreq',ov).innerHTML = pl ? 'pelo plantão <em>*</em>' : 'pela ação (opcional)';
       $('#fresphint',ov).textContent = pl ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.';
       if (!id){ $('#fhi',ov).value = pl ? '07:00' : '17:00'; $('#fhf',ov).value = pl ? '13:00' : '21:00'; $('#fdata',ov).value = pl ? nextSat() : iso(new Date()); showDur(); draw(); } });
@@ -3243,10 +3286,11 @@ async function saveEsc(id){
   if (f.tipo === 'plantao' && (f.status || 'planejada') !== 'cancelada'){
     folga = ov?._folgaDef ? ov._folgaDef() : null;
     if (f.folga_modo !== 'nenhuma' && !folga) return toast('Escolha a data da folga do plantão (ou marque "Sem folga").','err');
-    if (f.folga_modo !== 'nenhuma') membros.forEach(cid => { const o = ov._fp[String(cid)] || {}; if (o.on === false) return; plan.set(String(cid), o.d || folga); });
+    const ks = membros.map(String); if (f.resp_conta && f.responsavel_id) ks.push('p:' + f.responsavel_id);
+    if (f.folga_modo !== 'nenhuma') [...new Set(ks)].forEach(k => { const o = ov._fp[k] || {}; if (o.on === false) return; plan.set(k, o.d || folga); });
     if ([...plan.values()].some(d => d === f.data)) return toast('A folga não pode ser no mesmo dia do plantão.','err');
   }
-  const row = {tipo:f.tipo, base:f.base, data:f.data, hora_inicio:f.hora_inicio, hora_fim:f.hora_fim, acao_id, membros, responsavel_id:f.responsavel_id, status:f.status || 'planejada', observacao:f.observacao, folga_data:f.tipo === 'plantao' ? folga : null, updated_at:nowISO()};
+  const row = {tipo:f.tipo, base:f.base, data:f.data, hora_inicio:f.hora_inicio, hora_fim:f.hora_fim, acao_id, membros, responsavel_id:f.responsavel_id, resp_conta:!!f.resp_conta, status:f.status || 'planejada', observacao:f.observacao, folga_data:f.tipo === 'plantao' ? folga : null, updated_at:nowISO()};
   try {
     let esc0;
     if (id){ await DB.update('escalas', id, row); esc0 = {id, ...row}; }
@@ -3259,16 +3303,18 @@ async function saveEsc(id){
 // Mantém as folgas do calendário iguais ao plano do plantão (cria, muda a data ou remove)
 async function syncFolgas(e, plan){
   let n = 0, falhas = 0;
+  const evKey = ev => ev.profile_id ? 'p:' + ev.profile_id : String(ev.colaborador_id);
   for (const ev of folgasDe(e.id)){
-    const d = plan.get(String(ev.colaborador_id));
+    const d = plan.get(evKey(ev));
     try {
       if (!d) await DB.remove('eventos', ev.id);
       else { if (d !== ev.data_inicio) await DB.update('eventos', ev.id, {data_inicio:d, data_fim:d, observacao:`Folga do plantão de ${fmtD(e.data)}`}); n++; }
     } catch(x){ falhas++; }
-    plan.delete(String(ev.colaborador_id));
+    plan.delete(evKey(ev));
   }
   for (const [cid, d] of plan){
-    try { await DB.insert('eventos', {colaborador_id:cid, tipo:'folga', data_inicio:d, data_fim:d, observacao:`Folga do plantão de ${fmtD(e.data)}`, criado_por:S.profile.id, criado_por_nome:S.profile.nome, escala_id:e.id}); n++; } catch(x){ falhas++; }
+    const who = String(cid).startsWith('p:') ? {profile_id:String(cid).slice(2), colaborador_id:null} : {colaborador_id:cid};
+    try { await DB.insert('eventos', {...who, tipo:'folga', data_inicio:d, data_fim:d, observacao:`Folga do plantão de ${fmtD(e.data)}`, criado_por:S.profile.id, criado_por_nome:S.profile.nome, escala_id:e.id}); n++; } catch(x){ falhas++; }
   }
   if (falhas) toast(`${falhas} folga(s) não puderam ser alteradas — ajuste pelo calendário.`, 'err');
   return n;
@@ -3317,12 +3363,14 @@ async function exportEsc(){
   const [a,b] = monthRange(), st = S.esc;
   const list = escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.ac || sameId(e.acao_id, st.ac))).sort((x,y) => x.data.localeCompare(y.data));
   const rows = [['Data','Dia','Tipo','Ação','Base','Início','Fim','Horas (sem almoço)','Pessoas','Qtde','Horas totais','Responsável','Situação','Observação']];
-  list.forEach(e => { const h = durH(e), n = (e.membros||[]).length;
-    rows.push([fmtD(e.data), cap(parseISO(e.data).toLocaleDateString('pt-BR',{weekday:'long'})), ESC_T[e.tipo].label, e.tipo==='hora_extra' ? (acaoOf(e.acao_id)?.nome||'') : '', bName(e.base), hhmm(e.hora_inicio), hhmm(e.hora_fim), Math.round(h*100)/100, (e.membros||[]).map(cid => CX(cid)?.nome || '').join(', '), n, Math.round(h*n*100)/100, P(e.responsavel_id)?.nome || '', ESC_S[e.status]?.label, e.observacao || '']); });
-  const per = escStats(list).map(r => [CX(r.cid)?.nome || '', bName(CX(r.cid)?.base), r.pl, Math.round(r.hPl*100)/100, r.nHe, Math.round(r.he*100)/100, Math.round(r.total*100)/100]).sort((x,y) => y[6]-x[6]);
+  list.forEach(e => { const h = durH(e), n = nPess(e);
+    rows.push([fmtD(e.data), cap(parseISO(e.data).toLocaleDateString('pt-BR',{weekday:'long'})), ESC_T[e.tipo].label, e.tipo==='hora_extra' ? (acaoOf(e.acao_id)?.nome||'') : '', bName(e.base), hhmm(e.hora_inicio), hhmm(e.hora_fim), Math.round(h*100)/100, escPessoas(e).map(k => PX(k)?.nome || '').join(', '), n, Math.round(h*n*100)/100, P(e.responsavel_id)?.nome || '', ESC_S[e.status]?.label, e.observacao || '']); });
+  const manX = (st.t && st.t !== 'manual') || st.ac ? [] : manV().filter(m => m.data >= a && m.data <= b);
+  manX.forEach(m => rows.push([fmtD(m.data), cap(parseISO(m.data).toLocaleDateString('pt-BR',{weekday:'long'})), 'Lançamento manual', m.motivo || '', bName(m.base), '', '', +m.horas || 0, PX(manKey(m))?.nome || '', 1, +m.horas || 0, m.criado_por_nome || '', '', '']));
+  const per = escStats(st.t === 'manual' ? [] : list, manX).map(r => [PX(r.cid)?.nome || '', bName(PX(r.cid)?.base), r.pl, Math.round(r.hPl*100)/100, r.nHe, Math.round(r.he*100)/100, Math.round(r.man*100)/100, Math.round(r.total*100)/100]).sort((x,y) => y[7]-x[7]);
   const wb = X.utils.book_new();
   const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [10,12,16,20,13,7,7,10,40,6,10,20,12,30].map(w => ({wch:w}));
-  const ws2 = X.utils.aoa_to_sheet([['Colaborador','Base','Plantões','Horas em plantão','Ações de HE','Horas em ações','Total de horas'], ...per]); ws2['!cols'] = [30,14,10,14,12,14,12].map(w => ({wch:w}));
+  const ws2 = X.utils.aoa_to_sheet([['Pessoa','Base','Plantões','Horas em plantão','Ações de HE','Horas em ações','Horas manuais','Total de horas'], ...per]); ws2['!cols'] = [30,14,10,14,12,14,12,12].map(w => ({wch:w}));
   X.utils.book_append_sheet(wb, ws, 'Escalas'); X.utils.book_append_sheet(wb, ws2, 'Horas por pessoa');
   X.writeFile(wb, `Escalas_${a.slice(0,7)}.xlsx`);
   toast('Planilha de escalas exportada.');
@@ -3347,22 +3395,24 @@ function horasPorBaseHTML(){
   const rows = BKEYS.map(k => {
     const es = S.escalas.filter(e => e.base === k && e.data >= a && e.data <= b && e.status !== 'cancelada');
     const pl = es.filter(e => e.tipo === 'plantao'), he = es.filter(e => e.tipo === 'hora_extra');
-    const hp = pl.reduce((s,e) => s + durH(e) * (e.membros||[]).length, 0), ha = he.reduce((s,e) => s + durH(e) * (e.membros||[]).length, 0);
-    const por = {}; he.forEach(e => { const id = e.acao_id || '_'; por[id] = (por[id] || 0) + durH(e) * (e.membros||[]).length; });
-    const top = escStats(es).sort((x,y) => y.total - x.total).slice(0, 3);
-    return {k, pl, he, hp, ha, tot:hp + ha, pessoas:new Set(es.flatMap(e => e.membros || [])).size, por, top};
+    const mm = S.horasMan.filter(m => m.base === k && m.data >= a && m.data <= b), hm = mm.reduce((s,m) => s + (+m.horas || 0), 0);
+    const hp = pl.reduce((s,e) => s + durH(e) * nPess(e), 0), ha = he.reduce((s,e) => s + durH(e) * nPess(e), 0);
+    const por = {}; he.forEach(e => { const id = e.acao_id || '_'; por[id] = (por[id] || 0) + durH(e) * nPess(e); });
+    const top = escStats(es, mm).sort((x,y) => y.total - x.total).slice(0, 3);
+    return {k, pl, he, mm, hp, ha, hm, tot:hp + ha + hm, pessoas:new Set([...es.flatMap(escPessoas), ...mm.map(manKey)]).size, por, top};
   });
   const max = Math.max(1, ...rows.map(r => r.tot)), geral = rows.reduce((s,r) => s + r.tot, 0);
   return `<div class="hb-head"><div><b>${mName}</b><small>Total das 4 bases ${heTag(geral)}</small></div>
-      <div class="lg2"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span></div></div>
-    <div class="hb-bars">${rows.map(r => `<button class="hb-bar" data-act="esc-base-go" data-k="${r.k}"><span class="hb-n">${emblem(r.k,10,3)}${BASES[r.k].nome}</span><span class="hb-t"><i style="width:${r.hp/max*100}%;background:${ESC_T.plantao.color}"></i><i style="width:${r.ha/max*100}%;background:${ESC_T.hora_extra.color}"></i></span>${heTag(r.tot)}</button>`).join('')}</div>
+      <div class="lg2"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span><span style="--c:${MAN_COR}"><i></i>Manuais</span><button class="btn sm pri" data-act="hm-new">${ic('plus',14)}Lançar horas</button></div></div>
+    <div class="hb-bars">${rows.map(r => `<button class="hb-bar" data-act="esc-base-go" data-k="${r.k}"><span class="hb-n">${emblem(r.k,10,3)}${BASES[r.k].nome}</span><span class="hb-t"><i style="width:${r.hp/max*100}%;background:${ESC_T.plantao.color}"></i><i style="width:${r.ha/max*100}%;background:${ESC_T.hora_extra.color}"></i><i style="width:${r.hm/max*100}%;background:${MAN_COR}"></i></span>${heTag(r.tot)}</button>`).join('')}</div>
     <div class="hb-grid">${rows.map(r => `<div class="hb-c" style="--c:${BASES[r.k].c}">
       <div class="hb-ch">${emblem(r.k,12,4)}<b>${BASES[r.k].nome}</b>${heTag(r.tot)}</div>
       <div class="hb-l"><span>${ic('shift',13)} ${r.pl.length} plantão(ões)</span>${heTag(r.hp)}</div>
       <div class="hb-l"><span>${ic('bolt',13)} ${r.he.length} ação(ões)</span>${heTag(r.ha)}</div>
       ${Object.entries(r.por).sort((x,y) => y[1]-x[1]).map(([id,h]) => `<div class="hb-l sub"><span><i class="ac-dot" style="background:${acaoOf(id)?.cor || ESC_T.hora_extra.color}"></i>${esc(acaoOf(id)?.nome || 'Hora extra')}</span>${heTag(h)}</div>`).join('')}
-      <div class="hb-l"><span>${ic('users',13)} ${r.pessoas} pessoa(s) escalada(s)</span></div>
-      ${r.top.length ? `<div class="hb-top">${r.top.map(t => `<span class="pp">${avatar(CX(t.cid)?.nome,20)}${esc(firstName(CX(t.cid)?.nome||'—'))} <b>+${fmtH(t.total)}</b></span>`).join('')}</div>` : '<p class="muted s" style="margin:6px 0 0">Ninguém escalado no mês.</p>'}
+      <div class="hb-l"><span>${ic('plus',13)} ${r.mm.length} lançamento(s) manual(is)</span>${heTag(r.hm)}</div>
+      <div class="hb-l"><span>${ic('users',13)} ${r.pessoas} pessoa(s) com horas</span></div>
+      ${r.top.length ? `<div class="hb-top">${r.top.map(t => `<span class="pp">${avatar(PX(t.cid)?.nome,20)}${esc(firstName(PX(t.cid)?.nome||'—'))} <b>+${fmtH(t.total)}</b></span>`).join('')}</div>` : '<p class="muted s" style="margin:6px 0 0">Ninguém escalado no mês.</p>'}
       <button class="linkbtn" data-act="esc-base-go" data-k="${r.k}">Ver escalas de ${BASES[r.k].nome}</button>
     </div>`).join('')}</div>`;
 }
@@ -3381,6 +3431,46 @@ function openFolgaCfg(){
 }
 async function saveFolgaRegra(base, regra){
   try { await DB.upsert('config_bases', {base, folga_regra:regra, atualizado_por:S.profile.nome, updated_at:nowISO()}, 'base'); toast(`${BASES[base].nome}: ${FOLGA_REGRAS[regra].label.toLowerCase()}.`); await loadAll(); openFolgaCfg(); } catch(e){ err(e); }
+}
+
+/* ---------- Lançamento manual de horas extras ---------- */
+const MAN_COR = '#0d9488';
+function hmForm(id){
+  const m0 = id ? S.horasMan.find(x => sameId(x.id, id)) : null;
+  const canEd = !m0 || isAdmin() || sameId(m0.criado_por, S.profile.id);
+  const pool = (S.colabsAll.length ? S.colabsAll : S.colabs).filter(c => c.status !== 'desligado' || (m0 && sameId(m0.colaborador_id, c.id)));
+  const lids = S.profiles.filter(p => p.ativo && (p.role === 'lider' || p.role === 'admin'));
+  const cur = m0 ? manKey(m0) : '';
+  const optsP = BKEYS.map(k => `<optgroup label="${BASES[k].nome}">${pool.filter(c => c.base === k).sort((a,b) => a.nome.localeCompare(b.nome,'pt')).map(c => `<option value="${c.id}" data-b="${k}" ${String(c.id) === cur ? 'selected' : ''}>${esc(c.nome)}</option>`).join('')}</optgroup>`).join('')
+    + `<optgroup label="Líderes e encarregado">${lids.map(p => `<option value="p:${p.id}" data-b="${(p.bases||[])[0] || ''}" ${'p:' + p.id === cur ? 'selected' : ''}>${esc(p.nome)}${p.role === 'admin' ? ' (encarregado)' : ''}</option>`).join('')}</optgroup>`;
+  openModal({title: m0 ? 'Lançamento manual de horas' : 'Lançar horas extras manualmente', body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Quem fez', `<select name="pessoa" id="hmp" required ${canEd?'':'disabled'}><option value="">— Escolha a pessoa —</option>${optsP}</select>`, true, true)}
+    ${fld('Base', `<select name="base" id="hmb" ${canEd?'':'disabled'}>${BKEYS.map(k => `<option value="${k}" ${k === (m0?.base || defBase()) ? 'selected' : ''}>${BASES[k].nome}</option>`).join('')}</select>`, false, true)}
+    ${fld('Dia', inp('data', m0?.data || iso(new Date()), `type="date" required ${canEd?'':'disabled'}`), false, true)}
+    ${fld('Horas extras', `<div class="hm-h"><span class="he-plus big">+</span><input name="horas" type="number" min="0.25" max="24" step="0.25" inputmode="decimal" value="${m0?.horas ?? ''}" placeholder="Ex: 2 ou 1,5" required ${canEd?'':'disabled'}><span>horas</span></div>`, false, true, 'Use o valor já sem o almoço.')}
+    ${fld('Motivo', `<textarea name="motivo" rows="2" maxlength="200" required placeholder="Ex: ficou até mais tarde no vazamento da Rua X; apoio na ação de outra base" ${canEd?'':'disabled'}>${esc(m0?.motivo || '')}</textarea>`, true, true)}
+  </form>${m0 ? `<p class="f-hint">Lançado por ${esc(m0.criado_por_nome || '—')} em ${fmtDT(m0.created_at)}.</p>` : ''}`,
+  foot: canEd ? `${m0 ? `<button class="btn danger left" data-act="hm-del" data-id="${m0.id}">${ic('trash',15)}Excluir</button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="hm-save" data-id="${m0?.id || ''}">${ic('check',15)}Salvar</button>` : `<button class="btn pri" data-act="modal-close">Fechar</button>`,
+  onMount: ov => { const p = $('#hmp',ov); p.onchange = () => { const b = p.selectedOptions[0]?.dataset.b; if (b) $('#hmb',ov).value = b; }; }});
+}
+async function hmSave(id){
+  const f = formObj(), h = +String(f.horas || '').replace(',','.');
+  if (!f.pessoa) return toast('Escolha quem fez as horas.','err');
+  if (!f.data) return toast('Informe o dia.','err');
+  if (!h || h <= 0 || h > 24) return toast('Informe as horas (ex: 2 ou 1,5).','err');
+  if (!f.motivo) return toast('Escreva o motivo.','err');
+  const who = f.pessoa.startsWith('p:') ? {profile_id:f.pessoa.slice(2), colaborador_id:null} : {colaborador_id:f.pessoa, profile_id:null};
+  const row = {...who, base:f.base, data:f.data, horas:Math.round(h*100)/100, motivo:f.motivo};
+  try {
+    if (id) await DB.update('horas_manuais', id, row);
+    else await DB.insert('horas_manuais', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
+    closeModal(); toast(`+${fmtH(row.horas)} lançadas para ${PX(f.pessoa)?.nome || 'a pessoa'} em ${fmtD(f.data)}.`);
+    const d = parseISO(f.data); S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); await reload();
+  } catch(e){ err(e); }
+}
+async function hmDel(id){
+  if (!await confirmBox('Excluir este lançamento de horas?')) return;
+  try { await DB.remove('horas_manuais', id); closeModal(); toast('Lançamento excluído.'); await reload(); } catch(e){ err(e); }
 }
 
 
@@ -3834,6 +3924,7 @@ const ACT = {
   'esc-today': () => { const d = new Date(); S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); pgEscalas(); },
   'acoes-open': () => openAcoes(), 'acao-add': () => addAcao(),
   'esc-bases': () => openAcoes('horas'), 'folga-cfg': () => openFolgaCfg(),
+  'hm-new': () => hmForm(), 'hm-open': a => hmForm(a.dataset.id), 'hm-save': a => hmSave(a.dataset.id || null), 'hm-del': a => hmDel(a.dataset.id),
   'esc-base-go': a => { closeModal(); S.esc.b = S.base ? '' : a.dataset.k; if (S.base && S.base !== a.dataset.k) setBase(a.dataset.k); S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'esc-fa': a => { closeModal(); S.esc.ac = a.dataset.k; S.esc.t = ''; S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'fresh': () => { $('#fresh')?.remove(); const y = window.scrollY; render(); window.scrollTo(0, y); },
