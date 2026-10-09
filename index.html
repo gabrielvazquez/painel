@@ -1132,6 +1132,30 @@ button.ac-row:hover b{color:var(--accent)}
 .rc-tgl{display:flex!important;align-items:flex-start!important;gap:8px;text-align:left;line-height:1.4}
 .rc-tgl input{margin-top:2px!important}
 
+/* v2.6 — Hora extra com "+" verde e painel de horas extras */
+.btn.he-btn{background:#059669!important;border-color:#059669!important;color:#fff!important;box-shadow:0 4px 12px rgba(5,150,105,.28)}
+.btn.he-btn:hover{background:#047857!important;border-color:#047857!important}
+.btn.he-btn svg{stroke-width:2.6}
+.btn.he-go{border-color:#a7f3d0;color:#047857;background:#ecfdf5}
+.btn.he-go:hover{background:#d1fae5}
+.rc-pl{display:flex;align-items:center;gap:6px;margin-top:8px}
+.hx-bases .hb-bars{margin:0}
+.hb-bar{cursor:pointer;border-radius:8px;padding:4px 6px!important;margin:0 -6px;transition:background .15s,opacity .15s}
+.hb-bar:hover,.hb-bar.on{background:#f0fdf4}
+.hb-bar.dim{opacity:.45}
+.hb-v{display:flex;flex-direction:column;align-items:flex-end;gap:1px;min-width:74px}
+.hb-v small{color:var(--muted);font-size:10px}
+.hx-fil{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:8px 12px;border-radius:10px;background:#ecfdf5;color:#065f46;font-size:12.5px}
+.hx-fil span{flex:1}
+.rk-i{cursor:pointer;border-radius:8px;padding:4px 6px!important;margin:0 -6px}
+.rk-i.on,button.ac-row.on{background:#f0fdf4}
+.esc-s .he-plus{font-size:13px;padding:2px 10px}
+@media (max-width:760px){.hb-bar{grid-template-columns:96px 1fr auto}.btn.he-btn span,.btn.pri span{display:inline!important}}
+.esc-wrap > *{min-width:0}
+@media (max-width:1150px){.esc-wrap{grid-template-columns:minmax(0,1fr)!important}}
+.esc-tb > *{max-width:100%;min-width:0}
+.rc-tgl[hidden],.rc-pl[hidden]{display:none!important}
+
 </style>
 </head>
 <body>
@@ -1144,7 +1168,7 @@ button.ac-row:hover b{color:var(--accent)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.5';
+const APP_VERSION = '2.6';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1355,6 +1379,9 @@ Object.assign(ICONS, {
   eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
   checks:'<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
   shift:'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>',
+  lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  filter:'<path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/>',
+  hourplus:'<circle cx="10.5" cy="12.5" r="7.5"/><path d="M10.5 8.5v4l2.5 1.5"/><path d="M19.5 2v6M16.5 5h6"/>',
   bolt:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
   menu:'<line x1="4" x2="20" y1="7" y2="7"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="17" y2="17"/>',
   tag:'<path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r=".5"/>',
@@ -1527,6 +1554,7 @@ const S = {
   sort:{col:'nome', dir:1},
   cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''},
   esc:{y:today0.getFullYear(), m:today0.getMonth(), t:'', st:'', q:'', ac:'', b:''},
+  hx:{y:today0.getFullYear(), m:today0.getMonth(), t:'', q:'', ac:'', b:'', p:''},
   est:{q:'', c:'', b:'', al:false}
 };
 const isAdmin = () => S.profile?.role === 'admin';
@@ -1570,6 +1598,7 @@ async function loadAll(){
   try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status}) => ({id,nome,base,cargo,status})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
+  if (!isAdmin()) S.horasMan = [];
   if (S.profile && S.profile.bases === undefined) S.schemaOld = true;
   if (S.base && !allowed(S.base)) S.base = '';
   S.sig = dataSig();
@@ -1590,6 +1619,7 @@ const NAV = [
       ? chsV('problema').filter(c => c.status==='aberto').length
       : chsV('pedido').filter(c => c.status==='aberto').length},
   {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'calclock',color:'#ea580c',m:1, badge:() => S.escalas.filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1)) && (allowed(e.base) || sameId(e.responsavel_id, S.profile.id))).length},
+  {id:'horas',label:'Horas extras',short:'Horas extras',icon:'hourplus',color:'#059669',admin:true},
   {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04',m:1, badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
   {id:'calendario',label:'Ausências',short:'Ausências',icon:'calx',color:'#16a34a'},
   {id:'usuarios',label:'Usuários e bases',short:'Usuários',icon:'shieldu',color:'#475569',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
@@ -1600,11 +1630,12 @@ const SUBS = {
   frota:'Carros e motos com a situação atualizada pelas bases',
   diario:'Problemas das bases e pedidos do encarregado',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
-  escalas:'Plantões de sábado e ações de hora extra: quem vai, quem é o responsável e quantas horas',
+  escalas:'Plantões de sábado (dão folga) e ações de hora extra (contam horas): quem vai e quem é o responsável',
+  horas:'Só o encarregado vê: horas das ações e lançamentos manuais, por base, por ação e por pessoa',
   estoque:'Estoque total e de cada base, com avisos quando um item estiver acabando',
   usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
-const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
+const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
 
 function go(page){ if ($('#ov')) closeModal(); $('#npanel')?.remove(); S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
@@ -1961,7 +1992,7 @@ function openColab(id){
         <div><small>Admissão</small><b>${fmtD(c.admissao)}</b></div>
         <div><small>Líder responsável</small><b>${esc(l?.nome||'—')}</b></div>
         ${(() => { const m0 = iso(new Date(new Date().getFullYear(), new Date().getMonth(), 1)); const r = escStats(S.escalas.filter(x => x.data >= m0 && x.data <= iso(new Date())), S.horasMan.filter(x => x.data >= m0)).find(x => sameId(x.cid, c.id));
-          return `<div><small>Escalas neste mês</small><b>${r ? `${r.pl} plantão(ões) — +${fmtH(r.total)} de hora extra` : 'Nenhuma até hoje'}</b></div>`; })()}
+          return `<div><small>Escalas neste mês</small><b>${r ? [r.pl ? r.pl + ' plantão(ões)' : '', r.nHe ? r.nHe + ' ação(ões)' : ''].filter(Boolean).join(' — ') + (isAdmin() && r.total ? ` — +${fmtH(r.total)} de hora extra` : '') || 'Nenhuma até hoje' : 'Nenhuma até hoje'}</b></div>`; })()}
         ${c.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(c.observacoes)}</div></div>`:''}
       </div>
       <div class="sec">Veículo vinculado</div>
@@ -3035,21 +3066,21 @@ const escColor = e => e.tipo === 'plantao' ? ESC_T.plantao.color : (acaoOf(e.aca
 const ausenteEm = (cid, ds) => S.eventos.find(e => sameId(e.colaborador_id, cid) && e.data_inicio <= ds && e.data_fim >= ds);
 const monthRange = () => { const {y,m} = S.esc; return [iso(new Date(y,m,1)), iso(new Date(y,m+1,0))]; };
 const respList = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || p.role === 'lider')).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
-// Responsável conta horas e folga? (padrão: sim no plantão, não nas ações)
-const respConta = e => e.resp_conta == null ? e.tipo === 'plantao' : !!e.resp_conta;
+// Plantão: a equipe ganha folga e NÃO conta hora extra; o responsável não ganha folga nem horas.
+// Hora extra (ações): conta horas; o responsável conta só se marcado.
+const respConta = e => e.tipo === 'hora_extra' && !!e.resp_conta;
 const escPessoas = e => { const ks = (e.membros||[]).map(String); if (respConta(e) && e.responsavel_id) ks.push('p:' + e.responsavel_id); return [...new Set(ks)]; };
 const nPess = e => escPessoas(e).length;
 const PX = k => String(k).startsWith('p:') ? profPessoa(String(k).slice(2)) : CX(k);
-const manV = () => S.horasMan.filter(m => (!S.esc.b || m.base === S.esc.b) && (!S.base || m.base === S.base));
 const manKey = m => m.profile_id ? 'p:' + m.profile_id : String(m.colaborador_id);
 function escStats(list, man = []){
   const per = {}, get = k => per[k] = per[k] || {cid:k, he:0, nHe:0, pl:0, hPl:0, man:0, nMan:0};
   list.filter(e => e.status !== 'cancelada').forEach(e => escPessoas(e).forEach(k => {
     const p = get(k), h = durH(e);
-    if (e.tipo === 'hora_extra'){ p.he += h; p.nHe++; } else { p.pl++; p.hPl += h; }
+    if (e.tipo === 'hora_extra'){ p.he += h; p.nHe++; } else p.pl++;
   }));
   man.forEach(m => { const p = get(manKey(m)); p.man += +m.horas || 0; p.nMan++; });
-  return Object.values(per).map(p => ({...p, total: p.he + p.hPl + p.man}));
+  return Object.values(per).map(p => ({...p, total: p.he + p.man}));
 }
 function pgEscalas(){
   const st = S.esc, [a,b] = monthRange(), today = iso(new Date());
@@ -3058,8 +3089,7 @@ function pgEscalas(){
   const ativos = month.filter(e => e.status !== 'cancelada');
   const pl = ativos.filter(e => e.tipo === 'plantao'), he = ativos.filter(e => e.tipo === 'hora_extra');
   const pessoas = new Set(ativos.flatMap(e => e.membros || []));
-  const manM = manV().filter(m => m.data >= a && m.data <= b);
-  const horas = ativos.reduce((s,e) => s + durH(e) * nPess(e), 0) + manM.reduce((s,m) => s + (+m.horas || 0), 0);
+  const folgasM = S.eventos.filter(ev => ev.escala_id && ev.data_inicio >= a && ev.data_inicio <= b && (!st.b || (S.escalas.find(x => sameId(x.id, ev.escala_id))||{}).base === st.b)).length;
   const sat = nextSat();
   const bases = BKEYS.filter(k => (!S.base || k === S.base) && (!st.b || k === st.b));
   const satCards = bases.map(k => {
@@ -3069,13 +3099,12 @@ function pgEscalas(){
     return es.map(e => { const r = P(e.responsavel_id); return `<button class="sat-c" style="--c:${BASES[k].c}" data-act="esc-open" data-id="${e.id}">
       <span class="sat-h">${emblem(k,12,4)}<b>${BASES[k].nome}</b>${chip(ESC_S[e.status])}</span>
       <span class="sat-r ${r?'':'none'}">${ic('shield',13)}${r ? 'Responsável: <b>' + esc(r.nome) + '</b>' + (sameId(r.id, S.profile.id) ? ' (você)' : '') : 'Sem responsável definido'}</span>
-      <span class="sat-t">${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)} ${heTag(durH(e))} ${almocoTag(e)}${e.folga_data ? ` <span class="folga-t">${ic('cal',12)}Folga ${wdShort(e.folga_data)}</span>` : ''}</span>
+      <span class="sat-t">${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}${e.folga_data ? ` <span class="folga-t">${ic('cal',12)}Folga ${wdShort(e.folga_data)}</span>` : ''}</span>
       <span class="sat-m">${(e.membros||[]).map(cid => `<span class="pp">${avatar(CX(cid)?.nome,22)}${esc(firstName(CX(cid)?.nome))}</span>`).join('') || '<span class="muted">Sem pessoas</span>'}</span></button>`; }).join('');
   }).join('');
-  const rank = escStats(month, manM).sort((x,y) => y.total - x.total).slice(0, 10);
-  const maxR = Math.max(1, ...rank.map(r => r.total));
-  const porAcao = {}; ativos.forEach(e => { const k = e.tipo === 'plantao' ? '_pl' : (e.acao_id || '_'); const o = porAcao[k] = porAcao[k] || {e, n:0, h:0}; o.n++; o.h += durH(e) * nPess(e); });
-  if (manM.length) porAcao._man = {e:{tipo:'manual'}, n:manM.length, h:manM.reduce((s,m) => s + (+m.horas || 0), 0)};
+  const rank = escStats(month).map(r => ({...r, n:r.pl + r.nHe})).sort((x,y) => y.n - x.n || y.pl - x.pl).slice(0, 10);
+  const maxR = Math.max(1, ...rank.map(r => r.n));
+  const porAcao = {}; ativos.forEach(e => { const k = e.tipo === 'plantao' ? '_pl' : (e.acao_id || '_'); const o = porAcao[k] = porAcao[k] || {e, n:0, p:0}; o.n++; o.p += e.tipo === 'plantao' ? (e.membros||[]).length : nPess(e); });
   const acoesUsadas = S.acoes.filter(x => S.escalas.some(e => sameId(e.acao_id, x.id)) || x.ativo !== false).sort((x,y) => x.nome.localeCompare(y.nome,'pt'));
   $('#page').innerHTML = `
   <div class="esc-head">
@@ -3084,14 +3113,15 @@ function pgEscalas(){
       <button class="btn sm" data-act="esc-today">Hoje</button>
     </div>
     <div class="tb-right">
-      <button class="btn" data-act="acoes-open">${ic('tag',16)}<span class="hide-s">Ações e horas</span></button>
+      ${isAdmin() ? `<button class="btn he-go" data-nav="horas">${ic('hourplus',16)}<span class="hide-s">Painel de horas extras</span></button>` : ''}
+      <button class="btn" data-act="acoes-open">${ic('tag',16)}<span class="hide-s">Ações</span></button>
       <button class="btn" data-act="folga-cfg">${ic('cal',16)}<span class="hide-s">Folgas</span></button>
       <button class="btn" data-act="esc-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button>
-      <button class="btn" data-act="esc-new" data-k="hora_extra">${ic('bolt',16)}<span class="hide-s">Hora extra</span></button>
-      <button class="btn pri" data-act="esc-new" data-k="plantao">${ic('plus',16)}Plantão</button>
+      <button class="btn he-btn" data-act="esc-new" data-k="hora_extra">${ic('plus',16)}<span>Hora extra</span></button>
+      <button class="btn pri" data-act="esc-new" data-k="plantao">${ic('plus',16)}<span>Plantão</span></button>
     </div>
   </div>
-  <p class="hint" style="margin:10px 0 0">${ic('info',14)}Painel aberto para todos os líderes. Horas extras contam plantões e ações; turnos acima de 6 h descontam 1 h de almoço.</p>
+  <p class="hint" style="margin:10px 0 0">${ic('info',14)}<span>Painel aberto para todos os líderes. <b>Plantão de sábado</b> dá folga para a equipe (não conta hora extra; o responsável não tem folga). <b>Hora extra</b> é para as ações: conta horas, e turnos acima de 6 h descontam 1 h de almoço.</span></p>
   ${BKEYS.some(k => allowed(k) && !S.cfgBases.find(c => c.base === k)) ? `<button class="cfg-tip" data-act="folga-cfg">${ic('cal',15)}<span>Defina quando cai a folga do plantão de sábado na sua base. A folga é lançada no calendário automaticamente.</span><b>Configurar</b></button>` : ''}
   <div class="sec-h"><h3>Plantão de sábado, ${fmtD(sat)}</h3><span>${sat === today ? 'é hoje' : 'próximo sábado'}</span></div>
   <div class="sat-grid">${satCards}</div>
@@ -3099,12 +3129,12 @@ function pgEscalas(){
     <div class="card ek" style="--c:${ESC_T.plantao.color}"><span>${ic('shift',16)}Plantões no mês</span><b>${pl.length}</b></div>
     <div class="card ek" style="--c:${ESC_T.hora_extra.color}"><span>${ic('bolt',16)}Ações de hora extra</span><b>${he.length}</b></div>
     <div class="card ek" style="--c:#4f63d6"><span>${ic('users',16)}Pessoas escaladas</span><b>${pessoas.size}</b></div>
-    <div class="card ek ek-he" style="--c:${HE_COR}" data-act="esc-bases" role="button"><span>${ic('clock',16)}Horas extras no mês</span><b>+${fmtH(horas)}</b><small>plantões + ações, sem almoço — toque para ver por base</small></div>
+    <div class="card ek" style="--c:#16a34a"><span>${ic('cal',16)}Folgas de plantão</span><b>${folgasM}</b><small>lançadas no calendário neste mês</small></div>
   </div>
   <div class="esc-wrap">
     <div>
       <div class="toolbar esc-tb">
-        <div class="seg">${[['','Todas'],['plantao','Plantões'],['hora_extra','Horas extras'],['manual','Manuais']].map(([k,l]) => `<button class="${st.t===k?'on':''}" data-act="esc-ft" data-k="${k}">${l}</button>`).join('')}</div>
+        <div class="seg">${[['','Todas'],['plantao','Plantões'],['hora_extra','Horas extras']].map(([k,l]) => `<button class="${st.t===k?'on':''}" data-act="esc-ft" data-k="${k}">${l}</button>`).join('')}</div>
         <select class="sel" id="escac"><option value="">Todas as ações</option>${opts(acoesUsadas.map(x => [x.id, x.nome]), st.ac)}</select>
         ${!S.base ? `<select class="sel" id="escb"><option value="">Todas as bases</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), st.b)}</select>` : ''}
         <select class="sel" id="escst"><option value="">Todas as situações</option>${opts(Object.entries(ESC_S).map(([k,o]) => [k,o.label]), st.st)}</select>
@@ -3113,12 +3143,12 @@ function pgEscalas(){
       <div id="esclist"></div>
     </div>
     <div class="esc-side">
-      <div class="card"><div class="card-h"><div><h3>Horas por pessoa no mês</h3><p class="ch-sub">Plantões, ações e lançamentos manuais</p></div><button class="btn sm" data-act="hm-new">${ic('plus',14)}Lançar horas</button></div><div class="card-b">
-        ${rank.length ? `<div class="rk">${rank.map(r => { const c = PX(r.cid); return `<button class="rk-i" ${C(r.cid)?`data-act="c-open" data-id="${r.cid}"`:''}><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')} ${heTag(r.total)}</b><small>${[r.pl ? r.pl + (r.pl > 1 ? ' plantões' : ' plantão') + ' (' + fmtH(r.hPl) + ')' : '', r.nHe ? r.nHe + (r.nHe > 1 ? ' ações' : ' ação') + ' (' + fmtH(r.he) + ')' : '', r.nMan ? r.nMan + ' manual (' + fmtH(r.man) + ')' : ''].filter(Boolean).join(' — ')}${c?.lider ? ' — ' + esc(c.cargo) : c && !C(r.cid) ? ' — ' + bName(c.base) : ''}</small></span></span><span class="rk-b"><i style="width:${Math.round(r.hPl/maxR*100)}%;background:${ESC_T.plantao.color}"></i><i style="width:${Math.round(r.he/maxR*100)}%;background:${ESC_T.hora_extra.color}"></i><i style="width:${Math.round(r.man/maxR*100)}%;background:${MAN_COR}"></i></span></button>`; }).join('')}</div>
-          <div class="lg2" style="margin-top:12px"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span><span style="--c:${MAN_COR}"><i></i>Manuais</span></div>` : empty('users','Ninguém escalado neste mês')}
+      <div class="card"><div class="card-h"><div><h3>Revezamento no mês</h3><p class="ch-sub">Quantas vezes cada pessoa foi escalada</p></div></div><div class="card-b">
+        ${rank.length ? `<div class="rk">${rank.map(r => { const c = PX(r.cid); return `<button class="rk-i" ${C(r.cid)?`data-act="c-open" data-id="${r.cid}"`:''}><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')}</b><small>${[r.pl ? r.pl + (r.pl > 1 ? ' plantões' : ' plantão') : '', r.nHe ? r.nHe + (r.nHe > 1 ? ' ações' : ' ação') : ''].filter(Boolean).join(' — ')}${c && !C(r.cid) ? ' — ' + bName(c.base) : ''}</small></span></span><span class="rk-b"><i style="width:${Math.round(r.pl/maxR*100)}%;background:${ESC_T.plantao.color}"></i><i style="width:${Math.round(r.nHe/maxR*100)}%;background:${ESC_T.hora_extra.color}"></i></span></button>`; }).join('')}</div>
+          <div class="lg2" style="margin-top:12px"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações de hora extra</span></div>` : empty('users','Ninguém escalado neste mês')}
       </div></div>
-      <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>Horas extras por tipo e ação</h3><p class="ch-sub">Neste mês — toque para filtrar</p></div><button class="btn sm" data-act="esc-bases">${ic('dash',14)}Por base</button></div><div class="card-b">
-        ${Object.keys(porAcao).length ? Object.entries(porAcao).sort((x,y) => y[1].h - x[1].h).map(([k,o]) => `<button class="ac-row" ${k==='_man' ? `data-act="esc-ft" data-k="manual"` : k!=='_pl' && k!=='_' ? `data-act="esc-fa" data-k="${k}"` : `data-act="esc-ft" data-k="plantao"`}><span class="ac-dot" style="background:${o.e.tipo === 'manual' ? MAN_COR : escColor(o.e)}"></span><b>${esc(k==='_pl' ? 'Plantões de sábado' : k==='_man' ? 'Lançamentos manuais' : escTitle(o.e))}</b><span class="muted">${o.n}×</span>${heTag(o.h)}</button>`).join('') : '<p class="muted" style="margin:0">Nenhuma escala neste mês.</p>'}
+      <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>Por tipo e ação</h3><p class="ch-sub">Neste mês — toque para filtrar</p></div></div><div class="card-b">
+        ${Object.keys(porAcao).length ? Object.entries(porAcao).sort((x,y) => y[1].n - x[1].n).map(([k,o]) => `<button class="ac-row" ${k!=='_pl' && k!=='_' ? `data-act="esc-fa" data-k="${k}"` : `data-act="esc-ft" data-k="${k==='_pl'?'plantao':'hora_extra'}"`}><span class="ac-dot" style="background:${escColor(o.e)}"></span><b>${esc(k==='_pl' ? 'Plantões de sábado' : escTitle(o.e))}</b><span class="muted">${o.n}× — ${o.p} pessoa(s)</span></button>`).join('') : '<p class="muted" style="margin:0">Nenhuma escala neste mês.</p>'}
       </div></div>
     </div>
   </div>`;
@@ -3130,21 +3160,11 @@ function pgEscalas(){
 }
 function escList(){
   const st = S.esc, [a,b] = monthRange(), q = st.q.toLowerCase().trim(), today = iso(new Date());
-  const list = (st.t === 'manual' ? [] : escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.st || e.status === st.st) && (!st.ac || sameId(e.acao_id, st.ac)) &&
+  const list = (escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.st || e.status === st.st) && (!st.ac || sameId(e.acao_id, st.ac)) &&
     (!q || [escTitle(e), e.observacao, bName(e.base), P(e.responsavel_id)?.nome, ...(e.membros||[]).map(cid => CX(cid)?.nome)].join(' ').toLowerCase().includes(q))));
-  const mans = (!st.t || st.t === 'manual') && !st.ac && !st.st ? manV().filter(m => m.data >= a && m.data <= b && (!q || [m.motivo, PX(manKey(m))?.nome, bName(m.base)].join(' ').toLowerCase().includes(q))) : [];
-  const items = [...list.map(e => ({d:e.data, t:tMin(e.hora_inicio), e})), ...mans.map(m => ({d:m.data, t:9999, m}))].sort((x,y) => x.d.localeCompare(y.d) || x.t - y.t);
-  if (!items.length){ $('#esclist').innerHTML = `<div class="card">${empty('shift','Nada encontrado neste mês', st.ac || st.st || q ? 'Ajuste os filtros acima.' : 'Use "Plantão", "Hora extra" ou "Lançar horas".')}</div>`; return; }
-  $('#esclist').innerHTML = items.map(({e, m}) => m ? manCard(m) : escCard(e, today)).join('');
-}
-function manCard(m){
-  const d = parseISO(m.data), wk = cap(d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')), p = PX(manKey(m));
-  return `<div class="card esc man" style="--c:${MAN_COR}" data-act="hm-open" data-id="${m.id}" role="button" tabindex="0">
-    <div class="esc-d"><small>${wk}</small><b>${d.getDate()}</b></div>
-    <div class="esc-b">
-      <div class="esc-t"><span class="esc-tipo">${ic('plus',13)}Manual</span><b>${esc(m.motivo || 'Hora extra lançada')}</b>${bTag(m.base)}</div>
-      <div class="esc-m"><span class="pp">${avatar(p?.nome,22)}${esc(p?.nome || '—')}</span>${heTag(+m.horas || 0)}<span>Lançado por ${esc(firstName(m.criado_por_nome || ''))}</span></div>
-    </div></div>`;
+  const items = list.map(e => ({d:e.data, t:tMin(e.hora_inicio), e})).sort((x,y) => x.d.localeCompare(y.d) || x.t - y.t);
+  if (!items.length){ $('#esclist').innerHTML = `<div class="card">${empty('shift','Nada encontrado neste mês', st.ac || st.st || q ? 'Ajuste os filtros acima.' : 'Use "+ Plantão" ou "+ Hora extra".')}</div>`; return; }
+  $('#esclist').innerHTML = items.map(({e}) => escCard(e, today)).join('');
 }
 function escCard(e, today){
   {
@@ -3155,7 +3175,7 @@ function escCard(e, today){
       <div class="esc-d ${isToday?'today':''}"><small>${wk}</small><b>${d.getDate()}</b></div>
       <div class="esc-b">
         <div class="esc-t"><span class="esc-tipo">${ic(ESC_T[e.tipo].icon,13)}${ESC_T[e.tipo].short}</span><b>${esc(escTitle(e))}</b>${bTag(e.base)}</div>
-        <div class="esc-m"><span>${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}</span>${heTag(h, ' por pessoa')}${almocoTag(e)}${n > 1 ? `<span class="he-tot">${heTag(h*n)} no total</span>` : ''}${e.tipo === 'plantao' && e.folga_data ? `<span class="folga-t">${ic('cal',12)}Folga ${wdShort(e.folga_data)}</span>` : ''}</div>
+        <div class="esc-m"><span>${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}</span>${e.tipo === 'hora_extra' ? `${heTag(h, ' por pessoa')}${almocoTag(e)}${n > 1 ? `<span class="he-tot">${heTag(h*n)} no total</span>` : ''}` : e.folga_data ? `<span class="folga-t">${ic('cal',12)}Folga ${wdShort(e.folga_data)}</span>` : '<span class="muted s">sem folga</span>'}</div>
         <div class="esc-r ${r?'':'none'}">${ic('shield',12)}${r ? 'Responsável: <b>' + esc(r.nome) + '</b>' + (respConta(e) ? ' <span class="rc">conta horas</span>' : '') : (e.tipo === 'plantao' ? 'Sem responsável — defina um' : 'Sem responsável')}</div>
         <div class="esc-p">${(e.membros||[]).slice(0,8).map(cid => { const c = CX(cid), aus = ausenteEm(cid, e.data); return `<span class="pp ${aus?'warn':''}" title="${aus?'Ausente: '+(EV[aus.tipo]||EV.outro).label:''}">${avatar(c?.nome,22)}${esc(firstName(c?.nome||'—'))}${aus?ic('alert',12):''}</span>`; }).join('')}${(e.membros||[]).length>8?`<span class="pp more">+${(e.membros||[]).length-8}</span>`:''}${!(e.membros||[]).length?'<span class="muted s">Ninguém escalado ainda</span>':''}</div>
       </div>
@@ -3186,7 +3206,8 @@ function escForm(id, preset={}){
     <div class="f full resp-box" id="frespbox"><label>${ic('shield',14)} Responsável <span id="frespreq">${tipo==='plantao'?'pelo plantão <em>*</em>':'pela ação (opcional)'}</span></label>
       <select name="responsavel_id" id="fresp">${respOpts(e.responsavel_id)}</select>
       <span class="f-hint" id="fresphint">${tipo==='plantao' ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.'}</span>
-      <label class="tgl rc-tgl"><input type="checkbox" name="resp_conta" id="frc" ${respConta(e) ? 'checked' : ''}> O responsável também trabalha: conta horas extras${tipo==='plantao' ? ' e recebe folga' : ''}</label></div>
+      <label class="tgl rc-tgl" id="frcl" ${tipo==='hora_extra'?'':'hidden'}><input type="checkbox" name="resp_conta" id="frc" ${respConta(e) ? 'checked' : ''}> O responsável também trabalha na ação: conta horas extras</label>
+      <span class="f-hint rc-pl" id="frcpl" ${tipo==='plantao'?'':'hidden'}>${ic('info',13)} O responsável coordena o plantão: não recebe folga e não conta hora extra.</span></div>
     <div class="f full" id="facao" ${tipo==='hora_extra'?'':'hidden'}><label>Ação <em>*</em></label>
       <select name="acao_id" id="facs">${acaoOpts(e.acao_id)}</select>
       <input name="acao_nova" id="fnova" placeholder="Nome da nova ação (ex: Ação Noturna, Mutirão de cortes)" hidden maxlength="60" style="margin-top:8px"></div>
@@ -3219,7 +3240,7 @@ function escForm(id, preset={}){
       $('#fpick',ov).innerHTML = people.filter(c => !q || c.nome.toLowerCase().includes(q)).map(c => {
         const aus = ausenteEm(c.id, ds), dup = S.escalas.find(x => !sameId(x.id, id) && x.data === ds && x.status !== 'cancelada' && (x.membros||[]).map(String).includes(String(c.id)));
         const r = st[String(c.id)];
-        return `<label class="pk ${sel.has(String(c.id))?'on':''}"><input type="checkbox" value="${c.id}" ${sel.has(String(c.id))?'checked':''}>${avatar(c.nome,30)}<span class="pk-t"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'')}${c.base !== base ? ' — ' + bName(c.base) : ''}${r ? ` — no mês: ${fmtH(r.total)}` : ''}</small>
+        return `<label class="pk ${sel.has(String(c.id))?'on':''}"><input type="checkbox" value="${c.id}" ${sel.has(String(c.id))?'checked':''}>${avatar(c.nome,30)}<span class="pk-t"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'')}${c.base !== base ? ' — ' + bName(c.base) : ''}${r ? ` — no mês: ${[r.pl ? r.pl + ' plantão(ões)' : '', r.nHe ? r.nHe + ' ação(ões)' : ''].filter(Boolean).join(', ')}` : ''}</small>
           ${aus?`<em class="w">${ic('alert',12)} ${(EV[aus.tipo]||EV.outro).label} nesta data</em>`:''}${dup?`<em class="w">${ic('alert',12)} Já escalado: ${esc(escTitle(dup))}</em>`:''}${c.status && c.status!=='ativo'?`<em class="w">${CSTATUS[c.status]?.label}</em>`:''}</span><i class="pk-c">${ic('check',14)}</i></label>`; }).join('') || '<p class="muted" style="margin:8px 0">Nenhum colaborador nesta base. Marque "Outras bases" para escolher de outra.</p>';
       $('#fcount',ov).textContent = sel.size ? `(${sel.size} selecionado${sel.size>1?'s':''})` : '';
       $$('#fpick input',ov).forEach(i => i.onchange = () => { i.checked ? sel.add(i.value) : sel.delete(i.value); i.closest('.pk').classList.toggle('on', i.checked); $('#fcount',ov).textContent = sel.size ? `(${sel.size} selecionado${sel.size>1?'s':''})` : ''; ov._drawFolga && ov._drawFolga(); });
@@ -3243,7 +3264,7 @@ function escForm(id, preset={}){
       const d = folgaDef();
       $('#ffh',ov).innerHTML = `Regra de ${BASES[base].nome}: <b>${rg ? rg.label : 'não definida'}</b>${S.cfgBases.find(c => c.base === base) ? '' : ' (defina em Escalas → Folgas)'}. ${d ? `Folga lançada no calendário em <b>${wdShort(d)}</b> para quem for escalado.` : ffm.value === 'nenhuma' ? 'Ninguém recebe folga por este plantão.' : 'Escolha a data da folga.'}`;
       const pool = S.colabsAll.length ? S.colabsAll : S.colabs;
-      const keys = [...sel]; const rid = $('#fresp',ov).value; if ($('#frc',ov).checked && rid) keys.push('p:' + rid);
+      const keys = [...sel];
       $('#ffpl',ov).innerHTML = [...new Set(keys)].map(cid => { const c = String(cid).startsWith('p:') ? PX(cid) : pool.find(x => sameId(x.id, cid)), o = ov._fp[cid] || {on:true, d:''};
         return `<div class="ffp"><span>${avatar(c?.nome,22)}${esc(c?.nome||'—')}</span><label class="tgl"><input type="checkbox" data-cid="${cid}" class="ffp-on" ${o.on !== false ? 'checked' : ''}> Folga</label><input type="date" class="ffp-d" data-cid="${cid}" value="${o.d || d}" ${o.on === false || ffm.value === 'nenhuma' ? 'disabled' : ''}></div>`; }).join('') || '<p class="muted s" style="margin:6px 0">Escolha quem vai para ajustar a folga de cada um.</p>';
       $$('.ffp-on',ov).forEach(i => i.onchange = () => { const o = ov._fp[i.dataset.cid] = ov._fp[i.dataset.cid] || {on:true, d:''}; o.on = i.checked; drawFolga(); });
@@ -3255,8 +3276,7 @@ function escForm(id, preset={}){
     $('#fps',ov).oninput = draw; $('#fdata',ov).onchange = () => { draw(); drawFolga(); }; $('#fall',ov).onchange = draw;
     $('#fhi',ov).oninput = showDur; $('#fhf',ov).oninput = showDur;
     $('#fbase',ov).onchange = () => { if (!$('#fresp',ov).value){ const l = liderOf($('#fbase',ov).value); if (l) $('#fresp',ov).value = l.id; } if (!id){ const r = regra(); ffm.value = r === 'nenhuma' ? 'nenhuma' : r === 'manual' ? 'data' : 'auto'; } draw(); drawFolga(); };
-    $('#frc',ov).onchange = () => drawFolga(); $('#fresp',ov).addEventListener('change', () => drawFolga());
-    $$('[name=tipo]',ov).forEach(r => r.onchange = () => { const pl = r.value === 'plantao'; $('#facao',ov).hidden = pl; $('#ffolga',ov).hidden = !pl; if (!id) $('#frc',ov).checked = pl;
+    $$('[name=tipo]',ov).forEach(r => r.onchange = () => { const pl = r.value === 'plantao'; $('#facao',ov).hidden = pl; $('#ffolga',ov).hidden = !pl; $('#frcl',ov).hidden = pl; $('#frcpl',ov).hidden = !pl; if (pl) $('#frc',ov).checked = false;
       $('#frespreq',ov).innerHTML = pl ? 'pelo plantão <em>*</em>' : 'pela ação (opcional)';
       $('#fresphint',ov).textContent = pl ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.';
       if (!id){ $('#fhi',ov).value = pl ? '07:00' : '17:00'; $('#fhf',ov).value = pl ? '13:00' : '21:00'; $('#fdata',ov).value = pl ? nextSat() : iso(new Date()); showDur(); draw(); } });
@@ -3286,11 +3306,11 @@ async function saveEsc(id){
   if (f.tipo === 'plantao' && (f.status || 'planejada') !== 'cancelada'){
     folga = ov?._folgaDef ? ov._folgaDef() : null;
     if (f.folga_modo !== 'nenhuma' && !folga) return toast('Escolha a data da folga do plantão (ou marque "Sem folga").','err');
-    const ks = membros.map(String); if (f.resp_conta && f.responsavel_id) ks.push('p:' + f.responsavel_id);
+    const ks = membros.map(String);
     if (f.folga_modo !== 'nenhuma') [...new Set(ks)].forEach(k => { const o = ov._fp[k] || {}; if (o.on === false) return; plan.set(k, o.d || folga); });
     if ([...plan.values()].some(d => d === f.data)) return toast('A folga não pode ser no mesmo dia do plantão.','err');
   }
-  const row = {tipo:f.tipo, base:f.base, data:f.data, hora_inicio:f.hora_inicio, hora_fim:f.hora_fim, acao_id, membros, responsavel_id:f.responsavel_id, resp_conta:!!f.resp_conta, status:f.status || 'planejada', observacao:f.observacao, folga_data:f.tipo === 'plantao' ? folga : null, updated_at:nowISO()};
+  const row = {tipo:f.tipo, base:f.base, data:f.data, hora_inicio:f.hora_inicio, hora_fim:f.hora_fim, acao_id, membros, responsavel_id:f.responsavel_id, resp_conta:f.tipo === 'hora_extra' && !!f.resp_conta, status:f.status || 'planejada', observacao:f.observacao, folga_data:f.tipo === 'plantao' ? folga : null, updated_at:nowISO()};
   try {
     let esc0;
     if (id){ await DB.update('escalas', id, row); esc0 = {id, ...row}; }
@@ -3338,11 +3358,8 @@ async function delEsc(id){
 function openAcoes(tab){
   const adm = isAdmin();
   const uses = id => S.escalas.filter(e => sameId(e.acao_id, id)).length;
-  const t = tab || 'horas';
-  openModal({wide:true, title:'Ações e horas extras', body:`
-    <div class="mtabs"><button class="mtab ${t==='horas'?'on':''}" data-act="mtab" data-k="horas">${ic('dash',14)} Horas extras por base</button><button class="mtab ${t==='acoes'?'on':''}" data-act="mtab" data-k="acoes">${ic('tag',14)} Gerenciar ações</button></div>
-    <div data-pane="horas" ${t==='horas'?'':'hidden'}>${horasPorBaseHTML()}</div>
-    <div data-pane="acoes" ${t==='acoes'?'':'hidden'}>
+  openModal({wide:true, title:'Ações de hora extra', body:`
+    <div>
     <p class="f-hint" style="margin:0 0 12px">Nomes usados para identificar as horas extras (ex: Ação Noturna, Ação MI). ${adm ? 'Você pode renomear e desativar.' : 'Só o encarregado renomeia ou desativa.'}</p>
     <div class="ac-add"><input id="anova" class="ta" style="min-height:0;padding:10px 12px" placeholder="Nova ação" maxlength="60"><button class="btn pri" data-act="acao-add">${ic('plus',15)}Adicionar</button></div>
     <div class="ac-list">${S.acoes.slice().sort((a,b) => (b.ativo!==false)-(a.ativo!==false) || a.nome.localeCompare(b.nome,'pt')).map(a => `<div class="ac-item ${a.ativo===false?'off':''}"><span class="ac-dot" style="background:${a.cor||'#d97706'}"></span>
@@ -3356,22 +3373,20 @@ function openAcoes(tab){
 async function addAcao(){
   const nome = ($('#anova')?.value || '').trim(); if (!nome) return toast('Digite o nome da ação.','err');
   if (S.acoes.some(a => nk(a.nome) === nk(nome))) return toast('Essa ação já existe.','err');
-  try { await DB.insert('acoes', {nome, cor:ACOES_CORES[S.acoes.length % ACOES_CORES.length], ativo:true}); toast(`Ação "${nome}" adicionada.`); await loadAll(); openAcoes('acoes'); } catch(e){ err(e); }
+  try { await DB.insert('acoes', {nome, cor:ACOES_CORES[S.acoes.length % ACOES_CORES.length], ativo:true}); toast(`Ação "${nome}" adicionada.`); await loadAll(); openAcoes(); } catch(e){ err(e); }
 }
 async function exportEsc(){
   let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
   const [a,b] = monthRange(), st = S.esc;
   const list = escalasV().filter(e => e.data >= a && e.data <= b && (!st.t || e.tipo === st.t) && (!st.ac || sameId(e.acao_id, st.ac))).sort((x,y) => x.data.localeCompare(y.data));
-  const rows = [['Data','Dia','Tipo','Ação','Base','Início','Fim','Horas (sem almoço)','Pessoas','Qtde','Horas totais','Responsável','Situação','Observação']];
-  list.forEach(e => { const h = durH(e), n = nPess(e);
-    rows.push([fmtD(e.data), cap(parseISO(e.data).toLocaleDateString('pt-BR',{weekday:'long'})), ESC_T[e.tipo].label, e.tipo==='hora_extra' ? (acaoOf(e.acao_id)?.nome||'') : '', bName(e.base), hhmm(e.hora_inicio), hhmm(e.hora_fim), Math.round(h*100)/100, escPessoas(e).map(k => PX(k)?.nome || '').join(', '), n, Math.round(h*n*100)/100, P(e.responsavel_id)?.nome || '', ESC_S[e.status]?.label, e.observacao || '']); });
-  const manX = (st.t && st.t !== 'manual') || st.ac ? [] : manV().filter(m => m.data >= a && m.data <= b);
-  manX.forEach(m => rows.push([fmtD(m.data), cap(parseISO(m.data).toLocaleDateString('pt-BR',{weekday:'long'})), 'Lançamento manual', m.motivo || '', bName(m.base), '', '', +m.horas || 0, PX(manKey(m))?.nome || '', 1, +m.horas || 0, m.criado_por_nome || '', '', '']));
-  const per = escStats(st.t === 'manual' ? [] : list, manX).map(r => [PX(r.cid)?.nome || '', bName(PX(r.cid)?.base), r.pl, Math.round(r.hPl*100)/100, r.nHe, Math.round(r.he*100)/100, Math.round(r.man*100)/100, Math.round(r.total*100)/100]).sort((x,y) => y[7]-x[7]);
+  const rows = [['Data','Dia','Tipo','Ação','Base','Início','Fim','Horas extras por pessoa','Pessoas','Qtde','Horas extras totais','Responsável','Folga','Situação','Observação']];
+  list.forEach(e => { const he = e.tipo === 'hora_extra', h = he ? durH(e) : 0, ps = he ? escPessoas(e) : (e.membros||[]).map(String);
+    rows.push([fmtD(e.data), cap(parseISO(e.data).toLocaleDateString('pt-BR',{weekday:'long'})), ESC_T[e.tipo].label, he ? (acaoOf(e.acao_id)?.nome||'') : '', bName(e.base), hhmm(e.hora_inicio), hhmm(e.hora_fim), Math.round(h*100)/100, ps.map(k => PX(k)?.nome || '').join(', '), ps.length, Math.round(h*ps.length*100)/100, P(e.responsavel_id)?.nome || '', e.folga_data ? fmtD(e.folga_data) : '', ESC_S[e.status]?.label, e.observacao || '']); });
+  const per = escStats(list).map(r => [PX(r.cid)?.nome || '', bName(PX(r.cid)?.base), r.pl, r.nHe]).sort((x,y) => (y[2]+y[3]) - (x[2]+x[3]));
   const wb = X.utils.book_new();
-  const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [10,12,16,20,13,7,7,10,40,6,10,20,12,30].map(w => ({wch:w}));
-  const ws2 = X.utils.aoa_to_sheet([['Pessoa','Base','Plantões','Horas em plantão','Ações de HE','Horas em ações','Horas manuais','Total de horas'], ...per]); ws2['!cols'] = [30,14,10,14,12,14,12,12].map(w => ({wch:w}));
-  X.utils.book_append_sheet(wb, ws, 'Escalas'); X.utils.book_append_sheet(wb, ws2, 'Horas por pessoa');
+  const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [10,12,16,20,13,7,7,10,40,6,10,20,10,12,30].map(w => ({wch:w}));
+  const ws2 = X.utils.aoa_to_sheet([['Pessoa','Base','Plantões','Ações de hora extra'], ...per]); ws2['!cols'] = [30,14,10,16].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Escalas'); X.utils.book_append_sheet(wb, ws2, 'Revezamento');
   X.writeFile(wb, `Escalas_${a.slice(0,7)}.xlsx`);
   toast('Planilha de escalas exportada.');
 }
@@ -3387,36 +3402,6 @@ function openMore(){
   </div>
   <div class="more-me">${avatar(S.profile.nome,36)}<div><b>${esc(S.profile.nome)}</b><small>${ROLE[S.profile.role]}${ownBases().length ? ' — ' + ownBases().map(bName).join(', ') : ''} — v${APP_VERSION}</small></div></div>`});
 }
-
-/* ---------- Horas extras por base ---------- */
-function horasPorBaseHTML(){
-  const [a,b] = monthRange();
-  const mName = cap(new Date(S.esc.y, S.esc.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
-  const rows = BKEYS.map(k => {
-    const es = S.escalas.filter(e => e.base === k && e.data >= a && e.data <= b && e.status !== 'cancelada');
-    const pl = es.filter(e => e.tipo === 'plantao'), he = es.filter(e => e.tipo === 'hora_extra');
-    const mm = S.horasMan.filter(m => m.base === k && m.data >= a && m.data <= b), hm = mm.reduce((s,m) => s + (+m.horas || 0), 0);
-    const hp = pl.reduce((s,e) => s + durH(e) * nPess(e), 0), ha = he.reduce((s,e) => s + durH(e) * nPess(e), 0);
-    const por = {}; he.forEach(e => { const id = e.acao_id || '_'; por[id] = (por[id] || 0) + durH(e) * nPess(e); });
-    const top = escStats(es, mm).sort((x,y) => y.total - x.total).slice(0, 3);
-    return {k, pl, he, mm, hp, ha, hm, tot:hp + ha + hm, pessoas:new Set([...es.flatMap(escPessoas), ...mm.map(manKey)]).size, por, top};
-  });
-  const max = Math.max(1, ...rows.map(r => r.tot)), geral = rows.reduce((s,r) => s + r.tot, 0);
-  return `<div class="hb-head"><div><b>${mName}</b><small>Total das 4 bases ${heTag(geral)}</small></div>
-      <div class="lg2"><span style="--c:${ESC_T.plantao.color}"><i></i>Plantões</span><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span><span style="--c:${MAN_COR}"><i></i>Manuais</span><button class="btn sm pri" data-act="hm-new">${ic('plus',14)}Lançar horas</button></div></div>
-    <div class="hb-bars">${rows.map(r => `<button class="hb-bar" data-act="esc-base-go" data-k="${r.k}"><span class="hb-n">${emblem(r.k,10,3)}${BASES[r.k].nome}</span><span class="hb-t"><i style="width:${r.hp/max*100}%;background:${ESC_T.plantao.color}"></i><i style="width:${r.ha/max*100}%;background:${ESC_T.hora_extra.color}"></i><i style="width:${r.hm/max*100}%;background:${MAN_COR}"></i></span>${heTag(r.tot)}</button>`).join('')}</div>
-    <div class="hb-grid">${rows.map(r => `<div class="hb-c" style="--c:${BASES[r.k].c}">
-      <div class="hb-ch">${emblem(r.k,12,4)}<b>${BASES[r.k].nome}</b>${heTag(r.tot)}</div>
-      <div class="hb-l"><span>${ic('shift',13)} ${r.pl.length} plantão(ões)</span>${heTag(r.hp)}</div>
-      <div class="hb-l"><span>${ic('bolt',13)} ${r.he.length} ação(ões)</span>${heTag(r.ha)}</div>
-      ${Object.entries(r.por).sort((x,y) => y[1]-x[1]).map(([id,h]) => `<div class="hb-l sub"><span><i class="ac-dot" style="background:${acaoOf(id)?.cor || ESC_T.hora_extra.color}"></i>${esc(acaoOf(id)?.nome || 'Hora extra')}</span>${heTag(h)}</div>`).join('')}
-      <div class="hb-l"><span>${ic('plus',13)} ${r.mm.length} lançamento(s) manual(is)</span>${heTag(r.hm)}</div>
-      <div class="hb-l"><span>${ic('users',13)} ${r.pessoas} pessoa(s) com horas</span></div>
-      ${r.top.length ? `<div class="hb-top">${r.top.map(t => `<span class="pp">${avatar(PX(t.cid)?.nome,20)}${esc(firstName(PX(t.cid)?.nome||'—'))} <b>+${fmtH(t.total)}</b></span>`).join('')}</div>` : '<p class="muted s" style="margin:6px 0 0">Ninguém escalado no mês.</p>'}
-      <button class="linkbtn" data-act="esc-base-go" data-k="${r.k}">Ver escalas de ${BASES[r.k].nome}</button>
-    </div>`).join('')}</div>`;
-}
-function openHorasBase(){ openAcoes('horas'); }
 
 /* ---------- Configuração da folga do plantão por base ---------- */
 function openFolgaCfg(){
@@ -3437,7 +3422,7 @@ async function saveFolgaRegra(base, regra){
 const MAN_COR = '#0d9488';
 function hmForm(id){
   const m0 = id ? S.horasMan.find(x => sameId(x.id, id)) : null;
-  const canEd = !m0 || isAdmin() || sameId(m0.criado_por, S.profile.id);
+  const canEd = isAdmin();
   const pool = (S.colabsAll.length ? S.colabsAll : S.colabs).filter(c => c.status !== 'desligado' || (m0 && sameId(m0.colaborador_id, c.id)));
   const lids = S.profiles.filter(p => p.ativo && (p.role === 'lider' || p.role === 'admin'));
   const cur = m0 ? manKey(m0) : '';
@@ -3465,7 +3450,7 @@ async function hmSave(id){
     if (id) await DB.update('horas_manuais', id, row);
     else await DB.insert('horas_manuais', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
     closeModal(); toast(`+${fmtH(row.horas)} lançadas para ${PX(f.pessoa)?.nome || 'a pessoa'} em ${fmtD(f.data)}.`);
-    const d = parseISO(f.data); S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); await reload();
+    const d = parseISO(f.data); S.hx.y = d.getFullYear(); S.hx.m = d.getMonth(); await reload();
   } catch(e){ err(e); }
 }
 async function hmDel(id){
@@ -3743,6 +3728,132 @@ async function revSave(base){
 }
 
 
+/* ========================= PAINEL DE HORAS EXTRAS (só encarregado) ========================= */
+// Contam: ações de hora extra (por pessoa, sem almoço) e lançamentos manuais. Plantão de sábado não conta (dá folga).
+const hxRange = () => { const {y,m} = S.hx; return [iso(new Date(y,m,1)), iso(new Date(y,m+1,0))]; };
+function hxItems(){
+  const [a,b] = hxRange(), out = [];
+  S.escalas.filter(e => e.tipo === 'hora_extra' && e.status !== 'cancelada' && e.data >= a && e.data <= b && (!S.base || e.base === S.base))
+    .forEach(e => escPessoas(e).forEach(k => out.push({k, d:e.data, h:durH(e), base:e.base, src:'acao', ac:String(e.acao_id || '_'), e})));
+  S.horasMan.filter(m => m.data >= a && m.data <= b && (!S.base || m.base === S.base))
+    .forEach(m => out.push({k:manKey(m), d:m.data, h:+m.horas || 0, base:m.base, src:'man', ac:'_man', m}));
+  return out;
+}
+const hxAcNome = k => k === '_man' ? 'Lançamentos manuais' : (acaoOf(k)?.nome || 'Hora extra');
+const hxAcCor = k => k === '_man' ? MAN_COR : (acaoOf(k)?.cor || ESC_T.hora_extra.color);
+function pgHoras(){
+  if (!isAdmin()){ $('#page').innerHTML = `<div class="card">${empty('shieldu','Painel exclusivo do encarregado')}</div>`; return; }
+  const st = S.hx, today = iso(new Date());
+  const mName = cap(new Date(st.y, st.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
+  const all = hxItems(), q = st.q.toLowerCase().trim();
+  const fil = all.filter(x => (!st.t || x.src === st.t) && (!st.b || x.base === st.b) && (!st.ac || x.ac === st.ac) && (!st.p || x.k === st.p) &&
+    (!q || [PX(x.k)?.nome, hxAcNome(x.ac), x.m?.motivo, x.e?.observacao, bName(x.base)].join(' ').toLowerCase().includes(q)));
+  const sum = l => l.reduce((s,x) => s + x.h, 0);
+  const tot = sum(fil), hAc = sum(fil.filter(x => x.src === 'acao')), hMan = sum(fil.filter(x => x.src === 'man'));
+  const nAc = new Set(fil.filter(x => x.src === 'acao').map(x => x.e.id)).size, nMan = fil.filter(x => x.src === 'man').length;
+  const pessoas = new Set(fil.map(x => x.k)).size;
+  // por base (ignora o filtro de base para comparar as 4)
+  const baseSrc = all.filter(x => (!st.t || x.src === st.t) && (!st.ac || x.ac === st.ac) && (!st.p || x.k === st.p));
+  const bases = BKEYS.filter(k => !S.base || k === S.base).map(k => { const l = baseSrc.filter(x => x.base === k); return {k, ac:sum(l.filter(x => x.src === 'acao')), man:sum(l.filter(x => x.src === 'man')), n:new Set(l.map(x => x.k)).size}; });
+  const maxB = Math.max(1, ...bases.map(r => r.ac + r.man));
+  // por pessoa e por ação
+  const per = {}; fil.forEach(x => { const p = per[x.k] = per[x.k] || {k:x.k, ac:0, man:0, n:0}; p[x.src === 'acao' ? 'ac' : 'man'] += x.h; p.n++; });
+  const rank = Object.values(per).sort((x,y) => (y.ac + y.man) - (x.ac + x.man));
+  const maxP = Math.max(1, ...rank.map(r => r.ac + r.man));
+  const porAc = {}; fil.forEach(x => { const o = porAc[x.ac] = porAc[x.ac] || {h:0, ids:new Set()}; o.h += x.h; o.ids.add(x.e ? x.e.id : x.m.id); });
+  // lista agrupada (uma linha por ação ou lançamento)
+  const groups = new Map(); fil.forEach(x => { const id = (x.e ? 'e' + x.e.id : 'm' + x.m.id); const g = groups.get(id) || {x, ks:[], h:0}; g.ks.push(x.k); g.h += x.h; groups.set(id, g); });
+  const list = [...groups.values()].sort((a,b) => b.x.d.localeCompare(a.x.d) || (a.x.e ? tMin(a.x.e.hora_inicio) : 9999) - (b.x.e ? tMin(b.x.e.hora_inicio) : 9999));
+  const filtros = [st.b && bName(st.b), st.ac && hxAcNome(st.ac), st.p && PX(st.p)?.nome, st.t && (st.t === 'acao' ? 'Só ações' : 'Só manuais'), q && `"${st.q}"`].filter(Boolean);
+  $('#page').innerHTML = `
+  <div class="esc-head">
+    <div class="cal-h" style="margin:0">
+      <button class="icon-btn bord" data-act="hx-prev" aria-label="Mês anterior">${ic('chevL',18)}</button><h2>${mName}</h2><button class="icon-btn bord" data-act="hx-next" aria-label="Próximo mês">${ic('chevR',18)}</button>
+      <button class="btn sm" data-act="hx-today">Hoje</button>
+    </div>
+    <div class="tb-right">
+      <button class="btn" data-act="hx-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button>
+      <button class="btn" data-act="esc-new" data-k="hora_extra">${ic('bolt',16)}<span class="hide-s">Nova ação</span></button>
+      <button class="btn he-btn" data-act="hm-new">${ic('plus',16)}<span>Lançar horas</span></button>
+    </div>
+  </div>
+  <p class="hint" style="margin:10px 0 0">${ic('lock',14)}<span>Só você (encarregado) vê este painel. Contam as <b>ações de hora extra</b> (por pessoa, já sem 1 h de almoço quando passa de 6 h) e os <b>lançamentos manuais</b>. Plantão de sábado não entra: ele dá folga.</span></p>
+  <div class="esc-kpis">
+    <div class="card ek ek-he" style="--c:${HE_COR}"><span>${ic('hourplus',16)}Horas extras no mês</span><b>+${fmtH(tot)}</b><small>${filtros.length ? 'com os filtros abaixo' : 'todas as bases'}</small></div>
+    <div class="card ek" style="--c:${ESC_T.hora_extra.color}" data-act="hx-ft" data-k="${st.t === 'acao' ? '' : 'acao'}" role="button"><span>${ic('bolt',16)}Em ações</span><b>+${fmtH(hAc)}</b><small>${nAc} ação(ões)</small></div>
+    <div class="card ek" style="--c:${MAN_COR}" data-act="hx-ft" data-k="${st.t === 'man' ? '' : 'man'}" role="button"><span>${ic('plus',16)}Lançadas à mão</span><b>+${fmtH(hMan)}</b><small>${nMan} lançamento(s)</small></div>
+    <div class="card ek" style="--c:#4f63d6"><span>${ic('users',16)}Pessoas com horas</span><b>${pessoas}</b><small>média ${pessoas ? '+' + fmtH(tot / pessoas) : '—'}</small></div>
+  </div>
+  <div class="card hx-bases"><div class="card-h"><div><h3>Por base</h3><p class="ch-sub">Toque numa base para filtrar</p></div><div class="lg2"><span style="--c:${ESC_T.hora_extra.color}"><i></i>Ações</span><span style="--c:${MAN_COR}"><i></i>Manuais</span></div></div><div class="card-b">
+    <div class="hb-bars">${bases.map(r => `<button class="hb-bar ${st.b === r.k ? 'on' : st.b ? 'dim' : ''}" data-act="hx-b" data-k="${r.k}"><span class="hb-n">${emblem(r.k,10,3)}${BASES[r.k].nome}</span><span class="hb-t"><i style="width:${r.ac/maxB*100}%;background:${ESC_T.hora_extra.color}"></i><i style="width:${r.man/maxB*100}%;background:${MAN_COR}"></i></span><span class="hb-v">${heTag(r.ac + r.man)}<small>${r.n} pessoa(s)</small></span></button>`).join('')}</div>
+  </div></div>
+  <div class="esc-wrap" style="margin-top:18px">
+    <div>
+      <div class="toolbar esc-tb">
+        <div class="seg">${[['','Tudo'],['acao','Ações'],['man','Manuais']].map(([k,l]) => `<button class="${st.t===k?'on':''}" data-act="hx-ft" data-k="${k}">${l}</button>`).join('')}</div>
+        <select class="sel" id="hxac"><option value="">Todas as ações</option>${opts(S.acoes.slice().sort((x,y) => x.nome.localeCompare(y.nome,'pt')).map(x => [x.id, x.nome]), st.ac)}</select>
+        ${!S.base ? `<select class="sel" id="hxb"><option value="">Todas as bases</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), st.b)}</select>` : ''}
+        <label class="search">${ic('search',16)}<input id="hxq" placeholder="Buscar pessoa, motivo..." value="${esc(st.q)}"></label>
+      </div>
+      ${filtros.length ? `<div class="hx-fil">${ic('filter',14)}<span>${filtros.map(esc).join(' · ')}</span><button class="linkbtn" data-act="hx-clear">Limpar filtros</button></div>` : ''}
+      <div id="hxlist">${list.length ? list.map(g => g.x.src === 'man' ? hxManCard(g.x.m) : hxAcCard(g, today)).join('') : `<div class="card">${empty('hourplus','Nenhuma hora extra neste mês', filtros.length ? 'Ajuste ou limpe os filtros.' : 'Crie uma ação de hora extra em Escalas ou use "+ Lançar horas".')}</div>`}</div>
+    </div>
+    <div class="esc-side">
+      <div class="card"><div class="card-h"><div><h3>Por pessoa</h3><p class="ch-sub">Toque para ver só as horas dela</p></div></div><div class="card-b">
+        ${rank.length ? `<div class="rk">${rank.slice(0, 15).map(r => { const c = PX(r.k); return `<button class="rk-i ${st.p === r.k ? 'on' : ''}" data-act="hx-p" data-k="${esc(r.k)}"><span class="who">${avatar(c?.nome,26)}<span><b>${esc(c?.nome||'—')} ${heTag(r.ac + r.man)}</b><small>${[r.ac ? 'ações ' + fmtH(r.ac) : '', r.man ? 'manual ' + fmtH(r.man) : ''].filter(Boolean).join(' — ')}${c ? ' — ' + bName(c.base) : ''}</small></span></span><span class="rk-b"><i style="width:${Math.round(r.ac/maxP*100)}%;background:${ESC_T.hora_extra.color}"></i><i style="width:${Math.round(r.man/maxP*100)}%;background:${MAN_COR}"></i></span></button>`; }).join('')}</div>${rank.length > 15 ? `<p class="muted s" style="margin:10px 0 0">+ ${rank.length - 15} pessoa(s) — veja todas no Excel.</p>` : ''}` : empty('users','Ninguém com horas')}
+      </div></div>
+      <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>Por ação</h3><p class="ch-sub">Toque para filtrar</p></div></div><div class="card-b">
+        ${Object.keys(porAc).length ? Object.entries(porAc).sort((x,y) => y[1].h - x[1].h).map(([k,o]) => `<button class="ac-row ${st.ac === k ? 'on' : ''}" data-act="hx-ac" data-k="${k}"><span class="ac-dot" style="background:${hxAcCor(k)}"></span><b>${esc(hxAcNome(k))}</b><span class="muted">${o.ids.size}×</span>${heTag(o.h)}</button>`).join('') : '<p class="muted" style="margin:0">Nada neste mês.</p>'}
+      </div></div>
+    </div>
+  </div>`;
+  $('#hxac').onchange = e => { st.ac = e.target.value; pgHoras(); };
+  const hb = $('#hxb'); if (hb) hb.onchange = e => { st.b = e.target.value; pgHoras(); };
+  const qi = $('#hxq'); let tm; qi.oninput = e => { clearTimeout(tm); tm = setTimeout(() => { st.q = e.target.value; pgHoras(); const n = $('#hxq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+}
+function hxAcCard(g, today){
+  const e = g.x.e, d = parseISO(e.data), wk = cap(d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')), h = durH(e);
+  return `<div class="card esc ${e.data === today ? '' : ''}" style="--c:${escColor(e)}" data-act="esc-open" data-id="${e.id}" role="button" tabindex="0">
+    <div class="esc-d"><small>${wk}</small><b>${d.getDate()}</b></div>
+    <div class="esc-b">
+      <div class="esc-t"><span class="esc-tipo">${ic('bolt',13)}Ação</span><b>${esc(escTitle(e))}</b>${bTag(e.base)}</div>
+      <div class="esc-m"><span>${ic('clock',12)} ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}</span>${heTag(h, ' por pessoa')}${almocoTag(e)}</div>
+      <div class="esc-p">${g.ks.slice(0,8).map(k => `<span class="pp">${avatar(PX(k)?.nome,22)}${esc(firstName(PX(k)?.nome||'—'))}</span>`).join('')}${g.ks.length > 8 ? `<span class="pp more">+${g.ks.length-8}</span>` : ''}</div>
+    </div>
+    <div class="esc-s">${heTag(g.h)}<small class="muted s">${g.ks.length} pessoa(s)</small>${chip(ESC_S[e.status])}</div>
+  </div>`;
+}
+function hxManCard(m){
+  const d = parseISO(m.data), wk = cap(d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')), p = PX(manKey(m));
+  return `<div class="card esc man" style="--c:${MAN_COR}" data-act="hm-open" data-id="${m.id}" role="button" tabindex="0">
+    <div class="esc-d"><small>${wk}</small><b>${d.getDate()}</b></div>
+    <div class="esc-b">
+      <div class="esc-t"><span class="esc-tipo">${ic('plus',13)}Manual</span><b>${esc(m.motivo || 'Hora extra lançada')}</b>${bTag(m.base)}</div>
+      <div class="esc-m"><span class="pp">${avatar(p?.nome,22)}${esc(p?.nome || '—')}</span><span class="muted s">lançado por ${esc(firstName(m.criado_por_nome || ''))}</span></div>
+    </div>
+    <div class="esc-s">${heTag(+m.horas || 0)}</div>
+  </div>`;
+}
+async function exportHoras(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const [a] = hxRange(), st = S.hx, all = hxItems().filter(x => (!st.t || x.src === st.t) && (!st.b || x.base === st.b) && (!st.ac || x.ac === st.ac) && (!st.p || x.k === st.p));
+  const r2 = n => Math.round(n*100)/100;
+  const rows = [['Data','Dia','Origem','Ação / motivo','Base','Pessoa','Início','Fim','Horas extras','Lançado por']];
+  all.slice().sort((x,y) => x.d.localeCompare(y.d)).forEach(x => rows.push([fmtD(x.d), cap(parseISO(x.d).toLocaleDateString('pt-BR',{weekday:'long'})), x.src === 'acao' ? 'Ação' : 'Manual',
+    x.src === 'acao' ? escTitle(x.e) : (x.m.motivo || ''), bName(x.base), PX(x.k)?.nome || '', x.e ? hhmm(x.e.hora_inicio) : '', x.e ? hhmm(x.e.hora_fim) : '', r2(x.h), x.e ? (x.e.criado_por_nome || '') : (x.m.criado_por_nome || '')]));
+  const per = {}; all.forEach(x => { const p = per[x.k] = per[x.k] || [PX(x.k)?.nome || '', bName(PX(x.k)?.base), 0, 0, 0]; p[x.src === 'acao' ? 2 : 3] += x.h; p[4] += x.h; });
+  const pr = Object.values(per).map(p => [p[0], p[1], r2(p[2]), r2(p[3]), r2(p[4])]).sort((x,y) => y[4] - x[4]);
+  const pb = BKEYS.map(k => { const l = all.filter(x => x.base === k); const s = f => r2(l.filter(f).reduce((t,x) => t + x.h, 0)); return [BASES[k].nome, s(x => x.src === 'acao'), s(x => x.src === 'man'), s(() => true)]; });
+  const wb = X.utils.book_new();
+  const w1 = X.utils.aoa_to_sheet(rows); w1['!cols'] = [10,12,8,30,13,30,7,7,10,20].map(w => ({wch:w}));
+  const w2 = X.utils.aoa_to_sheet([['Pessoa','Base','Horas em ações','Horas manuais','Total'], ...pr]); w2['!cols'] = [30,14,14,14,10].map(w => ({wch:w}));
+  const w3 = X.utils.aoa_to_sheet([['Base','Horas em ações','Horas manuais','Total'], ...pb]); w3['!cols'] = [16,14,14,10].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, w1, 'Lançamentos'); X.utils.book_append_sheet(wb, w2, 'Por pessoa'); X.utils.book_append_sheet(wb, w3, 'Por base');
+  X.writeFile(wb, `Horas_extras_${a.slice(0,7)}.xlsx`);
+  toast('Planilha de horas extras exportada.');
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -3923,8 +4034,14 @@ const ACT = {
   'esc-next': () => { const c = S.esc; c.m++; if (c.m > 11){ c.m = 0; c.y++; } pgEscalas(); },
   'esc-today': () => { const d = new Date(); S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); pgEscalas(); },
   'acoes-open': () => openAcoes(), 'acao-add': () => addAcao(),
-  'esc-bases': () => openAcoes('horas'), 'folga-cfg': () => openFolgaCfg(),
+  'esc-bases': () => go('horas'), 'folga-cfg': () => openFolgaCfg(),
   'hm-new': () => hmForm(), 'hm-open': a => hmForm(a.dataset.id), 'hm-save': a => hmSave(a.dataset.id || null), 'hm-del': a => hmDel(a.dataset.id),
+  'hx-prev': () => { const h = S.hx; if (--h.m < 0){ h.m = 11; h.y--; } pgHoras(); }, 'hx-next': () => { const h = S.hx; if (++h.m > 11){ h.m = 0; h.y++; } pgHoras(); },
+  'hx-today': () => { const d = new Date(); S.hx.y = d.getFullYear(); S.hx.m = d.getMonth(); pgHoras(); },
+  'hx-ft': a => { S.hx.t = a.dataset.k; pgHoras(); }, 'hx-b': a => { S.hx.b = S.hx.b === a.dataset.k ? '' : a.dataset.k; pgHoras(); },
+  'hx-ac': a => { S.hx.ac = S.hx.ac === a.dataset.k ? '' : a.dataset.k; S.hx.t = a.dataset.k === '_man' ? '' : S.hx.t; pgHoras(); },
+  'hx-p': a => { S.hx.p = S.hx.p === a.dataset.k ? '' : a.dataset.k; pgHoras(); }, 'hx-clear': () => { Object.assign(S.hx, {t:'', q:'', ac:'', b:'', p:''}); pgHoras(); },
+  'hx-xls': () => exportHoras(),
   'esc-base-go': a => { closeModal(); S.esc.b = S.base ? '' : a.dataset.k; if (S.base && S.base !== a.dataset.k) setBase(a.dataset.k); S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'esc-fa': a => { closeModal(); S.esc.ac = a.dataset.k; S.esc.t = ''; S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'fresh': () => { $('#fresh')?.remove(); const y = window.scrollY; render(); window.scrollTo(0, y); },
