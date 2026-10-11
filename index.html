@@ -9,6 +9,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Painel de Controle">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Crect width=%2248%22 height=%2248%22 rx=%2214%22 fill=%22%230b4ea2%22/%3E%3Cpath d=%22M24 8.5s-11.2 12.6-11.2 20.2a11.2 11.2 0 0 0 22.4 0C35.2 21.1 24 8.5 24 8.5z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1156,6 +1158,114 @@ button.ac-row:hover b{color:var(--accent)}
 .esc-tb > *{max-width:100%;min-width:0}
 .rc-tgl[hidden],.rc-pl[hidden]{display:none!important}
 
+/* ===== v2.7 — Planner ===== */
+.btn.ghost{border-color:transparent;background:none}.btn.ghost:hover{background:var(--soft)}
+.pl-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pl-tr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1;justify-content:flex-end;min-width:0}
+.pl-tr .search{max-width:260px;min-width:150px}
+.pl-perm{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px dashed #f0c36d;background:#fffaf0;color:#8a5a00;border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:12.5px}
+.pl-perm span{flex:1}.pl-perm b{white-space:nowrap}
+.pl-hero{padding:20px 22px 8px;margin-bottom:14px}
+.pl-hd{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.pl-wd{font-size:34px;font-weight:700;letter-spacing:-1px;line-height:1.05;color:var(--ink)}
+.pl-dt{color:var(--ink2);font-size:13.5px;margin-top:6px}.pl-dt b{color:var(--ink);font-weight:600}
+.pl-ring{position:relative;width:72px;height:72px;flex:none}
+.pl-ring svg{transform:rotate(-90deg)}
+.pl-ring>span{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:16px;line-height:1}
+.pl-ring small{font-size:10px;font-weight:500;color:var(--muted);margin-top:3px}
+.pl-ruler{position:relative;height:66px;margin-top:10px}
+.pl-ruler .tr{position:absolute;left:0;right:0;top:30px;height:2px;background:var(--line)}
+.pl-ruler .ps{position:absolute;left:0;top:30px;height:2px;background:#0d9488}
+.pl-ruler .tk{position:absolute;top:40px;font-size:10.5px;color:var(--muted);transform:translateX(-50%)}
+.pl-ruler .nw{position:absolute;top:12px;width:2px;height:30px;background:#f59e0b;border-radius:2px}
+.pl-ruler .nw::after{content:attr(data-t);position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:10px;font-weight:600;color:#92400e;background:#fef3c7;padding:0 5px;border-radius:5px;white-space:nowrap}
+.pl-ev{position:absolute;top:23px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--c);transform:translateX(-50%);padding:0;transition:transform .15s}
+.pl-ev:hover,.pl-ev:focus-visible{transform:translateX(-50%) scale(1.25);z-index:2}
+.pl-ev.done{background:var(--c)}.pl-ev.late{border-color:#ef4444}
+.pl-ev .tip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:11px;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+.pl-ev:hover .tip,.pl-ev:focus-visible .tip{opacity:1}
+.pl-qa{padding:4px 6px 4px 14px;margin-bottom:18px;position:sticky;top:8px;z-index:4}
+.pl-qa:focus-within{border-color:#0d9488;box-shadow:0 0 0 3px rgba(13,148,136,.15)}
+.pl-qa-r{display:flex;align-items:center;gap:10px;color:#0d9488}
+.pl-qa input{border:0;outline:0;flex:1;padding:11px 0;font-size:13.5px;background:none;min-width:0}
+.pl-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 0 8px 28px}.pl-chips:empty{display:none}
+.pl-chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;background:color-mix(in srgb,var(--c,#0d9488) 13%,#fff);color:color-mix(in srgb,var(--c,#0d9488) 80%,#000)}
+.pl-g{margin-bottom:20px}
+.pl-gh{display:flex;align-items:baseline;gap:8px;padding:0 4px 6px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.pl-gh h3{margin:0;font-size:14px;font-weight:600}.pl-gh span{color:var(--muted);font-size:12px}
+.pl-gh.late h3{color:#dc2626}.pl-ga{margin-left:auto;padding:0}
+.pl-vz{color:var(--muted);font-size:12.5px;padding:10px 6px;margin:0}
+.pl-t{display:flex;gap:12px;align-items:flex-start;padding:10px 8px;border-radius:10px;cursor:pointer;border-bottom:1px solid #f1f2f7}
+.pl-t:hover{background:#fff;box-shadow:var(--shadow)}
+.pl-ck{width:21px;height:21px;border-radius:50%;border:2px solid var(--pc,#a3a9bd);background:color-mix(in srgb,var(--pc,#a3a9bd) 8%,#fff);display:grid;place-items:center;flex:none;padding:0;margin-top:1px;color:transparent;transition:background .15s}
+.pl-ck svg{stroke-width:3.2}
+.pl-ck:hover{color:var(--pc)}
+.pl-ck.on,.pl-t.done .pl-ck{background:var(--pc,#0d9488);border-color:var(--pc,#0d9488);color:#fff}
+.pl-ck.pop{animation:plpop .35s ease}@keyframes plpop{40%{transform:scale(1.25)}}
+.pl-ck.big{width:26px;height:26px}.pl-ck.sm{width:17px;height:17px;--pc:#0d9488}
+.pl-tb{flex:1;min-width:0}.pl-tb>b{font-weight:500;font-size:13.5px;display:block;word-break:break-word}
+.pl-t.done .pl-tb>b{text-decoration:line-through;color:var(--muted)}
+.pl-n{display:block;color:var(--muted);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-m{display:flex;flex-wrap:wrap;gap:3px 11px;margin-top:3px;font-size:11.5px;color:var(--muted)}
+.pl-m span{display:inline-flex;align-items:center;gap:4px}
+.pl-m .late{color:#dc2626;font-weight:600}.pl-m .tdy{color:#0d9488;font-weight:600}.pl-m .rem{color:#d97706}
+.pl-av{flex:none}
+.pl-more{display:flex;align-items:center;gap:6px;border:0;background:none;color:var(--muted);font-size:12.5px;font-weight:500;padding:8px 4px}
+.pl-calc{padding:16px}
+.pl-cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.pl-cal .wh{background:#f7f8fc;text-align:center;font-size:11px;color:var(--muted);padding:7px 0}
+.pl-d{background:#fff;border:0;min-height:84px;padding:5px;display:flex;flex-direction:column;gap:3px;text-align:left;min-width:0}
+.pl-d:hover{background:#fafbfe}.pl-d.out{background:#f9fafc;color:var(--muted)}
+.pl-d .n{font-size:12px;font-weight:600;width:24px;height:24px;display:grid;place-items:center;border-radius:50%}
+.pl-d.tdy .n{background:#0d9488;color:#fff}.pl-d.pick{box-shadow:inset 0 0 0 2px #0d9488}
+.pl-d .ct{font-size:10.5px;padding:1px 5px;border-radius:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:color-mix(in srgb,var(--c) 14%,#fff)}
+.pl-d .ct.done{text-decoration:line-through;color:var(--muted)}
+.pl-d .mo{font-size:10px;color:var(--muted)}
+.pl-d .dots{display:none;gap:3px;justify-content:center}.pl-d .dots i{width:6px;height:6px;border-radius:50%;background:var(--c)}
+.pl-calc+#plqa,.pl-hero+#plqa{margin-top:0}
+.pl-bars{padding:14px 16px 0;margin-bottom:18px}
+.pl-bh b{font-size:13px;font-weight:600}
+.pl-bb{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:6px}
+.pl-bb .b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.pl-bb .b i{width:100%;max-width:34px;min-height:3px;border-radius:6px 6px 2px 2px;background:#0d9488}
+.pl-bb .b.tdy i{background:#f59e0b}.pl-bb em{font-style:normal;font-size:10.5px;font-weight:600;color:var(--ink2)}
+.pl-bb small{font-size:10.5px;color:var(--muted);padding-bottom:8px}
+.f.pl-tt{display:flex;flex-direction:row;align-items:center;gap:10px}.pl-tt input{font-size:15px;font-weight:500}
+.pl-all{margin:2px 0 8px}
+.pl-pp{display:flex;flex-wrap:wrap;gap:8px}
+.pl-p{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:6px 10px 6px 6px;cursor:pointer;font-size:12px;background:#fff}
+.pl-p input{display:none}.pl-p small{display:block;color:var(--muted);font-size:10.5px}
+.pl-p.on{border-color:#0d9488;background:#f0fdfa}
+.pl-sec{margin-top:6px}.pl-sec .sec em{font-style:normal;color:var(--muted);font-weight:500;margin-left:4px}
+.pl-subs{display:flex;flex-direction:column}
+.pl-sub{display:flex;align-items:center;gap:10px;padding:5px 4px;border-radius:8px;font-size:13px}
+.pl-sub:hover{background:var(--soft)}.pl-sub span{flex:1}.pl-sub.done span{text-decoration:line-through;color:var(--muted)}
+.pl-add{display:flex;align-items:center;gap:8px;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:0 10px;margin-top:6px}
+.pl-add input{border:0;outline:0;padding:9px 0;flex:1;background:none;min-width:0}
+.pl-cm{display:flex;gap:10px;margin-bottom:10px;font-size:12.5px}.pl-cm>div{background:var(--soft);border-radius:4px 12px 12px 12px;padding:7px 11px;flex:1;min-width:0}
+.pl-cm small{color:var(--muted);font-size:10.5px}.pl-cm p{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
+.pl-cfgr{display:flex;align-items:center;gap:10px;justify-content:space-between;font-size:12.5px;color:var(--ink2)}
+.pl-adv summary{cursor:pointer;font-weight:500;font-size:12.5px;padding:6px 0}
+.pl-adv .f{margin-top:10px}
+.pl-key{font:11px/1.5 ui-monospace,Consolas,monospace;background:var(--soft);padding:8px 10px;border-radius:8px;word-break:break-all;margin-bottom:6px}
+.pl-alarms{position:fixed;right:20px;bottom:20px;z-index:90;display:flex;flex-direction:column;gap:10px;width:min(380px,calc(100vw - 24px))}
+.pl-alarm{display:flex;gap:12px;background:#fff;border:1px solid var(--line);border-left:4px solid #f59e0b;border-radius:14px;box-shadow:0 20px 50px rgba(29,32,51,.22);padding:14px 16px;animation:plring .5s ease}
+@keyframes plring{20%{transform:rotate(-1.5deg)}40%{transform:rotate(1.5deg)}60%{transform:rotate(-1deg)}}
+.pl-alarm .ai{width:38px;height:38px;border-radius:50%;background:#fef3c7;color:#b45309;display:grid;place-items:center;flex:none}
+.pl-alarm b{display:block;font-size:13.5px}.pl-alarm small{color:var(--muted)}
+.pl-alarm .aa{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+@media (max-width:720px){
+  .pl-top{flex-direction:column;align-items:stretch}
+  .pl-tabs{overflow-x:auto;scrollbar-width:none}.pl-tabs button{flex:none}
+  .pl-top>*{min-width:0;max-width:100%}
+  .pl-tr{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px}.pl-tr .search{grid-column:1/-1;order:5;max-width:none;min-width:0}.pl-tr .sel{min-width:0;width:100%}
+  .pl-wd{font-size:28px}.pl-hero{padding:16px 16px 4px}
+  .pl-d{min-height:52px;align-items:center;padding:3px}.pl-d .ct,.pl-d .mo{display:none}.pl-d .dots{display:flex}
+  .pl-calc{padding:10px}
+  .pl-alarms{left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom));width:auto}
+  .pl-qa{top:4px}
+}
+
 </style>
 </head>
 <body>
@@ -1167,8 +1277,8 @@ button.ac-row:hover b{color:var(--accent)}
    A configuração fica no config.js (separado). O login é feito só
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
-const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.6';
+const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
+const APP_VERSION = '2.7';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1241,7 +1351,7 @@ const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios'];
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
   sex_seguinte:{label:'Sexta-feira seguinte', dow:5, dir:1},
@@ -1381,6 +1491,12 @@ Object.assign(ICONS, {
   shift:'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>',
   lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   filter:'<path d="M3 5h18l-7 8.5V19l-4 2v-7.5z"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  next:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4M8 14h3M8 17h6"/>',
+  list:'<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1" fill="currentColor"/><circle cx="4.5" cy="12" r="1" fill="currentColor"/><circle cx="4.5" cy="18" r="1" fill="currentColor"/>',
+  cog:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+  chevD:'<path d="m6 9 6 6 6-6"/>',
+  planner:'<rect x="3" y="4" width="18" height="17" rx="3"/><path d="M8 2v4M16 2v4"/><path d="m8 13.5 2.5 2.5L16 10.5"/>',
   hourplus:'<circle cx="10.5" cy="12.5" r="7.5"/><path d="M10.5 8.5v4l2.5 1.5"/><path d="M19.5 2v6M16.5 5h6"/>',
   bolt:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
   menu:'<line x1="4" x2="20" y1="7" y2="7"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="17" y2="17"/>',
@@ -1486,7 +1602,23 @@ function seed(){
     estoque_movs.push({id:'mv-'+it+b, item_id:it, base:b, tipo:'entrada', quantidade:q, saldo_apos:q, motivo:'Saldo inicial', base_destino:null, por_id:null, por_nome:'Carga inicial', created_at:h(48)}); }));
   const revisoes = [{id:'r1', tipo:'estoque', base:'ipiranga', quinzena:qKey(new Date()), por_id:'u-fernanda', por_nome:'Fernanda Souza', created_at:h(20)}];
   const config_bases = [{base:'pinheiros', folga_regra:'seg_seguinte', atualizado_por:'Carlos Lima', updated_at:h(100)}, {base:'ipiranga', folga_regra:'manual', atualizado_por:'Fernanda Souza', updated_at:h(100)}];
-  return {profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  const tk = o => ({id:uid(), notas:'', data:null, hora:null, lembrete_min:null, lembrete_em:null, lembrado_em:null, repetir:null, prioridade:4, concluida:false, concluida_em:null, concluida_por:null, criado_por:'u-admin', criado_por_nome:'Encarregado Principal', responsavel_id:null, resp_avisado:true, compartilhado:[], todos:false, base:null, etiquetas:[], etapas:[], created_at:h(30), updated_at:h(30), ...o});
+  const planner_tarefas = [
+    tk({titulo:'Enviar relatório de produtividade', data:dOff(0), hora:'10:00', prioridade:1, lembrete_min:30}),
+    tk({titulo:'Reunião com os líderes', data:dOff(0), hora:'14:30', todos:true, lembrete_min:10, notas:'Pauta: plantões de novembro e estoque de lacres.', etapas:[{id:'e1',t:'Levantar números da semana',d:true},{id:'e2',t:'Montar pauta',d:false}]}),
+    tk({titulo:'Conferir lacres azuis', data:dOff(1), hora:'09:00', base:'pinheiros', responsavel_id:'u-carlos', compartilhado:['u-carlos'], prioridade:2, lembrete_min:0, resp_avisado:false, created_at:h(2), updated_at:h(2)}),
+    tk({titulo:'Ligar para a oficina da moto', data:dOff(-1), prioridade:2}),
+    tk({titulo:'Atualizar planilha de horas', data:dOff(0), hora:'17:00', repetir:'uteis', lembrete_min:0}),
+    tk({titulo:'Revisar escala de dezembro', data:dOff(4), prioridade:3, todos:true}),
+    tk({titulo:'Treinamento de segurança da equipe', data:dOff(9), base:'ipiranga', criado_por:'u-fernanda', criado_por_nome:'Fernanda Souza', compartilhado:['u-admin'], created_at:h(5), updated_at:h(5)}),
+    tk({titulo:'Ideias para melhorar o atendimento', notas:'Anotar sugestões das bases.'}),
+    tk({titulo:'Separar EPIs novos', data:dOff(0), hora:'08:00', base:'pinheiros', criado_por:'u-carlos', criado_por_nome:'Carlos Lima'}),
+    tk({titulo:'Responder e-mails pendentes', data:dOff(0), hora:'08:30', concluida:true, concluida_em:h(3), concluida_por:'u-admin'}),
+    tk({titulo:'Fechar ponto da semana', data:dOff(-2), concluida:true, concluida_em:h(50), concluida_por:'u-admin'})
+  ];
+  planner_tarefas.forEach(t => t.lembrete_em = plRemindAt(t));
+  const planner_comentarios = [{id:uid(), tarefa_id:planner_tarefas[2].id, autor_id:'u-carlos', autor_nome:'Carlos Lima', texto:'Pode deixar, confiro logo cedo.', created_at:h(1)}];
+  return {planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -1538,6 +1670,7 @@ const DB = {
       }
       if (t === 'chamados') d.mensagens = d.mensagens.filter(m => !sameId(m.chamado_id, id));
       if (t === 'escalas') d.eventos = d.eventos.filter(e => !sameId(e.escala_id, id));
+      if (t === 'planner_tarefas') d.planner_comentarios = (d.planner_comentarios||[]).filter(c => !sameId(c.tarefa_id, id));
       Store.save(); return;
     }
     const {error} = await sb.from(t).delete().eq('id', id); if (error) throw error;
@@ -1554,6 +1687,8 @@ const S = {
   sort:{col:'nome', dir:1},
   cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''},
   esc:{y:today0.getFullYear(), m:today0.getMonth(), t:'', st:'', q:'', ac:'', b:''},
+  pt:[], pc:[],
+  pl:{v:'hoje', f:'', q:'', y:today0.getFullYear(), m:today0.getMonth(), d:iso(today0), sd:{}},
   hx:{y:today0.getFullYear(), m:today0.getMonth(), t:'', q:'', ac:'', b:'', p:''},
   est:{q:'', c:'', b:'', al:false}
 };
@@ -1594,7 +1729,7 @@ function applyTheme(){
 
 async function loadAll(){
   const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan] = res;
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan, S.pt, S.pc] = res;
   try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status}) => ({id,nome,base,cargo,status})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
@@ -1613,6 +1748,7 @@ async function reload(){
 /* ========================= Navegação / shell ========================= */
 const NAV = [
   {id:'dashboard',label:'Visão geral',short:'Início',icon:'gauge',color:'#2563eb',m:1},
+  {id:'planner',label:'Planner',short:'Planner',icon:'planner',color:'#0d9488',m:1, badge:() => (S.pt||[]).filter(t => !t.concluida && t.data && t.data <= iso(new Date()) && plVe(t) && plMeu(t)).length},
   {id:'colaboradores',label:'Colaboradores',short:'Equipe',icon:'idcard',color:'#7c3aed'},
   {id:'frota',label:'Frota',short:'Frota',icon:'truck',color:'#0891b2',m:1, badge:() => veicsV().filter(v => v.status==='problema').length},
   {id:'diario',label:'Diário de bordo',short:'Diário',icon:'notebook',color:'#e11d48',m:1, badge:() => isAdmin()
@@ -1620,12 +1756,13 @@ const NAV = [
       : chsV('pedido').filter(c => c.status==='aberto').length},
   {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'calclock',color:'#ea580c',m:1, badge:() => S.escalas.filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1)) && (allowed(e.base) || sameId(e.responsavel_id, S.profile.id))).length},
   {id:'horas',label:'Horas extras',short:'Horas extras',icon:'hourplus',color:'#059669',admin:true},
-  {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04',m:1, badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
+  {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04', badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
   {id:'calendario',label:'Ausências',short:'Ausências',icon:'calx',color:'#16a34a'},
   {id:'usuarios',label:'Usuários e bases',short:'Usuários',icon:'shieldu',color:'#475569',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
 ];
 const SUBS = {
   dashboard:'Resumo da equipe, da frota e das ocorrências',
+  planner:'Suas tarefas e lembretes — e as que você divide com o encarregado e os líderes',
   colaboradores:'Cadastro da equipe, importação por Excel e vínculo com veículos',
   frota:'Carros e motos com a situação atualizada pelas bases',
   diario:'Problemas das bases e pedidos do encarregado',
@@ -1635,7 +1772,7 @@ const SUBS = {
   estoque:'Estoque total e de cada base, com avisos quando um item estiver acabando',
   usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
-const PAGES = {dashboard:pgDashboard, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
+const PAGES = {dashboard:pgDashboard, planner:pgPlanner, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
 
 function go(page){ if ($('#ov')) closeModal(); $('#npanel')?.remove(); S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
@@ -2759,6 +2896,24 @@ function buildNotifs(){
     seenMsg.add(c.id);
     news.push({key:`ch:${c.id}:msg:${m.id}`, icon:'msg', c:theme().c, t:`Mensagem de ${firstName(m.autor_nome)}`, s:`#${c.id} ${m.texto.slice(0,70)}`, when:m.created_at, act:'ch-open', id:c.id});
   });
+  // Planner: tarefas atribuídas/compartilhadas comigo e comentários
+  (S.pt||[]).filter(plVe).forEach(t => {
+    if (sameId(t.criado_por, me)) return;
+    if (sameId(t.responsavel_id, me) && after(t.updated_at || t.created_at) && !t.concluida)
+      news.push({key:`pl:${t.id}:resp`, icon:'planner', c:PL_COR, t:`Tarefa para você — de ${firstName(t.criado_por_nome)}`, s:t.titulo + (t.data ? ' · ' + plDia(t.data) + (t.hora ? ' ' + hhmm(t.hora) : '') : ''), when:t.updated_at || t.created_at, act:'pl-open', id:t.id});
+    else if ((t.compartilhado||[]).some(u => sameId(u, me)) && after(t.created_at))
+      news.push({key:`pl:${t.id}:comp`, icon:'users', c:PL_COR, t:`${firstName(t.criado_por_nome)} compartilhou uma tarefa`, s:t.titulo, when:t.created_at, act:'pl-open', id:t.id});
+  });
+  const seenPc = new Set();
+  (S.pc||[]).slice().sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).forEach(c => {
+    const t = PT(c.tarefa_id); if (!t || !plVe(t) || seenPc.has(t.id) || sameId(c.autor_id, me) || !after(c.created_at)) return;
+    if (!(sameId(t.criado_por, me) || sameId(t.responsavel_id, me) || (t.compartilhado||[]).some(u => sameId(u, me)))) return;
+    seenPc.add(t.id); news.push({key:`pl:${t.id}:cm:${c.id}`, icon:'msg', c:PL_COR, t:`${firstName(c.autor_nome)} comentou numa tarefa`, s:`${t.titulo}: ${c.texto.slice(0,60)}`, when:c.created_at, act:'pl-open', id:t.id});
+  });
+  { const mt = (S.pt||[]).filter(t => plVe(t) && plMeu(t) && !t.concluida && t.data);
+    const atr = mt.filter(plLate), hj = mt.filter(t => t.data === today);
+    if (atr.length) rem.push({icon:'planner', c:'#ef4444', urgent:true, t:`${atr.length} tarefa(s) atrasada(s) no planner`, s:atr.slice(0,3).map(t => t.titulo).join(', '), act:'pl-go', k:'hoje', w:0, key:'rem:pl:atr:' + atr.length});
+    if (hj.length) rem.push({icon:'planner', c:PL_COR, t:`Hoje no planner: ${hj.length} tarefa(s)`, s:plSort(hj).slice(0,3).map(t => (t.hora ? hhmm(t.hora) + ' ' : '') + t.titulo).join(', '), act:'pl-go', k:'hoje', w:1, key:'rem:pl:hj:' + hj.length}); }
   // Lembretes do dia
   evsV().forEach(e => {
     const c = EVP(e), o = EV[e.tipo] || EV.outro; if (!c) return;
@@ -2965,7 +3120,7 @@ async function cleanQuinzena(key){
 /* ========================= CONEXÃO ========================= */
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
 function dataSig(){
-  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length]);
+  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length, S.pt, S.pc]);
   let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length;
 }
 function showFresh(){
@@ -3854,6 +4009,446 @@ async function exportHoras(){
 }
 
 
+/* ========================= PLANNER (tarefas e lembretes) ========================= */
+// Tarefas pessoais ou compartilhadas com pessoas do painel (encarregado e líderes).
+// Lembrete na hora certa: aviso na tela + notificação no celular/computador.
+const PL_PRIO = {1:{label:'Urgente', color:'#e5484d'}, 2:{label:'Alta', color:'#f08c00'}, 3:{label:'Média', color:'#3b82f6'}, 4:{label:'Normal', color:'#a3a9bd'}};
+const PL_REP = {diario:'Todo dia', uteis:'Dias úteis', semanal:'Toda semana', mensal:'Todo mês', anual:'Todo ano'};
+const PL_REM = [['','Sem lembrete'],['0','Na hora'],['10','10 min antes'],['30','30 min antes'],['60','1 h antes'],['120','2 h antes'],['1440','1 dia antes'],['-1','Escolher data e hora']];
+const PL_COR = '#0d9488';
+const WDN = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const MESN = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+const plNowHM = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const plToday = () => iso(new Date());
+const PT = id => S.pt.find(t => sameId(t.id, id));
+const plMe = () => S.profile.id;
+const plVe = t => sameId(t.criado_por, plMe()) || sameId(t.responsavel_id, plMe()) || (t.compartilhado||[]).some(u => sameId(u, plMe())) || t.todos;
+const plMeu = t => t.responsavel_id ? sameId(t.responsavel_id, plMe()) : plVe(t);
+const plPessoas = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || p.role === 'lider')).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const plShared = t => t.todos || (t.compartilhado||[]).length > 0 || (t.responsavel_id && !sameId(t.responsavel_id, t.criado_por));
+const plLate = t => !t.concluida && t.data && t.data < plToday();
+const plKey = t => (t.data || '9999') + (hhmm(t.hora) || '99:99');
+const plSort = l => l.slice().sort((a,b) => plKey(a).localeCompare(plKey(b)) || a.prioridade - b.prioridade || String(a.created_at).localeCompare(String(b.created_at)));
+function plDia(ds, longo){
+  if (!ds) return '';
+  const n = Math.round((parseISO(ds) - parseISO(plToday())) / 864e5), d = parseISO(ds);
+  if (n === 0) return 'Hoje'; if (n === 1) return 'Amanhã'; if (n === -1) return 'Ontem';
+  if (n > 1 && n < 7 && !longo) return cap(WDN[d.getDay()]);
+  return longo ? `${cap(WDN[d.getDay()])}, ${d.getDate()} de ${MESN[d.getMonth()]}` : `${d.getDate()} ${MESN[d.getMonth()].slice(0,3)}`;
+}
+function plRemindAt(t){
+  if (t.lembrete_min == null || t.lembrete_min === '') return null;
+  if (+t.lembrete_min === -1) return t.lembrete_em || null;
+  if (!t.data) return null;
+  const [h, m] = (hhmm(t.hora) || '08:00').split(':').map(Number), d = parseISO(t.data); d.setHours(h, m, 0, 0);
+  return new Date(d.getTime() - (+t.lembrete_min) * 6e4).toISOString();
+}
+function plNext(ds, rep){
+  const base = ds ? parseISO(ds) : new Date(); const d = new Date(base);
+  const step = () => {
+    if (rep === 'diario') d.setDate(d.getDate() + 1);
+    else if (rep === 'uteis'){ do d.setDate(d.getDate() + 1); while (d.getDay() === 0 || d.getDay() === 6); }
+    else if (rep === 'semanal') d.setDate(d.getDate() + 7);
+    else if (rep === 'mensal'){ const day = base.getDate(); d.setDate(1); d.setMonth(d.getMonth() + 1); d.setDate(Math.min(day, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate())); }
+    else if (rep === 'anual') d.setFullYear(d.getFullYear() + 1);
+  };
+  step(); while (iso(d) < plToday()) step(); return iso(d);
+}
+const plCfg = () => { try { return Object.assign({rem:'0', som:true}, JSON.parse(lsGet('prim_pl_cfg') || '{}')); } catch(e){ return {rem:'0', som:true}; } };
+
+/* ---------- Criação rápida: "Ligar fornecedor amanhã 9h #pinheiros @carlos !1" ---------- */
+const PL_WD = '(domingo|segunda|ter[çc]a|quarta|quinta|sexta|s[áa]bado)(?:-feira)?';
+const plWdIdx = w => ['domingo','segunda','terca','quarta','quinta','sexta','sabado'].indexOf(nk(w).replace('feira',''));
+const plNextWd = (i, incl) => { const d = new Date(); let n = (i - d.getDay() + 7) % 7; if (n === 0 && !incl) n = 7; return iso(addDays(d, n)); };
+function plParse(text){
+  let s = ' ' + text + ' ';
+  const B = '(?<=^|\\s)', E = '(?=$|\\s|[,.;!?])';
+  const o = {data:null, hora:null, repetir:null, prioridade:null, base:null, responsavel_id:null, todos:false, chips:[]};
+  const take = (rx, fn) => { const m = s.match(rx); if (!m || fn(m) === false) return false; s = s.slice(0, m.index) + ' ' + s.slice(m.index + m[0].length); return true; };
+  take(new RegExp(B + 'tod[ao]s?\\s+(?:as\\s+|os\\s+)?' + PL_WD + 's?' + E, 'i'), m => { o.repetir = 'semanal'; o.data = plNextWd(plWdIdx(m[1]), true); });
+  take(new RegExp(B + '(todos os dias|todo dia|diariamente)' + E, 'i'), () => { o.repetir = 'diario'; });
+  take(new RegExp(B + 'dias? [úu]teis' + E, 'i'), () => { o.repetir = 'uteis'; });
+  take(new RegExp(B + '(toda semana|semanalmente)' + E, 'i'), () => { o.repetir = 'semanal'; });
+  take(new RegExp(B + '(todo m[êe]s|mensalmente)' + E, 'i'), () => { o.repetir = 'mensal'; });
+  take(new RegExp(B + '(todo ano|anualmente)' + E, 'i'), () => { o.repetir = 'anual'; });
+  if (!o.data){
+    take(new RegExp(B + 'depois de amanh[ãa]' + E, 'i'), () => { o.data = iso(addDays(new Date(), 2)); }) ||
+    take(new RegExp(B + 'amanh[ãa]' + E, 'i'), () => { o.data = iso(addDays(new Date(), 1)); }) ||
+    take(new RegExp(B + 'hoje' + E, 'i'), () => { o.data = plToday(); }) ||
+    take(new RegExp(B + '(?:na |no |pr[óo]xim[ao] )?' + PL_WD + E, 'i'), m => { o.data = plNextWd(plWdIdx(m[1]), false); }) ||
+    take(new RegExp(B + '(?:semana que vem|pr[óo]xima semana)' + E, 'i'), () => { o.data = plNextWd(1, false); }) ||
+    take(new RegExp(B + 'em (\\d{1,3}) dias?' + E, 'i'), m => { o.data = iso(addDays(new Date(), +m[1])); }) ||
+    take(new RegExp(B + '(?:dia |em )?(\\d{1,2})/(\\d{1,2})(?:/(\\d{2,4}))?' + E, 'i'), m => {
+      let y = m[3] ? +m[3] : new Date().getFullYear(); if (y < 100) y += 2000;
+      const d = new Date(y, +m[2]-1, +m[1]); if (d.getMonth() !== +m[2]-1) return false;
+      if (!m[3] && iso(d) < plToday()) d.setFullYear(y + 1); o.data = iso(d); }) ||
+    take(new RegExp(B + '(?:no )?dia (\\d{1,2})' + E, 'i'), m => {
+      const n = new Date(), day = +m[1]; if (day < 1 || day > 31) return false;
+      let d = new Date(n.getFullYear(), n.getMonth(), day); if (iso(d) < plToday()) d = new Date(n.getFullYear(), n.getMonth() + 1, day); o.data = iso(d); });
+  }
+  take(new RegExp(B + '(?:[àa]s |ao )?meio[- ]dia' + E, 'i'), () => { o.hora = '12:00'; }) ||
+  take(new RegExp(B + '(?:[àa]s )?(\\d{1,2})(?::(\\d{2})|h(\\d{2})?)' + E, 'i'), m => { const h = +m[1], mi = +(m[2] || m[3] || 0); if (h > 23 || mi > 59) return false; o.hora = `${pad(h)}:${pad(mi)}`; }) ||
+  take(new RegExp(B + '[àa]s (\\d{1,2})' + E, 'i'), m => { if (+m[1] > 23) return false; o.hora = `${pad(+m[1])}:00`; }) ||
+  take(new RegExp(B + '(?:de |pela |[àa] )(manh[ãa]|tarde|noite)' + E, 'i'), m => { o.hora = {manha:'08:00', tarde:'14:00', noite:'19:00'}[nk(m[1])]; });
+  if (o.hora && !o.data) o.data = o.hora < plNowHM() ? iso(addDays(new Date(), 1)) : plToday();
+  if (o.repetir && !o.data) o.data = plToday();
+  if (o.repetir === 'uteis' && o.data){ const d = parseISO(o.data); while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1); o.data = iso(d); }
+  take(new RegExp(B + '!([1-3])' + E), m => { o.prioridade = +m[1]; }) || take(new RegExp(B + 'urgente' + E, 'i'), () => { o.prioridade = 1; });
+  take(new RegExp(B + '#([\\p{L}\\p{N}_-]+)' + E, 'iu'), m => { const k = nk(m[1]); const b = BKEYS.find(x => nk(BASES[x].nome) === k || nk(BASES[x].nome).startsWith(k) || x === k); if (!b) return false; o.base = b; });
+  take(new RegExp(B + '@(todos|equipe|time)' + E, 'i'), () => { o.todos = true; }) ||
+  take(new RegExp(B + '@([\\p{L}]+)' + E, 'iu'), m => { const k = nk(m[1]); const p = plPessoas().find(x => nk(firstName(x.nome)) === k) || plPessoas().find(x => nk(x.nome).startsWith(k)); if (!p) return false; o.responsavel_id = p.id; });
+  o.titulo = s.replace(/\s+/g, ' ').trim().replace(/\s+(às|as|na|no|de|para|em)$/i, '');
+  if (o.data) o.chips.push(['cal', plDia(o.data) + (o.hora ? ' ' + o.hora : ''), '']);
+  else if (o.hora) o.chips.push(['clock', o.hora, '']);
+  if (o.repetir) o.chips.push(['refresh', PL_REP[o.repetir], '']);
+  if (o.prioridade) o.chips.push(['flag', PL_PRIO[o.prioridade].label, PL_PRIO[o.prioridade].color]);
+  if (o.base) o.chips.push(['map', BASES[o.base].nome, BASES[o.base].c]);
+  if (o.responsavel_id) o.chips.push(['user', 'Para ' + firstName(P(o.responsavel_id)?.nome), '']);
+  if (o.todos) o.chips.push(['users', 'Toda a equipe', '']);
+  if (o.hora && plCfg().rem !== '') o.chips.push(['bell', PL_REM.find(r => r[0] === plCfg().rem)?.[1] || 'Lembrete', '#d97706']);
+  return o;
+}
+async function plQuickAdd(text){
+  text = String(text || '').trim(); if (!text) return false;
+  const p = plParse(text), st = S.pl;
+  if (!p.titulo) { toast('Escreva o nome da tarefa.', 'err'); return false; }
+  const data = p.data || (st.v === 'hoje' ? plToday() : st.v === 'calendario' ? st.d : null);
+  const row = {titulo:p.titulo, notas:'', data, hora:p.hora, repetir:p.repetir, prioridade:p.prioridade || 4, base:p.base, responsavel_id:p.responsavel_id, todos:p.todos,
+    compartilhado: p.responsavel_id && !sameId(p.responsavel_id, plMe()) ? [p.responsavel_id] : [], etiquetas:[], etapas:[], concluida:false,
+    criado_por:plMe(), criado_por_nome:S.profile.nome, updated_at:nowISO()};
+  row.lembrete_min = p.hora && plCfg().rem !== '' ? +plCfg().rem : null; row.lembrete_em = plRemindAt(row);
+  try {
+    const r = await DB.insert('planner_tarefas', row); S.pt.push(r); S.sig = dataSig(); pgPlanner();
+    toast(`Tarefa adicionada${data ? ' para ' + plDia(data).toLowerCase() + (p.hora ? ' às ' + p.hora : '') : ''}${p.responsavel_id && !sameId(p.responsavel_id, plMe()) ? ' — ' + firstName(P(p.responsavel_id)?.nome) + ' vai ser avisado' : ''}.`);
+    if (row.lembrete_em) plAskPerm();
+    return true;
+  } catch(e){ err(e); return false; }
+}
+
+/* ---------- Página ---------- */
+function pgPlanner(){
+  const st = S.pl, me = plMe(), q = nk(st.q);
+  const vis = S.pt.filter(plVe).filter(t => (!st.f || (st.f === 'minhas' ? plMeu(t) && !plShared(t) || sameId(t.responsavel_id, me) : st.f === 'compart' ? plShared(t) && !t.todos : t.todos)) && (!q || nk([t.titulo, t.notas, (t.etiquetas||[]).join(' '), t.base ? BASES[t.base]?.nome : ''].join(' ')).includes(q)));
+  const perm = 'Notification' in window ? Notification.permission : 'x';
+  const tabs = [['hoje','Hoje','sun'],['proximos','Próximos','next'],['calendario','Calendário','cal'],['todas','Todas','list'],['concluidas','Concluídas','check']];
+  let head = '', body = '';
+  if (st.v === 'hoje') [head, body] = plHoje(vis);
+  else if (st.v === 'proximos') body = plProximos(vis);
+  else if (st.v === 'calendario') [head, body] = plCal(vis);
+  else if (st.v === 'todas') body = plTodas(vis);
+  else body = plFeitas(vis);
+  $('#page').innerHTML = `
+    <div class="pl-top">
+      <div class="seg pl-tabs">${tabs.map(([k,l,i]) => `<button class="${st.v===k?'on':''}" data-act="pl-v" data-k="${k}">${ic(i,14)}<span>${l}</span></button>`).join('')}</div>
+      <div class="pl-tr">
+        <select class="sel" id="plf" aria-label="Filtrar">${opts([['','Tudo que vejo'],['minhas','Só minhas'],['compart','Compartilhadas'],['equipe','Da equipe toda']], st.f)}</select>
+        <label class="search">${ic('search',16)}<input id="plq" placeholder="Buscar tarefa..." value="${esc(st.q)}"></label>
+        <button class="icon-btn bord" data-act="pl-cfg" title="Ajustes do planner" aria-label="Ajustes do planner">${ic('cog',17)}</button>
+        <button class="btn pri" data-act="pl-new">${ic('plus',16)}<span class="hide-s">Nova tarefa</span></button>
+      </div>
+    </div>
+    ${perm === 'default' ? `<button class="pl-perm" data-act="pl-perm">${ic('bell',16)}<span>Ative as notificações para os lembretes tocarem neste aparelho, mesmo com o painel em segundo plano.</span><b>Ativar</b></button>` : ''}
+    ${head}
+    <form class="card pl-qa" id="plqa" autocomplete="off">
+      <div class="pl-qa-r">${ic('plus',18)}<input id="plqi" placeholder="${st.v === 'calendario' ? 'Adicionar em ' + plDia(st.d, true).toLowerCase() : 'Escreva a tarefa — ex: Ligar fornecedor amanhã 9h #pinheiros @carlos !1'}" aria-label="Nova tarefa" enterkeyhint="done"><button class="btn pri sm" type="submit">Adicionar</button></div>
+      <div class="pl-chips" id="plch"></div>
+    </form>
+    <div id="plbody">${body}</div>`;
+  const qi = $('#plqi');
+  qi.oninput = () => { const p = plParse(qi.value); $('#plch').innerHTML = qi.value.trim() ? p.chips.map(([i,l,c]) => `<span class="pl-chip" ${c?`style="--c:${c}"`:''}>${ic(i,12)}${esc(l)}</span>`).join('') : ''; };
+  $('#plqa').onsubmit = async e => { e.preventDefault(); if (await plQuickAdd(qi.value)) { $('#plqi').value = ''; $('#plch').innerHTML = ''; $('#plqi').focus(); } };
+  $('#plf').onchange = e => { st.f = e.target.value; pgPlanner(); };
+  let tm; $('#plq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { st.q = e.target.value; pgPlanner(); const n = $('#plq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+}
+function plRow(t, o = {}){
+  const et = t.etapas || [], ed = et.filter(x => x.d).length, nc = S.pc.filter(c => sameId(c.tarefa_id, t.id)).length;
+  const r = t.responsavel_id && P(t.responsavel_id), late = plLate(t), pc = PL_PRIO[t.prioridade]?.color;
+  const quando = t.data && !o.semData ? `<span class="${late ? 'late' : t.data === plToday() ? 'tdy' : ''}">${ic('cal',12)}${plDia(t.data)}${t.hora ? ' ' + hhmm(t.hora) : ''}</span>` : t.hora ? `<span class="${!t.concluida && t.data === plToday() && hhmm(t.hora) < plNowHM() ? 'late' : ''}">${ic('clock',12)}${hhmm(t.hora)}</span>` : '';
+  return `<div class="pl-t ${t.concluida?'done':''}" data-act="pl-open" data-id="${t.id}" role="button" tabindex="0">
+    <button class="pl-ck" style="--pc:${pc}" data-act="pl-tg" data-id="${t.id}" aria-label="${t.concluida?'Reabrir':'Concluir'}">${ic('check',12)}</button>
+    <div class="pl-tb"><b>${esc(t.titulo)}</b>${t.notas && !o.compacto ? `<small class="pl-n">${esc(t.notas.split('\n')[0])}</small>` : ''}
+      <div class="pl-m">${quando}
+        ${t.lembrete_em && !t.concluida ? `<span class="rem" title="Lembrete ${fmtDT(t.lembrete_em)}">${ic('bell',12)}</span>` : ''}
+        ${t.repetir ? `<span title="${PL_REP[t.repetir]}">${ic('refresh',12)}</span>` : ''}
+        ${et.length ? `<span>${ic('checks',12)}${ed}/${et.length}</span>` : ''}
+        ${nc ? `<span>${ic('msg',12)}${nc}</span>` : ''}
+        ${t.base ? `<span>${emblem(t.base,9,3)}${bName(t.base)}</span>` : ''}
+        ${t.todos ? `<span>${ic('users',12)}Equipe</span>` : (t.compartilhado||[]).length ? `<span title="Compartilhada">${ic('users',12)}${(t.compartilhado||[]).length + 1}</span>` : ''}
+        ${!sameId(t.criado_por, plMe()) ? `<span>de ${esc(firstName(t.criado_por_nome || P(t.criado_por)?.nome))}</span>` : ''}
+        ${t.concluida && t.concluida_por && !sameId(t.concluida_por, plMe()) ? `<span>${ic('check',12)}${esc(firstName(P(t.concluida_por)?.nome))}</span>` : ''}
+      </div></div>
+    ${r ? `<span class="pl-av" title="Responsável: ${esc(r.nome)}">${avatar(r.nome, 26)}</span>` : ''}
+  </div>`;
+}
+const plGroup = (title, l, o = {}) => l.length || o.sempre ? `<section class="pl-g"><div class="pl-gh ${o.late?'late':''}"><h3>${title}</h3><span>${l.length || ''}</span>${o.acao || ''}</div>${l.map(t => plRow(t, o)).join('') || (o.vazio ? `<p class="pl-vz">${o.vazio}</p>` : '')}</section>` : '';
+const plDoneTg = (k, l) => l.length ? `<button class="pl-more" data-act="pl-sd" data-k="${k}">${ic(S.pl.sd[k] ? 'chevD' : 'chevR',15)}${l.length} concluída${l.length>1?'s':''}</button>${S.pl.sd[k] ? l.map(t => plRow(t)).join('') : ''}` : '';
+const plEmpty = (t, s) => `<div class="card">${empty('checks', t, s)}</div>`;
+
+function plHoje(vis){
+  const td = plToday(), d = new Date(), mine = vis.filter(plMeu);
+  const late = plSort(mine.filter(plLate)), hoje = mine.filter(t => t.data === td);
+  const pend = plSort(hoje.filter(t => !t.concluida)), feitas = hoje.filter(t => t.concluida);
+  const tot = hoje.length + late.length, dn = feitas.length, pct = tot ? dn / tot : 0, C2 = 2 * Math.PI * 30;
+  const h = d.getHours(), saud = h < 5 ? 'Boa noite' : h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+  const H0 = 6, H1 = 23, pos = (hh, mm) => Math.max(0, Math.min(100, ((hh + mm/60) - H0) / (H1 - H0) * 100)), np = pos(d.getHours(), d.getMinutes());
+  const evs = hoje.filter(t => t.hora).map(t => { const [hh, mm] = hhmm(t.hora).split(':').map(Number); return `<button class="pl-ev ${t.concluida?'done':''} ${!t.concluida && hhmm(t.hora) < plNowHM() ? 'late' : ''}" style="left:${pos(hh,mm)}%;--c:${t.base ? BASES[t.base].c : PL_PRIO[t.prioridade].color === '#a3a9bd' ? PL_COR : PL_PRIO[t.prioridade].color}" data-act="pl-open" data-id="${t.id}" aria-label="${esc(hhmm(t.hora) + ' ' + t.titulo)}"><span class="tip">${hhmm(t.hora)} ${esc(t.titulo)}</span></button>`; }).join('');
+  const head = `<div class="card pl-hero">
+    <div class="pl-hd"><div><div class="pl-wd">${cap(WDN[d.getDay()])}${d.getDay() > 0 && d.getDay() < 6 ? '-feira' : ''}</div><div class="pl-dt">${saud}, <b>${esc(firstName(S.profile.nome))}</b>. ${d.getDate()} de ${MESN[d.getMonth()]}${pend.length ? ` — ${pend.length} tarefa${pend.length>1?'s':''} para hoje` : ''}.</div></div>
+      <div class="pl-ring" title="${dn} de ${tot} feitas"><svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="30" fill="none" stroke="var(--line)" stroke-width="6"/><circle cx="36" cy="36" r="30" fill="none" stroke="${PL_COR}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C2}" stroke-dashoffset="${C2 * (1 - pct)}"/></svg><span>${dn}/${tot}<small>feitas</small></span></div></div>
+    <div class="pl-ruler" aria-label="Tarefas com horário ao longo do dia"><div class="tr"></div><div class="ps" style="width:${np}%"></div>${[6,9,12,15,18,21].map(x => `<span class="tk" style="left:${pos(x,0)}%">${x}h</span>`).join('')}${d.getHours() >= H0 && d.getHours() < H1 ? `<div class="nw" style="left:${np}%" data-t="${plNowHM()}"></div>` : ''}${evs}</div>
+  </div>`;
+  const body = !tot ? plEmpty('Nada para hoje', 'Escreva acima o que precisa fazer. Dá para colocar dia, hora e quem vai fazer na mesma frase: "Conferir lacres sexta 10h #ipiranga @fernanda".')
+    : plGroup('Atrasadas', late, {late:true, acao:`<button class="linkbtn pl-ga" data-act="pl-late-today">Passar tudo para hoje</button>`}) + plGroup('Hoje', pend, {semData:true, sempre:true, vazio:'Tudo feito por hoje.'}) + plDoneTg('hoje', feitas);
+  return [head, body];
+}
+function plProximos(vis){
+  const mine = vis.filter(t => !t.concluida && plMeu(t)), end = iso(addDays(new Date(), 13));
+  let h = plGroup('Atrasadas', plSort(mine.filter(plLate)), {late:true, acao:`<button class="linkbtn pl-ga" data-act="pl-late-today">Passar tudo para hoje</button>`});
+  for (let i = 0; i < 14; i++){
+    const ds = iso(addDays(new Date(), i)), l = plSort(mine.filter(t => t.data === ds)), d = parseISO(ds);
+    if (l.length || i < 2) h += plGroup(`${i < 2 ? plDia(ds) + ' ·' : ''} ${cap(WDN[d.getDay()])}, ${d.getDate()}/${pad(d.getMonth()+1)}`, l, {semData:true, sempre:true, vazio:'Nada marcado.'});
+  }
+  h += plGroup('Mais para frente', plSort(mine.filter(t => t.data > end))) + plGroup('Sem data', plSort(mine.filter(t => !t.data)));
+  return h;
+}
+function plCal(vis){
+  const st = S.pl, f = new Date(st.y, st.m, 1), start = addDays(f, -f.getDay()), td = plToday();
+  const all = vis.filter(t => t.data);
+  let cells = '';
+  for (let i = 0; i < 42; i++){
+    const d = addDays(start, i), ds = iso(d), l = plSort(all.filter(t => t.data === ds));
+    if (i >= 35 && d.getMonth() !== st.m) break;
+    cells += `<button class="pl-d ${d.getMonth()!==st.m?'out':''} ${ds===td?'tdy':''} ${ds===st.d?'pick':''}" data-act="pl-day" data-d="${ds}"><span class="n">${d.getDate()}</span>
+      ${l.slice(0,3).map(t => `<span class="ct ${t.concluida?'done':''}" style="--c:${t.base ? BASES[t.base].c : PL_COR}">${t.hora ? hhmm(t.hora) + ' ' : ''}${esc(t.titulo)}</span>`).join('')}${l.length > 3 ? `<span class="mo">+${l.length-3}</span>` : ''}
+      <span class="dots">${l.slice(0,4).map(t => `<i style="--c:${t.concluida ? 'var(--line)' : t.base ? BASES[t.base].c : PL_COR}"></i>`).join('')}</span></button>`;
+  }
+  const dl = plSort(all.filter(t => t.data === st.d));
+  return [`<div class="card pl-calc"><div class="cal-h" style="margin:0 0 12px"><button class="icon-btn bord" data-act="pl-cal" data-k="-1" aria-label="Mês anterior">${ic('chevL',18)}</button><h2>${cap(MESN[st.m])} ${st.y}</h2><button class="icon-btn bord" data-act="pl-cal" data-k="1" aria-label="Próximo mês">${ic('chevR',18)}</button><button class="btn sm" data-act="pl-cal" data-k="0">Hoje</button></div>
+    <div class="pl-cal">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(w => `<div class="wh">${w}</div>`).join('')}${cells}</div></div>`,
+    plGroup(plDia(st.d, true), dl.filter(t => !t.concluida), {semData:true, sempre:true, vazio:'Nada neste dia.'}) + plDoneTg('cal', dl.filter(t => t.concluida))];
+}
+function plTodas(vis){
+  const op = vis.filter(t => !t.concluida);
+  if (!op.length) return plEmpty('Nenhuma tarefa aberta', 'As tarefas que você criar ou que compartilharem com você aparecem aqui.');
+  return plGroup('Para mim', plSort(op.filter(t => sameId(t.responsavel_id, plMe())))) +
+    plGroup('Criadas por mim', plSort(op.filter(t => sameId(t.criado_por, plMe()) && !sameId(t.responsavel_id, plMe())))) +
+    plGroup('Compartilhadas comigo', plSort(op.filter(t => !sameId(t.criado_por, plMe()) && !sameId(t.responsavel_id, plMe()) && (t.compartilhado||[]).some(u => sameId(u, plMe()))))) +
+    plGroup('Da equipe toda', plSort(op.filter(t => t.todos && !sameId(t.criado_por, plMe()) && !sameId(t.responsavel_id, plMe()) && !(t.compartilhado||[]).some(u => sameId(u, plMe())))));
+}
+function plFeitas(vis){
+  const dn = vis.filter(t => t.concluida && t.concluida_em).sort((a,b) => String(b.concluida_em).localeCompare(String(a.concluida_em)));
+  const dia = t => iso(new Date(t.concluida_em)), days = [...Array(7)].map((_, i) => iso(addDays(new Date(), i - 6)));
+  const mineDn = dn.filter(t => sameId(t.concluida_por, plMe()));
+  const per = days.map(ds => mineDn.filter(t => dia(t) === ds).length), max = Math.max(1, ...per);
+  const by = {}; dn.slice(0, 150).forEach(t => (by[dia(t)] = by[dia(t)] || []).push(t));
+  return `<div class="card pl-bars" aria-label="Suas tarefas concluídas por dia"><div class="pl-bh"><b>Você concluiu ${per.reduce((a,b) => a+b, 0)} tarefa(s) nos últimos 7 dias</b></div><div class="pl-bb">${days.map((ds, i) => `<div class="b ${ds===plToday()?'tdy':''}"><em>${per[i] || ''}</em><i style="height:${per[i]/max*70}%"></i><small>${ds===plToday() ? 'hoje' : WDN[parseISO(ds).getDay()].slice(0,3)}</small></div>`).join('')}</div></div>` +
+    (Object.keys(by).length ? Object.entries(by).map(([ds, l]) => plGroup(plDia(ds, true), l)).join('') : plEmpty('Nada concluído ainda', 'Toque no círculo de uma tarefa para concluir.'));
+}
+
+/* ---------- Ações ---------- */
+async function plPatch(id, patch){
+  const t = PT(id); if (!t) return;
+  const old = {...t}; Object.assign(t, patch, {updated_at:nowISO()});
+  if (['data','hora','lembrete_min'].some(k => k in patch) && !('lembrete_em' in patch)) t.lembrete_em = plRemindAt(t);
+  if (t.lembrete_em !== old.lembrete_em) t.lembrado_em = null;
+  const send = {...patch, updated_at:t.updated_at, lembrete_em:t.lembrete_em}; if (t.lembrete_em !== old.lembrete_em) send.lembrado_em = null;
+  if (TEST){ if ('responsavel_id' in patch && patch.responsavel_id && !sameId(patch.responsavel_id, plMe())) send.resp_avisado = false; }
+  try { await DB.update('planner_tarefas', id, send); S.sig = dataSig(); }
+  catch(e){ Object.assign(t, old); err(e); }
+  if (S.page === 'planner' && !$('#ov')) pgPlanner();
+}
+async function plToggle(id){
+  const t = PT(id); if (!t) return;
+  $(`.pl-ck[data-id="${id}"]`)?.classList.add('pop');
+  if (!t.concluida && t.repetir){
+    try { const r = await DB.insert('planner_tarefas', {titulo:t.titulo, notas:'', data:t.data || plToday(), hora:t.hora, prioridade:t.prioridade, base:t.base, todos:t.todos, compartilhado:t.compartilhado || [], etiquetas:t.etiquetas || [], etapas:[], concluida:true, concluida_em:nowISO(), concluida_por:plMe(), criado_por:plMe(), criado_por_nome:S.profile.nome}); S.pt.push(r); } catch(e){}
+    const nd = plNext(t.data, t.repetir);
+    await plPatch(id, {data:nd, etapas:(t.etapas||[]).map(x => ({...x, d:false}))});
+    return toast(`Feito! Próxima vez: ${plDia(nd).toLowerCase()}${t.hora ? ' às ' + hhmm(t.hora) : ''}.`);
+  }
+  const c = !t.concluida;
+  setTimeout(async () => { await plPatch(id, {concluida:c, concluida_em:c ? nowISO() : null, concluida_por:c ? plMe() : null}); if (c) plUndo(`"${t.titulo.length > 40 ? t.titulo.slice(0,40) + '…' : t.titulo}" concluída.`, () => plPatch(id, {concluida:false, concluida_em:null, concluida_por:null})); }, c ? 200 : 0);
+}
+function plUndo(msg, fn){
+  const t = document.createElement('div'); t.className = 'toast ok';
+  t.innerHTML = `<span class="i">${ic('check',16)}</span><span>${esc(msg)}</span><button class="linkbtn" style="color:#fff;margin-left:8px;text-decoration:underline">Desfazer</button>`;
+  t.querySelector('button').onclick = () => { t.remove(); fn(); };
+  $('#toasts').appendChild(t); setTimeout(() => t.remove(), 6000);
+}
+async function plLateToday(){
+  const l = S.pt.filter(t => plVe(t) && plMeu(t) && plLate(t)); if (!l.length) return;
+  for (const t of l) await plPatch(t.id, {data:plToday()});
+  toast(`${l.length} tarefa(s) passada(s) para hoje.`);
+}
+
+/* ---------- Detalhes / edição ---------- */
+function plForm(id, preset = {}){
+  const t0 = id ? PT(id) : null; if (id && !t0) return toast('Essa tarefa não existe mais.', 'err');
+  if (id) markReadPrefix(`pl:${id}:`);
+  const t = t0 || {titulo:'', notas:'', data:preset.data || (S.pl.v === 'calendario' ? S.pl.d : S.pl.v === 'hoje' ? plToday() : ''), hora:'', lembrete_min:null, repetir:null, prioridade:4, base:preset.base || null, responsavel_id:null, compartilhado:[], todos:false, etiquetas:[], etapas:[], criado_por:plMe()};
+  const sel = new Set((t.compartilhado||[]).map(String)), ppl = plPessoas().filter(p => !sameId(p.id, t.criado_por));
+  const rem = t.lembrete_min == null ? '' : String(t.lembrete_min);
+  const cmts = id ? S.pc.filter(c => sameId(c.tarefa_id, id)).sort((a,b) => String(a.created_at).localeCompare(String(b.created_at))) : [];
+  const remLocal = t.lembrete_em ? (() => { const d = new Date(t.lembrete_em); return `${iso(d)}T${pad(d.getHours())}:${pad(d.getMinutes())}`; })() : '';
+  const canDel = !t0 || sameId(t0.criado_por, plMe()) || isAdmin();
+  openModal({wide:true, title: t0 ? 'Tarefa' : 'Nova tarefa', body:`<form id="mf" class="form" autocomplete="off">
+    <div class="f full pl-tt">${t0 ? `<button type="button" class="pl-ck big ${t0.concluida?'on':''}" style="--pc:${PL_PRIO[t.prioridade].color}" data-act="pl-tg-m" data-id="${t0.id}" aria-label="Concluir">${ic('check',14)}</button>` : ''}<input name="titulo" value="${esc(t.titulo)}" placeholder="O que precisa ser feito?" required maxlength="160"></div>
+    ${fld('Data', inp('data', t.data || '', 'type="date" id="pld"'), false)}
+    ${fld('Horário', inp('hora', hhmm(t.hora), 'type="time" id="plh"'), false)}
+    ${fld(ic('bell',13) + ' Lembrete', `<select name="lembrete_min" id="plr">${opts(PL_REM, rem)}</select><input type="datetime-local" name="lembrete_em" id="plre" value="${remLocal}" ${rem === '-1' ? '' : 'hidden'} style="margin-top:8px">`, false, false, '<span id="plrh"></span>')}
+    ${fld(ic('refresh',13) + ' Repetir', `<select name="repetir">${opts([['','Não repete'], ...Object.entries(PL_REP)], t.repetir || '')}</select>`, false)}
+    ${fld('Prioridade', rchips('prioridade', Object.fromEntries(Object.entries(PL_PRIO).map(([k,o]) => [k, o])), String(t.prioridade)), true)}
+    ${fld('Base (opcional)', `<select name="base"><option value="">Nenhuma</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), t.base || '')}</select>`, false)}
+    ${fld('Responsável', `<select name="responsavel_id" id="plresp"><option value="">Ninguém em especial</option>${opts(plPessoas().map(p => [p.id, p.nome + (sameId(p.id, plMe()) ? ' (você)' : '')]), t.responsavel_id || '')}</select>`, false, false, 'Recebe um aviso e o lembrete no celular.')}
+    <div class="f full"><label>${ic('users',13)} Compartilhar com</label>
+      <label class="tgl pl-all"><input type="checkbox" name="todos" id="plall" ${t.todos?'checked':''}> Toda a equipe do painel (encarregado e todos os líderes)</label>
+      <div class="pl-pp" id="plpp" ${t.todos?'hidden':''}>${ppl.map(p => `<label class="pl-p ${sel.has(String(p.id))?'on':''}"><input type="checkbox" value="${p.id}" ${sel.has(String(p.id))?'checked':''}>${avatar(p.nome,24)}<span>${esc(firstName(p.nome))}<small>${p.role === 'admin' ? 'Encarregado' : (p.bases||[]).map(bName).join(', ') || 'Líder'}</small></span></label>`).join('') || '<p class="muted s" style="margin:4px 0">Ainda não há outras pessoas liberadas no painel.</p>'}</div>
+      <span class="f-hint">Quem você marcar vê, edita e conclui a tarefa. Sem ninguém marcado, só você vê.</span></div>
+    ${fld('Anotações', `<textarea name="notas" rows="3" placeholder="Detalhes, endereço, telefone...">${esc(t.notas || '')}</textarea>`, true)}
+    ${fld('Etiquetas', inp('etiquetas', (t.etiquetas||[]).join(', '), 'placeholder="Ex: compras, documentos (separe por vírgula)"'), true)}
+  </form>
+  ${t0 ? `<div class="pl-sec"><div class="sec">Etapas ${(t.etapas||[]).length ? `<em>${(t.etapas||[]).filter(x => x.d).length}/${(t.etapas||[]).length}</em>` : ''}</div>
+    <div class="pl-subs">${(t.etapas||[]).map(x => `<div class="pl-sub ${x.d?'done':''}"><button class="pl-ck sm ${x.d?'on':''}" data-act="pl-sub" data-id="${t0.id}" data-k="${x.id}" aria-label="Marcar etapa">${ic('check',10)}</button><span>${esc(x.t)}</span><button class="icon-btn xs" data-act="pl-subdel" data-id="${t0.id}" data-k="${x.id}" aria-label="Remover etapa">${ic('x',13)}</button></div>`).join('')}</div>
+    <div class="pl-add">${ic('plus',15)}<input id="plsubin" placeholder="Adicionar etapa e apertar Enter"></div></div>
+  <div class="pl-sec"><div class="sec">Comentários ${cmts.length ? `<em>${cmts.length}</em>` : ''}</div>
+    ${cmts.map(c => `<div class="pl-cm">${avatar(c.autor_nome,28)}<div><b>${esc(c.autor_nome)}</b> <small>${ago(c.created_at)}</small>${sameId(c.autor_id, plMe()) ? ` <button class="linkbtn s" data-act="pl-cmdel" data-id="${c.id}" data-k="${t0.id}">apagar</button>` : ''}<p>${esc(c.texto)}</p></div></div>`).join('') || `<p class="muted s" style="margin:0 0 8px">${plShared(t0) ? 'Converse sobre a tarefa com quem está nela.' : 'Anote o andamento aqui.'}</p>`}
+    <div class="pl-add">${ic('msg',15)}<input id="plcmin" placeholder="Escreva e aperte Enter"></div></div>
+  <p class="f-hint" style="margin-top:12px">Criada por ${esc(sameId(t0.criado_por, plMe()) ? 'você' : t0.criado_por_nome || '—')} em ${fmtDT(t0.created_at)}${t0.concluida ? ` — concluída por ${esc(P(t0.concluida_por)?.nome || '—')} em ${fmtDT(t0.concluida_em)}` : ''}${t0.lembrete_em && !t0.concluida ? ` — lembrete ${fmtDT(t0.lembrete_em)}${t0.lembrado_em ? ' (já avisado)' : ''}` : ''}.</p>` : ''}`,
+  foot:`${t0 && canDel ? `<button class="btn danger left" data-act="pl-del" data-id="${t0.id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}${t0 ? `<button class="btn" data-act="pl-dup" data-id="${t0.id}">${ic('copy',15)}<span class="hide-s">Duplicar</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="pl-save" data-id="${t0?.id || ''}">${ic('check',15)}Salvar</button>`,
+  onMount: ov => {
+    ov._sel = sel;
+    const remHint = () => { const v = $('#plr',ov).value, h = $('#plh',ov).value, d = $('#pld',ov).value;
+      $('#plre',ov).hidden = v !== '-1';
+      $('#plrh',ov).textContent = v === '' || v === '-1' ? '' : !d ? 'Escolha a data para o lembrete funcionar.' : !h ? `Sem horário: avisa ${v === '0' ? 'às 8h do dia' : 'com base nas 8h do dia'}.` : ''; };
+    $('#plr',ov).onchange = remHint; $('#plh',ov).oninput = () => { if ($('#plh',ov).value && $('#plr',ov).value === '' && plCfg().rem !== '') $('#plr',ov).value = plCfg().rem; remHint(); }; $('#pld',ov).oninput = remHint; remHint();
+    $('#plall',ov).onchange = e => { $('#plpp',ov).hidden = e.target.checked; };
+    $$('#plpp input',ov).forEach(i => i.onchange = () => { i.checked ? sel.add(i.value) : sel.delete(i.value); i.closest('.pl-p').classList.toggle('on', i.checked); });
+    $('#plresp',ov).onchange = e => { const v = e.target.value; if (v && !sameId(v, t.criado_por) && !$('#plall',ov).checked){ sel.add(v); const i = $(`#plpp input[value="${v}"]`,ov); if (i){ i.checked = true; i.closest('.pl-p').classList.add('on'); } } };
+    const si = $('#plsubin',ov); if (si) si.onkeydown = async e => { if (e.key !== 'Enter') return; e.preventDefault(); const v = si.value.trim(); if (!v) return; await plPatch(id, {etapas:[...(PT(id).etapas||[]), {id:uid(), t:v, d:false}]}); plReopen(id, '#plsubin'); };
+    const ci = $('#plcmin',ov); if (ci) ci.onkeydown = async e => { if (e.key !== 'Enter') return; e.preventDefault(); const v = ci.value.trim(); if (!v) return;
+      try { const r = await DB.insert('planner_comentarios', {tarefa_id:id, autor_id:plMe(), autor_nome:S.profile.nome, texto:v}); S.pc.push(r); S.sig = dataSig(); plReopen(id, '#plcmin'); } catch(x){ err(x); } };
+    if (!t0) setTimeout(() => $('[name=titulo]',ov)?.focus(), 30);
+  }});
+}
+// Reabre a janela preservando o que foi digitado nos campos principais
+function plReopen(id, focus){
+  const ov = $('#ov'), keep = ov ? formObj() : null, sc = $('.m-b', ov)?.scrollTop || 0;
+  plForm(id);
+  if (keep){ const f = $('#mf'); ['titulo','data','hora','notas','etiquetas','repetir','base','responsavel_id','lembrete_min'].forEach(k => { if (f[k] && keep[k] !== undefined) f[k].value = keep[k]; }); }
+  const b = $('#ov .m-b'); if (b) b.scrollTop = sc; if (focus) $(focus)?.focus();
+}
+async function plSave(id){
+  const f = formObj(), ov = $('#ov'), t0 = id ? PT(id) : null;
+  if (!f.titulo) return toast('Escreva o nome da tarefa.', 'err');
+  const lm = f.lembrete_min === '' || f.lembrete_min == null ? null : +f.lembrete_min;
+  if (lm === -1 && !f.lembrete_em) return toast('Escolha a data e a hora do lembrete.', 'err');
+  const row = {titulo:f.titulo, notas:f.notas || '', data:f.data || null, hora:f.hora || null, repetir:f.repetir || null, prioridade:+f.prioridade || 4, base:f.base || null,
+    responsavel_id:f.responsavel_id || null, todos:!!f.todos, compartilhado: f.todos ? [] : [...(ov?._sel || [])], etiquetas:String(f.etiquetas || '').split(',').map(x => x.trim().replace(/^#/,'').toLowerCase()).filter(Boolean),
+    lembrete_min:lm, updated_at:nowISO()};
+  if (row.repetir && !row.data) row.data = plToday();
+  row.lembrete_em = lm === -1 ? new Date(f.lembrete_em).toISOString() : plRemindAt(row);
+  if (lm != null && lm !== -1 && !row.data) return toast('Para ter lembrete, escolha a data.', 'err');
+  try {
+    if (t0){ await plPatch(id, row); toast('Tarefa salva.'); }
+    else { const r = await DB.insert('planner_tarefas', {...row, etapas:[], concluida:false, criado_por:plMe(), criado_por_nome:S.profile.nome, ...(TEST && row.responsavel_id && !sameId(row.responsavel_id, plMe()) ? {resp_avisado:false} : {})}); S.pt.push(r); S.sig = dataSig(); toast('Tarefa criada.'); }
+    closeModal(); if (S.page === 'planner') pgPlanner(); else render();
+    if (row.lembrete_em) plAskPerm();
+  } catch(e){ err(e); }
+}
+async function plDel(id){
+  const t = PT(id); if (!t || !await confirmBox(`Excluir a tarefa <b>${esc(t.titulo)}</b>?${plShared(t) ? ' Ela some para todos que participam.' : ''}`)) return;
+  try { await DB.remove('planner_tarefas', id); S.pt = S.pt.filter(x => !sameId(x.id, id)); S.pc = S.pc.filter(c => !sameId(c.tarefa_id, id)); S.sig = dataSig(); closeModal(); toast('Tarefa excluída.'); pgPlanner(); } catch(e){ err(e); }
+}
+async function plDup(id){
+  const t = PT(id); if (!t) return;
+  const {id:_, created_at, updated_at, concluida_em, concluida_por, lembrado_em, resp_avisado, ...rest} = t;
+  try { const r = await DB.insert('planner_tarefas', {...rest, titulo:t.titulo + ' (cópia)', concluida:false, criado_por:plMe(), criado_por_nome:S.profile.nome}); S.pt.push(r); S.sig = dataSig(); toast('Tarefa duplicada.'); plForm(r.id); } catch(e){ err(e); }
+}
+
+/* ---------- Ajustes, notificações e instalação ---------- */
+function plCfgModal(){
+  const c = plCfg(), perm = 'Notification' in window ? Notification.permission : 'x';
+  const permTxt = {granted:'Ativadas neste aparelho', denied:'Bloqueadas — libere nas permissões do site no navegador', default:'Ainda não ativadas', x:'Este navegador não mostra notificações'}[perm];
+  openModal({title:'Ajustes do planner', body:`<div class="form">
+    ${fld('Lembrete padrão para tarefas com horário', `<select id="pcrem">${opts(PL_REM.filter(r => r[0] !== '-1'), c.rem)}</select>`, true)}
+    <label class="tgl" style="grid-column:1/-1"><input type="checkbox" id="pcsom" ${c.som?'checked':''}> Tocar um bipe quando o lembrete aparecer na tela</label>
+    <div class="f full"><label>Notificações neste aparelho</label><div class="pl-cfgr"><span>${permTxt}${PUSH_ON ? '' : '<br><small class="muted">Com o painel fechado, só chegam depois da configuração do passo "Lembretes no celular" do LEIAME.</small>'}</span>${perm === 'default' ? `<button class="btn sm pri" data-act="pl-perm">Ativar</button>` : perm === 'granted' ? `<button class="btn sm" data-act="pl-test">Testar</button>` : ''}</div></div>
+    <div class="f full"><label>Instalar como aplicativo</label><div class="pl-cfgr"><span>${isStandalone() ? 'O painel já está instalado neste aparelho.' : installEvt ? 'Abre como app, com ícone na tela inicial e sem a barra do navegador.' : 'Android: menu ⋮ do Chrome → Instalar app. iPhone: Compartilhar → Adicionar à Tela de Início.'}</span>${installEvt ? `<button class="btn sm" data-act="pl-install">${ic('download',14)}Instalar</button>` : ''}</div></div>
+    ${isAdmin() ? `<details class="pl-adv" style="grid-column:1/-1"><summary>Chaves para notificações com o painel fechado (só o encarregado, uma vez)</summary>
+      <p class="f-hint">Gere as chaves e siga o passo "Lembretes no celular" do LEIAME. A chave pública vai no <b>config.js</b>; as duas vão nos Secrets da função no Supabase. Não compartilhe a privada.</p>
+      <button class="btn sm" data-act="pl-vapid">Gerar chaves</button><div id="plvk"></div></details>` : ''}
+  </div>`, foot:`<button class="btn" data-act="modal-close">Fechar</button><button class="btn pri" data-act="pl-cfg-save">Salvar</button>`});
+}
+function plCfgSave(){ lsSet('prim_pl_cfg', JSON.stringify({rem:$('#pcrem').value, som:$('#pcsom').checked})); closeModal(); toast('Ajustes salvos.'); }
+async function plVapid(){
+  try {
+    const k = await crypto.subtle.generateKey({name:'ECDSA', namedCurve:'P-256'}, true, ['sign','verify']);
+    const pub = b64u(new Uint8Array(await crypto.subtle.exportKey('raw', k.publicKey))), d = (await crypto.subtle.exportKey('jwk', k.privateKey)).d;
+    $('#plvk').innerHTML = `<div class="f"><label>VAPID_PUBLIC_KEY (pública)</label><div class="pl-key">${pub}</div><button class="btn sm" data-act="copy" data-v="${pub}">Copiar pública</button></div><div class="f"><label>VAPID_PRIVATE_KEY (privada, guarde em segredo)</label><div class="pl-key">${d}</div><button class="btn sm" data-act="copy" data-v="${d}">Copiar privada</button></div>`;
+  } catch(e){ err(e); }
+}
+
+/* ---------- Lembretes na hora certa ---------- */
+const b64u = u8 => btoa(String.fromCharCode(...u8)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const unb64u = s => { s = s.replace(/-/g,'+').replace(/_/g,'/'); s += '='.repeat((4 - s.length % 4) % 4); return Uint8Array.from(atob(s), c => c.charCodeAt(0)); };
+const PUSH_ON = !TEST && !!String(CONFIG.VAPID_PUBLIC_KEY || '').trim();
+let swReg = null, installEvt = null;
+const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; });
+function plFired(){ try { return new Set(JSON.parse(lsGet('prim_pl_fired') || '[]')); } catch(e){ return new Set(); } }
+function plCheck(){
+  if (!S.profile || !S.pt) return;
+  const now = Date.now(), fired = plFired();
+  S.pt.filter(t => !t.concluida && t.lembrete_em && !t.lembrado_em && plVe(t) && sameId(t.responsavel_id || t.criado_por, plMe())).forEach(t => {
+    const at = new Date(t.lembrete_em).getTime(), key = t.id + '|' + t.lembrete_em;
+    if (at > now || now - at > 6 * 36e5 || fired.has(key)) return;
+    fired.add(key); lsSet('prim_pl_fired', JSON.stringify([...fired].slice(-300))); plAlarm(t);
+  });
+}
+function plAlarm(t){
+  const quando = t.hora ? `${plDia(t.data)} às ${hhmm(t.hora)}` : plDia(t.data) || 'Agora';
+  const el = document.createElement('div'); el.className = 'pl-alarm'; el.setAttribute('role', 'alert');
+  el.innerHTML = `<span class="ai">${ic('bell',20)}</span><div><b>${esc(t.titulo)}</b><small>${esc(quando)}${t.base ? ' — ' + bName(t.base) : ''}</small>
+    <div class="aa"><button class="btn sm pri" data-a="ok">${ic('check',14)}Concluir</button><button class="btn sm" data-a="adiar">Mais 10 min</button><button class="btn sm" data-a="abrir">Abrir</button><button class="btn sm ghost" data-a="x">Dispensar</button></div></div>`;
+  el.onclick = e => { const a = e.target.closest('[data-a]')?.dataset.a; if (!a) return; el.remove();
+    if (a === 'ok') plToggle(t.id);
+    if (a === 'adiar') plPatch(t.id, {lembrete_min:-1, lembrete_em:new Date(Date.now() + 10*6e4).toISOString()}).then(() => toast('Lembro de novo em 10 minutos.'));
+    if (a === 'abrir'){ go('planner'); plForm(t.id); } };
+  let box = $('#plalarms'); if (!box){ box = document.createElement('div'); box.id = 'plalarms'; box.className = 'pl-alarms'; document.body.appendChild(box); }
+  box.appendChild(el);
+  if (plCfg().som) plBeep();
+  if ('Notification' in window && Notification.permission === 'granted' && (document.hidden || !document.hasFocus())){
+    const op = {body:quando + (t.notas ? '\n' + t.notas.slice(0,80) : ''), icon:'icons/icon-192.png', badge:'icons/badge-96.png', tag:'pl-' + t.id, requireInteraction:true, data:{url:'./#planner', task:t.id}};
+    (swReg ? swReg.showNotification(t.titulo, op) : Promise.reject()).catch(() => { try { new Notification(t.titulo, op); } catch(e){} });
+  }
+  if (PT(t.id) && !sameId(t.id, 'teste')){ PT(t.id).lembrado_em = nowISO(); DB.update('planner_tarefas', t.id, {lembrado_em:PT(t.id).lembrado_em}).catch(() => {}); }
+}
+function plBeep(){
+  try { const a = new (window.AudioContext || window.webkitAudioContext)(); [0, .18].forEach(d => { const o = a.createOscillator(), g = a.createGain(); o.frequency.value = 880; g.gain.setValueAtTime(.0001, a.currentTime + d); g.gain.exponentialRampToValueAtTime(.25, a.currentTime + d + .02); g.gain.exponentialRampToValueAtTime(.0001, a.currentTime + d + .16); o.connect(g).connect(a.destination); o.start(a.currentTime + d); o.stop(a.currentTime + d + .18); }); } catch(e){}
+}
+async function plAskPerm(force){
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default' && (force || !lsGet('prim_pl_asked'))){ lsSet('prim_pl_asked', '1'); const p = await Notification.requestPermission(); if (p === 'granted'){ toast('Notificações ativadas neste aparelho.'); plPush(); } if (S.page === 'planner' && !$('#ov')) pgPlanner(); }
+}
+async function plPush(){
+  if (!PUSH_ON || !swReg || !('PushManager' in window) || Notification.permission !== 'granted' || !S.profile) return;
+  try {
+    let sub = await swReg.pushManager.getSubscription();
+    if (!sub) sub = await swReg.pushManager.subscribe({userVisibleOnly:true, applicationServerKey:unb64u(String(CONFIG.VAPID_PUBLIC_KEY).trim())});
+    const j = sub.toJSON();
+    await sb.from('push_subs').upsert({user_id:S.profile.id, endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth, ua:navigator.userAgent.slice(0,180)}, {onConflict:'endpoint'});
+  } catch(e){ console.warn('push', e); }
+}
+async function plSW(){
+  if (!('serviceWorker' in navigator) || !/^https:|^http:\/\/localhost/.test(location.href)) return;
+  try { swReg = await navigator.serviceWorker.register('./sw.js'); await navigator.serviceWorker.ready; plPush(); } catch(e){ console.warn('sw', e); }
+  navigator.serviceWorker.addEventListener('message', e => { if (e.data?.type === 'open-task' && S.profile){ go('planner'); if (PT(e.data.id)) plForm(e.data.id); } });
+}
+setInterval(plCheck, 15000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) setTimeout(plCheck, 800); });
+plSW();
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -4042,6 +4637,18 @@ const ACT = {
   'hx-ac': a => { S.hx.ac = S.hx.ac === a.dataset.k ? '' : a.dataset.k; S.hx.t = a.dataset.k === '_man' ? '' : S.hx.t; pgHoras(); },
   'hx-p': a => { S.hx.p = S.hx.p === a.dataset.k ? '' : a.dataset.k; pgHoras(); }, 'hx-clear': () => { Object.assign(S.hx, {t:'', q:'', ac:'', b:'', p:''}); pgHoras(); },
   'hx-xls': () => exportHoras(),
+  'pl-v': a => { S.pl.v = a.dataset.k; pgPlanner(); }, 'pl-go': a => { S.pl.v = a.dataset.k || 'hoje'; go('planner'); },
+  'pl-open': a => { if (S.page !== 'planner') go('planner'); plForm(a.dataset.id); }, 'pl-new': () => plForm(), 'pl-save': a => plSave(a.dataset.id || null),
+  'pl-tg': a => plToggle(a.dataset.id), 'pl-tg-m': a => { closeModal(); plToggle(a.dataset.id); }, 'pl-del': a => plDel(a.dataset.id), 'pl-dup': a => plDup(a.dataset.id),
+  'pl-sub': async a => { const t = PT(a.dataset.id); await plPatch(t.id, {etapas:(t.etapas||[]).map(x => x.id === a.dataset.k ? {...x, d:!x.d} : x)}); plReopen(t.id); },
+  'pl-subdel': async a => { const t = PT(a.dataset.id); await plPatch(t.id, {etapas:(t.etapas||[]).filter(x => x.id !== a.dataset.k)}); plReopen(t.id); },
+  'pl-cmdel': async a => { try { await DB.remove('planner_comentarios', a.dataset.id); S.pc = S.pc.filter(c => !sameId(c.id, a.dataset.id)); S.sig = dataSig(); plReopen(a.dataset.k); } catch(e){ err(e); } },
+  'pl-sd': a => { S.pl.sd[a.dataset.k] = !S.pl.sd[a.dataset.k]; pgPlanner(); }, 'pl-late-today': () => plLateToday(),
+  'pl-day': a => { S.pl.d = a.dataset.d; pgPlanner(); if (innerWidth < 720) setTimeout(() => $('#plbody')?.scrollIntoView({behavior:'smooth'}), 30); },
+  'pl-cal': a => { const k = +a.dataset.k, st = S.pl; if (!k){ const d = new Date(); st.y = d.getFullYear(); st.m = d.getMonth(); st.d = iso(d); } else { st.m += k; if (st.m < 0){ st.m = 11; st.y--; } if (st.m > 11){ st.m = 0; st.y++; } } pgPlanner(); },
+  'pl-cfg': () => plCfgModal(), 'pl-cfg-save': () => plCfgSave(), 'pl-perm': () => { closeModal(); plAskPerm(true); }, 'pl-vapid': () => plVapid(),
+  'pl-test': () => plAlarm({id:'teste', titulo:'Teste de lembrete', data:iso(new Date()), hora:plNowHM(), notas:'Se você está vendo isto, os lembretes funcionam.'}),
+  'pl-install': async () => { if (!installEvt) return; installEvt.prompt(); const r = await installEvt.userChoice; installEvt = null; closeModal(); if (r.outcome === 'accepted') toast('Painel instalado! Procure o ícone na tela inicial.'); },
   'esc-base-go': a => { closeModal(); S.esc.b = S.base ? '' : a.dataset.k; if (S.base && S.base !== a.dataset.k) setBase(a.dataset.k); S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'esc-fa': a => { closeModal(); S.esc.ac = a.dataset.k; S.esc.t = ''; S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'fresh': () => { $('#fresh')?.remove(); const y = window.scrollY; render(); window.scrollTo(0, y); },
@@ -4103,6 +4710,7 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('change', e => { const t = e.target; if (t.dataset && t.dataset.chg) CHG[t.dataset.chg]?.(t); });
 document.addEventListener('keydown', e => {
+  if (e.key === 'n' && S.page === 'planner' && !$('#ov') && !e.target.matches('input,textarea,select')){ e.preventDefault(); $('#plqi')?.focus(); }
   if (e.key === 'Escape'){ if ($('#npanel')) $('#npanel').remove(); else if ($('#pop')) closePop(); else closeModal(); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role=button][data-act],[role=button][data-nav]')){ e.preventDefault(); e.target.click(); }
 });

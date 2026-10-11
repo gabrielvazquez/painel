@@ -1,0 +1,23 @@
+{
+  "name": "Painel de Controle · Primarização",
+  "short_name": "Painel",
+  "description": "Equipe, frota, diário de bordo, escalas, estoque e planner com lembretes.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f5fa",
+  "theme_color": "#0a2a5e",
+  "lang": "pt-BR",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Planner", "url": "./#planner", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Diário de bordo", "url": "./#diario", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}
