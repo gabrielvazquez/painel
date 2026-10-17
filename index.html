@@ -1426,6 +1426,48 @@ button.po-tr:hover{background:var(--soft)}
   .col-tabs{width:100%}
 }
 
+/* ===== v2.10 — Almoço e ajustes de ponto ===== */
+.po-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.po-tag.md{background:#fef3c7;color:#92400e}
+.ajbar{height:6px;background:var(--soft);border-radius:3px;overflow:hidden;margin-top:8px}.ajbar i{display:block;height:100%;background:#16a34a;border-radius:3px}
+.aj-filt{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.aj-filt .search{max-width:300px;min-width:180px}
+.aj-leg{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:6px;align-items:center}
+.aj-leg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}.aj-leg .r{margin-left:auto}
+.aj-list{display:flex;flex-direction:column}
+.aj-row{display:flex;align-items:center;gap:12px;padding:10px 6px;border-bottom:1px solid #f1f2f7;cursor:pointer;border-left:3px solid transparent;border-radius:6px}
+.aj-row:hover{background:#fafbfe}
+.aj-row.aj-done{background:#f3fbf6;border-left-color:#16a34a}.aj-row.aj-late{border-left-color:#dc2626}.aj-row.aj-mid{border-left-color:#d9a441}
+.aj-ck{width:30px;height:30px;border-radius:50%;border:2px solid #cbd5e1;display:grid;place-items:center;color:transparent;flex:none;transition:.15s}
+.aj-row:hover .aj-ck{border-color:#16a34a;color:#86efac}
+.aj-ck.on{background:#16a34a;border-color:#16a34a;color:#fff}
+.aj-tx{flex:1;min-width:0}.aj-tx b{display:block;font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aj-tx small{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.aj-tx em{display:block;font-size:11.5px;color:var(--ink2);margin-top:2px}
+.ajstrip{display:flex;gap:3px;flex:none}
+.ajstrip i{width:8px;height:8px;border-radius:50%;background:#e5e7ef}.ajstrip i.we{opacity:.5}.ajstrip i.on{background:#16a34a;opacity:1}.ajstrip i.cur{outline:1.5px solid var(--ink);outline-offset:1px}
+.aj-en{display:flex;align-items:center;gap:4px;flex:none}
+.aj-sug{display:flex;gap:6px;flex-wrap:wrap}
+.aj-tl{display:flex;flex-direction:column;gap:2px}
+.aj-ti{padding:8px 10px;border-left:3px solid #16a34a;background:#f8fafc;border-radius:6px;font-size:12.5px;margin-bottom:4px}.aj-ti p{margin:3px 0 0;color:var(--ink2)}.aj-ti .linkbtn{padding:0;margin-left:6px}
+.aj-top{margin:6px 0 14px}
+.aj-bl{display:flex;align-items:center;gap:10px;font-size:12px;margin-bottom:5px}.aj-bl>span:first-child{flex:0 0 36%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aj-bl .tr{flex:1;height:8px;background:var(--soft);border-radius:4px;overflow:hidden}.aj-bl .tr i{display:block;height:100%;background:var(--accent)}
+.aj-dh{display:flex;align-items:center;gap:10px;margin:16px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--line)}.aj-dh b{font-size:13px;font-weight:600}.aj-dh .btn{margin-left:auto}
+.aj-hi{display:flex;align-items:center;gap:10px;padding:7px 6px;border-left:3px solid var(--c);margin:4px 0;background:#fafbfe;border-radius:6px}
+.imp-box{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:12px;margin-top:6px}
+.imp-box table{width:100%;font-size:12px}.imp-box th{position:sticky;top:0}
+@media (max-width:720px){
+  .ajstrip{display:none}
+  .aj-row{gap:9px}
+  .aj-en .po-tag{display:none}
+  .aj-filt .search{max-width:none;flex-basis:100%}
+  .aj-filt .seg{width:100%;overflow-x:auto}.aj-filt .seg button{flex:none}
+  .aj-tx small .emb{display:none}
+  .po-kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .aj-leg .r{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -1438,7 +1480,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.9';
+const APP_VERSION = '2.10';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1511,7 +1553,7 @@ const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','pontos','visitas'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas'];
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
   sex_seguinte:{label:'Sexta-feira seguinte', dow:5, dir:1},
@@ -1779,15 +1821,17 @@ function seed(){
   ];
   planner_tarefas.forEach(t => t.lembrete_em = plRemindAt(t));
   const planner_comentarios = [{id:uid(), tarefa_id:planner_tarefas[2].id, autor_id:'u-carlos', autor_nome:'Carlos Lima', texto:'Pode deixar, confiro logo cedo.', created_at:h(1)}];
-  const pontos = [];
-  ['c1','c2','c3','c4'].forEach((cid, i) => [0,1,2].forEach(dd => { if (dd === 0 && i > 1) return; const s = 11*60 + 30 + i*10 + dd*5, v = s + 60 + (i === 1 && dd === 1 ? 25 : 0);
-    pontos.push({id:uid(), colaborador_id:cid, base:'pinheiros', data:dOff(-dd), saida:`${pad(Math.floor(s/60))}:${pad(s%60)}`, volta:dd === 0 && i === 1 ? null : `${pad(Math.floor(v/60))}:${pad(v%60)}`, obs:'', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(dd*24), updated_at:h(dd*24)}); }));
+  const almocos = [], ponto_ajustes = [];
+  ['c1','c2','c3','c4','c5'].forEach((cid, i) => { const c = colaboradores.find(x => x.id === cid); if (!c) return; for (let dd = 0; dd < 12; dd++){ if (dd === 0 && i > 2) continue; const s = 11*60 + 30 + i*12 + (dd%3)*5, v = s + 60 + (i === 1 && dd % 4 === 1 ? 25 : 0);
+    almocos.push({id:uid(), colaborador_id:cid, nome:c.nome, nome_k:nk(c.nome), base:c.base, data:dOff(-dd), saida:`${pad(Math.floor(s/60))}:${pad(s%60)}`, volta:dd === 0 && i === 2 ? null : `${pad(Math.floor(v/60))}:${pad(v%60)}`, obs:'', created_at:h(dd*24), updated_at:h(dd*24)}); }
+    [1, 3, 9].forEach((dd, k) => { if ((i + k) % 2) ponto_ajustes.push({id:uid(), colaborador_id:cid, nome:c.nome, nome_k:nk(c.nome), base:c.base, data:dOff(-dd), hora:'16:' + pad(30 + i*3), obs:k === 0 ? 'Esqueceu saída' : '', created_at:h(dd*24), updated_at:h(dd*24)}); }); });
+  almocos.push({id:uid(), colaborador_id:null, nome:'Thiago Felipe Vieira De Oliveira', nome_k:'thiagofelipevieiradeoliveira', base:'pinheiros', data:dOff(-2), saida:'12:00', volta:'13:00', obs:'', created_at:h(48), updated_at:h(48)});
   const visitas = [
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(0), ordem:0, local:'pinheiros', local_nome:'Base Pinheiros', hora:'08:00', notas:'Conferir estoque de lacres', tarefas:[planner_tarefas[2].id], publico:true, created_at:h(20), updated_at:h(20)},
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(0), ordem:1, local:'ipiranga', local_nome:'Base Ipiranga', hora:'14:00', notas:'', tarefas:[], publico:true, created_at:h(20), updated_at:h(20)},
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(1), ordem:0, local:null, local_nome:'Escritório central', hora:'09:00', notas:'Reunião com a gerência', tarefas:[], publico:true, created_at:h(2), updated_at:h(2)}
   ];
-  return {pontos, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  return {almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -1803,7 +1847,7 @@ const DB = {
     let q = sb.from(t).select('*');
     if (t === 'veiculo_historico') q = q.order('created_at', {ascending:false}).limit(3000);
     if (t === 'estoque_movs') q = q.order('created_at', {ascending:false}).limit(2000);
-    if (t === 'pontos') q = q.gte('data', iso(addDays(new Date(), -200)));
+    if (t === 'almocos' || t === 'ponto_ajustes') q = q.gte('data', iso(addDays(new Date(), -400))).limit(20000);
     if (t === 'visitas') q = q.gte('data', iso(addDays(new Date(), -120)));
     const {data, error} = await q; if (error) throw error; return data;
   },
@@ -1858,7 +1902,7 @@ const S = {
   sort:{col:'nome', dir:1},
   cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''},
   esc:{y:today0.getFullYear(), m:today0.getMonth(), t:'', st:'', q:'', ac:'', b:''},
-  pt:[], pc:[], pontos:[], visitas:[],
+  pt:[], pc:[], alm:[], aju:[], visitas:[],
   pl:{v:'hoje', f:'', q:'', y:today0.getFullYear(), m:today0.getMonth(), d:iso(today0), sd:{}},
   hx:{y:today0.getFullYear(), m:today0.getMonth(), t:'', q:'', ac:'', b:'', p:''},
   est:{q:'', c:'', b:'', al:false}
@@ -1900,7 +1944,7 @@ function applyTheme(){
 
 async function loadAll(){
   const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan, S.pt, S.pc, S.pontos, S.visitas] = res;
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan, S.pt, S.pc, S.alm, S.aju, S.visitas] = res;
   try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status,foto}) => ({id,nome,base,cargo,status,foto})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
@@ -2249,7 +2293,8 @@ const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Esco
 function pgColab(){
   const f = S.f, list = colabsV();
   const lid = S.profiles.filter(p => p.role === 'lider' && (p.bases||[]).some(inScope));
-  if (S.f.ctab === 'ponto') return pgPonto();
+  if (S.f.ctab === 'almoco' && isAdmin()) return pgAlmoco();
+  if (S.f.ctab === 'ajustes' && isAdmin()) return pgAjustes();
   $('#page').innerHTML = `${colTabs()}
   <div class="filters">${fchip('c-fs','','Todos',list.length,theme().c,!f.cs)}${Object.entries(CSTATUS).map(([k,o]) => fchip('c-fs',k,o.label,list.filter(c=>c.status===k).length,o.color,f.cs===k)).join('')}</div>
   <div class="toolbar">
@@ -2298,7 +2343,7 @@ function openColab(id){
   const dig = String(c.telefone||'').replace(/\D/g,'');
   openModal({wide:true, title:'Ficha do colaborador', body:`
     <div class="hero" style="padding:0 0 16px"><div class="ph-wrap">${c.foto ? `<button class="ph-view" data-act="foto-ver" data-id="${c.id}" aria-label="Ver foto">${avc(c,76)}</button>` : avc(c,76)}${fotoPode(c) ? `<button class="ph-btn" data-act="foto-pick" data-id="${c.id}" title="${c.foto ? 'Trocar foto' : 'Adicionar foto'}" aria-label="${c.foto ? 'Trocar foto' : 'Adicionar foto'}">${ic('camera',15)}</button>` : ''}</div><div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])} ${bTag(c.base)}</p>${fotoPode(c) ? `<p class="ph-links"><button class="linkbtn" data-act="foto-pick" data-id="${c.id}">${ic('camera',13)} ${c.foto ? 'Trocar foto' : 'Adicionar foto'}</button>${c.foto ? `<button class="linkbtn danger-t" data-act="foto-del" data-id="${c.id}">Remover</button>` : ''}</p>` : ''}</div></div>
-    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Diário (${chs.length})</button><button class="mtab" data-act="mtab" data-k="po">Ponto (${S.pontos.filter(p => sameId(p.colaborador_id, id)).length})</button></div>
+    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Diário (${chs.length})</button>${isAdmin() ? `<button class="mtab" data-act="mtab" data-k="po">Ponto</button>` : ''}</div>
     <div data-pane="det">
       <div class="dl">
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
@@ -2316,8 +2361,10 @@ function openColab(id){
     </div>
     <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
     <div data-pane="ch" hidden>${tableChamados(sortCh(chs))}</div>
-    <div data-pane="po" hidden>${(() => { const l = S.pontos.filter(p => sameId(p.colaborador_id, id)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 40);
-      return l.length ? `<div class="po-tbl">${l.map(r => `<div class="po-tr"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="muted s">${r.obs ? esc(r.obs) : ''}</span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${poTag(poDur(r))}</div>`).join('')}</div>` : empty('clock','Nenhum horário de almoço lançado','Lance em Colaboradores → Ponto do almoço.'); })()}</div>`,
+    ${isAdmin() ? `<div data-pane="po" hidden>${(() => { const aj = S.aju.filter(r => sameId(r.colaborador_id, id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 8), al = S.alm.filter(r => sameId(r.colaborador_id, id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 8);
+      return `<div class="sec" style="margin-top:0">Ajustes de ponto</div>${aj.length ? aj.map(r => `<div class="aj-ti"><b>${fmtD(r.data)}</b> <span class="muted">${r.hora ? '· ' + hhmm(r.hora) : ''}</span>${r.obs ? `<p>${esc(r.obs)}</p>` : ''}</div>`).join('') : '<p class="muted s">Nenhum ajuste.</p>'}
+        <div class="sec">Almoço</div>${al.length ? `<div class="po-tbl">${al.map(r => `<div class="po-tr"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="muted s">${esc(r.obs || '')}</span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${alTag(alDur(r))}</div>`).join('')}</div>` : '<p class="muted s">Nenhum almoço lançado.</p>'}
+        <button class="btn sm" style="margin-top:12px" data-act="aj-pessoa" data-id="${c.id}">${ic('clock',14)}Ver tudo</button>`; })()}</div>` : ''}`,
     foot: isAdmin() ? `<button class="btn danger left" data-act="c-del" data-id="${c.id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="c-edit" data-id="${c.id}">${ic('edit',15)}Editar</button>`
       : `<button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="modal-close">Fechar</button>`
   });
@@ -3303,7 +3350,7 @@ async function cleanQuinzena(key){
 /* ========================= CONEXÃO ========================= */
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
 function dataSig(){
-  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length, S.pt, S.pc, S.pontos, S.visitas]);
+  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length, S.pt, S.pc, S.alm, S.aju, S.visitas]);
   let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length;
 }
 function showFresh(){
@@ -4742,141 +4789,6 @@ function fotoVer(cid){
 }
 
 
-/* ========================= PONTO — saída e volta do almoço (v2.9) ========================= */
-const PO = {date:null, base:'', draft:{}, sub:'lancar', y:null, m:null, q:''};
-const poMin = () => { const v = +lsGet('prim_po_min'); return v >= 15 && v <= 180 ? v : 60; };
-const toMin = t => { if (!t) return null; const [h,m] = String(t).slice(0,5).split(':').map(Number); return h*60 + (m||0); };
-const fromMin = n => `${pad(Math.floor(((n % 1440) + 1440) % 1440 / 60))}:${pad(((n % 60) + 60) % 60)}`;
-const poDur = r => { const a = toMin(r.saida), b = toMin(r.volta); if (a == null || b == null) return null; let d = b - a; if (d < 0) d += 1440; return d; };
-const fmtMinH = n => n == null ? '—' : `${Math.floor(n/60)}h${pad(n%60)}`;
-const poTag = d => d == null ? '<span class="po-tag gr">sem volta</span>' : `<span class="po-tag ${d > poMin() ? 'wr' : 'ok'}">${fmtMinH(d)}</span>`;
-const poOf = (cid, ds) => S.pontos.find(p => sameId(p.colaborador_id, cid) && p.data === ds);
-function colTabs(){
-  const n = S.pontos.filter(p => p.data === iso(new Date()) && inScope(p.base)).length;
-  return `<div class="ex-tabs col-tabs" role="tablist"><button class="${S.f.ctab !== 'ponto' ? 'on' : ''}" data-act="c-tab" data-k="">${ic('users',15)}Equipe<em>${colabsV().length}</em></button><button class="${S.f.ctab === 'ponto' ? 'on' : ''}" data-act="c-tab" data-k="ponto">${ic('clock',15)}Ponto do almoço${n ? `<em>${n} hoje</em>` : ''}</button></div>`;
-}
-function pgPonto(){
-  if (!PO.date) PO.date = iso(new Date());
-  if (PO.y == null){ const d = new Date(); PO.y = d.getFullYear(); PO.m = d.getMonth(); }
-  $('#page').innerHTML = `${colTabs()}
-    <div class="po-sub"><div class="seg">${[['lancar','Lançar horários'],['banco','Histórico']].map(([k,l]) => `<button class="${PO.sub===k?'on':''}" data-act="po-sub" data-k="${k}">${l}</button>`).join('')}</div>
-      <label class="po-min">Almoço padrão <input type="number" id="pomin" min="15" max="180" step="5" value="${poMin()}"> min</label></div>
-    <div id="pobody">${PO.sub === 'lancar' ? poLancar() : poBanco()}</div>`;
-  $('#pomin').onchange = e => { const v = Math.max(15, Math.min(180, +e.target.value || 60)); lsSet('prim_po_min', String(v)); pgPonto(); };
-  poWire();
-}
-function poPessoas(){
-  const bs = (S.base ? [S.base] : myBases()).filter(b => !PO.base || b === PO.base);
-  return S.colabs.filter(c => bs.includes(c.base) && c.status !== 'desligado').sort((a,b) => (a.base||'').localeCompare(b.base||'') || a.nome.localeCompare(b.nome,'pt'));
-}
-function poLancar(){
-  const ds = PO.date, ps = poPessoas(), multi = !S.base && myBases().length > 1;
-  const val = (c, f) => { const d = PO.draft[c.id]; if (d && d[f] != null) return d[f]; return hhmm(poOf(c.id, ds)?.[f]) || ''; };
-  const ausDia = c => S.eventos.find(e => sameId(e.colaborador_id, c.id) && e.data_inicio <= ds && e.data_fim >= ds);
-  const filled = ps.filter(c => val(c,'saida') || val(c,'volta')).length;
-  return `<div class="card po-card">
-    <div class="po-h"><div class="po-dt"><button class="icon-btn bord" data-act="po-day" data-k="-1" aria-label="Dia anterior">${ic('chevL',17)}</button><input type="date" id="podate" value="${ds}"><button class="icon-btn bord" data-act="po-day" data-k="1" aria-label="Próximo dia">${ic('chevR',17)}</button><b>${cap(parseISO(ds).toLocaleDateString('pt-BR',{weekday:'long'}))}</b>${ds === iso(new Date()) ? '<span class="chip" style="--c:#16a34a">hoje</span>' : ''}</div>
-      <button class="btn sm" data-act="po-auto" title="Volta = saída + ${poMin()} min">${ic('refresh',14)}Completar voltas</button></div>
-    ${multi ? `<div class="po-bases"><button class="fchip ${!PO.base?'on':''}" style="--c:${ALLB.c}" data-act="po-base" data-k="">Todas</button>${myBases().map(k => `<button class="fchip ${PO.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="po-base" data-k="${k}">${emblem(k,10,3)}${BASES[k].nome}</button>`).join('')}</div>` : ''}
-    <div class="po-cols"><span>Colaborador</span><span>Saída</span><span>Volta</span><span></span><span>Tempo</span></div>
-    <div class="po-rows">${ps.map(c => { const s = val(c,'saida'), v = val(c,'volta'), a = ausDia(c), d = poDur({saida:s, volta:v}), ja = !!poOf(c.id, ds);
-      return `<div class="po-r ${a?'aus':''}" data-cid="${c.id}">
-        <span class="po-n">${avc(c,32)}<span><b>${esc(c.nome)}</b><small>${multi ? bName(c.base) : esc(c.cargo || '')}${ja ? ' · salvo' : ''}${a ? ` · <i style="color:${(EV[a.tipo]||EV.outro).color}">${(EV[a.tipo]||EV.outro).label}</i>` : ''}</small></span></span>
-        <input type="time" class="po-i ${s?'f':''}" data-f="saida" value="${s}" aria-label="Saída de ${esc(c.nome)}">
-        <input type="time" class="po-i ${v?'f':''}" data-f="volta" value="${v}" aria-label="Volta de ${esc(c.nome)}">
-        <button class="icon-btn xs" data-act="po-one" data-id="${c.id}" title="Volta = saída + ${poMin()} min" aria-label="Completar volta">${ic('refresh',13)}</button>
-        <span class="po-d">${s || v ? poTag(d) : ''}</span></div>`; }).join('') || empty('users','Nenhum colaborador nesta base')}</div>
-    <div class="po-save"><span class="muted" id="poinfo">${filled} preenchido(s) · ${ps.length - filled} em branco</span><span style="margin-left:auto;display:flex;gap:8px"><button class="btn" data-act="po-clear">Limpar</button><button class="btn pri" data-act="po-save">${ic('check',15)}Salvar</button></span></div>
-  </div>`;
-}
-function poWire(){
-  const d = $('#podate'); if (d) d.onchange = async e => { const nv = e.target.value || iso(new Date()); if (Object.keys(PO.draft).length && !await confirmBox('Há horários não salvos neste dia. Trocar de dia e descartar?', 'Descartar')) { e.target.value = PO.date; return; } PO.date = nv; PO.draft = {}; pgPonto(); };
-  $$('.po-r .po-i').forEach(i => i.onchange = () => {
-    const r = i.closest('.po-r'), cid = r.dataset.cid, dr = PO.draft[cid] = PO.draft[cid] || {};
-    dr[i.dataset.f] = i.value;
-    if (i.dataset.f === 'saida' && i.value){ const v = $('[data-f=volta]', r); if (!v.value){ v.value = fromMin(toMin(i.value) + poMin()); dr.volta = v.value; } }
-    poRefresh(r);
-  });
-  const q = $('#poq'); if (q){ let tm; q.oninput = e => { clearTimeout(tm); tm = setTimeout(() => { PO.q = e.target.value; $('#pobody').innerHTML = poBanco(); poWire(); const n = $('#poq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); }; }
-}
-function poRefresh(r){
-  const s = $('[data-f=saida]', r).value, v = $('[data-f=volta]', r).value;
-  $$('.po-i', r).forEach(i => i.classList.toggle('f', !!i.value));
-  $('.po-d', r).innerHTML = s || v ? poTag(poDur({saida:s, volta:v})) : '';
-  const rows = $$('.po-r'), n = rows.filter(x => $$('.po-i', x).some(i => i.value)).length;
-  const inf = $('#poinfo'); if (inf) inf.textContent = `${n} preenchido(s) · ${rows.length - n} em branco`;
-}
-function poAuto(cid){
-  let n = 0;
-  $$(cid ? `.po-r[data-cid="${cid}"]` : '.po-r').forEach(r => { const s = $('[data-f=saida]', r), v = $('[data-f=volta]', r);
-    if (s.value && (!v.value || cid)){ v.value = fromMin(toMin(s.value) + poMin()); (PO.draft[r.dataset.cid] = PO.draft[r.dataset.cid] || {}).volta = v.value; n++; poRefresh(r); } });
-  if (!cid) toast(n ? `${n} volta(s) preenchida(s).` : 'Nenhuma volta para completar: preencha as saídas primeiro.');
-}
-async function poSave(){
-  const ds = PO.date, ids = Object.keys(PO.draft); if (!ids.length) return toast('Nada novo para salvar neste dia.');
-  let n = 0, del = 0;
-  try {
-    for (const cid of ids){
-      const c = C(cid); if (!c) continue;
-      const dr = PO.draft[cid], ex = poOf(cid, ds);
-      const saida = (dr.saida != null ? dr.saida : hhmm(ex?.saida)) || null, volta = (dr.volta != null ? dr.volta : hhmm(ex?.volta)) || null;
-      if (!saida && !volta){ if (ex){ await DB.remove('pontos', ex.id); S.pontos = S.pontos.filter(p => p !== ex); del++; } continue; }
-      const row = {saida, volta, base:c.base, updated_at:nowISO()};
-      if (ex){ await DB.update('pontos', ex.id, row); Object.assign(ex, row); }
-      else { const r = await DB.insert('pontos', {...row, colaborador_id:cid, data:ds, obs:'', criado_por:S.profile.id, criado_por_nome:S.profile.nome}); S.pontos.push(r); }
-      n++;
-    }
-    PO.draft = {}; S.sig = dataSig(); toast(`${n} horário(s) salvo(s) em ${fmtD(ds)}${del ? `, ${del} apagado(s)` : ''}.`); pgPonto();
-  } catch(e){ err(e); }
-}
-function poBanco(){
-  const [a, b] = [iso(new Date(PO.y, PO.m, 1)), iso(new Date(PO.y, PO.m + 1, 0))], q = nk(PO.q);
-  const mName = cap(new Date(PO.y, PO.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
-  const rows = S.pontos.filter(p => p.data >= a && p.data <= b && inScope(p.base) && (!PO.base || p.base === PO.base) && (!q || nk((CX(p.colaborador_id)?.nome || '') + bName(p.base)).includes(q)))
-    .sort((x,y) => y.data.localeCompare(x.data) || (CX(x.colaborador_id)?.nome || '').localeCompare(CX(y.colaborador_id)?.nome || '', 'pt'));
-  const ok = rows.filter(r => poDur(r) != null && poDur(r) <= poMin()).length, over = rows.filter(r => poDur(r) != null && poDur(r) > poMin()).length, miss = rows.filter(r => !r.saida || !r.volta).length;
-  const med = (() => { const ds = rows.map(poDur).filter(x => x != null); return ds.length ? Math.round(ds.reduce((s,x) => s+x, 0) / ds.length) : null; })();
-  const multi = !S.base && myBases().length > 1;
-  return `<div class="po-kpis">
-      <div class="card"><span>Registros no mês</span><b>${rows.length}</b></div>
-      <div class="card"><span>Dentro do tempo</span><b style="color:#16a34a">${ok}</b><small>até ${poMin()} min</small></div>
-      <div class="card"><span>Acima do tempo</span><b style="color:#dc2626">${over}</b></div>
-      <div class="card"><span>Sem volta</span><b style="color:#d97706">${miss}</b></div>
-      <div class="card"><span>Média do almoço</span><b>${fmtMinH(med)}</b></div>
-    </div>
-    <div class="card po-card">
-      <div class="po-h"><div class="cal-h" style="margin:0"><button class="icon-btn bord" data-act="po-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${mName}</h2><button class="icon-btn bord" data-act="po-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button></div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap"><label class="search" style="min-width:180px">${ic('search',15)}<input id="poq" placeholder="Buscar colaborador..." value="${esc(PO.q)}"></label><button class="btn sm" data-act="po-xls">${ic('download',14)}Excel</button></div></div>
-      ${multi ? `<div class="po-bases"><button class="fchip ${!PO.base?'on':''}" style="--c:${ALLB.c}" data-act="po-base" data-k="">Todas</button>${myBases().map(k => `<button class="fchip ${PO.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="po-base" data-k="${k}">${emblem(k,10,3)}${BASES[k].nome}</button>`).join('')}</div>` : ''}
-      ${rows.length ? `<div class="po-tbl">${rows.map(r => { const c = CX(r.colaborador_id); return `<button class="po-tr" data-act="po-edit" data-id="${r.id}"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="po-n">${avc(c,28)}<span><b>${esc(c?.nome || 'Colaborador removido')}</b>${multi ? `<small>${bName(r.base)}</small>` : ''}</span></span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${poTag(poDur(r))}</button>`; }).join('')}</div>` : empty('clock','Nenhum horário neste mês','Use "Lançar horários" para registrar a saída e a volta do almoço.')}
-    </div>`;
-}
-function poEdit(id){
-  const r = S.pontos.find(p => sameId(p.id, id)); if (!r) return; const c = CX(r.colaborador_id);
-  openModal({title:'Horário de almoço', body:`<div class="who" style="margin-bottom:14px">${avc(c,40)}<div><b>${esc(c?.nome||'—')}</b><small>${fmtD(r.data)} · ${bName(r.base)}</small></div></div>
-    <form id="mf" class="form">${fld('Saída', inp('saida', hhmm(r.saida), 'type="time"'))}${fld('Volta', inp('volta', hhmm(r.volta), 'type="time"'))}${fld('Observação', inp('obs', r.obs || '', 'placeholder="Ex: almoçou mais tarde por causa do serviço"'), true)}</form>
-    <p class="f-hint">Lançado por ${esc(r.criado_por_nome || '—')}.</p>`,
-    foot:`<button class="btn danger left" data-act="po-del" data-id="${r.id}">${ic('trash',15)}Apagar</button><button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="po-upd" data-id="${r.id}">${ic('check',15)}Salvar</button>`});
-}
-async function poUpd(id){
-  const r = S.pontos.find(p => sameId(p.id, id)), f = formObj(); if (!r) return;
-  const row = {saida:f.saida || null, volta:f.volta || null, obs:f.obs || '', updated_at:nowISO()};
-  try { await DB.update('pontos', id, row); Object.assign(r, row); S.sig = dataSig(); closeModal(); toast('Horário atualizado.'); pgPonto(); } catch(e){ err(e); }
-}
-async function poDel(id){
-  if (!await confirmBox('Apagar este horário de almoço?', 'Apagar')) return;
-  try { await DB.remove('pontos', id); S.pontos = S.pontos.filter(p => !sameId(p.id, id)); S.sig = dataSig(); closeModal(); toast('Horário apagado.'); pgPonto(); } catch(e){ err(e); }
-}
-async function poXls(){
-  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
-  const [a, b] = [iso(new Date(PO.y, PO.m, 1)), iso(new Date(PO.y, PO.m + 1, 0))];
-  const rows = S.pontos.filter(p => p.data >= a && p.data <= b && inScope(p.base) && (!PO.base || p.base === PO.base)).sort((x,y) => x.data.localeCompare(y.data));
-  const aoa = [['Data','Dia','Colaborador','Base','Saída','Volta','Tempo de almoço (min)','Situação','Observação','Lançado por'],
-    ...rows.map(r => { const d = poDur(r); return [fmtD(r.data), cap(parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'long'})), CX(r.colaborador_id)?.nome || '', bName(r.base), hhmm(r.saida), hhmm(r.volta), d ?? '', d == null ? 'Sem volta' : d > poMin() ? 'Acima do tempo' : 'Dentro do tempo', r.obs || '', r.criado_por_nome || '']; })];
-  const wb = X.utils.book_new(), ws = X.utils.aoa_to_sheet(aoa); ws['!cols'] = [10,14,30,14,8,8,12,16,30,20].map(w => ({wch:w}));
-  X.utils.book_append_sheet(wb, ws, 'Ponto do almoço'); X.writeFile(wb, `Ponto_almoco_${a.slice(0,7)}.xlsx`); toast('Planilha exportada.');
-}
-
 /* ========================= PROGRAMAÇÃO DE VISITAS (Planner, v2.9) ========================= */
 const VI_LOCAIS = ['pinheiros','ipiranga','santo-andre','sao-mateus'];
 const viNome = v => v.local && BASES[v.local] ? 'Base ' + BASES[v.local].nome : (v.local_nome || 'Outro local');
@@ -4971,6 +4883,369 @@ function viDia(ds){
 async function viLimpar(ds){
   const l = viDoDia(plMe(), ds); if (!l.length || !await confirmBox(`Apagar a programação de <b>${plDia(ds, true).toLowerCase()}</b>? As tarefas continuam no planner.`, 'Apagar')) return;
   try { for (const v of l){ await DB.remove('visitas', v.id); } S.visitas = S.visitas.filter(v => !l.includes(v)); S.sig = dataSig(); closeModal(); toast('Programação apagada.'); pgPlanner(); } catch(e){ err(e); }
+}
+
+
+/* ========================= ALMOÇO E AJUSTES DE PONTO (v2.10 — só o encarregado) ========================= */
+const AL = {tab:'lancar', date:null, base:'', draft:{}, y:null, m:null, q:''};
+const AJ = {tab:'lista', date:null, f:'', so:'pend', q:'', y:null, m:null};
+const alMin = () => { const v = +lsGet('prim_al_min'); return v >= 15 && v <= 180 ? v : 60; };
+const toMin = t => { if (!t) return null; const m = String(t).match(/^(\d{1,2}):(\d{2})/); return m ? +m[1]*60 + +m[2] : null; };
+const fromMin = n => `${pad(Math.floor((((n % 1440) + 1440) % 1440) / 60))}:${pad(((n % 60) + 60) % 60)}`;
+const alDur = r => { const a = toMin(r.saida), b = toMin(r.volta); if (a == null || b == null) return null; let d = b - a; if (d < 0) d += 1440; return d; };
+const fmtMinH = n => n == null ? '—' : `${Math.floor(n/60)}h${pad(n%60)}`;
+const alTag = d => d == null ? '<span class="po-tag gr">sem horário</span>' : `<span class="po-tag ${d > alMin() ? 'wr' : 'ok'}">${fmtMinH(d)}</span>`;
+const pessoaDe = r => (r.colaborador_id && (C(r.colaborador_id) || CX(r.colaborador_id))) || S.colabs.find(c => nk(c.nome) === nk(r.nome)) || S.colabsAll.find(c => nk(c.nome) === nk(r.nome)) || null;
+const nomeDe = r => pessoaDe(r)?.nome || r.nome;
+const baseDe = r => pessoaDe(r)?.base || r.base || '';
+const alDo = (c, ds) => S.alm.find(r => r.data === ds && (sameId(r.colaborador_id, c.id) || nk(r.nome) === nk(c.nome)));
+const ajDo = (c, ds) => S.aju.find(r => r.data === ds && (sameId(r.colaborador_id, c.id) || nk(r.nome) === nk(c.nome)));
+const avNome = (r, s) => { const p = pessoaDe(r); return p ? avc(p, s) : avatar(r.nome, s); };
+const mesBounds = (y, m) => [iso(new Date(y, m, 1)), iso(new Date(y, m + 1, 0))];
+const mesNome = (y, m) => cap(new Date(y, m, 1).toLocaleDateString('pt-BR',{month:'long', year:'numeric'}));
+const diaTxt = ds => cap(parseISO(ds).toLocaleDateString('pt-BR',{weekday:'long'}));
+const hNow = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+function equipeCtl(){ return S.colabs.filter(c => c.status !== 'desligado' && inScope(c.base)).sort((a,b) => (a.base||'').localeCompare(b.base||'') || a.nome.localeCompare(b.nome,'pt')); }
+function colTabs(){
+  if (!isAdmin()) return '';
+  const t = S.f.ctab || '', hj = iso(new Date());
+  const nAl = S.alm.filter(r => r.data === hj).length, nAj = S.aju.filter(r => r.data === hj).length;
+  return `<div class="ex-tabs col-tabs" role="tablist">
+    <button class="${!t ? 'on' : ''}" data-act="c-tab" data-k="">${ic('users',15)}Equipe<em>${colabsV().length}</em></button>
+    <button class="${t === 'almoco' ? 'on' : ''}" data-act="c-tab" data-k="almoco">${ic('clock',15)}Almoço${nAl ? `<em>${nAl} hoje</em>` : ''}</button>
+    <button class="${t === 'ajustes' ? 'on' : ''}" data-act="c-tab" data-k="ajustes">${ic('checks',15)}Ajustes de ponto${nAj ? `<em>${nAj} hoje</em>` : ''}</button>
+  </div>`;
+}
+const baseChipsAl = (cur, act) => (!S.base && myBases().length > 1) ? `<div class="po-bases"><button class="fchip ${!cur?'on':''}" style="--c:${ALLB.c}" data-act="${act}" data-k="">Todas</button>${myBases().map(k => `<button class="fchip ${cur===k?'on':''}" style="--c:${BASES[k].c}" data-act="${act}" data-k="${k}">${emblem(k,10,3)}${BASES[k].nome}</button>`).join('')}</div>` : '';
+
+/* ---------------- ALMOÇO ---------------- */
+function pgAlmoco(){
+  if (!isAdmin()){ S.f.ctab = ''; return pgColab(); }
+  if (!AL.date) AL.date = iso(new Date());
+  if (AL.y == null){ const d = new Date(); AL.y = d.getFullYear(); AL.m = d.getMonth(); }
+  $('#page').innerHTML = `${colTabs()}
+    <div class="po-sub"><div class="seg">${[['lancar','Lançar horários'],['banco','Banco']].map(([k,l]) => `<button class="${AL.tab===k?'on':''}" data-act="al-tab" data-k="${k}">${l}</button>`).join('')}</div>
+      <label class="po-min">Almoço padrão <input type="number" id="almin" min="15" max="180" step="5" value="${alMin()}"> min</label></div>
+    <div id="albody">${AL.tab === 'lancar' ? alLancar() : alBanco()}</div>`;
+  $('#almin').onchange = e => { lsSet('prim_al_min', String(Math.max(15, Math.min(180, +e.target.value || 60)))); pgAlmoco(); };
+  alWire();
+}
+function alLancar(){
+  const ds = AL.date, ps = equipeCtl().filter(c => !AL.base || c.base === AL.base), multi = !S.base && myBases().length > 1;
+  const val = (c, f) => { const d = AL.draft[c.id]; if (d && d[f] != null) return d[f]; return hhmm(alDo(c, ds)?.[f]) || ''; };
+  const aus = c => S.eventos.find(e => sameId(e.colaborador_id, c.id) && e.data_inicio <= ds && e.data_fim >= ds);
+  const filled = ps.filter(c => val(c,'saida') || val(c,'volta')).length;
+  return `<div class="card po-card">
+    <div class="po-h"><div class="po-dt"><button class="icon-btn bord" data-act="al-day" data-k="-1" aria-label="Dia anterior">${ic('chevL',17)}</button><input type="date" id="aldate" value="${ds}"><button class="icon-btn bord" data-act="al-day" data-k="1" aria-label="Próximo dia">${ic('chevR',17)}</button><b>${diaTxt(ds)}</b>${ds === iso(new Date()) ? '<span class="chip" style="--c:#16a34a">hoje</span>' : `<button class="btn sm" data-act="al-day" data-k="0">Hoje</button>`}</div>
+      <div class="po-tools"><button class="btn sm" data-act="al-auto" title="Volta = saída + ${alMin()} min">${ic('refresh',14)}Completar voltas</button><button class="btn sm" data-act="al-modelo" title="Planilha já com a equipe do dia">${ic('download',14)}Modelo Excel</button><button class="btn sm pri" data-act="al-import">${ic('upload',14)}Importar Excel</button></div></div>
+    ${baseChipsAl(AL.base, 'al-base')}
+    <div class="po-cols"><span>Colaborador</span><span>Saída</span><span>Volta</span><span></span><span>Tempo</span></div>
+    <div class="po-rows">${ps.map(c => { const s = val(c,'saida'), v = val(c,'volta'), a = aus(c), ja = !!alDo(c, ds);
+      return `<div class="po-r ${a?'aus':''}" data-cid="${c.id}">
+        <span class="po-n">${avc(c,32)}<span><b>${esc(c.nome)}</b><small>${multi ? bName(c.base) : esc(c.matricula ? 'mat. ' + c.matricula : c.cargo || '')}${ja ? ' · já no banco' : ''}${a ? ` · <i style="color:${(EV[a.tipo]||EV.outro).color}">${(EV[a.tipo]||EV.outro).label}</i>` : ''}</small></span></span>
+        <input type="time" class="po-i ${s?'f':''}" data-f="saida" value="${s}" aria-label="Saída de ${esc(c.nome)}">
+        <input type="time" class="po-i ${v?'f':''}" data-f="volta" value="${v}" aria-label="Volta de ${esc(c.nome)}">
+        <button class="icon-btn xs" data-act="al-one" data-id="${c.id}" title="Volta = saída + ${alMin()} min" aria-label="Completar volta">${ic('refresh',13)}</button>
+        <span class="po-d">${s || v ? alTag(alDur({saida:s, volta:v})) : ''}</span></div>`; }).join('') || empty('users','Nenhum colaborador nesta base')}</div>
+    <div class="po-save"><span class="muted" id="alinfo">${filled} preenchido(s) · ${ps.length - filled} em branco</span><span style="margin-left:auto;display:flex;gap:8px"><button class="btn" data-act="al-clear">Limpar</button><button class="btn pri" data-act="al-save">${ic('check',15)}Salvar no banco</button></span></div>
+  </div>`;
+}
+function alWire(){
+  const d = $('#aldate'); if (d) d.onchange = async e => { const nv = e.target.value || iso(new Date()); if (Object.keys(AL.draft).length && !await confirmBox('Há horários não salvos neste dia. Trocar de dia e descartar?', 'Descartar')){ e.target.value = AL.date; return; } AL.date = nv; AL.draft = {}; pgAlmoco(); };
+  $$('#albody .po-r .po-i').forEach(i => i.onchange = () => {
+    const r = i.closest('.po-r'), dr = AL.draft[r.dataset.cid] = AL.draft[r.dataset.cid] || {};
+    dr[i.dataset.f] = i.value;
+    if (i.dataset.f === 'saida' && i.value){ const v = $('[data-f=volta]', r); if (!v.value){ v.value = fromMin(toMin(i.value) + alMin()); dr.volta = v.value; } }
+    alRefresh(r);
+  });
+  const q = $('#alq'); if (q){ let tm; q.oninput = e => { clearTimeout(tm); tm = setTimeout(() => { AL.q = e.target.value; $('#albody').innerHTML = alBanco(); alWire(); const n = $('#alq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); }; }
+}
+function alRefresh(r){
+  const s = $('[data-f=saida]', r).value, v = $('[data-f=volta]', r).value;
+  $$('.po-i', r).forEach(i => i.classList.toggle('f', !!i.value));
+  $('.po-d', r).innerHTML = s || v ? alTag(alDur({saida:s, volta:v})) : '';
+  const rows = $$('#albody .po-r'), n = rows.filter(x => $$('.po-i', x).some(i => i.value)).length;
+  const inf = $('#alinfo'); if (inf) inf.textContent = `${n} preenchido(s) · ${rows.length - n} em branco`;
+}
+function alAuto(cid){
+  let n = 0;
+  $$(cid ? `#albody .po-r[data-cid="${cid}"]` : '#albody .po-r').forEach(r => { const s = $('[data-f=saida]', r), v = $('[data-f=volta]', r);
+    if (s.value && (!v.value || cid)){ v.value = fromMin(toMin(s.value) + alMin()); (AL.draft[r.dataset.cid] = AL.draft[r.dataset.cid] || {}).volta = v.value; n++; alRefresh(r); } });
+  if (!cid) toast(n ? `${n} volta(s) preenchida(s).` : 'Nada para completar: preencha as saídas primeiro.');
+}
+// Grava (ou atualiza) um horário de almoço de uma pessoa num dia
+async function alGrava(c, ds, saida, volta, nomeLivre){
+  const ex = c ? alDo(c, ds) : S.alm.find(r => r.data === ds && nk(r.nome) === nk(nomeLivre));
+  if (!saida && !volta){ if (ex){ await DB.remove('almocos', ex.id); S.alm = S.alm.filter(r => r !== ex); return 'del'; } return null; }
+  const row = {saida:saida || null, volta:volta || null, updated_at:nowISO()};
+  if (ex){ await DB.update('almocos', ex.id, row); Object.assign(ex, row); if (c && !ex.colaborador_id){ ex.colaborador_id = c.id; DB.update('almocos', ex.id, {colaborador_id:c.id}).catch(() => {}); } return 'upd'; }
+  const r = await DB.insert('almocos', {...row, colaborador_id:c?.id || null, nome:c?.nome || nomeLivre, base:c?.base || null, data:ds, obs:'', criado_por:S.profile.id});
+  if (TEST && !r.nome_k) r.nome_k = nk(r.nome);
+  S.alm.push(r); return 'ins';
+}
+async function alSave(){
+  const ids = Object.keys(AL.draft); if (!ids.length) return toast('Nada novo para salvar neste dia.');
+  let n = 0;
+  try {
+    for (const cid of ids){ const c = C(cid); if (!c) continue; const dr = AL.draft[cid], ex = alDo(c, AL.date);
+      const s = dr.saida != null ? dr.saida : hhmm(ex?.saida), v = dr.volta != null ? dr.volta : hhmm(ex?.volta);
+      if (await alGrava(c, AL.date, s, v)) n++; }
+    AL.draft = {}; S.sig = dataSig(); toast(`${n} horário(s) salvo(s) em ${fmtD(AL.date)}.`); pgAlmoco();
+  } catch(e){ err(e); }
+}
+function alBanco(){
+  const [a, b] = mesBounds(AL.y, AL.m), q = nk(AL.q);
+  const rows = S.alm.filter(r => r.data >= a && r.data <= b && (!AL.base || baseDe(r) === AL.base) && (!S.base || baseDe(r) === S.base) && (!q || nk(nomeDe(r) + bName(baseDe(r))).includes(q)))
+    .sort((x,y) => y.data.localeCompare(x.data) || nomeDe(x).localeCompare(nomeDe(y),'pt'));
+  const ds = rows.map(alDur).filter(x => x != null);
+  const ok = ds.filter(d => d <= alMin()).length, over = ds.length - ok, miss = rows.length - ds.length, med = ds.length ? Math.round(ds.reduce((s,x) => s+x, 0) / ds.length) : null;
+  const lim = AL.lim || 60, multi = !S.base && myBases().length > 1;
+  return `<div class="po-kpis">
+      <div class="card"><span>Registros no mês</span><b>${rows.length}</b></div>
+      <div class="card"><span>Dentro do tempo</span><b style="color:#16a34a">${ok}</b><small>até ${alMin()} min</small></div>
+      <div class="card"><span>Acima do tempo</span><b style="color:#dc2626">${over}</b></div>
+      <div class="card"><span>Sem horário</span><b style="color:#d97706">${miss}</b></div>
+      <div class="card"><span>Média do almoço</span><b>${fmtMinH(med)}</b></div>
+    </div>
+    <div class="card po-card">
+      <div class="po-h"><div class="cal-h" style="margin:0"><button class="icon-btn bord" data-act="al-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${mesNome(AL.y, AL.m)}</h2><button class="icon-btn bord" data-act="al-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button></div>
+        <div class="po-tools"><label class="search" style="min-width:180px">${ic('search',15)}<input id="alq" placeholder="Buscar colaborador..." value="${esc(AL.q)}"></label><button class="btn sm" data-act="al-xls">${ic('download',14)}Excel</button><button class="btn sm" data-act="al-import">${ic('upload',14)}Importar</button><button class="btn sm pri" data-act="al-new">${ic('plus',14)}Avulso</button></div></div>
+      ${baseChipsAl(AL.base, 'al-base')}
+      ${rows.length ? `<div class="po-tbl">${rows.slice(0, lim).map(r => `<button class="po-tr" data-act="al-edit" data-id="${r.id}"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="po-n">${avNome(r,28)}<span><b>${esc(nomeDe(r))}</b>${multi || !pessoaDe(r) ? `<small>${pessoaDe(r) ? bName(baseDe(r)) : 'não está no cadastro'}</small>` : ''}</span></span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${alTag(alDur(r))}</button>`).join('')}</div>
+        ${rows.length > lim ? `<button class="btn sm" style="margin:12px auto 0;display:flex" data-act="al-more">Mostrar mais (${rows.length - lim})</button>` : ''}` : empty('clock','Nada neste mês','Lance os horários na aba "Lançar horários" ou importe uma planilha.')}
+    </div>`;
+}
+function alForm(id){
+  const r = id ? S.alm.find(x => sameId(x.id, id)) : null, p = r ? pessoaDe(r) : null;
+  const pool = S.colabs.filter(c => c.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  openModal({title: r ? 'Horário de almoço' : 'Lançar almoço avulso', body:`<form id="mf" class="form">
+    ${r ? `<div class="f full"><div class="who">${avNome(r,40)}<div><b>${esc(nomeDe(r))}</b><small>${bName(baseDe(r))}${p ? '' : ' · não está no cadastro'}</small></div></div></div>` : fld('Colaborador', `<select name="cid" required><option value="">Selecione...</option>${opts(pool.map(c => [c.id, c.nome + ' — ' + bName(c.base)]), '')}</select>`, true, true)}
+    ${fld('Data', inp('data', r?.data || AL.date || iso(new Date()), 'type="date" required'), false, true)}
+    <div class="f"></div>
+    ${fld('Saída', inp('saida', hhmm(r?.saida), 'type="time" id="als"'))}
+    ${fld('Volta', inp('volta', hhmm(r?.volta), 'type="time" id="alv"'), false, false, `Vazia: saída + ${alMin()} min`)}
+    ${fld('Observação', inp('obs', r?.obs || '', 'placeholder="Opcional"'), true)}
+  </form>`, foot:`${r ? `<button class="btn danger left" data-act="al-del" data-id="${r.id}">${ic('trash',15)}Excluir</button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="al-fsave" data-id="${r?.id || ''}">${ic('check',15)}Salvar</button>`,
+  onMount: ov => { $('#als',ov).onchange = e => { if (e.target.value && !$('#alv',ov).value) $('#alv',ov).value = fromMin(toMin(e.target.value) + alMin()); }; }});
+}
+async function alFormSave(id){
+  const f = formObj(); if (!f.data) return toast('Informe a data.','err');
+  if (!f.saida && !f.volta) return toast('Informe a saída ou a volta.','err');
+  const volta = f.volta || (f.saida ? fromMin(toMin(f.saida) + alMin()) : null);
+  try {
+    if (id){ const r = S.alm.find(x => sameId(x.id, id)); const row = {data:f.data, saida:f.saida || null, volta, obs:f.obs || '', updated_at:nowISO()};
+      if (f.data !== r.data && S.alm.some(x => x !== r && x.data === f.data && nk(x.nome) === nk(r.nome))) return toast('Essa pessoa já tem almoço lançado nesse dia.','err');
+      await DB.update('almocos', id, row); Object.assign(r, row); }
+    else { if (!f.cid) return toast('Escolha o colaborador.','err'); await alGrava(C(f.cid), f.data, f.saida, volta);
+      const x = alDo(C(f.cid), f.data); if (x && f.obs){ await DB.update('almocos', x.id, {obs:f.obs}); x.obs = f.obs; } }
+    S.sig = dataSig(); closeModal(); toast('Horário salvo.'); pgAlmoco();
+  } catch(e){ err(e); }
+}
+async function alDel(id){
+  if (!await confirmBox('Excluir este horário de almoço?')) return;
+  try { await DB.remove('almocos', id); S.alm = S.alm.filter(r => !sameId(r.id, id)); S.sig = dataSig(); closeModal(); toast('Horário excluído.'); pgAlmoco(); } catch(e){ err(e); }
+}
+// Planilha modelo com a equipe do dia (Data, Matrícula, Nome, Base, Saída, Volta)
+async function alModelo(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const ds = AL.date || iso(new Date()), ps = equipeCtl().filter(c => !AL.base || c.base === AL.base);
+  const aoa = [['Data','Matrícula','Nome','Base','Saída','Volta'], ...ps.map(c => { const e = alDo(c, ds) || {}; return [fmtD(ds), String(c.matricula || ''), c.nome, bName(c.base), hhmm(e.saida), hhmm(e.volta)]; })];
+  const ws = X.utils.aoa_to_sheet(aoa); ws['!cols'] = [12,12,40,14,10,10].map(w => ({wch:w}));
+  const ins = X.utils.aoa_to_sheet([['Como preencher'],[''],['1. Preencha Saída e Volta como hora (ex.: 12:00).'],['2. A Data pode ser trocada (dd/mm/aaaa). Uma planilha pode ter vários dias: repita as linhas.'],['3. Não mude Matrícula e Nome: é por eles que o painel encontra o colaborador.'],['4. Deixe em branco quem não teve almoço: a linha é ignorada.'],[`5. Se só a Saída for preenchida, a Volta é calculada com ${alMin()} min.`],['6. No painel: Colaboradores › Almoço › Importar Excel.']]); ins['!cols'] = [{wch:100}];
+  const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, 'Almoço'); X.utils.book_append_sheet(wb, ins, 'Instruções');
+  X.writeFile(wb, `modelo-almoco-${AL.base ? AL.base + '-' : ''}${ds}.xlsx`); toast('Modelo baixado com a equipe do dia.');
+}
+const xlTime = v => { if (v == null || v === '') return '';
+  if (typeof v === 'number'){ const f = v % 1 === 0 && v >= 1 && v <= 24 ? v / 24 : v % 1; return fromMin(Math.round(f * 1440) % 1440); }
+  if (v instanceof Date) return `${pad(v.getHours())}:${pad(v.getMinutes())}`;
+  const s = String(v).trim().toLowerCase().replace(/\s/g, ''); if (!s) return '';
+  let m = s.match(/^(\d{1,2})[:h.](\d{2})/); if (m && +m[1] < 24 && +m[2] < 60) return fromMin(+m[1]*60 + +m[2]);
+  m = s.match(/^(\d{1,2})(\d{2})$/); if (m && +m[1] < 24 && +m[2] < 60) return fromMin(+m[1]*60 + +m[2]);
+  m = s.match(/^(\d{1,2})h?$/); if (m && +m[1] < 24) return fromMin(+m[1]*60);
+  return null; };
+const xlDate = v => { if (v == null || v === '') return '';
+  if (typeof v === 'number' && v > 20000){ const d = new Date(Date.UTC(1899, 11, 30) + Math.floor(v) * 864e5); return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`; }
+  if (v instanceof Date) return iso(v);
+  const s = String(v).trim(); let m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})/);
+  if (m) return `${m[3].length === 2 ? '20' + m[3] : m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? m[0] : null; };
+function alImportar(){
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.xlsx,.xls,.csv';
+  inp.onchange = async () => { const file = inp.files[0]; if (!file) return;
+    let aoa; try { const X = await loadXLSX(); const wb = X.read(await file.arrayBuffer(), {type:'array', raw:false, cellDates:false}); aoa = X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {header:1, raw:true, defval:''}); }
+    catch(e){ return toast('Não consegui ler o arquivo. Use o Modelo Excel (.xlsx) ou CSV.', 'err'); }
+    alPreview(aoa, file.name); };
+  inp.click();
+}
+function alPreview(aoa, fname){
+  let hi = -1, col = {};
+  for (let i = 0; i < Math.min(aoa.length, 8); i++){ const h = (aoa[i]||[]).map(x => nk(x));
+    if (h.some(x => x === 'nome' || x === 'colaborador' || x.startsWith('matricula'))){ hi = i;
+      h.forEach((x, j) => { if (x === 'data' || x === 'dia') col.data = j; else if (x.startsWith('matricula')) col.mat = j; else if (x === 'nome' || x === 'colaborador') col.nome = j;
+        else if (x.startsWith('saida') || x === 'inicio' || x === 'ida') col.saida = j; else if (x.startsWith('volta') || x.startsWith('retorno') || x === 'fim') col.volta = j; }); break; } }
+  if (hi < 0 || col.saida == null) return toast('A planilha não está no modelo. Baixe o "Modelo Excel" e preencha nele.', 'err');
+  const pool = [...S.colabs, ...S.colabsAll.filter(x => !S.colabs.some(c => sameId(c.id, x.id)))], ok = [], bad = []; let skip = 0;
+  aoa.slice(hi + 1).forEach((r, i) => {
+    const ln = hi + i + 2, nome = String(col.nome != null ? r[col.nome] : '').trim(), mat = String(col.mat != null ? r[col.mat] : '').replace(/\D/g, '');
+    const rs = r[col.saida], rv = col.volta != null ? r[col.volta] : '';
+    if (!nome && !mat) return;
+    if ((rs === '' || rs == null) && (rv === '' || rv == null)){ skip++; return; }
+    const p = (mat && pool.find(c => String(c.matricula || '').replace(/\D/g,'') === mat)) || (nome && (pool.find(c => nk(c.nome) === nk(nome)) || pool.find(c => nk(c.nome).startsWith(nk(nome)) || nk(nome).startsWith(nk(c.nome)))));
+    const data = col.data != null ? xlDate(r[col.data]) : '', sa = xlTime(rs); let vo = xlTime(rv);
+    const who = p ? p.nome : (nome || 'Matrícula ' + mat);
+    if (!p) return bad.push([ln, who, 'colaborador não encontrado no cadastro']);
+    if (data === null) return bad.push([ln, who, 'data inválida']);
+    if (sa === null || vo === null) return bad.push([ln, who, 'horário inválido']);
+    if (sa && !vo) vo = fromMin(toMin(sa) + alMin());
+    ok.push({p, data:data || AL.date || iso(new Date()), saida:sa, volta:vo});
+  });
+  const dias = [...new Set(ok.map(o => o.data))].sort();
+  openModal({wide:true, title:'Importar horários de almoço', body:`<p class="muted" style="margin:0 0 10px">${esc(fname)}</p>
+    <div class="po-kpis" style="grid-template-columns:repeat(3,1fr)"><div class="card"><span>Prontos para importar</span><b style="color:#16a34a">${ok.length}</b></div><div class="card"><span>Com problema</span><b style="color:#dc2626">${bad.length}</b></div><div class="card"><span>Em branco (ignorados)</span><b>${skip}</b></div></div>
+    ${ok.length ? `<p class="f-hint">${dias.length === 1 ? 'Dia ' + fmtD(dias[0]) : dias.length + ' dias: ' + dias.map(d => fmtD(d).slice(0,5)).join(', ')}. Horários que já existem nesses dias serão atualizados.</p>
+      <div class="imp-box"><table><thead><tr><th>Data</th><th>Colaborador</th><th>Saída</th><th>Volta</th></tr></thead><tbody>${ok.map(o => `<tr><td>${fmtD(o.data)}</td><td>${esc(o.p.nome)}</td><td>${o.saida || '—'}</td><td>${o.volta || '—'}</td></tr>`).join('')}</tbody></table></div>` : ''}
+    ${bad.length ? `<div class="warnbar" style="margin-top:12px">${ic('alert',16)}<span>Linhas que não serão importadas:<br>${bad.map(b => `Linha ${b[0]} · ${esc(b[1])} — ${b[2]}`).join('<br>')}</span></div>` : ''}
+    ${!ok.length ? empty('clock','Nada para importar','Confira se as colunas Saída e Volta estão preenchidas.') : ''}`,
+    foot:`<button class="btn" data-act="modal-close">${ok.length ? 'Cancelar' : 'Fechar'}</button>${ok.length ? `<button class="btn pri" id="alimpok">${ic('check',15)}Importar ${ok.length}</button>` : ''}`,
+    onMount: ov => { const b = $('#alimpok', ov); if (b) b.onclick = async () => { b.disabled = true; b.textContent = 'Importando...';
+      try { for (const o of ok) await alGrava(o.p, o.data, o.saida, o.volta); AL.draft = {}; if (dias.length === 1) AL.date = dias[0]; S.sig = dataSig(); closeModal(); toast(`${ok.length} horário(s) importado(s).`); pgAlmoco(); }
+      catch(e){ b.disabled = false; err(e); } }; }});
+}
+async function alXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const [a, b] = mesBounds(AL.y, AL.m);
+  const rows = S.alm.filter(r => r.data >= a && r.data <= b && (!AL.base || baseDe(r) === AL.base)).sort((x,y) => x.data.localeCompare(y.data) || nomeDe(x).localeCompare(nomeDe(y),'pt'));
+  const aoa = [['Data','Dia','Colaborador','Matrícula','Base','Saída','Volta','Duração (min)','Situação','Observação'],
+    ...rows.map(r => { const d = alDur(r), p = pessoaDe(r); return [fmtD(r.data), diaTxt(r.data), nomeDe(r), p?.matricula || '', bName(baseDe(r)), hhmm(r.saida), hhmm(r.volta), d ?? '', d == null ? 'Sem horário' : d > alMin() ? 'Acima do tempo' : 'Dentro do tempo', r.obs || '']; })];
+  const wb = X.utils.book_new(), ws = X.utils.aoa_to_sheet(aoa); ws['!cols'] = [10,14,36,11,13,8,8,12,16,30].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Almoço'); X.writeFile(wb, `almoco-${a.slice(0,7)}.xlsx`); toast('Planilha exportada.');
+}
+
+/* ---------------- AJUSTES DE PONTO ---------------- */
+function ajIdx(){ const m = {}; S.aju.forEach(r => { const k = pessoaDe(r)?.id ? 'c' + pessoaDe(r).id : 'n' + nk(r.nome); (m[k] = m[k] || []).push(r); });
+  Object.values(m).forEach(a => a.sort((x,y) => y.data.localeCompare(x.data) || String(y.hora||'').localeCompare(String(x.hora||'')))); return m; }
+function ajInfo(c, I, ds){ const rs = I['c' + c.id] || I['n' + nk(c.nome)] || [], hoje = rs.find(r => r.data === ds) || null, ult = rs.find(r => r.data <= ds) || null, ant = rs.find(r => r.data < ds) || null;
+  const age = ult ? Math.round((parseISO(ds) - parseISO(ult.data)) / 864e5) : null; return {rs, hoje, ult, ant, age, n:rs.length}; }
+const ajAge = i => i.hoje ? ['ok','ajustado no dia'] : !i.ult ? ['wr','nunca ajustado'] : [i.age <= 3 ? 'ok' : i.age <= 7 ? 'md' : 'wr', i.age === 1 ? 'há 1 dia' : `há ${i.age} dias`];
+function ajStrip(i, ds){ const set = new Set(i.rs.map(r => r.data)), e = parseISO(ds); let out = '';
+  for (let k = 13; k >= 0; k--){ const x = addDays(e, -k), s = iso(x), w = x.getDay(); out += `<i class="${set.has(s)?'on':''} ${w===0||w===6?'we':''} ${k===0?'cur':''}" title="${fmtD(s)}${set.has(s)?' · ajustado':''}"></i>`; }
+  return `<span class="ajstrip" title="Últimos 14 dias">${out}</span>`; }
+function ajRows(){
+  const ds = AJ.date, I = ajIdx(), base = equipeCtl().filter(c => !AJ.base || c.base === AJ.base).map(c => ({c, i:ajInfo(c, I, ds)}));
+  let rows = base.slice(); const q = nk(AJ.q);
+  if (q) rows = rows.filter(o => nk(o.c.nome + (o.c.matricula||'') + bName(o.c.base)).includes(q));
+  if (AJ.f === 'pend') rows = rows.filter(o => !o.i.hoje); else if (AJ.f === 'ok') rows = rows.filter(o => o.i.hoje); else if (AJ.f === 'velho') rows = rows.filter(o => !o.i.hoje && (o.i.age == null || o.i.age > 7));
+  const ag = o => o.i.age == null ? 1e9 : o.i.age, nm = (a,b) => a.c.nome.localeCompare(b.c.nome,'pt');
+  rows.sort(AJ.so === 'az' ? nm : AJ.so === 'idade' ? (a,b) => ag(b) - ag(a) || nm(a,b) : (a,b) => (!!a.i.hoje - !!b.i.hoje) || ag(b) - ag(a) || nm(a,b));
+  return {rows, base};
+}
+function pgAjustes(){
+  if (!isAdmin()){ S.f.ctab = ''; return pgColab(); }
+  if (!AJ.date) AJ.date = iso(new Date());
+  if (AJ.y == null){ const d = new Date(); AJ.y = d.getFullYear(); AJ.m = d.getMonth(); }
+  const ds = AJ.date, {rows, base} = ajRows(), tot = base.length, feitos = base.filter(o => o.i.hoje).length;
+  const velhos = base.filter(o => !o.i.hoje && (o.i.age == null || o.i.age > 7)).length, nunca = base.filter(o => !o.i.ult).length;
+  const nMes = S.aju.filter(r => r.data.slice(0,7) === ds.slice(0,7)).length, pct = tot ? Math.round(feitos / tot * 100) : 0, isHoje = ds === iso(new Date());
+  const dif = Math.round((parseISO(iso(new Date())) - parseISO(ds)) / 864e5);
+  let h = `${colTabs()}
+    <div class="po-sub"><div class="seg">${[['lista','Verificação do dia'],['hist','Histórico de ajustes']].map(([k,l]) => `<button class="${AJ.tab===k?'on':''}" data-act="aj-tab" data-k="${k}">${l}${k === 'hist' ? ` <span class="muted">${S.aju.length}</span>` : ''}</button>`).join('')}</div>
+      <button class="btn sm" data-act="aj-xls">${ic('download',14)}Excel</button></div>`;
+  if (AJ.tab === 'hist'){ $('#page').innerHTML = h + ajHist(); return ajWire(); }
+  h += `<div class="po-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+      <div class="card"><span>Ajustados ${isHoje ? 'hoje' : 'no dia'}</span><b>${feitos}<small style="font-size:14px;color:var(--muted)"> / ${tot}</small></b><div class="ajbar"><i style="width:${pct}%"></i></div></div>
+      <div class="card"><span>Pendentes no dia</span><b>${tot - feitos}</b><small>${tot - feitos ? 'toque na linha para marcar' : 'tudo em dia'}</small></div>
+      <div class="card"><span>Mais de 7 dias sem ajuste</span><b style="color:${velhos ? '#dc2626' : 'inherit'}">${velhos}</b><small>${nunca ? nunca + ' nunca ajustado(s)' : 'contando até o dia escolhido'}</small></div>
+      <div class="card"><span>Ajustes no mês</span><b>${nMes}</b><small>${MESN[parseISO(ds).getMonth()]} ${parseISO(ds).getFullYear()}</small></div>
+    </div>
+    <div class="card po-card">
+      <div class="po-h"><div class="po-dt"><button class="icon-btn bord" data-act="aj-day" data-k="-1" aria-label="Dia anterior">${ic('chevL',17)}</button><input type="date" id="ajdate" value="${ds}"><button class="icon-btn bord" data-act="aj-day" data-k="1" aria-label="Próximo dia">${ic('chevR',17)}</button><b>${diaTxt(ds)}, ${fmtD(ds).slice(0,5)}</b><span class="muted s">${isHoje ? 'hoje' : Math.abs(dif) + ' dia(s) ' + (dif > 0 ? 'atrás' : 'à frente')}</span>${isHoje ? '' : `<button class="btn sm" data-act="aj-day" data-k="0">Hoje</button>`}</div>
+        <button class="btn sm pri" data-act="aj-all">${ic('check',14)}Marcar visíveis</button></div>
+      ${baseChipsAl(AJ.base, 'aj-base')}
+      <div class="aj-filt"><label class="search">${ic('search',15)}<input id="ajq" placeholder="Buscar colaborador ou matrícula..." value="${esc(AJ.q)}"></label>
+        <div class="seg">${[['','Todos',tot],['pend','Pendentes',tot - feitos],['ok','Ajustados',feitos],['velho','+7 dias',velhos]].map(([k,l,n]) => `<button class="${AJ.f===k?'on':''}" data-act="aj-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
+        <select class="sel sm" id="ajso" aria-label="Ordenar">${opts([['pend','Pendentes primeiro'],['idade','Mais tempo sem ajuste'],['az','A → Z']], AJ.so)}</select></div>
+      <div class="aj-leg"><span><i style="background:#16a34a"></i>ajustado no dia</span><span><i style="background:#d9a441"></i>4 a 7 dias</span><span><i style="background:#dc2626"></i>mais de 7 dias ou nunca</span><span class="r">bolinhas = últimos 14 dias</span></div>
+      ${rows.length ? `<div class="aj-list">${rows.map(({c, i}) => { const a = ajAge(i), cls = i.hoje ? 'aj-done' : (i.age == null || i.age > 7) ? 'aj-late' : i.age > 3 ? 'aj-mid' : '';
+        return `<div class="aj-row ${cls}" data-act="aj-tg" data-id="${c.id}" role="button" tabindex="0">
+          <span class="aj-ck ${i.hoje?'on':''}">${ic('check',16)}</span>${avc(c,36)}
+          <span class="aj-tx"><b>${esc(c.nome)}</b><small>${emblem(c.base,8,2)} ${bName(c.base)}${c.matricula ? ' · ' + esc(c.matricula) : ''} · ${i.hoje ? `ajustado às ${hhmm(i.hoje.hora) || '—'}${i.ant ? ' · anterior ' + fmtD(i.ant.data).slice(0,5) : ''}` : i.ult ? 'último ajuste ' + fmtD(i.ult.data).slice(0,5) : 'sem registro de ajuste'}</small>${i.hoje && i.hoje.obs ? `<em>“${esc(i.hoje.obs)}”</em>` : ''}</span>
+          ${ajStrip(i, ds)}
+          <span class="aj-en"><span class="po-tag ${a[0]}">${a[1]}</span>${i.hoje ? `<button class="icon-btn xs" data-act="aj-obs" data-id="${i.hoje.id}" title="Observação" aria-label="Observação">${ic('msg',14)}</button>` : ''}<button class="icon-btn xs" data-act="aj-pessoa" data-id="${c.id}" title="Histórico (${i.n})" aria-label="Histórico">${ic('clock',14)}</button></span>
+        </div>`; }).join('')}</div>` : empty('check', AJ.f === 'pend' && !AJ.q ? 'Todos ajustados neste dia' : 'Ninguém por aqui', AJ.f || AJ.q ? 'Troque o filtro para ver os demais.' : '')}
+    </div>`;
+  $('#page').innerHTML = h; ajWire();
+}
+function ajWire(){
+  const d = $('#ajdate'); if (d) d.onchange = e => { if (e.target.value){ AJ.date = e.target.value; pgAjustes(); } };
+  const so = $('#ajso'); if (so) so.onchange = e => { AJ.so = e.target.value; pgAjustes(); };
+  const q = $('#ajq'); if (q){ let tm; q.oninput = e => { clearTimeout(tm); tm = setTimeout(() => { AJ.q = e.target.value; pgAjustes(); const n = $('#ajq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); }; }
+}
+async function ajToggle(cid){
+  const c = C(cid); if (!c) return; const r = ajDo(c, AJ.date);
+  try {
+    if (r){ await DB.remove('ponto_ajustes', r.id); S.aju = S.aju.filter(x => x !== r); toast(`${firstName(c.nome)}: ajuste desmarcado.`); }
+    else { const n = await DB.insert('ponto_ajustes', {colaborador_id:c.id, nome:c.nome, base:c.base, data:AJ.date, hora:hNow(), obs:'', criado_por:S.profile.id}); if (TEST && !n.nome_k) n.nome_k = nk(n.nome); S.aju.push(n); toast(`✓ ${firstName(c.nome)} ajustado.`); }
+    S.sig = dataSig(); pgAjustes();
+  } catch(e){ err(e); }
+}
+async function ajTodos(){
+  const pend = ajRows().rows.filter(o => !o.i.hoje); if (!pend.length) return toast('Todos os visíveis já estão marcados.');
+  if (!await confirmBox(`Marcar <b>${pend.length}</b> colaborador(es) como ajustado(s) em ${fmtD(AJ.date)}?`, 'Marcar')) return;
+  try { for (const o of pend){ const n = await DB.insert('ponto_ajustes', {colaborador_id:o.c.id, nome:o.c.nome, base:o.c.base, data:AJ.date, hora:hNow(), obs:'', criado_por:S.profile.id}); S.aju.push(n); }
+    S.sig = dataSig(); toast(`${pend.length} marcado(s).`); pgAjustes(); } catch(e){ err(e); }
+}
+function ajObs(id){
+  const r = S.aju.find(x => sameId(x.id, id)); if (!r) return;
+  openModal({title:`Observação · ${firstName(nomeDe(r))} · ${fmtD(r.data).slice(0,5)}`, body:`<form id="mf" class="form">
+    ${fld('Hora do ajuste', inp('hora', hhmm(r.hora), 'type="time"'))}<div class="f"></div>
+    ${fld('O que foi arrumado', `<textarea name="obs" id="ajno" rows="3" placeholder="Ex.: esqueceu de bater a saída, ajuste de entrada...">${esc(r.obs || '')}</textarea>`, true)}
+    <div class="f full aj-sug">${['Esqueceu entrada','Esqueceu saída','Esqueceu almoço','Problema no relógio','Hora extra','Abono'].map(s => `<button type="button" class="fchip" data-sug="${s}">${s}</button>`).join('')}</div>
+  </form>`, foot:`<button class="btn danger left" data-act="aj-del" data-id="${r.id}">${ic('trash',15)}Excluir ajuste</button><button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="aj-obs-save" data-id="${r.id}">${ic('check',15)}Salvar</button>`,
+  onMount: ov => { $$('[data-sug]', ov).forEach(b => b.onclick = () => { const t = $('#ajno', ov); t.value = t.value ? t.value.replace(/\s*$/, '') + '; ' + b.dataset.sug : b.dataset.sug; t.focus(); }); setTimeout(() => $('#ajno', ov)?.focus(), 40); }});
+}
+async function ajObsSave(id){
+  const r = S.aju.find(x => sameId(x.id, id)), f = formObj(); if (!r) return;
+  const row = {hora:f.hora || null, obs:f.obs || '', updated_at:nowISO()};
+  try { await DB.update('ponto_ajustes', id, row); Object.assign(r, row); S.sig = dataSig(); closeModal(); toast('Observação salva.'); pgAjustes(); } catch(e){ err(e); }
+}
+async function ajDel(id){
+  const r = S.aju.find(x => sameId(x.id, id)); if (!r || !await confirmBox(`Excluir o ajuste de <b>${esc(firstName(nomeDe(r)))}</b> em ${fmtD(r.data)}?`)) return;
+  try { await DB.remove('ponto_ajustes', id); S.aju = S.aju.filter(x => x !== r); S.sig = dataSig(); closeModal(); toast('Ajuste excluído.'); pgAjustes(); } catch(e){ err(e); }
+}
+function ajPessoa(cid){
+  const c = C(cid) || CX(cid); if (!c) return; const rs = ajInfo(c, ajIdx(), '9999-12-31').rs;
+  const gaps = rs.slice(0, -1).map((r, k) => Math.round((parseISO(r.data) - parseISO(rs[k+1].data)) / 864e5)), med = gaps.length ? Math.round(gaps.reduce((a,x) => a+x, 0) / gaps.length) : null, mes = iso(new Date()).slice(0,7);
+  const al = S.alm.filter(r => sameId(r.colaborador_id, c.id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 10);
+  openModal({wide:true, title:'Ponto do colaborador', body:`<div class="who" style="margin-bottom:14px">${avc(c,48)}<div><b style="font-size:15px">${esc(c.nome)}</b><small>${bName(c.base)}${c.matricula ? ' · ' + esc(c.matricula) : ''}</small></div></div>
+    <div class="po-kpis" style="grid-template-columns:repeat(4,1fr)"><div class="card"><span>Total de ajustes</span><b>${rs.length}</b></div><div class="card"><span>Neste mês</span><b>${rs.filter(r => r.data.slice(0,7) === mes).length}</b></div><div class="card"><span>Último</span><b style="font-size:16px">${rs[0] ? fmtD(rs[0].data) : '—'}</b></div><div class="card"><span>Intervalo médio</span><b style="font-size:16px">${med != null ? med + ' dia(s)' : '—'}</b></div></div>
+    <div class="sec">Ajustes de ponto</div>
+    ${rs.length ? `<div class="aj-tl">${rs.map(r => `<div class="aj-ti"><b>${fmtD(r.data)}</b> <span class="muted">· ${diaTxt(r.data)}${r.hora ? ' · ' + hhmm(r.hora) : ''}</span>${r.obs ? `<p>${esc(r.obs)}</p>` : ''}<button class="linkbtn s" data-act="aj-go" data-d="${r.data}">abrir dia</button></div>`).join('')}</div>` : '<p class="muted s">Nenhum ajuste ainda.</p>'}
+    <div class="sec">Últimos almoços</div>
+    ${al.length ? `<div class="po-tbl">${al.map(r => `<div class="po-tr"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="muted s">${esc(r.obs || '')}</span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${alTag(alDur(r))}</div>`).join('')}</div>` : '<p class="muted s">Nenhum almoço lançado.</p>'}`,
+    foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+function ajHist(){
+  const [a, b] = mesBounds(AJ.y, AJ.m), q = nk(AJ.q);
+  const rs = S.aju.filter(r => r.data >= a && r.data <= b && (!AJ.base || baseDe(r) === AJ.base) && (!S.base || baseDe(r) === S.base) && (!q || nk(nomeDe(r) + (r.obs || '')).includes(q)));
+  const g = {}; rs.forEach(r => (g[r.data] = g[r.data] || []).push(r)); const ds = Object.keys(g).sort().reverse();
+  const cnt = {}; rs.forEach(r => { const k = nomeDe(r); cnt[k] = (cnt[k] || 0) + 1; }); const top = Object.entries(cnt).sort((x,y) => y[1] - x[1]).slice(0, 8), mx = Math.max(1, ...top.map(x => x[1]));
+  return `<div class="po-kpis" style="grid-template-columns:repeat(4,minmax(0,1fr))"><div class="card"><span>Ajustes no mês</span><b>${rs.length}</b></div><div class="card"><span>Dias com ajuste</span><b>${ds.length}</b></div><div class="card"><span>Colaboradores atendidos</span><b>${Object.keys(cnt).length}</b></div><div class="card"><span>Média por dia</span><b>${ds.length ? (rs.length / ds.length).toFixed(1).replace('.', ',') : '0'}</b></div></div>
+    <div class="card po-card">
+      <div class="po-h"><div class="cal-h" style="margin:0"><button class="icon-btn bord" data-act="aj-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${mesNome(AJ.y, AJ.m)}</h2><button class="icon-btn bord" data-act="aj-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button></div>
+        <label class="search" style="min-width:200px">${ic('search',15)}<input id="ajq" placeholder="Buscar no histórico..." value="${esc(AJ.q)}"></label></div>
+      ${baseChipsAl(AJ.base, 'aj-base')}
+      ${top.length ? `<div class="aj-top"><div class="sec" style="margin-top:0">Quem mais precisou de ajuste</div>${top.map(([n, v]) => `<div class="aj-bl"><span>${esc(n)}</span><span class="tr"><i style="width:${Math.round(v / mx * 100)}%"></i></span><b>${v}</b></div>`).join('')}</div>` : ''}
+      ${ds.length ? ds.map(d => `<div class="aj-dh"><b>${diaTxt(d)}, ${fmtD(d)}</b><span class="po-tag gr">${g[d].length} ajuste(s)</span><button class="btn sm" data-act="aj-go" data-d="${d}">Abrir dia</button></div>
+        ${g[d].sort((x,y) => String(x.hora||'').localeCompare(String(y.hora||''))).map(r => `<div class="aj-hi" style="--c:${BASES[baseDe(r)]?.c || '#94a3b8'}">${avNome(r,30)}<span class="aj-tx"><b>${esc(nomeDe(r))}</b><small>${hhmm(r.hora) || '—'} · ${bName(baseDe(r))}${pessoaDe(r) ? '' : ' · não está no cadastro'}</small>${r.obs ? `<em>${esc(r.obs)}</em>` : ''}</span><button class="icon-btn xs" data-act="aj-obs" data-id="${r.id}" aria-label="Observação">${ic('msg',14)}</button><button class="icon-btn xs" data-act="aj-del" data-id="${r.id}" aria-label="Excluir">${ic('trash',14)}</button></div>`).join('')}`).join('') : empty('checks','Nenhum ajuste neste mês','Os ajustes marcados na verificação do dia aparecem aqui.')}
+    </div>`;
+}
+async function ajXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const [a, b] = AJ.tab === 'hist' ? mesBounds(AJ.y, AJ.m) : ['0000', '9999'];
+  const rs = S.aju.filter(r => r.data >= a && r.data <= b && (!AJ.base || baseDe(r) === AJ.base)).sort((x,y) => x.data.localeCompare(y.data));
+  const aoa = [['Data','Dia','Hora','Colaborador','Matrícula','Base','Observação'], ...rs.map(r => [fmtD(r.data), diaTxt(r.data), hhmm(r.hora), nomeDe(r), pessoaDe(r)?.matricula || '', bName(baseDe(r)), r.obs || ''])];
+  const wb = X.utils.book_new(), ws = X.utils.aoa_to_sheet(aoa); ws['!cols'] = [10,14,7,36,11,13,40].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Ajustes de ponto'); X.writeFile(wb, `ajustes-de-ponto${AJ.tab === 'hist' ? '-' + a.slice(0,7) : ''}.xlsx`); toast('Planilha exportada.');
 }
 
 
@@ -5153,11 +5428,18 @@ const ACT = {
   'foto-pick': a => fotoEscolher(a.dataset.id), 'foto-del': a => fotoRemover(a.dataset.id), 'foto-ver': a => fotoVer(a.dataset.id),
   'hm-day': a => { S.hmDay = a.dataset.date; $$('.hc.sel').forEach(x => x.classList.remove('sel')); a.classList.add('sel'); const l = $('#hmlist'); if (l) l.innerHTML = hmList(S.hmDay); },
   'c-tab': a => { S.f.ctab = a.dataset.k; pgColab(); },
-  'po-sub': a => { PO.sub = a.dataset.k; pgPonto(); }, 'po-base': a => { PO.base = a.dataset.k; pgPonto(); },
-  'po-day': async a => { if (Object.keys(PO.draft).length && !await confirmBox('Há horários não salvos neste dia. Trocar de dia e descartar?', 'Descartar')) return; PO.draft = {}; PO.date = iso(addDays(parseISO(PO.date), +a.dataset.k)); pgPonto(); },
-  'po-auto': () => poAuto(), 'po-one': a => poAuto(a.dataset.id), 'po-clear': () => { PO.draft = {}; pgPonto(); }, 'po-save': () => poSave(),
-  'po-mes': a => { PO.m += +a.dataset.k; if (PO.m < 0){ PO.m = 11; PO.y--; } if (PO.m > 11){ PO.m = 0; PO.y++; } pgPonto(); },
-  'po-xls': () => poXls(), 'po-edit': a => poEdit(a.dataset.id), 'po-upd': a => poUpd(a.dataset.id), 'po-del': a => poDel(a.dataset.id),
+  'al-tab': a => { AL.tab = a.dataset.k; AL.q = ''; pgAlmoco(); }, 'al-base': a => { AL.base = a.dataset.k; pgAlmoco(); },
+  'al-day': async a => { const k = +a.dataset.k; if (Object.keys(AL.draft).length && !await confirmBox('Há horários não salvos neste dia. Trocar de dia e descartar?', 'Descartar')) return; AL.draft = {}; AL.date = k ? iso(addDays(parseISO(AL.date), k)) : iso(new Date()); pgAlmoco(); },
+  'al-auto': () => alAuto(), 'al-one': a => alAuto(a.dataset.id), 'al-clear': () => { AL.draft = {}; pgAlmoco(); }, 'al-save': () => alSave(),
+  'al-modelo': () => alModelo(), 'al-import': () => alImportar(), 'al-xls': () => alXls(), 'al-more': () => { AL.lim = (AL.lim || 60) + 100; pgAlmoco(); },
+  'al-mes': a => { AL.m += +a.dataset.k; if (AL.m < 0){ AL.m = 11; AL.y--; } if (AL.m > 11){ AL.m = 0; AL.y++; } pgAlmoco(); },
+  'al-new': () => alForm(), 'al-edit': a => alForm(a.dataset.id), 'al-fsave': a => alFormSave(a.dataset.id || null), 'al-del': a => alDel(a.dataset.id),
+  'aj-tab': a => { AJ.tab = a.dataset.k; AJ.q = ''; pgAjustes(); }, 'aj-base': a => { AJ.base = a.dataset.k; pgAjustes(); }, 'aj-f': a => { AJ.f = a.dataset.k; pgAjustes(); },
+  'aj-day': a => { const k = +a.dataset.k; AJ.date = k ? iso(addDays(parseISO(AJ.date), k)) : iso(new Date()); pgAjustes(); },
+  'aj-mes': a => { AJ.m += +a.dataset.k; if (AJ.m < 0){ AJ.m = 11; AJ.y--; } if (AJ.m > 11){ AJ.m = 0; AJ.y++; } pgAjustes(); },
+  'aj-tg': a => ajToggle(a.dataset.id), 'aj-all': () => ajTodos(), 'aj-obs': a => ajObs(a.dataset.id), 'aj-obs-save': a => ajObsSave(a.dataset.id), 'aj-del': a => ajDel(a.dataset.id),
+  'aj-pessoa': a => ajPessoa(a.dataset.id), 'aj-xls': () => ajXls(),
+  'aj-go': a => { closeModal(); AJ.date = a.dataset.d; AJ.tab = 'lista'; AJ.f = ''; S.f.ctab = 'ajustes'; S.page === 'colaboradores' ? pgAjustes() : go('colaboradores'); },
   'vi-sem': a => { const st = S.pl, k = +a.dataset.k; st.vw = k ? iso(addDays(parseISO(st.vw || iso(viSegunda(new Date()))), 7*k)) : iso(viSegunda(new Date())); pgPlanner(); },
   'vi-dia': a => viDia(a.dataset.d), 'vi-limpar': a => viLimpar(a.dataset.d),
   'esc-tab': a => { S.esc.tab = a.dataset.k; if (a.dataset.k !== 'pend'){ const d = new Date(); if (!S.esc._nav){ S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); } } pgEscalas(); window.scrollTo(0,0); },
