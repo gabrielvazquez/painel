@@ -1348,6 +1348,84 @@ button.ac-row:hover b{color:var(--accent)}
 .foto-ov img{max-width:min(90vw,520px);max-height:75vh;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .foto-ov figcaption{color:#fff;margin-top:12px;font-weight:500}
 
+/* ===== v2.9 — mapa de ausências, ponto, visitas ===== */
+.hc.sel{outline:2px solid var(--ink);outline-offset:1px}
+.hm-list{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.hm-h{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.hm-h b{font-size:13px;font-weight:600}.hm-h span{font-size:12px;color:var(--muted)}.hm-h .linkbtn{margin-left:auto;padding:0;display:inline-flex;align-items:center;gap:4px}
+.col-tabs{margin-bottom:14px;width:max-content;max-width:100%}
+.po-sub{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.po-min{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)}
+.po-min input{width:64px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:center}
+.po-card{padding:16px}
+.po-h{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.po-dt{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.po-dt input{border:1px solid var(--line);border-radius:10px;padding:7px 10px}
+.po-dt b{font-weight:600}
+.po-bases{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.po-cols,.po-r{display:grid;grid-template-columns:minmax(0,1fr) 110px 110px 30px 80px;gap:10px;align-items:center}
+.po-cols{font-size:11px;color:var(--muted);padding:0 4px 6px;border-bottom:1px solid var(--line)}
+.po-r{padding:8px 4px;border-bottom:1px solid #f1f2f7}
+.po-r.aus{background:#fafbff}
+.po-n{display:flex;align-items:center;gap:10px;min-width:0}
+.po-n b{display:block;font-weight:500;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.po-n small{display:block;font-size:11px;color:var(--muted)}
+.po-n>span{min-width:0}
+.po-i{border:1px solid var(--line);border-radius:9px;padding:7px 8px;width:100%;background:#fff}
+.po-i.f{border-color:#99f6e4;background:#f0fdfa}
+.po-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+.po-tag.ok{background:#dcfce7;color:#166534}.po-tag.wr{background:#fee2e2;color:#991b1b}.po-tag.gr{background:#fef3c7;color:#92400e}
+.po-save{display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;padding:12px 4px 2px;margin-top:6px;border-top:1px solid var(--line)}
+.po-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.po-kpis .card{padding:14px 16px}.po-kpis span{font-size:12px;color:var(--ink2)}.po-kpis b{display:block;font-size:22px;font-weight:700;margin-top:4px}.po-kpis small{font-size:10.5px;color:var(--muted)}
+.po-tbl{display:flex;flex-direction:column}
+.po-tr{display:grid;grid-template-columns:54px minmax(0,1fr) 60px 60px 74px;gap:10px;align-items:center;padding:8px 4px;border:0;border-bottom:1px solid #f1f2f7;background:none;text-align:left;width:100%}
+button.po-tr:hover{background:var(--soft)}
+.po-td-d{font-weight:600;font-size:12.5px;line-height:1.1}.po-td-d small{display:block;font-weight:400;font-size:10.5px;color:var(--muted)}
+.vi-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.vi-week{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.vi-day{background:#fff;border:1px solid #eef0f6;border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;text-align:left}
+.vi-day.tdy{border-color:#0d9488;box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.vi-day.past{opacity:.75}
+.vi-off{background:#f9fafc;border-style:dashed;min-height:70px}
+.vi-dh{display:flex;align-items:center;gap:8px}.vi-dh b{font-size:13px;font-weight:600}.vi-dh .btn{margin-left:auto}
+.vi-stops{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.vi-stops li{display:flex;gap:10px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 7%,#fff);border-left:3px solid var(--c)}
+.vi-stops li b{font-size:13px;font-weight:600}.vi-stops li small{display:block;color:var(--ink2);font-size:11.5px}
+.vi-pin{display:grid;place-items:center;width:18px;flex:none;color:var(--c)}
+.vi-vz{margin:0;color:var(--muted);font-size:12px}
+.vi-tks{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px;align-items:center}
+.vi-tk{display:inline-flex;align-items:center;gap:4px;font-size:11px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:2px 8px;color:var(--ink2)}
+.vi-tk.done{text-decoration:line-through;color:var(--muted)}
+.vi-tk button{border:0;background:none;padding:0;display:grid;color:var(--muted)}
+.vi-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;width:100%;text-align:left;border:1px solid #99f6e4;background:#f0fdfa;border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:12.5px;color:#115e59}
+.vi-strip b{font-weight:600;color:var(--ink);border-bottom:2px solid var(--c)}.vi-strip i{font-style:normal;color:var(--muted)}
+.vi-bases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.vi-b{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-left:4px solid var(--c);background:#fff;border-radius:12px;padding:12px;font-size:12.5px;font-weight:500;text-align:left}
+.vi-b span:not(.emb){flex:1}.vi-b .emb{flex:none}.vi-b.on{background:color-mix(in srgb,var(--c) 10%,#fff);border-color:var(--c)}.vi-b.on svg{color:var(--c)}
+.vi-outro{display:flex;gap:8px;margin-top:10px}.vi-outro input{flex:1;border:1px solid var(--line);border-radius:10px;padding:9px 12px;min-width:0}
+.vi-eds{display:flex;flex-direction:column;gap:10px}
+.vi-ed{border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.vi-ed-h{display:flex;align-items:center;gap:8px}
+.vi-ed-h b{flex:1;font-size:13px;font-weight:600}
+.vi-n{width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.vi-on{flex:1;border:1px solid var(--line);border-radius:8px;padding:6px 9px;min-width:0}
+.vi-hr{width:100px;border:1px solid var(--line);border-radius:8px;padding:5px 7px}
+.vi-ed [data-mv] svg{transform:rotate(90deg)}
+.vi-nt,.vi-new{border:1px solid var(--line);border-radius:8px;padding:7px 10px;width:100%}
+.vi-sel{border:1px dashed var(--line);border-radius:20px;padding:4px 8px;font-size:11.5px;background:#fff;max-width:100%}
+.vi-ed .vi-new{flex-basis:100%}
+@media (max-width:900px){.po-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.vi-bases{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){
+  .po-cols{display:none}
+  .po-r{grid-template-columns:1fr 1fr 34px;grid-template-areas:"n n d" "s v a";row-gap:6px}
+  .po-r .po-n{grid-area:n}.po-r [data-f=saida]{grid-area:s}.po-r [data-f=volta]{grid-area:v}.po-r .icon-btn{grid-area:a}.po-r .po-d{grid-area:d;text-align:right}
+  .po-tr{grid-template-columns:44px minmax(0,1fr) 46px 46px 62px;gap:6px}
+  .vi-week{grid-template-columns:1fr}
+  .po-save{bottom:calc(68px + env(safe-area-inset-bottom));box-shadow:0 -6px 12px rgba(29,32,51,.06)}
+  .col-tabs{width:100%}
+}
+
 </style>
 </head>
 <body>
@@ -1360,7 +1438,7 @@ button.ac-row:hover b{color:var(--accent)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.8';
+const APP_VERSION = '2.9';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1433,7 +1511,7 @@ const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','pontos','visitas'];
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
   sex_seguinte:{label:'Sexta-feira seguinte', dow:5, dir:1},
@@ -1701,7 +1779,15 @@ function seed(){
   ];
   planner_tarefas.forEach(t => t.lembrete_em = plRemindAt(t));
   const planner_comentarios = [{id:uid(), tarefa_id:planner_tarefas[2].id, autor_id:'u-carlos', autor_nome:'Carlos Lima', texto:'Pode deixar, confiro logo cedo.', created_at:h(1)}];
-  return {planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  const pontos = [];
+  ['c1','c2','c3','c4'].forEach((cid, i) => [0,1,2].forEach(dd => { if (dd === 0 && i > 1) return; const s = 11*60 + 30 + i*10 + dd*5, v = s + 60 + (i === 1 && dd === 1 ? 25 : 0);
+    pontos.push({id:uid(), colaborador_id:cid, base:'pinheiros', data:dOff(-dd), saida:`${pad(Math.floor(s/60))}:${pad(s%60)}`, volta:dd === 0 && i === 1 ? null : `${pad(Math.floor(v/60))}:${pad(v%60)}`, obs:'', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(dd*24), updated_at:h(dd*24)}); }));
+  const visitas = [
+    {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(0), ordem:0, local:'pinheiros', local_nome:'Base Pinheiros', hora:'08:00', notas:'Conferir estoque de lacres', tarefas:[planner_tarefas[2].id], publico:true, created_at:h(20), updated_at:h(20)},
+    {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(0), ordem:1, local:'ipiranga', local_nome:'Base Ipiranga', hora:'14:00', notas:'', tarefas:[], publico:true, created_at:h(20), updated_at:h(20)},
+    {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(1), ordem:0, local:null, local_nome:'Escritório central', hora:'09:00', notas:'Reunião com a gerência', tarefas:[], publico:true, created_at:h(2), updated_at:h(2)}
+  ];
+  return {pontos, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -1717,6 +1803,8 @@ const DB = {
     let q = sb.from(t).select('*');
     if (t === 'veiculo_historico') q = q.order('created_at', {ascending:false}).limit(3000);
     if (t === 'estoque_movs') q = q.order('created_at', {ascending:false}).limit(2000);
+    if (t === 'pontos') q = q.gte('data', iso(addDays(new Date(), -200)));
+    if (t === 'visitas') q = q.gte('data', iso(addDays(new Date(), -120)));
     const {data, error} = await q; if (error) throw error; return data;
   },
   async insert(t, row){ return (await this.insertMany(t, [row]))[0]; },
@@ -1770,7 +1858,7 @@ const S = {
   sort:{col:'nome', dir:1},
   cal:{y:today0.getFullYear(), m:today0.getMonth(), tipos:new Set(), colab:''},
   esc:{y:today0.getFullYear(), m:today0.getMonth(), t:'', st:'', q:'', ac:'', b:''},
-  pt:[], pc:[],
+  pt:[], pc:[], pontos:[], visitas:[],
   pl:{v:'hoje', f:'', q:'', y:today0.getFullYear(), m:today0.getMonth(), d:iso(today0), sd:{}},
   hx:{y:today0.getFullYear(), m:today0.getMonth(), t:'', q:'', ac:'', b:'', p:''},
   est:{q:'', c:'', b:'', al:false}
@@ -1812,7 +1900,7 @@ function applyTheme(){
 
 async function loadAll(){
   const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan, S.pt, S.pc] = res;
+  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan, S.pt, S.pc, S.pontos, S.visitas] = res;
   try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status,foto}) => ({id,nome,base,cargo,status,foto})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
@@ -1838,7 +1926,6 @@ const NAV = [
       ? chsV('problema').filter(c => c.status==='aberto').length
       : chsV('pedido').filter(c => c.status==='aberto').length},
   {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'calclock',color:'#ea580c',m:1, badge:() => S.escalas.filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1)) && (allowed(e.base) || sameId(e.responsavel_id, S.profile.id))).length},
-  {id:'horas',label:'Horas extras',short:'Horas extras',icon:'hourplus',color:'#059669',admin:true},
   {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04', badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
   {id:'calendario',label:'Ausências',short:'Ausências',icon:'calx',color:'#16a34a'},
   {id:'usuarios',label:'Usuários e bases',short:'Usuários',icon:'shieldu',color:'#475569',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
@@ -1936,7 +2023,7 @@ function confirmBox(msg, ok='Excluir'){
 function startOfWeek(d){ const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const w = (x.getDay() + 6) % 7; x.setDate(x.getDate() - w); return x; }
 function addDays(d, n){ const x = new Date(d); x.setDate(x.getDate() + n); return x; }
 function fmtDur(h){ if (h == null) return '—'; if (h < 1) return Math.max(1, Math.round(h*60)) + ' min'; if (h < 48) return (h < 10 ? h.toFixed(1).replace('.', ',') : Math.round(h)) + ' h'; return Math.round(h/24) + ' dias'; }
-function ausentesEm(ds){ return new Set(evsV().filter(e => e.data_inicio <= ds && e.data_fim >= ds).map(e => String(e.colaborador_id))); }
+function ausentesEm(ds, tipo){ return new Set(evsV().filter(e => e.data_inicio <= ds && e.data_fim >= ds && (!tipo || (tipo === 'ferias' ? e.tipo === 'ferias' : e.tipo !== 'ferias'))).map(e => e.colaborador_id ? String(e.colaborador_id) : 'p:' + e.profile_id)); }
 
 function ringSVG(pct, color, size=60, sw=7){
   const r = (size - sw)/2, c = 2*Math.PI*r, p = Math.max(0, Math.min(1, pct || 0)), m = size/2;
@@ -1985,8 +2072,15 @@ function heatmap(){
   const max = Math.max(1, ...days.map(x => x.n));
   return `<div class="heat">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(w => `<span class="hw">${w}</span>`).join('')}${days.map(x => {
     const p = x.n ? Math.round(18 + (x.n/max)*72) : 0; const past = x.ds < today;
-    return `<button class="hc ${past?'past':''} ${x.ds===today?'now':''} ${p>55?'dark':''}" style="--p:${p}%" data-act="cal-day" data-date="${x.ds}" title="${fmtD(x.ds)}: ${x.n} ausente(s)"><span>${x.d.getDate()}</span>${x.n?`<b>${x.n}</b>`:''}</button>`; }).join('')}</div>
-    <div class="heat-leg"><span>Menos</span>${[0,25,50,75,95].map(p => `<i style="--p:${p}%"></i>`).join('')}<span>Mais ausentes</span></div>`;
+    return `<button class="hc ${past?'past':''} ${x.ds===today?'now':''} ${x.ds===(S.hmDay||today)?'sel':''} ${p>55?'dark':''}" style="--p:${p}%" data-act="hm-day" data-date="${x.ds}" title="${fmtD(x.ds)}: ${x.n} ausente(s)"><span>${x.d.getDate()}</span>${x.n?`<b>${x.n}</b>`:''}</button>`; }).join('')}</div>
+    <div class="heat-leg"><span>Menos</span>${[0,25,50,75,95].map(p => `<i style="--p:${p}%"></i>`).join('')}<span>Mais ausentes</span></div>
+    <div id="hmlist" class="hm-list">${hmList(S.hmDay || today)}</div>`;
+}
+
+// Lista do dia escolhido no mapa de ausências (sem os filtros da tela de calendário)
+function hmList(ds){
+  const evs = evsV().filter(e => e.data_inicio <= ds && e.data_fim >= ds).sort((a,b) => a.tipo.localeCompare(b.tipo));
+  return `<div class="hm-h"><b>${ds === iso(new Date()) ? 'Hoje' : cap(parseISO(ds).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(ds).slice(0,5)}</b><span>${evs.length ? evs.length + ' ausência(s)' : 'ninguém ausente'}</span><button class="linkbtn" data-act="ev-new" data-date="${ds}">${ic('plus',13)} Marcar ausência</button></div>${evs.length ? agendaList(evs) : ''}`;
 }
 
 function respHoras(c){
@@ -2039,9 +2133,10 @@ function pgDashboard(){
   const colabs = colabsV(), veics = veicsV();
   const probs = chsV('problema'), peds = chsV('pedido'), all = chsV();
   const ativos = colabs.filter(c => c.status === 'ativo');
-  const ausHoje = ausentesEm(today);
-  const ausAtivos = ativos.filter(c => ausHoje.has(String(c.id)));
-  const disp = ativos.length - ausAtivos.length, pDisp = ativos.length ? disp/ativos.length : 0;
+  const ausHoje = ausentesEm(today, 'outras'), ferHoje = ausentesEm(today, 'ferias');
+  const ferAtivos = ativos.filter(c => ferHoje.has(String(c.id)));
+  const ausAtivos = ativos.filter(c => ausHoje.has(String(c.id)) && !ferHoje.has(String(c.id)));
+  const disp = ativos.length - ausAtivos.length - ferAtivos.length, pDisp = ativos.length ? disp/ativos.length : 0;
   const vt = veics.length, vOk = veics.filter(v => v.status==='ok').length, vFora = veics.filter(v => ['problema','manutencao','parado'].includes(v.status)).length;
   const k3 = adm ? probs : peds, k3ab = k3.filter(c => c.status !== 'resolvido');
   const semResp = probs.filter(c => c.status==='aberto' && respHoras(c) == null);
@@ -2060,7 +2155,7 @@ function pgDashboard(){
   const leadRows = adm ? S.profiles.filter(p => p.role==='lider' && (p.bases||[]).some(inScope)).map(p => { const l = probs.filter(c => sameId(c.autor_id,p.id));
     return {label:`<span class="who">${emblem((p.bases||[])[0],20,6)}<span>${esc(firstName(p.nome))}</span></span>`, total:l.length, parts:['aberto','andamento','resolvido'].map(s => ({n:l.filter(c=>c.status===s).length, color:CH[s].color, name:CHL.problema[s]})), act:`data-act="t-fl" data-k="${p.id}" data-go="1"`}; }).sort((a,b) => b.total-a.total) : [];
   const feed = feedItems();
-  const outros = colabs.filter(c => c.status==='ferias' || c.status==='afastado').length;
+  const outros = colabs.filter(c => c.status==='ferias' || c.status==='afastado').length + ferAtivos.length;
   const showBases = adm && !S.base;
 
   $('#page').innerHTML = `
@@ -2093,11 +2188,11 @@ function pgDashboard(){
       <div><span class="k2-l">${ic('clock',15)}Tempo médio de resposta</span><b class="k2-v">${fmtDur(avgH)}</b><span class="k2-s">${resolvidos} de ${probs.length} problema(s) resolvido(s)</span></div>${ringSVG(probs.length?resolvidos/probs.length:0,'#22c55e')}</div>
 
     <div class="card span-4">
-      <div class="card-h"><div><h3>Disponibilidade da equipe</h3><p class="ch-sub">Colaboradores ativos sem ausência hoje</p></div></div>
+      <div class="card-h"><div><h3>Disponibilidade da equipe</h3><p class="ch-sub">Ativos sem folga, falta, atestado ou férias hoje</p></div></div>
       <div class="card-b">
         <div class="gauge-wrap">${gaugeSVG(pDisp, pDisp>=.85?'#22c55e':pDisp>=.65?'#f5a623':'#ef4444')}<div class="gauge-c"><b>${Math.round(pDisp*100)}%</b><span>disponível</span></div></div>
         <div class="trio"><div><b>${ativos.length}</b><span>Ativos</span></div><div><b>${ausAtivos.length}</b><span>Ausentes hoje</span></div><div><b>${outros}</b><span>Férias / afastados</span></div></div>
-        ${ausAtivos.length ? `<div class="aus-chips">${evsV().filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avc(EVP(e),22)}${esc(firstName(EVP(e)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
+        ${ausAtivos.length || ferAtivos.length ? `<div class="aus-chips">${evsV().filter(e => e.data_inicio<=today && e.data_fim>=today).map(e => { const o = EV[e.tipo]||EV.outro; return `<button class="aus-c" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}">${avc(EVP(e),22)}${esc(firstName(EVP(e)?.nome))}<i>${o.label}</i></button>`; }).join('')}</div>` : `<p class="ok-line">${ic('check',15)}Equipe completa hoje</p>`}
       </div>
     </div>
 
@@ -2121,7 +2216,7 @@ function pgDashboard(){
     </div>
 
     <div class="card span-7">
-      <div class="card-h"><div><h3>Mapa de ausências</h3><p class="ch-sub">Esta semana e as próximas 3 — clique em um dia</p></div><button class="btn sm" data-nav="calendario">Calendário</button></div>
+      <div class="card-h"><div><h3>Mapa de ausências</h3><p class="ch-sub">Esta semana e as próximas 3 — toque em um dia para ver quem falta</p></div><button class="btn sm" data-nav="calendario">Calendário</button></div>
       <div class="card-b">${heatmap()}</div>
     </div>
 
@@ -2154,7 +2249,8 @@ const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Esco
 function pgColab(){
   const f = S.f, list = colabsV();
   const lid = S.profiles.filter(p => p.role === 'lider' && (p.bases||[]).some(inScope));
-  $('#page').innerHTML = `
+  if (S.f.ctab === 'ponto') return pgPonto();
+  $('#page').innerHTML = `${colTabs()}
   <div class="filters">${fchip('c-fs','','Todos',list.length,theme().c,!f.cs)}${Object.entries(CSTATUS).map(([k,o]) => fchip('c-fs',k,o.label,list.filter(c=>c.status===k).length,o.color,f.cs===k)).join('')}</div>
   <div class="toolbar">
     <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar por nome, POS, telefone, placa..." value="${esc(f.cq)}"></label>
@@ -2202,7 +2298,7 @@ function openColab(id){
   const dig = String(c.telefone||'').replace(/\D/g,'');
   openModal({wide:true, title:'Ficha do colaborador', body:`
     <div class="hero" style="padding:0 0 16px"><div class="ph-wrap">${c.foto ? `<button class="ph-view" data-act="foto-ver" data-id="${c.id}" aria-label="Ver foto">${avc(c,76)}</button>` : avc(c,76)}${fotoPode(c) ? `<button class="ph-btn" data-act="foto-pick" data-id="${c.id}" title="${c.foto ? 'Trocar foto' : 'Adicionar foto'}" aria-label="${c.foto ? 'Trocar foto' : 'Adicionar foto'}">${ic('camera',15)}</button>` : ''}</div><div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])} ${bTag(c.base)}</p>${fotoPode(c) ? `<p class="ph-links"><button class="linkbtn" data-act="foto-pick" data-id="${c.id}">${ic('camera',13)} ${c.foto ? 'Trocar foto' : 'Adicionar foto'}</button>${c.foto ? `<button class="linkbtn danger-t" data-act="foto-del" data-id="${c.id}">Remover</button>` : ''}</p>` : ''}</div></div>
-    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Diário (${chs.length})</button></div>
+    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Diário (${chs.length})</button><button class="mtab" data-act="mtab" data-k="po">Ponto (${S.pontos.filter(p => sameId(p.colaborador_id, id)).length})</button></div>
     <div data-pane="det">
       <div class="dl">
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
@@ -2219,7 +2315,9 @@ function openColab(id){
       ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.${isAdmin()?' Use "Editar" para vincular.':''}</div>`}
     </div>
     <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
-    <div data-pane="ch" hidden>${tableChamados(sortCh(chs))}</div>`,
+    <div data-pane="ch" hidden>${tableChamados(sortCh(chs))}</div>
+    <div data-pane="po" hidden>${(() => { const l = S.pontos.filter(p => sameId(p.colaborador_id, id)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 40);
+      return l.length ? `<div class="po-tbl">${l.map(r => `<div class="po-tr"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="muted s">${r.obs ? esc(r.obs) : ''}</span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${poTag(poDur(r))}</div>`).join('')}</div>` : empty('clock','Nenhum horário de almoço lançado','Lance em Colaboradores → Ponto do almoço.'); })()}</div>`,
     foot: isAdmin() ? `<button class="btn danger left" data-act="c-del" data-id="${c.id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="c-edit" data-id="${c.id}">${ic('edit',15)}Editar</button>`
       : `<button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="modal-close">Fechar</button>`
   });
@@ -2897,7 +2995,7 @@ function evForm(id, date, colId){
     return openModal({title:'Ausência', body:`<div class="who" style="margin-bottom:16px">${avc(c,44)}<div><b style="font-size:15px">${esc(c?.nome||'—')}</b><small>${esc(c?.cargo||'')}</small></div></div>
       <div class="dl"><div><small>Tipo</small>${chip(o)}</div><div><small>Período</small><b>${rangeTxt(e.data_inicio,e.data_fim)} (${daysBetween(e.data_inicio,e.data_fim)} dia(s))</b></div>
       <div><small>Registrado por</small><b>${esc(e.criado_por_nome||'—')}</b></div>${e.observacao?`<div class="full"><small>Observação</small><div class="box">${esc(e.observacao)}</div></div>`:''}</div>
-      ${anexosOf(e.id).length ? `<div class="sec">Atestado anexado</div>${anexoList(anexosOf(e.id))}` : ''}
+      ${anexosOf(e.id).length ? `<div class="sec">Documento anexado</div>${anexoList(anexosOf(e.id))}` : ''}
       <p class="f-hint" style="margin-top:16px">Somente quem registrou ou o encarregado pode alterar.</p>`, foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
   }
   openModal({title: id ? 'Editar ausência' : 'Marcar ausência', body:`<form id="mf" class="form" autocomplete="off">
@@ -2907,15 +3005,14 @@ function evForm(id, date, colId){
     ${fld('Data inicial', inp('data_inicio',e.data_inicio,'type="date" required'), false, true)}
     ${fld('Data final', inp('data_fim',e.data_fim,'type="date" required'), false, true, 'Para um dia só, repita a data inicial.')}
     ${fld('Observação', `<textarea name="observacao" rows="3" placeholder="Ex: consulta às 14h, CID informado, folga compensatória...">${esc(e.observacao||'')}</textarea>`, true)}
-    <div class="f full" id="fanx" ${['atestado','medico'].includes(e.tipo)?'':'hidden'}><label>Atestado (PDF ou foto)</label>
+    <div class="f full" id="fanx"><label>${ic('clip',13)} Documento (PDF ou foto) <span class="muted" style="font-weight:400">— opcional</span></label>
       ${id ? anexoList(anexosOf(id)) : ''}
       <label class="upl">${ic('clip',16)}<span id="fanx-n">${id && anexosOf(id).length ? 'Anexar outro arquivo' : 'Escolher arquivo ou tirar foto'}</span><input type="file" name="arquivo" id="farq" accept="application/pdf,image/*" hidden></label>
-      <span class="f-hint">PDF até ${MAX_MB} MB. Fotos são reduzidas automaticamente.</span></div>
+      <span class="f-hint" id="fanx-h">Atestado, declaração, aviso de férias, comprovante... PDF até ${MAX_MB} MB; fotos são reduzidas automaticamente.</span></div>
     ${id && e.escala_id ? `<p class="folga-note full">${ic('calclock',14)}Folga gerada pelo plantão${(() => { const x = S.escalas.find(s => sameId(s.id, e.escala_id)); return x ? ' de ' + fmtD(x.data) + ' (' + bName(x.base) + ')' : ''; })()}. Pode mudar a data aqui; o plantão mantém a sua escolha.</p>` : ''}
     ${id?`<p class="f-hint full">Registrado por ${esc(e.criado_por_nome||'—')} em ${fmtDT(e.created_at)}</p>`:''}
   </form>`, foot:`${id?`<button class="btn danger left" data-act="ev-del" data-id="${id}">${ic('trash',15)}Excluir</button>`:''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="ev-save" data-id="${id||''}">${ic('check',15)}Salvar</button>`,
     onMount: ov => { const a = $('[name=data_inicio]',ov), b = $('[name=data_fim]',ov); a.addEventListener('change', () => { if (!b.value || b.value < a.value) b.value = a.value; });
-      $$('[name=tipo]',ov).forEach(r => r.addEventListener('change', () => { $('#fanx',ov).hidden = !['atestado','medico'].includes(r.value) && !$('#farq',ov).files.length; }));
       $('#farq',ov).addEventListener('change', ev => { const f = ev.target.files[0]; $('#fanx-n',ov).textContent = f ? f.name + ' (' + fmtMB(f.size) + ')' : 'Escolher arquivo ou tirar foto'; }); }});
 }
 async function saveEv(id){
@@ -2934,7 +3031,7 @@ async function saveEv(id){
     if (id){ await DB.update('eventos', id, row); ev = {id, ...row}; }
     else ev = await DB.insert('eventos', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome});
     let msg = 'Ausência salva no calendário.';
-    if (file){ try { const sz = await uploadAnexo(ev, file); msg = `Ausência salva com atestado (${fmtMB(sz)}).`; } catch(e){ await loadAll(); closeModal(); err(e); toast('A ausência foi salva, mas o arquivo não. Abra e tente anexar de novo.', 'err'); return reload(); } }
+    if (file){ try { const sz = await uploadAnexo(ev, file); msg = `Ausência salva com o documento anexado (${fmtMB(sz)}).`; } catch(e){ await loadAll(); closeModal(); err(e); toast('A ausência foi salva, mas o arquivo não. Abra e tente anexar de novo.', 'err'); return reload(); } }
     closeModal(); toast(msg);
     const d = parseISO(f.data_inicio); if (S.page === 'calendario'){ S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); }
     await reload();
@@ -2997,6 +3094,9 @@ function buildNotifs(){
     const atr = mt.filter(plLate), hj = mt.filter(t => t.data === today);
     if (atr.length) rem.push({icon:'planner', c:'#ef4444', urgent:true, t:`${atr.length} tarefa(s) atrasada(s) no planner`, s:atr.slice(0,3).map(t => t.titulo).join(', '), act:'pl-go', k:'hoje', w:0, key:'rem:pl:atr:' + atr.length});
     if (hj.length) rem.push({icon:'planner', c:PL_COR, t:`Hoje no planner: ${hj.length} tarefa(s)`, s:plSort(hj).slice(0,3).map(t => (t.hora ? hhmm(t.hora) + ' ' : '') + t.titulo).join(', '), act:'pl-go', k:'hoje', w:1, key:'rem:pl:hj:' + hj.length}); }
+  // Visitas marcadas na base que eu lidero
+  (S.visitas||[]).forEach(v => { if (sameId(v.user_id, me) || !v.local || !ownBases().includes(v.local) || v.data < today || !after(v.created_at)) return;
+    news.push({key:`vi:${v.id}`, icon:'map', c:BASES[v.local]?.c, t:`${firstName(v.user_nome)} vai à Base ${bName(v.local)}`, s:`${plDia(v.data, true)}${v.hora ? ' às ' + hhmm(v.hora) : ''}${v.notas ? ' — ' + v.notas : ''}`, when:v.created_at, act:'pl-go', k:'visitas'}); });
   // Lembretes do dia
   evsV().forEach(e => {
     const c = EVP(e), o = EV[e.tipo] || EV.outro; if (!c) return;
@@ -3125,7 +3225,7 @@ async function prepFile(file){
     if (!blob) throw new Error('Não consegui processar a imagem.');
     return {blob, ext:'jpg', mime:'image/jpeg'};
   }
-  throw new Error('Envie o atestado em PDF ou como foto (JPG/PNG).');
+  throw new Error('Envie o documento em PDF ou como foto (JPG/PNG).');
 }
 async function uploadAnexo(ev, file){
   const c = C(ev.colaborador_id); if (!c) throw new Error('Colaborador não encontrado.');
@@ -3203,7 +3303,7 @@ async function cleanQuinzena(key){
 /* ========================= CONEXÃO ========================= */
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
 function dataSig(){
-  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length, S.pt, S.pc]);
+  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length, S.pt, S.pc, S.pontos, S.visitas]);
   let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length;
 }
 function showFresh(){
@@ -3356,7 +3456,6 @@ function pgEscalas(){
       <button class="btn sm ghost" data-act="folga-cfg" title="Regras de folga do plantão">${ic('cal',15)}<span class="hide-s">Folgas</span></button>
       <button class="btn sm ghost" data-act="acoes-open" title="Nomes das ações">${ic('tag',15)}<span class="hide-s">Ações</span></button>
       <button class="btn sm ghost" data-act="esc-xls" title="Exportar o mês para Excel">${ic('download',15)}<span class="hide-s">Excel</span></button>
-      ${isAdmin() ? `<button class="btn sm ghost he-go" data-nav="horas" title="Painel de horas extras">${ic('hourplus',15)}<span class="hide-s">Horas extras</span></button>` : ''}
     </div>
   </div>
   ${st.tab === 'pend' ? escTabPend(pend, today) : escTabMes(st.tab === 'feitos' ? feitos : canc, st.tab)}`;
@@ -4223,12 +4322,13 @@ function pgPlanner(){
   const st = S.pl, me = plMe(), q = nk(st.q);
   const vis = S.pt.filter(plVe).filter(t => (!st.f || (st.f === 'minhas' ? plMeu(t) && !plShared(t) || sameId(t.responsavel_id, me) : st.f === 'compart' ? plShared(t) && !t.todos : t.todos)) && (!q || nk([t.titulo, t.notas, (t.etiquetas||[]).join(' '), t.base ? BASES[t.base]?.nome : ''].join(' ')).includes(q)));
   const perm = 'Notification' in window ? Notification.permission : 'x';
-  const tabs = [['hoje','Hoje','sun'],['proximos','Próximos','next'],['calendario','Calendário','cal'],['todas','Todas','list'],['concluidas','Concluídas','check']];
+  const tabs = [['hoje','Hoje','sun'],['proximos','Próximos','next'],['calendario','Calendário','cal'],['todas','Todas','list'],['visitas','Visitas','map'],['concluidas','Concluídas','check']];
   let head = '', body = '';
   if (st.v === 'hoje') [head, body] = plHoje(vis);
   else if (st.v === 'proximos') body = plProximos(vis);
   else if (st.v === 'calendario') [head, body] = plCal(vis);
   else if (st.v === 'todas') body = plTodas(vis);
+  else if (st.v === 'visitas') body = plVisitas();
   else body = plFeitas(vis);
   $('#page').innerHTML = `
     <div class="pl-top">
@@ -4242,7 +4342,7 @@ function pgPlanner(){
     </div>
     ${perm === 'default' ? `<button class="pl-perm" data-act="pl-perm">${ic('bell',16)}<span>Ative as notificações para os lembretes tocarem neste aparelho, mesmo com o painel em segundo plano.</span><b>Ativar</b></button>` : ''}
     ${head}
-    <form class="card pl-qa" id="plqa" autocomplete="off">
+    <form class="card pl-qa" id="plqa" autocomplete="off" ${st.v === 'visitas' ? 'hidden' : ''}>
       <div class="pl-qa-r">${ic('plus',18)}<input id="plqi" placeholder="${st.v === 'calendario' ? 'Adicionar em ' + plDia(st.d, true).toLowerCase() : 'Escreva a tarefa — ex: Ligar fornecedor amanhã 9h #pinheiros @carlos !1'}" aria-label="Nova tarefa" enterkeyhint="done"><button class="btn pri sm" type="submit">Adicionar</button></div>
       <div class="pl-chips" id="plch"></div>
     </form>
@@ -4251,6 +4351,7 @@ function pgPlanner(){
   qi.oninput = () => { const p = plParse(qi.value); $('#plch').innerHTML = qi.value.trim() ? p.chips.map(([i,l,c]) => `<span class="pl-chip" ${c?`style="--c:${c}"`:''}>${ic(i,12)}${esc(l)}</span>`).join('') : ''; };
   $('#plqa').onsubmit = async e => { e.preventDefault(); if (await plQuickAdd(qi.value)) { $('#plqi').value = ''; $('#plch').innerHTML = ''; $('#plqi').focus(); } };
   $('#plf').onchange = e => { st.f = e.target.value; pgPlanner(); };
+  const vu = $('#viu'); if (vu) vu.onchange = e => { st.vu = e.target.value; pgPlanner(); };
   let tm; $('#plq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { st.q = e.target.value; pgPlanner(); const n = $('#plq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
 }
 function plRow(t, o = {}){
@@ -4285,7 +4386,7 @@ function plHoje(vis){
   const h = d.getHours(), saud = h < 5 ? 'Boa noite' : h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
   const H0 = 6, H1 = 23, pos = (hh, mm) => Math.max(0, Math.min(100, ((hh + mm/60) - H0) / (H1 - H0) * 100)), np = pos(d.getHours(), d.getMinutes());
   const evs = hoje.filter(t => t.hora).map(t => { const [hh, mm] = hhmm(t.hora).split(':').map(Number); return `<button class="pl-ev ${t.concluida?'done':''} ${!t.concluida && hhmm(t.hora) < plNowHM() ? 'late' : ''}" style="left:${pos(hh,mm)}%;--c:${t.base ? BASES[t.base].c : PL_PRIO[t.prioridade].color === '#a3a9bd' ? PL_COR : PL_PRIO[t.prioridade].color}" data-act="pl-open" data-id="${t.id}" aria-label="${esc(hhmm(t.hora) + ' ' + t.titulo)}"><span class="tip">${hhmm(t.hora)} ${esc(t.titulo)}</span></button>`; }).join('');
-  const head = `<div class="card pl-hero">
+  const head = viTodayStrip() + `<div class="card pl-hero">
     <div class="pl-hd"><div><div class="pl-wd">${cap(WDN[d.getDay()])}${d.getDay() > 0 && d.getDay() < 6 ? '-feira' : ''}</div><div class="pl-dt">${saud}, <b>${esc(firstName(S.profile.nome))}</b>. ${d.getDate()} de ${MESN[d.getMonth()]}${pend.length ? ` — ${pend.length} tarefa${pend.length>1?'s':''} para hoje` : ''}.</div></div>
       <div class="pl-ring" title="${dn} de ${tot} feitas"><svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="30" fill="none" stroke="var(--line)" stroke-width="6"/><circle cx="36" cy="36" r="30" fill="none" stroke="${PL_COR}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${C2}" stroke-dashoffset="${C2 * (1 - pct)}"/></svg><span>${dn}/${tot}<small>feitas</small></span></div></div>
     <div class="pl-ruler" aria-label="Tarefas com horário ao longo do dia"><div class="tr"></div><div class="ps" style="width:${np}%"></div>${[6,9,12,15,18,21].map(x => `<span class="tk" style="left:${pos(x,0)}%">${x}h</span>`).join('')}${d.getHours() >= H0 && d.getHours() < H1 ? `<div class="nw" style="left:${np}%" data-t="${plNowHM()}"></div>` : ''}${evs}</div>
@@ -4641,6 +4742,238 @@ function fotoVer(cid){
 }
 
 
+/* ========================= PONTO — saída e volta do almoço (v2.9) ========================= */
+const PO = {date:null, base:'', draft:{}, sub:'lancar', y:null, m:null, q:''};
+const poMin = () => { const v = +lsGet('prim_po_min'); return v >= 15 && v <= 180 ? v : 60; };
+const toMin = t => { if (!t) return null; const [h,m] = String(t).slice(0,5).split(':').map(Number); return h*60 + (m||0); };
+const fromMin = n => `${pad(Math.floor(((n % 1440) + 1440) % 1440 / 60))}:${pad(((n % 60) + 60) % 60)}`;
+const poDur = r => { const a = toMin(r.saida), b = toMin(r.volta); if (a == null || b == null) return null; let d = b - a; if (d < 0) d += 1440; return d; };
+const fmtMinH = n => n == null ? '—' : `${Math.floor(n/60)}h${pad(n%60)}`;
+const poTag = d => d == null ? '<span class="po-tag gr">sem volta</span>' : `<span class="po-tag ${d > poMin() ? 'wr' : 'ok'}">${fmtMinH(d)}</span>`;
+const poOf = (cid, ds) => S.pontos.find(p => sameId(p.colaborador_id, cid) && p.data === ds);
+function colTabs(){
+  const n = S.pontos.filter(p => p.data === iso(new Date()) && inScope(p.base)).length;
+  return `<div class="ex-tabs col-tabs" role="tablist"><button class="${S.f.ctab !== 'ponto' ? 'on' : ''}" data-act="c-tab" data-k="">${ic('users',15)}Equipe<em>${colabsV().length}</em></button><button class="${S.f.ctab === 'ponto' ? 'on' : ''}" data-act="c-tab" data-k="ponto">${ic('clock',15)}Ponto do almoço${n ? `<em>${n} hoje</em>` : ''}</button></div>`;
+}
+function pgPonto(){
+  if (!PO.date) PO.date = iso(new Date());
+  if (PO.y == null){ const d = new Date(); PO.y = d.getFullYear(); PO.m = d.getMonth(); }
+  $('#page').innerHTML = `${colTabs()}
+    <div class="po-sub"><div class="seg">${[['lancar','Lançar horários'],['banco','Histórico']].map(([k,l]) => `<button class="${PO.sub===k?'on':''}" data-act="po-sub" data-k="${k}">${l}</button>`).join('')}</div>
+      <label class="po-min">Almoço padrão <input type="number" id="pomin" min="15" max="180" step="5" value="${poMin()}"> min</label></div>
+    <div id="pobody">${PO.sub === 'lancar' ? poLancar() : poBanco()}</div>`;
+  $('#pomin').onchange = e => { const v = Math.max(15, Math.min(180, +e.target.value || 60)); lsSet('prim_po_min', String(v)); pgPonto(); };
+  poWire();
+}
+function poPessoas(){
+  const bs = (S.base ? [S.base] : myBases()).filter(b => !PO.base || b === PO.base);
+  return S.colabs.filter(c => bs.includes(c.base) && c.status !== 'desligado').sort((a,b) => (a.base||'').localeCompare(b.base||'') || a.nome.localeCompare(b.nome,'pt'));
+}
+function poLancar(){
+  const ds = PO.date, ps = poPessoas(), multi = !S.base && myBases().length > 1;
+  const val = (c, f) => { const d = PO.draft[c.id]; if (d && d[f] != null) return d[f]; return hhmm(poOf(c.id, ds)?.[f]) || ''; };
+  const ausDia = c => S.eventos.find(e => sameId(e.colaborador_id, c.id) && e.data_inicio <= ds && e.data_fim >= ds);
+  const filled = ps.filter(c => val(c,'saida') || val(c,'volta')).length;
+  return `<div class="card po-card">
+    <div class="po-h"><div class="po-dt"><button class="icon-btn bord" data-act="po-day" data-k="-1" aria-label="Dia anterior">${ic('chevL',17)}</button><input type="date" id="podate" value="${ds}"><button class="icon-btn bord" data-act="po-day" data-k="1" aria-label="Próximo dia">${ic('chevR',17)}</button><b>${cap(parseISO(ds).toLocaleDateString('pt-BR',{weekday:'long'}))}</b>${ds === iso(new Date()) ? '<span class="chip" style="--c:#16a34a">hoje</span>' : ''}</div>
+      <button class="btn sm" data-act="po-auto" title="Volta = saída + ${poMin()} min">${ic('refresh',14)}Completar voltas</button></div>
+    ${multi ? `<div class="po-bases"><button class="fchip ${!PO.base?'on':''}" style="--c:${ALLB.c}" data-act="po-base" data-k="">Todas</button>${myBases().map(k => `<button class="fchip ${PO.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="po-base" data-k="${k}">${emblem(k,10,3)}${BASES[k].nome}</button>`).join('')}</div>` : ''}
+    <div class="po-cols"><span>Colaborador</span><span>Saída</span><span>Volta</span><span></span><span>Tempo</span></div>
+    <div class="po-rows">${ps.map(c => { const s = val(c,'saida'), v = val(c,'volta'), a = ausDia(c), d = poDur({saida:s, volta:v}), ja = !!poOf(c.id, ds);
+      return `<div class="po-r ${a?'aus':''}" data-cid="${c.id}">
+        <span class="po-n">${avc(c,32)}<span><b>${esc(c.nome)}</b><small>${multi ? bName(c.base) : esc(c.cargo || '')}${ja ? ' · salvo' : ''}${a ? ` · <i style="color:${(EV[a.tipo]||EV.outro).color}">${(EV[a.tipo]||EV.outro).label}</i>` : ''}</small></span></span>
+        <input type="time" class="po-i ${s?'f':''}" data-f="saida" value="${s}" aria-label="Saída de ${esc(c.nome)}">
+        <input type="time" class="po-i ${v?'f':''}" data-f="volta" value="${v}" aria-label="Volta de ${esc(c.nome)}">
+        <button class="icon-btn xs" data-act="po-one" data-id="${c.id}" title="Volta = saída + ${poMin()} min" aria-label="Completar volta">${ic('refresh',13)}</button>
+        <span class="po-d">${s || v ? poTag(d) : ''}</span></div>`; }).join('') || empty('users','Nenhum colaborador nesta base')}</div>
+    <div class="po-save"><span class="muted" id="poinfo">${filled} preenchido(s) · ${ps.length - filled} em branco</span><span style="margin-left:auto;display:flex;gap:8px"><button class="btn" data-act="po-clear">Limpar</button><button class="btn pri" data-act="po-save">${ic('check',15)}Salvar</button></span></div>
+  </div>`;
+}
+function poWire(){
+  const d = $('#podate'); if (d) d.onchange = async e => { const nv = e.target.value || iso(new Date()); if (Object.keys(PO.draft).length && !await confirmBox('Há horários não salvos neste dia. Trocar de dia e descartar?', 'Descartar')) { e.target.value = PO.date; return; } PO.date = nv; PO.draft = {}; pgPonto(); };
+  $$('.po-r .po-i').forEach(i => i.onchange = () => {
+    const r = i.closest('.po-r'), cid = r.dataset.cid, dr = PO.draft[cid] = PO.draft[cid] || {};
+    dr[i.dataset.f] = i.value;
+    if (i.dataset.f === 'saida' && i.value){ const v = $('[data-f=volta]', r); if (!v.value){ v.value = fromMin(toMin(i.value) + poMin()); dr.volta = v.value; } }
+    poRefresh(r);
+  });
+  const q = $('#poq'); if (q){ let tm; q.oninput = e => { clearTimeout(tm); tm = setTimeout(() => { PO.q = e.target.value; $('#pobody').innerHTML = poBanco(); poWire(); const n = $('#poq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); }; }
+}
+function poRefresh(r){
+  const s = $('[data-f=saida]', r).value, v = $('[data-f=volta]', r).value;
+  $$('.po-i', r).forEach(i => i.classList.toggle('f', !!i.value));
+  $('.po-d', r).innerHTML = s || v ? poTag(poDur({saida:s, volta:v})) : '';
+  const rows = $$('.po-r'), n = rows.filter(x => $$('.po-i', x).some(i => i.value)).length;
+  const inf = $('#poinfo'); if (inf) inf.textContent = `${n} preenchido(s) · ${rows.length - n} em branco`;
+}
+function poAuto(cid){
+  let n = 0;
+  $$(cid ? `.po-r[data-cid="${cid}"]` : '.po-r').forEach(r => { const s = $('[data-f=saida]', r), v = $('[data-f=volta]', r);
+    if (s.value && (!v.value || cid)){ v.value = fromMin(toMin(s.value) + poMin()); (PO.draft[r.dataset.cid] = PO.draft[r.dataset.cid] || {}).volta = v.value; n++; poRefresh(r); } });
+  if (!cid) toast(n ? `${n} volta(s) preenchida(s).` : 'Nenhuma volta para completar: preencha as saídas primeiro.');
+}
+async function poSave(){
+  const ds = PO.date, ids = Object.keys(PO.draft); if (!ids.length) return toast('Nada novo para salvar neste dia.');
+  let n = 0, del = 0;
+  try {
+    for (const cid of ids){
+      const c = C(cid); if (!c) continue;
+      const dr = PO.draft[cid], ex = poOf(cid, ds);
+      const saida = (dr.saida != null ? dr.saida : hhmm(ex?.saida)) || null, volta = (dr.volta != null ? dr.volta : hhmm(ex?.volta)) || null;
+      if (!saida && !volta){ if (ex){ await DB.remove('pontos', ex.id); S.pontos = S.pontos.filter(p => p !== ex); del++; } continue; }
+      const row = {saida, volta, base:c.base, updated_at:nowISO()};
+      if (ex){ await DB.update('pontos', ex.id, row); Object.assign(ex, row); }
+      else { const r = await DB.insert('pontos', {...row, colaborador_id:cid, data:ds, obs:'', criado_por:S.profile.id, criado_por_nome:S.profile.nome}); S.pontos.push(r); }
+      n++;
+    }
+    PO.draft = {}; S.sig = dataSig(); toast(`${n} horário(s) salvo(s) em ${fmtD(ds)}${del ? `, ${del} apagado(s)` : ''}.`); pgPonto();
+  } catch(e){ err(e); }
+}
+function poBanco(){
+  const [a, b] = [iso(new Date(PO.y, PO.m, 1)), iso(new Date(PO.y, PO.m + 1, 0))], q = nk(PO.q);
+  const mName = cap(new Date(PO.y, PO.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}));
+  const rows = S.pontos.filter(p => p.data >= a && p.data <= b && inScope(p.base) && (!PO.base || p.base === PO.base) && (!q || nk((CX(p.colaborador_id)?.nome || '') + bName(p.base)).includes(q)))
+    .sort((x,y) => y.data.localeCompare(x.data) || (CX(x.colaborador_id)?.nome || '').localeCompare(CX(y.colaborador_id)?.nome || '', 'pt'));
+  const ok = rows.filter(r => poDur(r) != null && poDur(r) <= poMin()).length, over = rows.filter(r => poDur(r) != null && poDur(r) > poMin()).length, miss = rows.filter(r => !r.saida || !r.volta).length;
+  const med = (() => { const ds = rows.map(poDur).filter(x => x != null); return ds.length ? Math.round(ds.reduce((s,x) => s+x, 0) / ds.length) : null; })();
+  const multi = !S.base && myBases().length > 1;
+  return `<div class="po-kpis">
+      <div class="card"><span>Registros no mês</span><b>${rows.length}</b></div>
+      <div class="card"><span>Dentro do tempo</span><b style="color:#16a34a">${ok}</b><small>até ${poMin()} min</small></div>
+      <div class="card"><span>Acima do tempo</span><b style="color:#dc2626">${over}</b></div>
+      <div class="card"><span>Sem volta</span><b style="color:#d97706">${miss}</b></div>
+      <div class="card"><span>Média do almoço</span><b>${fmtMinH(med)}</b></div>
+    </div>
+    <div class="card po-card">
+      <div class="po-h"><div class="cal-h" style="margin:0"><button class="icon-btn bord" data-act="po-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${mName}</h2><button class="icon-btn bord" data-act="po-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><label class="search" style="min-width:180px">${ic('search',15)}<input id="poq" placeholder="Buscar colaborador..." value="${esc(PO.q)}"></label><button class="btn sm" data-act="po-xls">${ic('download',14)}Excel</button></div></div>
+      ${multi ? `<div class="po-bases"><button class="fchip ${!PO.base?'on':''}" style="--c:${ALLB.c}" data-act="po-base" data-k="">Todas</button>${myBases().map(k => `<button class="fchip ${PO.base===k?'on':''}" style="--c:${BASES[k].c}" data-act="po-base" data-k="${k}">${emblem(k,10,3)}${BASES[k].nome}</button>`).join('')}</div>` : ''}
+      ${rows.length ? `<div class="po-tbl">${rows.map(r => { const c = CX(r.colaborador_id); return `<button class="po-tr" data-act="po-edit" data-id="${r.id}"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="po-n">${avc(c,28)}<span><b>${esc(c?.nome || 'Colaborador removido')}</b>${multi ? `<small>${bName(r.base)}</small>` : ''}</span></span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${poTag(poDur(r))}</button>`; }).join('')}</div>` : empty('clock','Nenhum horário neste mês','Use "Lançar horários" para registrar a saída e a volta do almoço.')}
+    </div>`;
+}
+function poEdit(id){
+  const r = S.pontos.find(p => sameId(p.id, id)); if (!r) return; const c = CX(r.colaborador_id);
+  openModal({title:'Horário de almoço', body:`<div class="who" style="margin-bottom:14px">${avc(c,40)}<div><b>${esc(c?.nome||'—')}</b><small>${fmtD(r.data)} · ${bName(r.base)}</small></div></div>
+    <form id="mf" class="form">${fld('Saída', inp('saida', hhmm(r.saida), 'type="time"'))}${fld('Volta', inp('volta', hhmm(r.volta), 'type="time"'))}${fld('Observação', inp('obs', r.obs || '', 'placeholder="Ex: almoçou mais tarde por causa do serviço"'), true)}</form>
+    <p class="f-hint">Lançado por ${esc(r.criado_por_nome || '—')}.</p>`,
+    foot:`<button class="btn danger left" data-act="po-del" data-id="${r.id}">${ic('trash',15)}Apagar</button><button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="po-upd" data-id="${r.id}">${ic('check',15)}Salvar</button>`});
+}
+async function poUpd(id){
+  const r = S.pontos.find(p => sameId(p.id, id)), f = formObj(); if (!r) return;
+  const row = {saida:f.saida || null, volta:f.volta || null, obs:f.obs || '', updated_at:nowISO()};
+  try { await DB.update('pontos', id, row); Object.assign(r, row); S.sig = dataSig(); closeModal(); toast('Horário atualizado.'); pgPonto(); } catch(e){ err(e); }
+}
+async function poDel(id){
+  if (!await confirmBox('Apagar este horário de almoço?', 'Apagar')) return;
+  try { await DB.remove('pontos', id); S.pontos = S.pontos.filter(p => !sameId(p.id, id)); S.sig = dataSig(); closeModal(); toast('Horário apagado.'); pgPonto(); } catch(e){ err(e); }
+}
+async function poXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const [a, b] = [iso(new Date(PO.y, PO.m, 1)), iso(new Date(PO.y, PO.m + 1, 0))];
+  const rows = S.pontos.filter(p => p.data >= a && p.data <= b && inScope(p.base) && (!PO.base || p.base === PO.base)).sort((x,y) => x.data.localeCompare(y.data));
+  const aoa = [['Data','Dia','Colaborador','Base','Saída','Volta','Tempo de almoço (min)','Situação','Observação','Lançado por'],
+    ...rows.map(r => { const d = poDur(r); return [fmtD(r.data), cap(parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'long'})), CX(r.colaborador_id)?.nome || '', bName(r.base), hhmm(r.saida), hhmm(r.volta), d ?? '', d == null ? 'Sem volta' : d > poMin() ? 'Acima do tempo' : 'Dentro do tempo', r.obs || '', r.criado_por_nome || '']; })];
+  const wb = X.utils.book_new(), ws = X.utils.aoa_to_sheet(aoa); ws['!cols'] = [10,14,30,14,8,8,12,16,30,20].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Ponto do almoço'); X.writeFile(wb, `Ponto_almoco_${a.slice(0,7)}.xlsx`); toast('Planilha exportada.');
+}
+
+/* ========================= PROGRAMAÇÃO DE VISITAS (Planner, v2.9) ========================= */
+const VI_LOCAIS = ['pinheiros','ipiranga','santo-andre','sao-mateus'];
+const viNome = v => v.local && BASES[v.local] ? 'Base ' + BASES[v.local].nome : (v.local_nome || 'Outro local');
+const viCor = v => v.local && BASES[v.local] ? BASES[v.local].c : '#64748b';
+const viSort = l => l.slice().sort((a,b) => a.data.localeCompare(b.data) || a.ordem - b.ordem || String(hhmm(a.hora)||'99').localeCompare(String(hhmm(b.hora)||'99')));
+const viDoDia = (uid, ds) => viSort(S.visitas.filter(v => sameId(v.user_id, uid) && v.data === ds));
+const viSegunda = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+function plVisitas(){
+  const st = S.pl; if (!st.vw) st.vw = iso(viSegunda(new Date())); if (!st.vu) st.vu = plMe();
+  const meu = sameId(st.vu, plMe()), seg = parseISO(st.vw), today = plToday();
+  const outros = [...new Map(S.visitas.filter(v => !sameId(v.user_id, plMe())).map(v => [String(v.user_id), v.user_nome || P(v.user_id)?.nome || 'Alguém'])).entries()];
+  const dias = [...Array(7)].map((_, i) => iso(addDays(seg, i)));
+  const fim = parseISO(dias[6]), tit = `${seg.getDate()}${seg.getMonth() !== fim.getMonth() ? ' de ' + MESN[seg.getMonth()] : ''} a ${fim.getDate()} de ${MESN[fim.getMonth()]}`;
+  return `<div class="vi-top">
+      <div class="cal-h" style="margin:0"><button class="icon-btn bord" data-act="vi-sem" data-k="-1" aria-label="Semana anterior">${ic('chevL',17)}</button><h2>${tit}</h2><button class="icon-btn bord" data-act="vi-sem" data-k="1" aria-label="Próxima semana">${ic('chevR',17)}</button><button class="btn sm" data-act="vi-sem" data-k="0">Esta semana</button></div>
+      ${outros.length ? `<select class="sel" id="viu" aria-label="Programação de quem">${opts([[plMe(), 'Minha programação'], ...outros.map(([id, n]) => [id, 'Programação de ' + n])], st.vu)}</select>` : ''}
+    </div>
+    <p class="hint">${ic('info',14)}${meu ? 'Escolha para onde você vai em cada dia: as 4 bases ou outro local, na ordem do dia, e junte as tarefas que vai resolver lá. Os líderes veem quando você vai à base deles.' : 'Só leitura: programação de outra pessoa.'}</p>
+    <div class="vi-week">${dias.map(ds => { const l = viDoDia(st.vu, ds), d = parseISO(ds), fds = d.getDay() === 0 || d.getDay() === 6;
+      if (fds && !l.length && ds !== today) return `<button class="vi-day vi-off ${meu?'':'ro'}" ${meu ? `data-act="vi-dia" data-d="${ds}"` : ''}><span class="vi-dh"><b>${cap(WDN[d.getDay()]).slice(0,3)} ${d.getDate()}</b></span><span class="muted s">Fim de semana${meu ? ' — toque para programar' : ''}</span></button>`;
+      return `<div class="vi-day ${ds===today?'tdy':''} ${ds<today?'past':''}">
+        <div class="vi-dh"><b>${cap(WDN[d.getDay()])} ${d.getDate()}/${pad(d.getMonth()+1)}</b>${ds===today?'<span class="chip" style="--c:#0d9488">hoje</span>':''}${meu ? `<button class="btn sm ${l.length?'':'pri'}" data-act="vi-dia" data-d="${ds}">${ic(l.length?'edit':'plus',13)}${l.length?'Editar':'Programar'}</button>` : ''}</div>
+        ${l.length ? `<ol class="vi-stops">${l.map(v => { const tk = (v.tarefas||[]).map(PT).filter(Boolean); return `<li style="--c:${viCor(v)}"><span class="vi-pin">${v.local ? emblem(v.local,10,3) : ic('map',12)}</span><div><b>${esc(viNome(v))}</b>${v.hora ? ` <span class="muted s">${hhmm(v.hora)}</span>` : ''}${v.notas ? `<small>${esc(v.notas)}</small>` : ''}
+          ${tk.length ? `<div class="vi-tks">${tk.map(t => `<button class="vi-tk ${t.concluida?'done':''}" data-act="pl-open" data-id="${t.id}">${ic(t.concluida?'check':'planner',11)}${esc(t.titulo)}</button>`).join('')}</div>` : ''}</div></li>`; }).join('')}</ol>`
+          : `<p class="vi-vz">${meu ? 'Nada programado.' : 'Sem programação.'}</p>`}
+      </div>`; }).join('')}</div>`;
+}
+function viTodayStrip(){
+  const l = viDoDia(plMe(), plToday()); if (!l.length) return '';
+  return `<button class="vi-strip" data-act="pl-v" data-k="visitas">${ic('map',15)}<span>Hoje você vai:</span>${l.map((v, i) => `<b style="--c:${viCor(v)}">${i + 1}. ${esc(viNome(v))}${v.hora ? ' ' + hhmm(v.hora) : ''}</b>`).join('<i>→</i>')}</button>`;
+}
+function viDia(ds){
+  const orig = viDoDia(plMe(), ds);
+  let stops = orig.map(v => ({id:v.id, local:v.local || '', local_nome:v.local_nome || '', hora:hhmm(v.hora), notas:v.notas || '', tarefas:[...(v.tarefas||[])]}));
+  const abertas = () => plSort(S.pt.filter(t => plVe(t) && !t.concluida));
+  const draw = ov => {
+    const usados = new Set(stops.map(s => s.local).filter(Boolean));
+    $('#vibases', ov).innerHTML = VI_LOCAIS.map(k => `<button type="button" class="vi-b ${usados.has(k)?'on':''}" style="--c:${BASES[k].c}" data-vb="${k}">${emblem(k,12,4)}<span>Base ${BASES[k].nome}</span>${usados.has(k) ? ic('check',14) : ic('plus',14)}</button>`).join('');
+    $('#vistops', ov).innerHTML = stops.length ? stops.map((s, i) => `<div class="vi-ed" style="--c:${s.local ? BASES[s.local].c : '#64748b'}" data-i="${i}">
+        <div class="vi-ed-h"><span class="vi-n">${i + 1}</span>${s.local ? `<b>Base ${BASES[s.local].nome}</b>` : `<input class="vi-on" value="${esc(s.local_nome)}" placeholder="Nome do local" maxlength="80">`}
+          <input type="time" class="vi-hr" value="${s.hora}" aria-label="Horário">
+          <button type="button" class="icon-btn xs" data-mv="-1" ${i===0?'disabled':''} aria-label="Subir">${ic('chevL',13)}</button><button type="button" class="icon-btn xs" data-mv="1" ${i===stops.length-1?'disabled':''} aria-label="Descer">${ic('chevR',13)}</button><button type="button" class="icon-btn xs" data-rm aria-label="Tirar">${ic('x',14)}</button></div>
+        <input class="vi-nt" value="${esc(s.notas)}" placeholder="O que fazer lá (opcional)" maxlength="200">
+        <div class="vi-tks">${s.tarefas.map(PT).filter(Boolean).map(t => `<span class="vi-tk">${ic('planner',11)}${esc(t.titulo)}<button type="button" data-untk="${t.id}" aria-label="Tirar tarefa">${ic('x',11)}</button></span>`).join('')}
+          <select class="vi-sel"><option value="">+ Juntar tarefa do planner</option>${abertas().filter(t => !s.tarefas.some(x => sameId(x, t.id))).map(t => `<option value="${t.id}">${esc(t.titulo)}${t.data ? ' (' + plDia(t.data) + ')' : ''}</option>`).join('')}</select>
+          <input class="vi-new" placeholder="ou escreva uma tarefa nova e aperte Enter" maxlength="160"></div>
+      </div>`).join('') : '<p class="muted s" style="margin:4px 0 0">Toque numa base acima ou adicione outro local.</p>';
+  };
+  const ler = ov => $$('.vi-ed', ov).forEach(el => { const s = stops[+el.dataset.i]; s.hora = $('.vi-hr', el).value; s.notas = $('.vi-nt', el).value; const on = $('.vi-on', el); if (on) s.local_nome = on.value; });
+  openModal({wide:true, title:`Programação de ${plDia(ds, true).toLowerCase()}`, body:`
+    <div class="sec" style="margin-top:0">Para onde você vai</div>
+    <div class="vi-bases" id="vibases"></div>
+    <div class="vi-outro"><input id="vioutro" placeholder="Outro local (ex: Escritório central, fornecedor, cliente...)" maxlength="80"><button type="button" class="btn" id="vioutrob">${ic('plus',15)}Adicionar</button></div>
+    <div class="sec">Ordem do dia</div><div id="vistops" class="vi-eds"></div>`,
+    foot:`${orig.length ? `<button class="btn danger left" data-act="vi-limpar" data-d="${ds}">${ic('trash',15)}<span class="hide-s">Limpar o dia</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" id="visave">${ic('check',15)}Salvar programação</button>`,
+    onMount: ov => {
+      draw(ov);
+      ov.addEventListener('click', async e => {
+        const b = e.target.closest('[data-vb]'); if (b){ ler(ov); const k = b.dataset.vb, i = stops.findIndex(s => s.local === k); if (i >= 0) stops.splice(i, 1); else stops.push({local:k, local_nome:'', hora:'', notas:'', tarefas:[]}); draw(ov); return; }
+        const ed = e.target.closest('.vi-ed'); if (!ed) return; const i = +ed.dataset.i;
+        if (e.target.closest('[data-rm]')){ ler(ov); stops.splice(i, 1); draw(ov); }
+        const mv = e.target.closest('[data-mv]'); if (mv){ ler(ov); const j = i + +mv.dataset.mv; [stops[i], stops[j]] = [stops[j], stops[i]]; draw(ov); }
+        const ut = e.target.closest('[data-untk]'); if (ut){ ler(ov); stops[i].tarefas = stops[i].tarefas.filter(x => !sameId(x, ut.dataset.untk)); draw(ov); }
+      });
+      ov.addEventListener('change', e => { if (!e.target.matches('.vi-sel') || !e.target.value) return; ler(ov); stops[+e.target.closest('.vi-ed').dataset.i].tarefas.push(e.target.value); draw(ov); });
+      ov.addEventListener('keydown', async e => {
+        if (!e.target.matches('.vi-new') || e.key !== 'Enter') return; e.preventDefault();
+        const txt = e.target.value.trim(); if (!txt) return; ler(ov); const s = stops[+e.target.closest('.vi-ed').dataset.i];
+        try { const r = await DB.insert('planner_tarefas', {titulo:txt, notas:'', data:ds, hora:null, prioridade:4, base:s.local || null, todos:false, compartilhado:[], etiquetas:[], etapas:[], concluida:false, criado_por:plMe(), criado_por_nome:S.profile.nome, updated_at:nowISO()}); S.pt.push(r); s.tarefas.push(r.id); draw(ov); setTimeout(() => $$('.vi-new', ov)[stops.indexOf(s)]?.focus(), 20); } catch(x){ err(x); }
+      });
+      const addOutro = () => { const v = $('#vioutro', ov).value.trim(); if (!v) return $('#vioutro', ov).focus(); ler(ov); stops.push({local:'', local_nome:v, hora:'', notas:'', tarefas:[]}); $('#vioutro', ov).value = ''; draw(ov); };
+      $('#vioutrob', ov).onclick = addOutro; $('#vioutro', ov).onkeydown = e => { if (e.key === 'Enter'){ e.preventDefault(); addOutro(); } };
+      $('#visave', ov).onclick = async () => {
+        ler(ov);
+        if (stops.some(s => !s.local && !s.local_nome.trim())) return toast('Dê um nome ao local.', 'err');
+        const btn = $('#visave', ov); btn.disabled = true;
+        try {
+          const keep = new Set(stops.filter(s => s.id).map(s => String(s.id)));
+          for (const v of orig) if (!keep.has(String(v.id))){ await DB.remove('visitas', v.id); S.visitas = S.visitas.filter(x => !sameId(x.id, v.id)); }
+          for (let i = 0; i < stops.length; i++){
+            const s = stops[i], row = {data:ds, ordem:i, local:s.local || null, local_nome:s.local ? 'Base ' + BASES[s.local].nome : s.local_nome.trim(), hora:s.hora || null, notas:s.notas.trim(), tarefas:s.tarefas, updated_at:nowISO()};
+            if (s.id){ await DB.update('visitas', s.id, row); Object.assign(S.visitas.find(x => sameId(x.id, s.id)) || {}, row); }
+            else { const r = await DB.insert('visitas', {...row, user_id:plMe(), user_nome:S.profile.nome, publico:true}); S.visitas.push(r); }
+          }
+          // tarefas juntadas sem data passam a ser do dia da visita
+          for (const s of stops) for (const tid of s.tarefas){ const t = PT(tid); if (t && !t.data && !t.concluida) await plPatch(t.id, {data:ds}); }
+          S.sig = dataSig(); closeModal(); toast(stops.length ? `Programação de ${plDia(ds).toLowerCase()} salva: ${stops.length} parada(s).` : 'Dia sem programação.'); pgPlanner();
+        } catch(x){ btn.disabled = false; err(x); }
+      };
+    }});
+}
+async function viLimpar(ds){
+  const l = viDoDia(plMe(), ds); if (!l.length || !await confirmBox(`Apagar a programação de <b>${plDia(ds, true).toLowerCase()}</b>? As tarefas continuam no planner.`, 'Apagar')) return;
+  try { for (const v of l){ await DB.remove('visitas', v.id); } S.visitas = S.visitas.filter(v => !l.includes(v)); S.sig = dataSig(); closeModal(); toast('Programação apagada.'); pgPlanner(); } catch(e){ err(e); }
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -4818,6 +5151,15 @@ const ACT = {
   'esc-dup': a => dupEsc(a.dataset.id), 'esc-st': a => setEscStatus(a.dataset.id, a.dataset.k), 'esc-xls': () => exportEsc(),
   'esc-ft': a => { S.esc.t = a.dataset.k; pgEscalas(); },
   'foto-pick': a => fotoEscolher(a.dataset.id), 'foto-del': a => fotoRemover(a.dataset.id), 'foto-ver': a => fotoVer(a.dataset.id),
+  'hm-day': a => { S.hmDay = a.dataset.date; $$('.hc.sel').forEach(x => x.classList.remove('sel')); a.classList.add('sel'); const l = $('#hmlist'); if (l) l.innerHTML = hmList(S.hmDay); },
+  'c-tab': a => { S.f.ctab = a.dataset.k; pgColab(); },
+  'po-sub': a => { PO.sub = a.dataset.k; pgPonto(); }, 'po-base': a => { PO.base = a.dataset.k; pgPonto(); },
+  'po-day': async a => { if (Object.keys(PO.draft).length && !await confirmBox('Há horários não salvos neste dia. Trocar de dia e descartar?', 'Descartar')) return; PO.draft = {}; PO.date = iso(addDays(parseISO(PO.date), +a.dataset.k)); pgPonto(); },
+  'po-auto': () => poAuto(), 'po-one': a => poAuto(a.dataset.id), 'po-clear': () => { PO.draft = {}; pgPonto(); }, 'po-save': () => poSave(),
+  'po-mes': a => { PO.m += +a.dataset.k; if (PO.m < 0){ PO.m = 11; PO.y--; } if (PO.m > 11){ PO.m = 0; PO.y++; } pgPonto(); },
+  'po-xls': () => poXls(), 'po-edit': a => poEdit(a.dataset.id), 'po-upd': a => poUpd(a.dataset.id), 'po-del': a => poDel(a.dataset.id),
+  'vi-sem': a => { const st = S.pl, k = +a.dataset.k; st.vw = k ? iso(addDays(parseISO(st.vw || iso(viSegunda(new Date()))), 7*k)) : iso(viSegunda(new Date())); pgPlanner(); },
+  'vi-dia': a => viDia(a.dataset.d), 'vi-limpar': a => viLimpar(a.dataset.d),
   'esc-tab': a => { S.esc.tab = a.dataset.k; if (a.dataset.k !== 'pend'){ const d = new Date(); if (!S.esc._nav){ S.esc.y = d.getFullYear(); S.esc.m = d.getMonth(); } } pgEscalas(); window.scrollTo(0,0); },
   'esc-clear': () => { Object.assign(S.esc, {t:'', ac:'', q:'', b:''}); pgEscalas(); },
   'esc-prev': () => { const c = S.esc; c._nav = 1; c.m--; if (c.m < 0){ c.m = 11; c.y--; } pgEscalas(); },
