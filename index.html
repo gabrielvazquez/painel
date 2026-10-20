@@ -1468,6 +1468,63 @@ button.po-tr:hover{background:var(--soft)}
   .aj-leg .r{display:none}
 }
 
+/* ===== v2.11: ficha (veículo + escalas) ===== */
+.vinc{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.vinc .sel{width:100%;max-width:100%}
+.ce-r{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px solid var(--line);border-left:4px solid var(--c);background:#fff;border-radius:12px;padding:8px 12px;margin-bottom:8px;min-width:0;transition:border-color .15s,box-shadow .15s}
+.ce-r:hover{box-shadow:var(--shadow)}
+.ce-r.cancel{opacity:.6}.ce-r.cancel .ce-t b{text-decoration:line-through}
+.ce-d{display:flex;flex-direction:column;align-items:center;justify-content:center;width:42px;flex:none;line-height:1.1}
+.ce-d b{font-size:18px}.ce-d small{font-size:10.5px;color:var(--muted);text-transform:uppercase}
+.ce-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ce-t b{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ce-t small{font-size:11.5px;color:var(--muted)}
+
+/* ===== v2.11: diário de bordo ===== */
+.bd-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.bd-top .search{flex:1;min-width:180px}
+.bd-due{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#faf5ff;border:1px solid #e9d5ff;color:#6b21a8;border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:13px}
+.bd-due button{border:1px solid #d8b4fe;background:#fff;color:#6b21a8;border-radius:20px;padding:3px 10px;font-size:12px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bd-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+.bd-cal{padding:16px}
+.bd-cal .cal-h{display:flex;align-items:center;gap:8px}.bd-cal .cal-h h2{flex:1;font-size:16px;margin:0;text-align:center}
+.bd-cg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.bd-w{font-size:11px;color:var(--muted);text-align:center;padding:2px 0 4px;font-weight:600}
+.bd-d{position:relative;aspect-ratio:1/.82;border:1px solid transparent;border-radius:10px;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:var(--ink2);min-width:0;transition:background .12s,border-color .12s}
+.bd-d:hover{background:#f1f5f9;border-color:var(--line)}
+.bd-d.out{opacity:.4}
+.bd-d.tdy span{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:grid;place-items:center;font-weight:700}
+.bd-d.sel{border-color:#9333ea;background:#faf5ff;box-shadow:0 0 0 2px #e9d5ff}
+.bd-d.has{font-weight:600}
+.bd-dots{display:flex;gap:3px;height:6px}.bd-dots b{width:6px;height:6px;border-radius:50%}
+.bd-leg{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.bd-leg span{display:flex;align-items:center;gap:5px}.bd-leg i{width:8px;height:8px;border-radius:50%}
+.bd-side{min-width:0}
+.bd-qa{display:flex;align-items:center;gap:8px;border:1px dashed var(--line);border-radius:12px;padding:8px 12px;margin-bottom:10px;color:var(--muted)}
+.bd-qa input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:13px}
+.bd-it{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-left:4px solid var(--p);border-radius:12px;padding:10px 12px;margin-bottom:8px;background:#fff;cursor:pointer;min-width:0;transition:box-shadow .15s}
+.bd-it:hover{box-shadow:var(--shadow)}
+.bd-it.due{background:#fffbeb}
+.bd-it.done{opacity:.62}.bd-it.done .bd-b>b{text-decoration:line-through}
+.bd-ck{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #cbd5e1;background:#fff;display:grid;place-items:center;color:transparent;margin-top:1px}
+.bd-ck:hover{border-color:#16a34a;color:#16a34a}
+.bd-ck.on{background:#16a34a;border-color:#16a34a;color:#fff}
+.bd-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.bd-b>b{font-size:13.5px;font-weight:600;word-break:break-word}
+.bd-tx{color:var(--muted);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bd-m{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11.5px;color:var(--muted)}
+.bd-m span{display:inline-flex;align-items:center;gap:4px}
+.bd-m .late{color:#b45309;font-weight:600}
+.bd-cat{background:color-mix(in srgb,var(--c) 12%,#fff);color:var(--c);border-radius:20px;padding:1px 8px;font-weight:600}
+@media (max-width:900px){
+  .bd-grid{grid-template-columns:minmax(0,1fr)}
+  .bd-top .seg{width:100%;overflow-x:auto}.bd-top .seg button{flex:1;justify-content:center}
+  .bd-top .sel{flex:1;min-width:0}
+  .bd-top .btn.pri{width:100%;justify-content:center}
+  .bd-d{aspect-ratio:1/1;font-size:12px;border-radius:8px}
+  .bd-cal{padding:12px}
+}
+
 </style>
 </head>
 <body>
@@ -1480,7 +1537,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.10';
+const APP_VERSION = '2.11';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1552,8 +1609,11 @@ const CHW = {aberto:0,andamento:1,resolvido:2};
 const TIPOV = {carro:{label:'Carro',color:'#4f5fd8'}, moto:{label:'Moto',color:'#d94ee8'}};
 const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comportamento','Outro'];
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
-const ROLE = {admin:'Encarregado', lider:'Líder de base', pendente:'Aguardando liberação'};
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas'];
+const ROLE = {admin:'Encarregado', lider:'Líder de base', assistente:'Assistente de base', pendente:'Aguardando liberação'};
+const isLid = p => p && (p.role === 'lider' || p.role === 'assistente');
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes'];
+const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot'];
+const ADMIN_T = ['almocos','ponto_ajustes','horas_manuais'];   // só o encarregado lê (o banco já bloqueia; aqui só evita a viagem)
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
   sex_seguinte:{label:'Sexta-feira seguinte', dow:5, dir:1},
@@ -1726,6 +1786,7 @@ function seed(){
     {id:'u-carlos',  nome:'Carlos Lima',    email:'carlos@empresa.com',   role:'lider',   ativo:true, bases:['pinheiros'], created_at:h(1900)},
     {id:'u-fernanda',nome:'Fernanda Souza', email:'fernanda@empresa.com', role:'lider',   ativo:true, bases:['ipiranga'], created_at:h(1800)},
     {id:'u-rafael',  nome:'Rafael Mendes',  email:'rafael@empresa.com',   role:'lider',   ativo:true, bases:['sao-mateus'], created_at:h(1700)},
+    {id:'u-julia',   nome:'Júlia Andrade',  email:'julia@empresa.com',    role:'assistente', ativo:true, bases:['pinheiros'], created_at:h(1500)},
     {id:'u-paula',   nome:'Paula Ribeiro',  email:'paula@empresa.com',    role:'lider',   ativo:true, bases:['santo-andre'], created_at:h(1600)},
     {id:'u-juliana', nome:'Juliana Prado',  email:'juliana@empresa.com',  role:'pendente',ativo:true, bases:['santo-andre'], created_at:h(3)}
   ];
@@ -1831,7 +1892,16 @@ function seed(){
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(0), ordem:1, local:'ipiranga', local_nome:'Base Ipiranga', hora:'14:00', notas:'', tarefas:[], publico:true, created_at:h(20), updated_at:h(20)},
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(1), ordem:0, local:null, local_nome:'Escritório central', hora:'09:00', notas:'Reunião com a gerência', tarefas:[], publico:true, created_at:h(2), updated_at:h(2)}
   ];
-  return {almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  const an = o => ({id:uid(), user_id:'u-admin', data:dOff(0), texto:'', categoria:'Outro', prioridade:2, base:null, colaborador_id:null, veiculo_id:null, status:'aberto', lembrar_em:null, resolvido_em:null, created_at:h(5), updated_at:h(5), ...o});
+  const anotacoes = [
+    an({titulo:'Moto com barulho no freio dianteiro', texto:'Líder avisou de manhã. Ver com a oficina se dá para trocar a pastilha esta semana.', categoria:'Veículo', prioridade:3, base:'pinheiros', veiculo_id:veiculos[0]?.id || null, lembrar_em:dOff(0)}),
+    an({titulo:'Cobrar reposição de lacres azuis', categoria:'Material', base:'ipiranga', data:dOff(-2), lembrar_em:dOff(2)}),
+    an({titulo:'Sistema de OS fora do ar à tarde', texto:'Abrir chamado na TI se repetir.', categoria:'Sistema', prioridade:1, data:dOff(-1)}),
+    an({titulo:'Conversar sobre atrasos no retorno do almoço', categoria:'Equipe', base:'pinheiros', colaborador_id:'c2', data:dOff(-4)}),
+    an({titulo:'Falta de cones na base', categoria:'Material', base:'sao-mateus', data:dOff(-6), status:'resolvido', resolvido_em:h(30)}),
+    an({titulo:'Anotação da Fernanda', user_id:'u-fernanda', base:'ipiranga'})
+  ];
+  return {anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -1933,6 +2003,7 @@ const msgsOf = id => S.msgs.filter(m => sameId(m.chamado_id, id)).sort((a,b) => 
 const colabsSorted = (base) => S.colabs.filter(c => base ? c.base === base : inScope(c.base)).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
 const lidersOf = base => S.profiles.filter(p => (p.role === 'lider' || p.role === 'admin') && p.ativo && (p.bases||[]).length && (!base || (p.bases||[]).includes(base))).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
 const liderOf = base => lidersOf(base)[0] || null;
+const assistsOf = base => S.profiles.filter(p => p.role === 'assistente' && p.ativo && (p.bases||[]).includes(base)).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
 const theme = () => { const b = S.base || (!isAdmin() && myBases().length === 1 ? myBases()[0] : ''); return bOf(b) || ALLB; };
 const curBaseKey = () => S.base || (!isAdmin() && myBases().length === 1 ? myBases()[0] : '');
 const defBase = () => curBaseKey() || myBases()[0] || '';
@@ -1942,16 +2013,24 @@ function applyTheme(){
   const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = t.d;
 }
 
-async function loadAll(){
-  const res = await Promise.all(TABLES.map(t => DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; })));
-  [S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.hist, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.estMovs, S.revisoes, S.cfgBases, S.horasMan, S.pt, S.pc, S.alm, S.aju, S.visitas] = res;
-  try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status,foto}) => ({id,nome,base,cargo,status,foto})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } S.lastLoad = Date.now(); 
+// only: Set com nomes de tabelas → recarrega só essas (usado pelo tempo real). Sem only → tudo.
+async function loadAll(only){
+  const role0 = S.profile?.role, adm = S.profile ? isAdmin() : true;
+  const idx = TABLES.map((t, i) => i).filter(i => !only || only.has(TABLES[i]));
+  const res = await Promise.all(idx.map(i => { const t = TABLES[i];
+    if (!adm && ADMIN_T.includes(t)) return [];
+    return DB.list(t).catch(e => { console.error(t, e); if (['mensagens','anexos','escalas','acoes','estoque_itens','revisoes'].includes(t)) S.schemaOld = true; return []; }); }));
+  idx.forEach((i, k) => S[SKEYS[i]] = res[k]);
+  if (!only || only.has('colaboradores')){
+    try { S.colabsAll = TEST ? JSON.parse(JSON.stringify(Store.load().colaboradores)).map(({id,nome,base,cargo,status,foto}) => ({id,nome,base,cargo,status,foto})) : ((await sb.rpc('colaboradores_escala')).data || S.colabs); } catch(e){ S.colabsAll = S.colabs; } }
+  S.lastLoad = Date.now();
   const me = S.profiles.find(p => sameId(p.id, S.profile?.id));
   if (me) S.profile = me;
+  if (only && S.profile?.role !== role0) return loadAll();       // perfil mudou: recarrega tudo
   if (!isAdmin()) S.horasMan = [];
   if (S.profile && S.profile.bases === undefined) S.schemaOld = true;
   if (S.base && !allowed(S.base)) S.base = '';
-  S.sig = dataSig();
+  S.sig = dataSig(only);
 }
 async function reload(){
   await loadAll();
@@ -1966,9 +2045,10 @@ const NAV = [
   {id:'planner',label:'Planner',short:'Planner',icon:'planner',color:'#0d9488',m:1, badge:() => (S.pt||[]).filter(t => !t.concluida && t.data && t.data <= iso(new Date()) && plVe(t) && plMeu(t)).length},
   {id:'colaboradores',label:'Colaboradores',short:'Equipe',icon:'idcard',color:'#7c3aed'},
   {id:'frota',label:'Frota',short:'Frota',icon:'truck',color:'#0891b2',m:1, badge:() => veicsV().filter(v => v.status==='problema').length},
-  {id:'diario',label:'Diário de bordo',short:'Diário',icon:'notebook',color:'#e11d48',m:1, badge:() => isAdmin()
+  {id:'diario',label:'Solicitações',short:'Solicitações',icon:'inbox',color:'#e11d48',m:1, badge:() => isAdmin()
       ? chsV('problema').filter(c => c.status==='aberto').length
       : chsV('pedido').filter(c => c.status==='aberto').length},
+  {id:'bordo',label:'Diário de bordo',short:'Diário',icon:'notebook',color:'#9333ea', badge:() => bdAll().filter(bdDue).length},
   {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'calclock',color:'#ea580c',m:1, badge:() => S.escalas.filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1)) && (allowed(e.base) || sameId(e.responsavel_id, S.profile.id))).length},
   {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04', badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
   {id:'calendario',label:'Ausências',short:'Ausências',icon:'calx',color:'#16a34a'},
@@ -1980,13 +2060,14 @@ const SUBS = {
   colaboradores:'Cadastro da equipe, importação por Excel e vínculo com veículos',
   frota:'Carros e motos com a situação atualizada pelas bases',
   diario:'Problemas das bases e pedidos do encarregado',
+  bordo:'Seu caderno de anotações: problemas do dia a dia, com calendário e lembretes',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
   escalas:'Plantões de sábado (dão folga) e ações de hora extra (contam horas): quem vai e quem é o responsável',
   horas:'Só o encarregado vê: horas das ações e lançamentos manuais, por base, por ação e por pessoa',
   estoque:'Estoque total e de cada base, com avisos quando um item estiver acabando',
   usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
-const PAGES = {dashboard:pgDashboard, planner:pgPlanner, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
+const PAGES = {dashboard:pgDashboard, planner:pgPlanner, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, bordo:pgBordo, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
 
 function go(page){ if ($('#ov')) closeModal(); $('#npanel')?.remove(); S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
@@ -2196,7 +2277,7 @@ function pgDashboard(){
   const segs = VORDER.slice().reverse().map(k => ({k, n:veics.filter(v => v.status===k).length, ...VSTATUS[k]}));
   const yard = veics.slice().sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
   const catRows = CATS.map(k => { const l = probs.filter(c => c.categoria===k); return {label:esc(k), total:l.length, parts:['aberto','andamento','resolvido'].map(s => ({n:l.filter(c=>c.status===s).length, color:CH[s].color, name:CHL.problema[s]})), act:`data-act="dash-cat" data-k="${esc(k)}"`}; }).filter(r => r.total).sort((a,b) => b.total-a.total);
-  const leadRows = adm ? S.profiles.filter(p => p.role==='lider' && (p.bases||[]).some(inScope)).map(p => { const l = probs.filter(c => sameId(c.autor_id,p.id));
+  const leadRows = adm ? S.profiles.filter(p => isLid(p) && (p.bases||[]).some(inScope)).map(p => { const l = probs.filter(c => sameId(c.autor_id,p.id));
     return {label:`<span class="who">${emblem((p.bases||[])[0],20,6)}<span>${esc(firstName(p.nome))}</span></span>`, total:l.length, parts:['aberto','andamento','resolvido'].map(s => ({n:l.filter(c=>c.status===s).length, color:CH[s].color, name:CHL.problema[s]})), act:`data-act="t-fl" data-k="${p.id}" data-go="1"`}; }).sort((a,b) => b.total-a.total) : [];
   const feed = feedItems();
   const outros = colabs.filter(c => c.status==='ferias' || c.status==='afastado').length + ferAtivos.length;
@@ -2270,12 +2351,12 @@ function pgDashboard(){
     </div>
 
     ${adm ? `<div class="card span-5"><div class="card-h"><div><h3>Problemas por líder</h3><p class="ch-sub">Clique para ver os registros de cada um</p></div></div><div class="card-b">${hbars(leadRows,'Nenhum líder com registros.')}</div></div>` : ''}
-    <div class="card ${adm?'span-7':'span-12'}"><div class="card-h"><div><h3>Diário de bordo recente</h3><p class="ch-sub">Ordenado por situação e prioridade</p></div><button class="btn sm" data-nav="diario">Ver todos</button></div><div class="card-b">${tableChamados(all.slice(0,5))}</div></div>
+    <div class="card ${adm?'span-7':'span-12'}"><div class="card-h"><div><h3>Solicitações recentes</h3><p class="ch-sub">Ordenado por situação e prioridade</p></div><button class="btn sm" data-nav="diario">Ver todos</button></div><div class="card-b">${tableChamados(all.slice(0,5))}</div></div>
   </div>`;
 }
 function tipoTag(c){ return tipoOf(c) === 'pedido' ? `<span class="tag" style="--c:${theme().c}">${ic('flag',11)} Pedido</span>` : `<span class="tag" style="--c:#64748b">Problema</span>`; }
 function tableChamados(list){
-  if (!list.length) return empty('book','Nada por aqui','Os registros do diário de bordo aparecem nesta lista.');
+  if (!list.length) return empty('book','Nada por aqui','As solicitações aparecem nesta lista.');
   const multi = !S.base && myBases().length > 1;
   return `<div class="tbl-wrap"><table class="mcards"><thead><tr><th>Nº</th><th>Título</th>${multi?'<th class="hide-m">Base</th>':''}<th class="hide-m">Aberto por</th><th>Prioridade</th><th>Situação</th></tr></thead><tbody>${
     list.map(c => `<tr class="click" data-act="ch-open" data-id="${c.id}"><td class="muted hide-m">#${c.id}</td><td data-l="" class="mc-main"><span class="fw5">${esc(c.titulo)}</span><div class="chips" style="margin-top:4px">${tipoTag(c)}<span class="tag" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span></div></td>${multi?`<td class="hide-m">${bTag(c.base)}</td>`:''}<td class="hide-m">${esc(c.autor_nome)}<div class="muted s">${fmtD(c.created_at)}</div></td><td data-l="Prioridade">${chip(PRIOR[c.prioridade],false)}</td><td data-l="Situação">${chip(chSt(c))}</td></tr>`).join('')
@@ -2292,7 +2373,7 @@ function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
 const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Escolha a base —</option>':'') + myBases().map(k => `<option value="${k}" ${k===cur?'selected':''}>${BASES[k].nome}</option>`).join('');
 function pgColab(){
   const f = S.f, list = colabsV();
-  const lid = S.profiles.filter(p => p.role === 'lider' && (p.bases||[]).some(inScope));
+  const lid = S.profiles.filter(p => isLid(p) && (p.bases||[]).some(inScope));
   if (S.f.ctab === 'almoco' && isAdmin()) return pgAlmoco();
   if (S.f.ctab === 'ajustes' && isAdmin()) return pgAjustes();
   $('#page').innerHTML = `${colTabs()}
@@ -2341,9 +2422,10 @@ function openColab(id){
   const evs = S.eventos.filter(e => sameId(e.colaborador_id,id)).sort((a,b) => b.data_inicio.localeCompare(a.data_inicio));
   const chs = S.chamados.filter(x => sameId(x.colaborador_id,id) && allowed(x.base));
   const dig = String(c.telefone||'').replace(/\D/g,'');
+  const escs = S.escalas.filter(e => (e.membros||[]).some(m => sameId(m, id)));
   openModal({wide:true, title:'Ficha do colaborador', body:`
     <div class="hero" style="padding:0 0 16px"><div class="ph-wrap">${c.foto ? `<button class="ph-view" data-act="foto-ver" data-id="${c.id}" aria-label="Ver foto">${avc(c,76)}</button>` : avc(c,76)}${fotoPode(c) ? `<button class="ph-btn" data-act="foto-pick" data-id="${c.id}" title="${c.foto ? 'Trocar foto' : 'Adicionar foto'}" aria-label="${c.foto ? 'Trocar foto' : 'Adicionar foto'}">${ic('camera',15)}</button>` : ''}</div><div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])} ${bTag(c.base)}</p>${fotoPode(c) ? `<p class="ph-links"><button class="linkbtn" data-act="foto-pick" data-id="${c.id}">${ic('camera',13)} ${c.foto ? 'Trocar foto' : 'Adicionar foto'}</button>${c.foto ? `<button class="linkbtn danger-t" data-act="foto-del" data-id="${c.id}">Remover</button>` : ''}</p>` : ''}</div></div>
-    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Diário (${chs.length})</button>${isAdmin() ? `<button class="mtab" data-act="mtab" data-k="po">Ponto</button>` : ''}</div>
+    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="esc">Escalas (${escs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Solicitações (${chs.length})</button>${isAdmin() ? `<button class="mtab" data-act="mtab" data-k="po">Ponto</button>` : ''}</div>
     <div data-pane="det">
       <div class="dl">
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
@@ -2357,9 +2439,11 @@ function openColab(id){
         ${c.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(c.observacoes)}</div></div>`:''}
       </div>
       <div class="sec">Veículo vinculado</div>
-      ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.${isAdmin()?' Use "Editar" para vincular.':''}</div>`}
+      ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.</div>`}
+      ${isAdmin() || allowed(c.base) ? `<div class="vinc"><select class="sel" data-chg="c-veic" data-id="${c.id}" aria-label="Escolher veículo">${colabSelects(c.base, c, c.id).veic.replace('— Sem veículo —', v ? '— Desvincular veículo —' : '— Escolha um veículo da base —')}</select><span class="f-hint">${v ? 'Troque ou desvincule aqui mesmo.' : 'Escolha e pronto: o vínculo é salvo na hora. Se o veículo estiver com outra pessoa, ele é transferido.'}</span></div>` : ''}
     </div>
     <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
+    <div data-pane="esc" hidden>${colabEscalas(escs)}</div>
     <div data-pane="ch" hidden>${tableChamados(sortCh(chs))}</div>
     ${isAdmin() ? `<div data-pane="po" hidden>${(() => { const aj = S.aju.filter(r => sameId(r.colaborador_id, id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 8), al = S.alm.filter(r => sameId(r.colaborador_id, id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 8);
       return `<div class="sec" style="margin-top:0">Ajustes de ponto</div>${aj.length ? aj.map(r => `<div class="aj-ti"><b>${fmtD(r.data)}</b> <span class="muted">${r.hora ? '· ' + hhmm(r.hora) : ''}</span>${r.obs ? `<p>${esc(r.obs)}</p>` : ''}</div>`).join('') : '<p class="muted s">Nenhum ajuste.</p>'}
@@ -2372,7 +2456,7 @@ function openColab(id){
 function colabSelects(base, c, id){
   const vOpts = S.veics.filter(v => v.base === base || sameId(v.id, c.veiculo_id)).sort((a,b)=>a.placa.localeCompare(b.placa)).map(v => { const d = condutorOf(v.id); const busy = d && !sameId(d.id,id);
     return [v.id, `${v.placa} — ${[v.marca,v.modelo].filter(Boolean).join(' ')}${busy?` (hoje com ${firstName(d.nome)})`:''}`]; });
-  const lid = lidersOf(base);
+  const lid = [...lidersOf(base), ...assistsOf(base)];
   return {
     lider: `<option value="">— Sem líder —</option>${opts(lid.map(p=>[p.id,p.nome]), c.lider_id)}`,
     veic: `<option value="">— Sem veículo —</option>${opts(vOpts, c.veiculo_id)}`
@@ -2545,6 +2629,19 @@ async function delVeic(id){
   const v = V(id); if (!v) return;
   if (!await confirmBox(`Excluir o veículo <b>${esc(v.placa)}</b>?<br><span class="muted">O condutor fica sem veículo e o histórico é apagado.</span>`)) return;
   try { await DB.remove('veiculos', id); closeModal(); toast('Veículo excluído.'); await reload(); } catch(e){ err(e); }
+}
+
+// Escalas do colaborador: próximas primeiro, depois as que já passaram
+function colabEscalas(escs){
+  if (!escs.length) return empty('calclock','Nenhuma escala ainda','Quando ele for escalado num plantão ou numa ação, aparece aqui.');
+  const hj = iso(new Date()), prox = escs.filter(e => e.data >= hj && e.status !== 'cancelada').sort((a,b) => a.data.localeCompare(b.data)), pass = escs.filter(e => e.data < hj || e.status === 'cancelada').sort((a,b) => b.data.localeCompare(a.data));
+  const real = escs.filter(e => e.status === 'realizada'), pl = real.filter(e => e.tipo === 'plantao').length;
+  const row = e => { const d = parseISO(e.data), r = P(e.responsavel_id);
+    return `<button class="ce-r ${e.status === 'cancelada' ? 'cancel' : ''}" style="--c:${escColor(e)}" data-act="esc-open" data-id="${e.id}"><span class="ce-d"><b>${d.getDate()}</b><small>${MES3[d.getMonth()]}</small></span>
+      <span class="ce-t"><b>${esc(e.tipo === 'plantao' ? 'Plantão — ' + bName(e.base) : escTitle(e))}</b><small>${cap(d.toLocaleDateString('pt-BR',{weekday:'long'}))} · ${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}${r ? ' · resp. ' + esc(firstName(r.nome)) : ''}${e.tipo === 'plantao' && e.folga_data ? ' · folga ' + wdShort(e.folga_data) : ''}${e.tipo === 'hora_extra' ? ' · +' + fmtH(durH(e)) : ''}</small></span>${chip(ESC_S[e.status])}</button>`; };
+  return `<p class="f-hint" style="margin:0 0 10px">${real.length} realizada(s): ${pl} plantão(ões) e ${real.length - pl} ação(ões) de hora extra.</p>
+    ${prox.length ? `<div class="sec" style="margin-top:0">Próximas</div>${prox.map(row).join('')}` : ''}
+    ${pass.length ? `<div class="sec">Anteriores</div>${pass.slice(0, 30).map(row).join('')}` : ''}`;
 }
 
 
@@ -2840,7 +2937,7 @@ function pgDiario(){
   ${leaders}
   <div class="toolbar">
     <div class="seg seg-st">${['', 'aberto','andamento','resolvido'].map(k => `<button class="${f.ts===k?'on':''}" data-act="t-fs" data-k="${k}">${k?CHL0[k]:'Todas'} <b>${k?base.filter(c=>c.status===k).length:base.length}</b></button>`).join('')}</div>
-    <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar no diário..." value="${esc(f.tq)}"></label>
+    <label class="search">${ic('search',16)}<input id="q" placeholder="Buscar nas solicitações..." value="${esc(f.tq)}"></label>
     <select class="sel" id="fc"><option value="">Todas as categorias</option>${opts((tt==='pedido'?CATS_P:CATS).map(c=>[c,c]), f.tc)}</select>
     <div class="tb-right">${tt==='problema' && !adm ? `<button class="btn pri" data-act="t-new">${ic('plus',16)}Registrar problema</button>` : ''}${tt==='pedido' && adm ? `<button class="btn pri" data-act="p-new">${ic('flag',16)}Novo pedido</button>` : ''}</div>
   </div>
@@ -3009,7 +3106,7 @@ function pgCal(){
   for (let i = 0; i < cells; i++){
     const d = new Date(c.y, c.m, 1-off+i), ds = iso(d);
     const evs = evsV().filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds).sort((a,b)=>a.tipo.localeCompare(b.tipo));
-    days += `<div class="day ${d.getMonth()!==c.m?'out':''} ${ds===today?'today':''} ${[0,6].includes(d.getDay())?'we':''}" data-act="cal-cell" data-date="${ds}" title="Clique para marcar em ${fmtD(ds)}"><span class="dn">${d.getDate()}</span>
+    days += `<div class="day ${d.getMonth()!==c.m?'out':''} ${ds===today?'today':''} ${[0,6].includes(d.getDay())?'we':''}" data-act="cal-cell" data-date="${ds}" title="Ver as ausências de ${fmtD(ds)}"><span class="dn">${d.getDate()}</span>
       ${evs.slice(0,3).map(e => { const o = EV[e.tipo]||EV.outro, n = EVP(e)?.nome; return `<div class="ev" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}" title="${esc(n||'')} — ${o.label}">${esc(firstName(n))} · ${o.label}</div>`; }).join('')}
       ${evs.length>3?`<span class="more" data-act="cal-day" data-date="${ds}">+${evs.length-3} mais</span>`:''}</div>`;
   }
@@ -3025,13 +3122,13 @@ function pgCal(){
   <div class="filters">${Object.entries(EV).map(([k,o]) => fchip('cal-type',k,o.label,inMonth.filter(e=>e.tipo===k && (!c.colab||sameId(e.colaborador_id,c.colab))).length,o.color,c.tipos.has(k))).join('')}${c.tipos.size?`<button class="linkbtn" data-act="cal-clear">Limpar filtro</button>`:''}</div>
   <div class="cal-wrap">
     <div class="card" style="overflow:hidden"><div class="cal">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(w=>`<div class="wd">${w}</div>`).join('')}${days}</div></div>
-    <div class="card"><div class="card-h"><h3>Neste mês</h3><span class="muted">${vis.length} registro(s)</span></div><div class="card-b" style="padding-top:6px">${agendaList(vis,'Nenhum registro neste mês. Clique em um dia para marcar.')}</div></div>
+    <div class="card"><div class="card-h"><h3>Neste mês</h3><span class="muted">${vis.length} registro(s)</span></div><div class="card-b" style="padding-top:6px">${agendaList(vis,'Nenhum registro neste mês. Use "Marcar ausência" para lançar.')}</div></div>
   </div>`;
   $('#calc').onchange = e => { S.cal.colab = e.target.value; pgCal(); };
 }
 function calDay(ds){
-  const evs = evsV().filter(e => calVisible(e) && e.data_inicio<=ds && e.data_fim>=ds);
-  openModal({title:`Ausências em ${fmtD(ds)}`, body: agendaList(evs), foot:`<button class="btn" data-act="modal-close">Fechar</button><button class="btn pri" data-act="ev-new" data-date="${ds}">${ic('plus',15)}Marcar ausência</button>`});
+  const evs = evsV().filter(e => e.data_inicio<=ds && e.data_fim>=ds).sort((a,b) => a.tipo.localeCompare(b.tipo));
+  openModal({title:`Ausências de ${cap(parseISO(ds).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(ds)}`, body: `<p class="f-hint" style="margin:0 0 10px">${evs.length ? evs.length + ' pessoa(s) fora neste dia. Toque numa ausência para ver ou editar.' : ''}</p>` + agendaList(evs, 'Ninguém ausente neste dia.'), foot:`<button class="btn" data-act="modal-close">Fechar</button><button class="btn pri" data-act="ev-new" data-date="${ds}">${ic('plus',15)}Marcar ausência</button>`});
 }
 function evForm(id, date, colId){
   const e = id ? S.eventos.find(x => sameId(x.id,id)) : {tipo:'folga', data_inicio:date||iso(new Date()), data_fim:date||iso(new Date()), colaborador_id:colId||S.cal.colab||null};
@@ -3099,8 +3196,14 @@ function lastSeen(){
   const t = [a, b].filter(Boolean).map(x => new Date(x).getTime());
   return t.length ? Math.max(...t) : new Date(S.profile?.created_at || Date.now() - 3*864e5).getTime();
 }
+let NMEMO = null;   // os avisos só são recalculados quando os dados, a base, o minuto ou o que você leu mudar
 function buildNotifs(){
   if (!S.profile) return {news:[], rem:[]};
+  const mk = [S.sig, S.profile.id, S.base, lastSeen(), Math.floor(Date.now() / 60000)].join('|');
+  if (NMEMO && NMEMO.k === mk) return NMEMO.v;
+  const v = buildNotifs0(); NMEMO = {k:mk, v}; return v;
+}
+function buildNotifs0(){
   const seen = lastSeen(), me = S.profile.id, adm = isAdmin(), now = new Date(), today = iso(now), tom = iso(addDays(now,1));
   let news = [], rem = [];
   const after = d => d && new Date(d).getTime() > seen;
@@ -3141,6 +3244,8 @@ function buildNotifs(){
     const atr = mt.filter(plLate), hj = mt.filter(t => t.data === today);
     if (atr.length) rem.push({icon:'planner', c:'#ef4444', urgent:true, t:`${atr.length} tarefa(s) atrasada(s) no planner`, s:atr.slice(0,3).map(t => t.titulo).join(', '), act:'pl-go', k:'hoje', w:0, key:'rem:pl:atr:' + atr.length});
     if (hj.length) rem.push({icon:'planner', c:PL_COR, t:`Hoje no planner: ${hj.length} tarefa(s)`, s:plSort(hj).slice(0,3).map(t => (t.hora ? hhmm(t.hora) + ' ' : '') + t.titulo).join(', '), act:'pl-go', k:'hoje', w:1, key:'rem:pl:hj:' + hj.length}); }
+  { const bd = (S.anot||[]).filter(a => sameId(a.user_id, me) && bdDue(a));
+    if (bd.length) rem.push({icon:'notebook', c:'#9333ea', urgent:true, t:bd.length === 1 ? 'Diário de bordo: lembrar hoje' : `Diário de bordo: ${bd.length} problemas para lembrar`, s:bd.slice(0,3).map(a => a.titulo).join(', '), act:'bd-go', w:0, key:'rem:bd:' + bd.length}); }
   // Visitas marcadas na base que eu lidero
   (S.visitas||[]).forEach(v => { if (sameId(v.user_id, me) || !v.local || !ownBases().includes(v.local) || v.data < today || !after(v.created_at)) return;
     news.push({key:`vi:${v.id}`, icon:'map', c:BASES[v.local]?.c, t:`${firstName(v.user_nome)} vai à Base ${bName(v.local)}`, s:`${plDia(v.data, true)}${v.hora ? ' às ' + hhmm(v.hora) : ''}${v.notas ? ' — ' + v.notas : ''}`, when:v.created_at, act:'pl-go', k:'visitas'}); });
@@ -3159,7 +3264,7 @@ function buildNotifs(){
     rem.push({icon:'clock', c:'#ef4444', urgent:true, t: c.prazo < today ? `Pedido atrasado desde ${fmtD(c.prazo)}` : 'Pedido vence hoje', s:`#${c.id} ${c.titulo}${adm ? ' — ' + bName(c.base) : ''}`, act:'ch-open', id:c.id, w:0}));
   if (adm){
     const ab = chsV('problema').filter(c => c.status === 'aberto');
-    if (ab.length) rem.push({icon:'inbox', c:'#ef4444', urgent:true, t:`${ab.length} problema(s) aguardando sua ciência`, s:'Abra o diário de bordo', act:'dash-tt', k:'problema', w:0});
+    if (ab.length) rem.push({icon:'inbox', c:'#ef4444', urgent:true, t:`${ab.length} problema(s) aguardando sua ciência`, s:'Abra as solicitações de bordo', act:'dash-tt', k:'problema', w:0});
   }
   S.escalas.filter(e => e.status !== 'cancelada' && (e.data === today || e.data === tom) && (allowed(e.base) || sameId(e.responsavel_id, me))).forEach(e => {
     if (sameId(e.responsavel_id, me)) rem.push({icon:'shield', c:'#ea580c', urgent:true, t:`Você é o responsável: ${escTitle(e)} ${e.data === today ? 'hoje' : 'amanhã'} — ${bName(e.base)}`, s:`${hhmm(e.hora_inicio)}–${hhmm(e.hora_fim)}, ${(e.membros||[]).length} pessoa(s)`, act:'esc-open', id:e.id, w:0, key:`rem:resp:${e.id}`});
@@ -3198,7 +3303,7 @@ function buildNotifs(){
 }
 const readKey = () => 'prim_lidos_' + (S.profile?.id || '');
 function readSet(){ try { return new Set(JSON.parse(lsGet(readKey()) || '[]')); } catch(e){ return new Set(); } }
-function markRead(keys){ if (!keys.length) return; const s = readSet(); keys.forEach(k => s.add(k)); lsSet(readKey(), JSON.stringify([...s].slice(-800))); refreshBell(); }
+function markRead(keys){ if (!keys.length) return; NMEMO = null; const s = readSet(); keys.forEach(k => s.add(k)); lsSet(readKey(), JSON.stringify([...s].slice(-800))); refreshBell(); }
 function markReadPrefix(prefix){ try { const n = buildNotifs(), today = iso(new Date());
   markRead([...n.news.filter(x => x.key.startsWith(prefix)).map(x => x.key), ...n.rem.filter(x => x.key.includes(prefix.replace(/:$/,''))).map(x => x.key + '@' + today)]); } catch(e){} }
 function refreshBell(){
@@ -3349,9 +3454,15 @@ async function cleanQuinzena(key){
 
 /* ========================= CONEXÃO ========================= */
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
-function dataSig(){
-  const str = JSON.stringify([S.profiles, S.colabs, S.veics, S.chamados, S.msgs, S.eventos, S.anexos, S.escalas, S.acoes, S.estItens, S.estSaldos, S.revisoes, S.estMovs.length, S.hist.length, S.pt, S.pc, S.alm, S.aju, S.visitas]);
-  let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length;
+// Assinatura dos dados: um hash por tabela, guardado; numa recarga parcial só as tabelas que vieram são recalculadas
+const SIGC = {};
+const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot'];
+const hstr = str => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length; };
+function dataSig(only){
+  return SIGK.map(k => { const a = S[k] || [], c = SIGC[k];
+    if (only && c && c.a === a) return c.h;
+    const h = (k === 'estMovs' || k === 'hist') ? String(a.length) + ':' + (a[0]?.id ?? '') : hstr(JSON.stringify(a));
+    SIGC[k] = {a, h}; return h; }).join('/');
 }
 function showFresh(){
   if ($('#fresh')) return;
@@ -3360,9 +3471,9 @@ function showFresh(){
 }
 // Atualiza os dados em segundo plano SEM redesenhar a tela quando nada mudou.
 // Se você estiver no meio de algo (janela aberta, digitando), só mostra o aviso "Há informações novas".
-async function refreshData(silent){
+async function refreshData(silent, only){
   const before = notifCount(), sig0 = S.sig;
-  await loadAll();
+  await loadAll(only && only.size ? only : undefined);
   if (!S.profile) return;
   if (S.sig === sig0) return;
   const ae = document.activeElement;
@@ -3375,9 +3486,11 @@ async function refreshData(silent){
 function subscribeRealtime(){
   if (TEST || !sb) return;
   if (S.rt){ try { sb.removeChannel(S.rt); } catch(e){} S.rt = null; }
-  S.rt = sb.channel('primarizacao-' + Date.now()).on('postgres_changes', {event:'*', schema:'public'}, () => {
+  S.rt = sb.channel('primarizacao-' + Date.now()).on('postgres_changes', {event:'*', schema:'public'}, p => {
+    if (p?.table && !TABLES.includes(p.table)) return;           // tabela que o painel não mostra
+    (S.rtSet = S.rtSet || new Set()).add(p?.table || '*');
     clearTimeout(rtTimer);
-    rtTimer = setTimeout(() => refreshData(false), 1200);
+    rtTimer = setTimeout(() => { const st = S.rtSet; S.rtSet = null; refreshData(false, st.has('*') ? null : st); }, 900);
   }).subscribe(status => {
     if (status === 'SUBSCRIBED'){ rtTries = 0; setLive(true); }
     else if (['CHANNEL_ERROR','TIMED_OUT','CLOSED'].includes(status)){
@@ -3450,7 +3563,7 @@ const escTitle = e => e.tipo === 'plantao' ? 'Plantão de sábado' : (acaoOf(e.a
 const escColor = e => e.tipo === 'plantao' ? ESC_T.plantao.color : (acaoOf(e.acao_id)?.cor || ESC_T.hora_extra.color);
 const ausenteEm = (cid, ds) => S.eventos.find(e => sameId(e.colaborador_id, cid) && e.data_inicio <= ds && e.data_fim >= ds);
 const monthRange = () => { const {y,m} = S.esc; return [iso(new Date(y,m,1)), iso(new Date(y,m+1,0))]; };
-const respList = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || p.role === 'lider')).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const respList = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || isLid(p))).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
 // Plantão: a equipe ganha folga e NÃO conta hora extra; o responsável não ganha folga nem horas.
 // Hora extra (ações): conta horas; o responsável conta só se marcado.
 const respConta = e => e.tipo === 'hora_extra' && !!e.resp_conta;
@@ -3818,7 +3931,7 @@ function hmForm(id){
   const m0 = id ? S.horasMan.find(x => sameId(x.id, id)) : null;
   const canEd = isAdmin();
   const pool = (S.colabsAll.length ? S.colabsAll : S.colabs).filter(c => c.status !== 'desligado' || (m0 && sameId(m0.colaborador_id, c.id)));
-  const lids = S.profiles.filter(p => p.ativo && (p.role === 'lider' || p.role === 'admin'));
+  const lids = S.profiles.filter(p => p.ativo && (isLid(p) || p.role === 'admin'));
   const cur = m0 ? manKey(m0) : '';
   const optsP = BKEYS.map(k => `<optgroup label="${BASES[k].nome}">${pool.filter(c => c.base === k).sort((a,b) => a.nome.localeCompare(b.nome,'pt')).map(c => `<option value="${c.id}" data-b="${k}" ${String(c.id) === cur ? 'selected' : ''}>${esc(c.nome)}</option>`).join('')}</optgroup>`).join('')
     + `<optgroup label="Líderes e encarregado">${lids.map(p => `<option value="p:${p.id}" data-b="${(p.bases||[])[0] || ''}" ${'p:' + p.id === cur ? 'selected' : ''}>${esc(p.nome)}${p.role === 'admin' ? ' (encarregado)' : ''}</option>`).join('')}</optgroup>`;
@@ -4263,7 +4376,7 @@ const PT = id => S.pt.find(t => sameId(t.id, id));
 const plMe = () => S.profile.id;
 const plVe = t => sameId(t.criado_por, plMe()) || sameId(t.responsavel_id, plMe()) || (t.compartilhado||[]).some(u => sameId(u, plMe())) || t.todos;
 const plMeu = t => t.responsavel_id ? sameId(t.responsavel_id, plMe()) : plVe(t);
-const plPessoas = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || p.role === 'lider')).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const plPessoas = () => S.profiles.filter(p => p.ativo && (p.role === 'admin' || isLid(p))).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
 const plShared = t => t.todos || (t.compartilhado||[]).length > 0 || (t.responsavel_id && !sameId(t.responsavel_id, t.criado_por));
 const plLate = t => !t.concluida && t.data && t.data < plToday();
 const plKey = t => (t.data || '9999') + (hhmm(t.hora) || '99:99');
@@ -4543,7 +4656,7 @@ function plForm(id, preset = {}){
     ${fld('Responsável', `<select name="responsavel_id" id="plresp"><option value="">Ninguém em especial</option>${opts(plPessoas().map(p => [p.id, p.nome + (sameId(p.id, plMe()) ? ' (você)' : '')]), t.responsavel_id || '')}</select>`, false, false, 'Recebe um aviso e o lembrete no celular.')}
     <div class="f full"><label>${ic('users',13)} Compartilhar com</label>
       <label class="tgl pl-all"><input type="checkbox" name="todos" id="plall" ${t.todos?'checked':''}> Toda a equipe do painel (encarregado e todos os líderes)</label>
-      <div class="pl-pp" id="plpp" ${t.todos?'hidden':''}>${ppl.map(p => `<label class="pl-p ${sel.has(String(p.id))?'on':''}"><input type="checkbox" value="${p.id}" ${sel.has(String(p.id))?'checked':''}>${avatar(p.nome,24)}<span>${esc(firstName(p.nome))}<small>${p.role === 'admin' ? 'Encarregado' : (p.bases||[]).map(bName).join(', ') || 'Líder'}</small></span></label>`).join('') || '<p class="muted s" style="margin:4px 0">Ainda não há outras pessoas liberadas no painel.</p>'}</div>
+      <div class="pl-pp" id="plpp" ${t.todos?'hidden':''}>${ppl.map(p => `<label class="pl-p ${sel.has(String(p.id))?'on':''}"><input type="checkbox" value="${p.id}" ${sel.has(String(p.id))?'checked':''}>${avatar(p.nome,24)}<span>${esc(firstName(p.nome))}<small>${p.role === 'admin' ? 'Encarregado' : ((p.role === 'assistente' ? 'Assist. ' : '') + ((p.bases||[]).map(bName).join(', ') || 'Líder'))}</small></span></label>`).join('') || '<p class="muted s" style="margin:4px 0">Ainda não há outras pessoas liberadas no painel.</p>'}</div>
       <span class="f-hint">Quem você marcar vê, edita e conclui a tarefa. Sem ninguém marcado, só você vê.</span></div>
     ${fld('Anotações', `<textarea name="notas" rows="3" placeholder="Detalhes, endereço, telefone...">${esc(t.notas || '')}</textarea>`, true)}
     ${fld('Etiquetas', inp('etiquetas', (t.etiquetas||[]).join(', '), 'placeholder="Ex: compras, documentos (separe por vírgula)"'), true)}
@@ -5249,41 +5362,147 @@ async function ajXls(){
 }
 
 
+/* ========================= DIÁRIO DE BORDO (caderno de anotações de problemas) — v2.11 ========================= */
+// Cada pessoa tem o seu caderno: anota problemas do dia, marca quando resolver e escolhe um dia para ser lembrada.
+const BD_CAT = {'Veículo':'#0891b2','Equipe':'#7c3aed','Material':'#ca8a04','Sistema':'#2563eb','Serviço':'#e11d48','Outro':'#64748b'};
+const BD_PRI = {3:{label:'Alta', color:'#dc2626'}, 2:{label:'Média', color:'#f59e0b'}, 1:{label:'Baixa', color:'#94a3b8'}};
+const BD = {y:null, m:null, d:null, f:'aberto', q:'', cat:''};
+const bdAll = () => (S.anot || []).filter(a => sameId(a.user_id, S.profile?.id));   // o banco já só devolve as suas; aqui garante no modo teste
+const AN = id => S.anot.find(a => sameId(a.id, id));
+const bdHoje = () => iso(new Date());
+const bdDue = a => a.status === 'aberto' && a.lembrar_em && a.lembrar_em <= bdHoje();
+const bdMatch = a => { const q = nk(BD.q);
+  return (BD.f === 'todos' || a.status === BD.f) && (!BD.cat || a.categoria === BD.cat) && (!S.base || !a.base || a.base === S.base) &&
+    (!q || nk([a.titulo, a.texto, a.categoria, bName(a.base), C(a.colaborador_id)?.nome, V(a.veiculo_id)?.placa].join(' ')).includes(q)); };
+const bdSort = l => l.slice().sort((a,b) => (a.status === 'resolvido') - (b.status === 'resolvido') || (bdDue(b) - bdDue(a)) || b.prioridade - a.prioridade || b.data.localeCompare(a.data));
+function pgBordo(){
+  if (BD.y == null){ const d = new Date(); BD.y = d.getFullYear(); BD.m = d.getMonth(); BD.d = bdHoje(); }
+  const all = bdAll(), abertos = all.filter(a => a.status === 'aberto'), due = abertos.filter(bdDue);
+  const lista = bdSort(all.filter(bdMatch)), doDia = bdSort(all.filter(a => a.data === BD.d && (!BD.cat || a.categoria === BD.cat)));
+  $('#page').innerHTML = `
+  <div class="bd-top">
+    <div class="seg">${[['aberto','Em aberto', abertos.length],['resolvido','Resolvidos', all.length - abertos.length],['todos','Todos', all.length]].map(([k,l,n]) => `<button class="${BD.f===k?'on':''}" data-act="bd-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
+    <label class="search">${ic('search',16)}<input id="bdq" placeholder="Buscar no diário..." value="${esc(BD.q)}"></label>
+    <select class="sel" id="bdcat" aria-label="Categoria"><option value="">Todas as categorias</option>${opts(Object.keys(BD_CAT).map(k => [k,k]), BD.cat)}</select>
+    <button class="btn pri" data-act="bd-new">${ic('plus',16)}Anotar problema</button>
+  </div>
+  ${due.length ? `<div class="bd-due">${ic('bell',16)}<b>${due.length === 1 ? 'Para lembrar hoje:' : due.length + ' problemas para lembrar hoje:'}</b>${due.slice(0,4).map(a => `<button data-act="bd-open" data-id="${a.id}">${esc(a.titulo)}</button>`).join('')}</div>` : ''}
+  <div class="bd-grid">
+    <div class="card bd-cal">${bdCal()}</div>
+    <div class="bd-side">
+      <div class="card"><div class="card-h"><div><h3>${BD.d === bdHoje() ? 'Hoje' : cap(parseISO(BD.d).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(BD.d).slice(0,5)}</h3><p class="ch-sub">${doDia.length ? doDia.length + ' anotação(ões) neste dia' : 'Nada anotado neste dia'}</p></div></div>
+        <div class="card-b"><div class="bd-qa">${ic('plus',16)}<input id="bdqa" placeholder="Anote um problema neste dia e aperte Enter" maxlength="160" enterkeyhint="done"></div>
+        ${doDia.map(bdCard).join('')}</div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>${BD.f === 'aberto' ? 'Problemas em aberto' : BD.f === 'resolvido' ? 'Problemas resolvidos' : 'Todas as anotações'}</h3><p class="ch-sub">${BD.f === 'aberto' ? 'Os que têm lembrete vencido e prioridade alta vêm primeiro' : 'Mais recentes primeiro'}</p></div><span class="muted s">${lista.length}</span></div>
+    <div class="card-b">${lista.length ? lista.slice(0, BD.lim || 60).map(bdCard).join('') + (lista.length > (BD.lim || 60) ? `<button class="btn sm" style="margin:10px auto 0;display:flex" data-act="bd-more">Mostrar mais</button>` : '') : empty('notebook', BD.f === 'aberto' ? 'Nenhum problema em aberto' : 'Nada por aqui', 'Use "Anotar problema" para registrar o que precisa acompanhar.')}</div></div>`;
+  let tm; $('#bdq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { BD.q = e.target.value; pgBordo(); const n = $('#bdq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  $('#bdcat').onchange = e => { BD.cat = e.target.value; pgBordo(); };
+  $('#bdqa').onkeydown = async e => { if (e.key !== 'Enter') return; e.preventDefault(); const t = e.target.value.trim(); if (!t) return;
+    try { const r = await DB.insert('anotacoes', {user_id:S.profile.id, data:BD.d, titulo:t, texto:'', categoria:'Outro', prioridade:2, base:defBase() || null, status:'aberto', updated_at:nowISO()}); S.anot.push(r); S.sig = dataSig(); toast('Anotado. Toque no item para completar os detalhes.'); pgBordo(); $('#bdqa')?.focus(); } catch(x){ err(x); } };
+}
+function bdCal(){
+  const f = new Date(BD.y, BD.m, 1), start = addDays(f, -((f.getDay() + 6) % 7)), hj = bdHoje();
+  const by = {}; bdAll().forEach(a => (by[a.data] = by[a.data] || []).push(a));
+  let cells = '';
+  for (let i = 0; i < 42; i++){ const d = addDays(start, i), ds = iso(d); if (i >= 35 && d.getMonth() !== BD.m) break;
+    const l = by[ds] || [], ab = l.filter(a => a.status === 'aberto');
+    cells += `<button class="bd-d ${d.getMonth()!==BD.m?'out':''} ${ds===hj?'tdy':''} ${ds===BD.d?'sel':''} ${ab.length?'has':''}" data-act="bd-day" data-d="${ds}" aria-label="${fmtD(ds)}: ${l.length} anotação(ões)"><span>${d.getDate()}</span>
+      ${l.length ? `<i class="bd-dots">${l.slice(0,4).map(a => `<b style="background:${a.status === 'resolvido' ? '#cbd5e1' : BD_PRI[a.prioridade].color}"></b>`).join('')}</i>` : ''}</button>`; }
+  return `<div class="cal-h" style="margin:0 0 10px"><button class="icon-btn bord" data-act="bd-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${cap(new Date(BD.y, BD.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}))}</h2><button class="icon-btn bord" data-act="bd-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button><button class="btn sm" data-act="bd-mes" data-k="0">Hoje</button></div>
+    <div class="bd-cg">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(w => `<span class="bd-w">${w}</span>`).join('')}${cells}</div>
+    <div class="bd-leg">${Object.entries(BD_PRI).map(([k,o]) => `<span><i style="background:${o.color}"></i>${o.label}</span>`).join('')}<span><i style="background:#cbd5e1"></i>Resolvido</span></div>`;
+}
+function bdCard(a){
+  const c = a.colaborador_id && (C(a.colaborador_id) || CX(a.colaborador_id)), v = a.veiculo_id && V(a.veiculo_id), due = bdDue(a), done = a.status === 'resolvido';
+  return `<div class="bd-it ${done?'done':''} ${due?'due':''}" style="--p:${BD_PRI[a.prioridade].color}" data-act="bd-open" data-id="${a.id}" role="button" tabindex="0">
+    <button class="bd-ck ${done?'on':''}" data-act="bd-tg" data-id="${a.id}" aria-label="${done ? 'Reabrir' : 'Marcar como resolvido'}">${ic('check',13)}</button>
+    <div class="bd-b"><b>${esc(a.titulo)}</b>${a.texto ? `<small class="bd-tx">${esc(a.texto.split('\n')[0])}</small>` : ''}
+      <div class="bd-m"><span class="bd-cat" style="--c:${BD_CAT[a.categoria] || '#64748b'}">${esc(a.categoria)}</span><span>${ic('cal',11)}${fmtD(a.data).slice(0,5)}</span>${a.base ? `<span>${emblem(a.base,8,2)}${bName(a.base)}</span>` : ''}${c ? `<span>${ic('user',11)}${esc(firstName(c.nome))}</span>` : ''}${v ? `<span>${ic('car',11)}${esc(v.placa)}</span>` : ''}${a.lembrar_em && !done ? `<span class="${due?'late':''}">${ic('bell',11)}${due ? 'lembrar hoje' : 'lembrar ' + fmtD(a.lembrar_em).slice(0,5)}</span>` : ''}${done && a.resolvido_em ? `<span>${ic('check',11)}resolvido ${fmtD(a.resolvido_em).slice(0,5)}</span>` : ''}</div></div>
+  </div>`;
+}
+function bdForm(id, preset = {}){
+  const a = id ? AN(id) : {titulo:'', texto:'', data:preset.data || BD.d || bdHoje(), categoria:'Outro', prioridade:2, base:defBase() || '', status:'aberto'};
+  if (id && !a) return;
+  const pool = colabsSorted().filter(c => c.status !== 'desligado' || sameId(c.id, a.colaborador_id)), vs = veicsV().slice().sort((x,y) => x.placa.localeCompare(y.placa));
+  openModal({wide:true, title: id ? 'Anotação do diário' : 'Anotar problema', body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('O que aconteceu', inp('titulo', a.titulo, 'required maxlength="160" placeholder="Ex: Moto FDS9F92 com barulho no freio"'), true, true)}
+    ${fld('Detalhes', `<textarea name="texto" rows="4" placeholder="Anote o que for importante: quem avisou, o que já foi feito, próximos passos...">${esc(a.texto || '')}</textarea>`, true)}
+    ${fld('Dia', inp('data', a.data, 'type="date" required'), false, true)}
+    ${fld(ic('bell',13) + ' Lembrar em', inp('lembrar_em', a.lembrar_em || '', 'type="date"'), false, false, 'O lembrete aparece no sino e no topo do diário nesse dia.')}
+    ${fld('Categoria', rchips('categoria', Object.fromEntries(Object.entries(BD_CAT).map(([k,c]) => [k, {label:k, color:c}])), a.categoria), true)}
+    ${fld('Prioridade', rchips('prioridade', Object.fromEntries(Object.entries(BD_PRI).reverse()), String(a.prioridade)), true)}
+    ${fld('Base', `<select name="base"><option value="">Nenhuma</option>${opts(myBases().map(k => [k, BASES[k].nome]), a.base || '')}</select>`)}
+    ${fld('Colaborador (opcional)', `<select name="colaborador_id"><option value="">Nenhum</option>${opts(pool.map(c => [c.id, c.nome]), a.colaborador_id || '')}</select>`)}
+    ${fld('Veículo (opcional)', `<select name="veiculo_id"><option value="">Nenhum</option>${opts(vs.map(v => [v.id, v.placa + ' — ' + [v.marca, v.modelo].filter(Boolean).join(' ')]), a.veiculo_id || '')}</select>`)}
+    ${id ? fld('Situação', rchips('status', {aberto:{label:'Em aberto', color:'#f59e0b'}, resolvido:{label:'Resolvido', color:'#16a34a'}}, a.status)) : ''}
+  </form>${id ? `<p class="f-hint">Anotado em ${fmtDT(a.created_at)}${a.resolvido_em ? ' · resolvido em ' + fmtDT(a.resolvido_em) : ''}. Só você vê o seu diário.</p>` : '<p class="f-hint">Só você vê o seu diário de bordo.</p>'}`,
+  foot:`${id ? `<button class="btn danger left" data-act="bd-del" data-id="${id}">${ic('trash',15)}Excluir</button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-save" data-id="${id || ''}">${ic('check',15)}Salvar</button>`});
+}
+async function bdSave(id){
+  const f = formObj(); if (!f.titulo) return toast('Escreva o que aconteceu.', 'err'); if (!f.data) return toast('Informe o dia.', 'err');
+  const a0 = id ? AN(id) : null, st = f.status || a0?.status || 'aberto';
+  const row = {titulo:f.titulo, texto:f.texto || '', data:f.data, lembrar_em:f.lembrar_em || null, categoria:f.categoria || 'Outro', prioridade:+f.prioridade || 2, base:f.base || null, colaborador_id:f.colaborador_id || null, veiculo_id:f.veiculo_id || null, status:st,
+    resolvido_em: st === 'resolvido' ? (a0?.resolvido_em || nowISO()) : null, updated_at:nowISO()};
+  try {
+    if (a0){ await DB.update('anotacoes', id, row); Object.assign(a0, row); }
+    else { const r = await DB.insert('anotacoes', {...row, user_id:S.profile.id}); S.anot.push(r); }
+    S.sig = dataSig(); closeModal(); toast(a0 ? 'Anotação salva.' : 'Problema anotado no diário.'); S.page === 'bordo' ? pgBordo() : render();
+  } catch(e){ err(e); }
+}
+async function bdToggle(id){
+  const a = AN(id); if (!a) return; const st = a.status === 'aberto' ? 'resolvido' : 'aberto';
+  const row = {status:st, resolvido_em: st === 'resolvido' ? nowISO() : null, updated_at:nowISO()};
+  try { await DB.update('anotacoes', id, row); Object.assign(a, row); S.sig = dataSig(); toast(st === 'resolvido' ? 'Marcado como resolvido.' : 'Reaberto.'); pgBordo(); } catch(e){ err(e); }
+}
+async function bdDel(id){
+  const a = AN(id); if (!a || !await confirmBox(`Excluir a anotação <b>${esc(a.titulo)}</b>?`)) return;
+  try { await DB.remove('anotacoes', id); S.anot = S.anot.filter(x => x !== a); S.sig = dataSig(); closeModal(); toast('Anotação excluída.'); pgBordo(); } catch(e){ err(e); }
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
   const list = S.profiles.slice().sort((a,b) => (a.role==='pendente'?0:1)-(b.role==='pendente'?0:1) || (a.role==='admin'?0:1)-(b.role==='admin'?0:1) || a.nome.localeCompare(b.nome,'pt'));
   const pend = list.filter(p => p.role==='pendente').length;
   $('#page').innerHTML = `
-  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Um líder por base</b>
+  <div class="card"><div class="card-b"><div class="info-row">${ic('shield',22)}<div><b>Um líder por base, com assistentes se precisar</b>
     <p>A pessoa cria a conta pelo link do painel, escolhe a base e aparece aqui como <b>Aguardando</b>. Mude o perfil para <b>Líder de base</b> e confirme a base. Cada base tem um único líder. Você, como encarregado, também pode ser o líder de uma base: os pedidos para essa base deixam de existir, porque seriam para você mesmo.</p></div></div>
-    <div class="cover">${BKEYS.map(k => { const l = liderOf(k); return `<div class="cv ${l?'':'none'}" style="--c:${BASES[k].c}">${emblem(k,30,9)}<span><b>${BASES[k].nome}</b><small>${l ? esc(l.nome) + (l.role==='admin'?' (encarregado)':'') : 'Sem líder'}</small></span></div>`; }).join('')}</div>
+    <div class="cover">${BKEYS.map(k => { const l = liderOf(k); return `<div class="cv ${l?'':'none'}" style="--c:${BASES[k].c}">${emblem(k,30,9)}<span><b>${BASES[k].nome}</b><small>${l ? esc(l.nome) + (l.role==='admin'?' (encarregado)':'') : 'Sem líder'}${assistsOf(k).length ? '<br>+ ' + assistsOf(k).map(a => esc(firstName(a.nome))).join(', ') + ' (assistente)' : ''}</small></span></div>`; }).join('')}</div>
   </div></div>
   <div class="card" style="margin-top:18px"><div class="card-h"><h3>Usuários (${list.length})${pend?` <span class="chip" style="--c:#f5a623;margin-left:6px">${pend} aguardando</span>`:''}</h3></div>
-  <div class="card-b"><div class="tbl-wrap"><table class="utbl mcards"><thead><tr><th>Usuário</th><th>Perfil</th><th>Base que lidera</th><th>Acesso</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
+  <div class="card-b"><div class="tbl-wrap"><table class="utbl mcards"><thead><tr><th>Usuário</th><th>Perfil</th><th>Base</th><th>Acesso</th><th class="hide-m">Cadastro</th></tr></thead><tbody>
   ${list.map(p => { const me = sameId(p.id,S.profile.id); const b = (p.bases || [])[0] || '';
     return `<tr class="${p.role==='pendente'?'pend':''}"><td data-l=""><div class="who">${avatar(p.nome)}<div style="min-width:0"><b>${esc(p.nome)}${me?' <span class="muted">(você)</span>':''}</b><small>${esc(p.email||'')}</small></div></div></td>
-    <td data-l="Perfil"><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Encarregado'],['lider','Líder de base'],['pendente','Aguardando']],p.role)}</select></td>
-    <td data-l="Base"><div class="bpick">${BKEYS.map(k => { const dono = liderOf(k); const taken = dono && !sameId(dono.id, p.id);
+    <td data-l="Perfil"><select class="sel sm" data-chg="u-role" data-id="${p.id}" aria-label="Perfil">${opts([['admin','Encarregado'],['lider','Líder de base'],['assistente','Assistente de base'],['pendente','Aguardando']],p.role)}</select></td>
+    <td data-l="Base"><div class="bpick">${BKEYS.map(k => { const dono = liderOf(k); const taken = p.role !== 'assistente' && dono && !sameId(dono.id, p.id);
       return `<button class="bp ${b===k?'on':''} ${taken?'taken':''}" style="--c:${BASES[k].c}" data-act="u-base" data-id="${p.id}" data-k="${k}" aria-pressed="${b===k}" title="${taken ? 'Líder atual: ' + esc(dono.nome) : BASES[k].nome}">${emblem(k,12,4)}<span>${BASES[k].nome}</span></button>`; }).join('')}</div>
-      ${p.role==='lider' && !b ? '<div class="late s" style="margin-top:4px">Escolha a base deste líder</div>' : p.role==='admin' && !b ? '<div class="muted s" style="margin-top:4px">Opcional: marque se você também lidera uma base</div>' : ''}</td>
+      ${isLid(p) && !b ? `<div class="late s" style="margin-top:4px">Escolha a base deste ${p.role === 'assistente' ? 'assistente' : 'líder'}</div>` : p.role==='admin' && !b ? '<div class="muted s" style="margin-top:4px">Opcional: marque se você também lidera uma base</div>' : ''}</td>
     <td data-l="Acesso"><label class="sw" title="${p.ativo?'Ativo':'Bloqueado'}"><input type="checkbox" data-chg="u-ativo" data-id="${p.id}" ${p.ativo?'checked':''}><span></span></label></td>
     <td class="hide-m">${fmtD(p.created_at)}</td></tr>`; }).join('')}
   </tbody></table></div></div></div>`;
 }
 const CHG = {
+  'c-veic': async t => { const cid = t.dataset.id, vid = t.value || null, c = C(cid); if (!c) return;
+    try {
+      if (TEST){ const d = Store.load(); d.colaboradores.forEach(x => { if (vid && sameId(x.veiculo_id, vid) && !sameId(x.id, cid)) x.veiculo_id = null; if (sameId(x.id, cid)) x.veiculo_id = vid; }); Store.save(); }
+      else { const {error} = await sb.rpc('colaborador_veiculo', {cid, vid}); if (error) throw error; }
+      toast(vid ? `Veículo ${V(vid)?.placa || ''} vinculado a ${firstName(c.nome)}.` : 'Veículo desvinculado.'); await loadAll(); render(); openColab(cid);
+    } catch(e){ err(e); } },
   'folga-regra': t => saveFolgaRegra(t.dataset.k, t.value),
   'acao-ativo': async t => { try { await DB.update('acoes', t.dataset.id, {ativo:t.checked}); toast(t.checked ? 'Ação ativada.' : 'Ação desativada.'); await loadAll(); } catch(e){ err(e); } },
   'u-role': async t => {
     const p = P(t.dataset.id); if (!p) return;
     if (sameId(p.id,S.profile.id) && t.value !== 'admin'){ toast('Você não pode tirar o próprio acesso de encarregado.','err'); t.value = 'admin'; return; }
     const b = (p.bases||[])[0];
-    if (t.value !== 'pendente' && b){ const dono = liderOf(b);
+    if (t.value !== 'pendente' && t.value !== 'assistente' && b){ const dono = liderOf(b);
       if (dono && !sameId(dono.id, p.id)){
         if (!await confirmBox(`${esc(BASES[b].nome)} já tem líder: <b>${esc(dono.nome)}</b>.<br>Passar a base para <b>${esc(p.nome)}</b>?`, 'Passar a base')){ t.value = p.role; return; }
         try { await DB.update('profiles', dono.id, {bases:[]}); } catch(e){ err(e); t.value = p.role; return; }
       } }
-    if (t.value === 'lider' && !b) toast('Agora escolha a base desse líder.');
+    if ((t.value === 'lider' || t.value === 'assistente') && !b) toast(`Agora escolha a base desse ${t.value === 'assistente' ? 'assistente' : 'líder'}.`);
     try { await DB.update('profiles', p.id, {role:t.value}); toast('Perfil atualizado.'); await reload(); } catch(e){ err(e); reload(); }
   },
   'u-ativo': async t => {
@@ -5295,7 +5514,7 @@ async function setUserBase(id, k){
   const p = P(id); if (!p) return;
   const cur = (p.bases || [])[0];
   const novo = cur === k ? [] : [k];
-  const dono = novo.length ? liderOf(k) : null;
+  const dono = novo.length && p.role !== 'assistente' ? liderOf(k) : null;
   try {
     if (dono && !sameId(dono.id, p.id) && p.role !== 'pendente'){
       if (!await confirmBox(`${esc(BASES[k].nome)} já tem líder: <b>${esc(dono.nome)}</b>.<br>Passar a base para <b>${esc(p.nome)}</b>?`, 'Passar a base')) return;
@@ -5304,7 +5523,7 @@ async function setUserBase(id, k){
     if (p.role === 'admin' && novo.length && S.chamados.some(c => tipoOf(c)==='pedido' && c.base===k && c.status!=='resolvido'))
       toast(`Atenção: há pedidos em aberto para ${BASES[k].nome}. Você passa a ser o responsável por eles.`);
     await DB.update('profiles', id, {bases:novo});
-    toast(`${firstName(p.nome)}: ${novo.length ? 'líder de ' + BASES[k].nome : 'sem base'}`); await reload();
+    toast(`${firstName(p.nome)}: ${novo.length ? (p.role === 'assistente' ? 'assistente de ' : 'líder de ') + BASES[k].nome : 'sem base'}`); await reload();
   } catch(e){ err(e); reload(); }
 }
 
@@ -5506,7 +5725,10 @@ const ACT = {
   'cal-today': () => { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); pgCal(); },
   'cal-type': a => { const t = S.cal.tipos, k = a.dataset.k; t.has(k) ? t.delete(k) : t.add(k); pgCal(); },
   'cal-clear': () => { S.cal.tipos.clear(); pgCal(); },
-  'cal-cell': a => matchMedia('(max-width:720px)').matches ? calDay(a.dataset.date) : evForm(null, a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
+  'bd-new': () => bdForm(), 'bd-open': a => { if (S.page !== 'bordo') go('bordo'); bdForm(a.dataset.id); }, 'bd-save': a => bdSave(a.dataset.id || null), 'bd-del': a => bdDel(a.dataset.id), 'bd-go': () => go('bordo'),
+  'bd-tg': (a, e) => { e?.stopPropagation?.(); bdToggle(a.dataset.id); }, 'bd-f': a => { BD.f = a.dataset.k; BD.lim = 0; pgBordo(); }, 'bd-more': () => { BD.lim = (BD.lim || 60) + 60; pgBordo(); },
+  'bd-day': a => { BD.d = a.dataset.d; pgBordo(); }, 'bd-mes': a => { const k = +a.dataset.k; if (!k){ const d = new Date(); BD.y = d.getFullYear(); BD.m = d.getMonth(); BD.d = bdHoje(); } else { const d = new Date(BD.y, BD.m + k, 1); BD.y = d.getFullYear(); BD.m = d.getMonth(); } pgBordo(); },
+  'cal-cell': a => calDay(a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
   'ev-new': a => evForm(null, a.dataset.date, a.dataset.col), 'ev-open': a => evForm(a.dataset.id),
   'ev-save': a => saveEv(a.dataset.id || null), 'ev-del': a => delEv(a.dataset.id),
   'u-base': a => setUserBase(a.dataset.id, a.dataset.k),
