@@ -1537,7 +1537,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.12';
+const APP_VERSION = '2.13';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2374,6 +2374,9 @@ const imeiOk = v => { const d = imeiN(v); if (d.length !== 15) return false; let
 const imeiShow = v => v ? `<b class="mono">${esc(v)}</b> <button class="icon-btn xs" data-act="copy" data-v="${esc(v)}" title="Copiar IMEI">${ic('copy',13)}</button>${imeiOk(v) ? '' : ' <span class="muted s" title="O IMEI tem 15 dígitos e um dígito verificador">confira</span>'}` : '<b>—</b>';
 
 /* ========================= COLABORADORES ========================= */
+// Cadastro: o encarregado mexe em tudo; líder e assistente, nas próprias bases (o banco confere)
+const canColab = b => isAdmin() || (isLid(S.profile) && !!b && myBases().includes(b));
+const canColabAny = () => isAdmin() || (isLid(S.profile) && myBases().length > 0);
 const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Escolha a base —</option>':'') + myBases().map(k => `<option value="${k}" ${k===cur?'selected':''}>${BASES[k].nome}</option>`).join('');
 function pgColab(){
   const f = S.f, list = colabsV();
@@ -2387,7 +2390,7 @@ function pgColab(){
     <select class="sel" id="fl"><option value="">Todos os líderes</option>${opts(lid.map(p=>[p.id,p.nome]), f.cl)}</select>
     <div class="tb-right">
       <button class="btn" data-act="x-export" data-k="colab" title="Baixar a lista no formato da planilha modelo">${ic('download',16)}<span class="hide-m">Exportar Excel</span></button>
-      ${isAdmin()?`<button class="btn" data-act="x-import" data-k="colab">${ic('upload',16)}<span class="hide-m">Importar Excel</span></button><button class="btn pri" data-act="c-new">${ic('plus',16)}Novo colaborador</button>`:''}
+      ${canColabAny()?`<button class="btn" data-act="x-import" data-k="colab">${ic('upload',16)}<span class="hide-m">Importar Excel</span></button><button class="btn pri" data-act="c-new">${ic('plus',16)}Novo colaborador</button>`:''}
     </div>
   </div>
   <div class="card"><div class="card-b" id="list" style="padding-top:14px"></div></div>`;
@@ -2406,7 +2409,7 @@ function colabList(){
   list.sort((a,b) => key(a).localeCompare(key(b),'pt',{numeric:true}) * dir);
   const th = (c,l,cls='') => `<th class="sort ${cls}" data-act="c-sort" data-col="${c}">${l}<span class="ar">${col===c?(dir>0?'▲':'▼'):'▲▼'}</span></th>`;
   $('#list').innerHTML = list.length ? `<div class="tbl-wrap"><table class="mcards"><thead><tr>${th('nome','Colaborador')}${multi?th('base','Base'):''}${th('telefone','Contato','hide-m')}${th('pos','Nº POS')}${th('veiculo','Veículo')}${th('lider','Líder','hide-m')}${th('status','Status')}<th></th></tr></thead><tbody>${list.map(c => rowColab(c, multi)).join('')}</tbody></table></div><div class="tfoot">${list.length} de ${colabsV().length} colaboradores</div>`
-    : empty('users','Nenhum colaborador encontrado', isAdmin() ? 'Ajuste os filtros, cadastre em "Novo colaborador" ou use "Importar Excel".' : 'Ajuste os filtros de busca.');
+    : empty('users','Nenhum colaborador encontrado', canColabAny() ? 'Ajuste os filtros, cadastre em "Novo colaborador" ou use "Importar Excel".' : 'Ajuste os filtros de busca.');
 }
 function rowColab(c, multi){
   const v = V(c.veiculo_id), l = P(c.lider_id);
@@ -2418,7 +2421,7 @@ function rowColab(c, multi){
     <td data-l="Veículo">${v?`<span class="vlink">${plate(v.placa,true)}<i class="dot" style="--c:${VSTATUS[v.status]?.color}" title="${VSTATUS[v.status]?.label}"></i></span>`:'<span class="muted">Sem veículo</span>'}</td>
     <td class="hide-m">${l?esc(l.nome):'<span class="muted">—</span>'}</td>
     <td data-l="Status">${chip(CSTATUS[c.status])}</td>
-    <td class="act mc-act">${isAdmin()?`<button class="icon-btn" data-act="c-edit" data-id="${c.id}" title="Editar">${ic('edit',16)}</button>`:''}</td></tr>`;
+    <td class="act mc-act">${canColab(c.base)?`<button class="icon-btn" data-act="c-edit" data-id="${c.id}" title="Editar">${ic('edit',16)}</button>`:''}</td></tr>`;
 }
 function openColab(id){
   const c = C(id); if (!c) return;
@@ -2455,7 +2458,7 @@ function openColab(id){
       return `<div class="sec" style="margin-top:0">Ajustes de ponto</div>${aj.length ? aj.map(r => `<div class="aj-ti"><b>${fmtD(r.data)}</b> <span class="muted">${r.hora ? '· ' + hhmm(r.hora) : ''}</span>${r.obs ? `<p>${esc(r.obs)}</p>` : ''}</div>`).join('') : '<p class="muted s">Nenhum ajuste.</p>'}
         <div class="sec">Almoço</div>${al.length ? `<div class="po-tbl">${al.map(r => `<div class="po-tr"><span class="po-td-d">${fmtD(r.data).slice(0,5)}<small>${parseISO(r.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small></span><span class="muted s">${esc(r.obs || '')}</span><span class="mono">${hhmm(r.saida) || '—'}</span><span class="mono">${hhmm(r.volta) || '—'}</span>${alTag(alDur(r))}</div>`).join('')}</div>` : '<p class="muted s">Nenhum almoço lançado.</p>'}
         <button class="btn sm" style="margin-top:12px" data-act="aj-pessoa" data-id="${c.id}">${ic('clock',14)}Ver tudo</button>`; })()}</div>` : ''}`,
-    foot: isAdmin() ? `<button class="btn danger left" data-act="c-del" data-id="${c.id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="c-edit" data-id="${c.id}">${ic('edit',15)}Editar</button>`
+    foot: canColab(c.base) ? `<button class="btn danger left" data-act="c-del" data-id="${c.id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="c-edit" data-id="${c.id}">${ic('edit',15)}Editar</button>`
       : `<button class="btn" data-act="ev-new" data-col="${c.id}">${ic('cal',15)}Marcar ausência</button><button class="btn pri" data-act="modal-close">Fechar</button>`
   });
 }
@@ -2469,8 +2472,8 @@ function colabSelects(base, c, id){
   };
 }
 function colabForm(id){
-  if (!isAdmin()) return;
   const c = id ? C(id) : {status:'ativo', base:defBase()};
+  if (!c || (id ? !canColab(c.base) : !canColabAny())) return toast('Você só pode mexer no cadastro das suas bases.', 'err');
   const sel = colabSelects(c.base, c, id);
   openModal({title: id ? 'Editar colaborador' : 'Novo colaborador', wide:true, body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Nome completo', inp('nome',c.nome,'required maxlength="120"'), true, true)}
@@ -2493,6 +2496,7 @@ function colabForm(id){
 async function saveColab(id){
   const f = formObj(); if (!f.nome) return toast('Informe o nome do colaborador.','err');
   if (!BASES[f.base]) return toast('Escolha a base do colaborador.','err');
+  if (!canColab(f.base) || (id && !canColab(C(id)?.base))) return toast('Você só pode cadastrar e editar colaboradores das suas bases.','err');
   for (const k of ['imei1','imei2']){ const d = imeiN(f[k]); if (f[k] && d.length !== 15) return toast(`O ${k === 'imei1' ? 'IMEI 1' : 'IMEI 2'} precisa ter 15 dígitos (tem ${d.length}).`,'err'); }
   if (f.imei1 && f.imei2 && imeiN(f.imei1) === imeiN(f.imei2)) return toast('O IMEI 1 e o IMEI 2 estão iguais.','err');
   { const dup = ['imei1','imei2'].map(k => imeiN(f[k])).filter(Boolean).map(d => S.colabs.find(c => !sameId(c.id, id) && (c.imei1 === d || c.imei2 === d))).find(Boolean);
@@ -2506,7 +2510,7 @@ async function saveColab(id){
   } catch(e){ err(e); }
 }
 async function delColab(id){
-  const c = C(id); if (!c) return;
+  const c = C(id); if (!c) return; if (!canColab(c.base)) return toast('Você só pode excluir colaboradores das suas bases.','err');
   if (!await confirmBox(`Excluir <b>${esc(c.nome)}</b>?<br><span class="muted">As ausências dele no calendário também serão removidas.</span>`)) return;
   try { await DB.remove('colaboradores', id); closeModal(); toast('Colaborador excluído.'); await reload(); } catch(e){ err(e); }
 }
@@ -2767,7 +2771,7 @@ async function excelFile(kind, withData){
 }
 
 function openImport(kind){
-  if (kind === 'colab' && !isAdmin()) return;
+  if (kind === 'colab' && !canColabAny()) return;
   const sc = IMP[kind];
   openModal({wide:true, title:`Importar ${sc.nome} do Excel`, body:`
     <div class="imp-steps">
@@ -2847,6 +2851,7 @@ function validateImport(){
       const status = mapStatusC(o.status), adm = parseDate(o.admissao), pos = o.pos ? o.pos.replace(/\s+/g,'') : null;
       if (!o.nome) r.errs.push('falta o nome');
       if (!b) r.errs.push(o.base ? `base "${o.base}" não existe` : 'sem base');
+      else if (!canColab(b)) r.errs.push(`base ${bName(b)} não é sua`);
       if (status === undefined) r.warns.push(`status "${o.status}" não reconhecido, ficou Ativo`);
       if (adm === undefined) r.warns.push(`data de admissão "${o.admissao}" ignorada`);
       if (o._posRisk) r.warns.push('Nº POS veio como número no Excel e pode ter perdido dígitos — confira');
