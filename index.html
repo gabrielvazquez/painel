@@ -1537,7 +1537,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.11';
+const APP_VERSION = '2.12';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2368,6 +2368,10 @@ function agendaList(evs, emptyMsg='Nenhuma ausência registrada.'){
     return `<div class="agenda-item" style="--c:${o.color}" data-act="ev-open" data-id="${e.id}"><span class="bar"></span>${avc(c,32)}<div style="flex:1;min-width:0"><b>${esc(c?.nome || 'Colaborador removido')}</b><small>${rangeTxt(e.data_inicio,e.data_fim)}${e.observacao?' — '+esc(e.observacao):''}</small></div>${anexosOf(e.id).length?`<span class="clip" title="Atestado anexado">${ic('clip',14)}</span>`:''}${chip(o)}</div>`; }).join('');
 }
 
+// IMEI do celular: só números; o padrão tem 15 dígitos
+const imeiN = v => String(v ?? '').replace(/\D/g, '');
+const imeiOk = v => { const d = imeiN(v); if (d.length !== 15) return false; let s = 0; for (let i = 0; i < 15; i++){ let x = +d[i]; if (i % 2){ x *= 2; if (x > 9) x -= 9; } s += x; } return s % 10 === 0; };
+const imeiShow = v => v ? `<b class="mono">${esc(v)}</b> <button class="icon-btn xs" data-act="copy" data-v="${esc(v)}" title="Copiar IMEI">${ic('copy',13)}</button>${imeiOk(v) ? '' : ' <span class="muted s" title="O IMEI tem 15 dígitos e um dígito verificador">confira</span>'}` : '<b>—</b>';
 
 /* ========================= COLABORADORES ========================= */
 const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Escolha a base —</option>':'') + myBases().map(k => `<option value="${k}" ${k===cur?'selected':''}>${BASES[k].nome}</option>`).join('');
@@ -2394,7 +2398,7 @@ function pgColab(){
 function colabFiltered(){
   const f = S.f, q = f.cq.toLowerCase().trim();
   return colabsV().filter(c => (!f.cs || c.status===f.cs) && (!f.cl || sameId(c.lider_id,f.cl)) &&
-    (!q || [c.nome,c.cargo,c.telefone,c.email,c.pos,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome,bName(c.base)].join(' ').toLowerCase().includes(q)));
+    (!q || [c.nome,c.cargo,c.telefone,c.email,c.pos,c.imei1,c.imei2,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome,bName(c.base)].join(' ').toLowerCase().includes(q)));
 }
 function colabList(){
   const list = colabFiltered(); const {col, dir} = S.sort; const multi = !S.base && myBases().length > 1;
@@ -2431,6 +2435,8 @@ function openColab(id){
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
         <div><small>E-mail</small><b>${esc(c.email||'—')}</b>${c.email?`<div class="contact"><a href="mailto:${esc(c.email)}">${ic('mail',12)}Enviar e-mail</a></div>`:''}</div>
         <div><small>Nº da POS</small><b class="mono">${esc(c.pos||'—')}</b> ${c.pos?`<button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar">${ic('copy',13)}</button>`:''}</div>
+        <div><small>IMEI 1 (celular)</small>${imeiShow(c.imei1)}</div>
+        <div><small>IMEI 2 (celular)</small>${imeiShow(c.imei2)}</div>
         <div><small>Matrícula</small><b>${esc(c.matricula||'—')}</b></div>
         <div><small>Admissão</small><b>${fmtD(c.admissao)}</b></div>
         <div><small>Líder responsável</small><b>${esc(l?.nome||'—')}</b></div>
@@ -2474,6 +2480,8 @@ function colabForm(id){
     ${fld('Telefone', inp('telefone',c.telefone,'data-mask="phone" inputmode="tel" placeholder="(11) 90000-0000"'))}
     ${fld('E-mail', inp('email',c.email,'type="email" placeholder="nome@empresa.com"'))}
     ${fld('Nº da POS', inp('pos',c.pos,'class="mono" inputmode="numeric" placeholder="Número completo da POS"'), false, false, 'Pode colar o número inteiro, sem limite de dígitos.')}
+    ${fld('IMEI 1 do celular', inp('imei1',c.imei1,'class="mono" inputmode="numeric" maxlength="20" placeholder="15 dígitos"'), false, false, 'No celular, digite *#06# para ver o IMEI.')}
+    ${fld('IMEI 2 do celular', inp('imei2',c.imei2,'class="mono" inputmode="numeric" maxlength="20" placeholder="15 dígitos (chip 2)"'), false, false, 'Celular com dois chips tem dois IMEIs.')}
     ${fld('Data de admissão', inp('admissao',c.admissao,'type="date"'))}
     ${fld('Líder responsável', `<select name="lider_id" id="flid">${sel.lider}</select>`)}
     ${fld('Veículo da frota', `<select name="veiculo_id" id="fveic">${sel.veic}</select>`, false, false, 'Mostra os veículos da base escolhida. Se estiver com outra pessoa, é transferido.')}
@@ -2485,7 +2493,11 @@ function colabForm(id){
 async function saveColab(id){
   const f = formObj(); if (!f.nome) return toast('Informe o nome do colaborador.','err');
   if (!BASES[f.base]) return toast('Escolha a base do colaborador.','err');
-  const row = {nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
+  for (const k of ['imei1','imei2']){ const d = imeiN(f[k]); if (f[k] && d.length !== 15) return toast(`O ${k === 'imei1' ? 'IMEI 1' : 'IMEI 2'} precisa ter 15 dígitos (tem ${d.length}).`,'err'); }
+  if (f.imei1 && f.imei2 && imeiN(f.imei1) === imeiN(f.imei2)) return toast('O IMEI 1 e o IMEI 2 estão iguais.','err');
+  { const dup = ['imei1','imei2'].map(k => imeiN(f[k])).filter(Boolean).map(d => S.colabs.find(c => !sameId(c.id, id) && (c.imei1 === d || c.imei2 === d))).find(Boolean);
+    if (dup && !await confirmBox(`Esse IMEI já está cadastrado para <b>${esc(dup.nome)}</b>. Salvar mesmo assim?`, 'Salvar')) return; }
+  const row = {imei1:imeiN(f.imei1) || null, imei2:imeiN(f.imei2) || null, nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
     admissao:f.admissao, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
   try {
     if (row.veiculo_id){ const other = condutorOf(row.veiculo_id); if (other && !sameId(other.id,id)) await DB.update('colaboradores', other.id, {veiculo_id:null}); }
@@ -2670,12 +2682,14 @@ const IMP = {
       {k:'telefone', h:'Telefone', w:17, text:true, al:['telefone','celular','fone','tel','whatsapp']},
       {k:'email', h:'E-mail', w:28, al:['email','emailcorporativo']},
       {k:'pos', h:'Nº POS', w:22, text:true, al:['npos','pos','numeropos','numerodapos','nposterminal']},
+      {k:'imei1', h:'IMEI 1', w:18, text:true, al:['imei1','imei','imeicelular','imei1celular','imeichip1']},
+      {k:'imei2', h:'IMEI 2', w:18, text:true, al:['imei2','imei2celular','imeichip2']},
       {k:'placa', h:'Placa do veículo', w:16, al:['placadoveiculo','placa','veiculo']},
       {k:'admissao', h:'Admissão', w:12, al:['admissao','dataadmissao','datadeadmissao']},
       {k:'status', h:'Status', w:12, al:['status','situacao']},
       {k:'observacoes', h:'Observações', w:32, al:['observacoes','observacao','obs']}
     ],
-    exemplo:['Maria da Silva','Pinheiros','Técnica de campo','10234','(11) 98765-4321','maria.silva@empresa.com','0012345678901234','ABC1D23','15/03/2021','Ativo','']
+    exemplo:['Maria da Silva','Pinheiros','Técnica de campo','10234','(11) 98765-4321','maria.silva@empresa.com','0012345678901234','356938035643809','','ABC1D23','15/03/2021','Ativo','']
   },
   veic: {
     nome:'veículos', sheet:'Frota', modelo:'Modelo_Frota.xlsx',
@@ -2715,7 +2729,7 @@ const mapTipo = s => { const n = nk(s); if (n.startsWith('moto')) return 'moto';
 
 function rowsExport(kind){
   if (kind === 'veic') return frotaFiltered().map(v => [v.placa, v.tipo==='moto'?'Moto':'Carro', bName(v.base), v.marca||'', v.modelo||'', v.ano||'', v.cor||'', v.km ?? '', VSTATUS[v.status]?.label||'', v.observacoes||'']);
-  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', V(c.veiculo_id)?.placa||'', c.admissao?fmtD(c.admissao):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
+  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', c.imei1||'', c.imei2||'', V(c.veiculo_id)?.placa||'', c.admissao?fmtD(c.admissao):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
 }
 async function excelFile(kind, withData){
   let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
@@ -2847,9 +2861,12 @@ function validateImport(){
       const ex = (o.matricula && S.colabs.find(c => c.matricula && String(c.matricula) === o.matricula))
         || (pos && S.colabs.find(c => c.pos && c.pos === pos))
         || (nn && S.colabs.find(c => nk(c.nome) === nn)) || null;
+      const im1 = imeiN(o.imei1) || null, im2 = imeiN(o.imei2) || null;
+      [['IMEI 1', im1], ['IMEI 2', im2]].forEach(([l, v]) => { if (v && v.length !== 15) r.warns.push(`${l} com ${v.length} dígitos (o normal é 15) — confira`); });
       r.d = {nome:o.nome||null, base:b, cargo:o.cargo||null, matricula:o.matricula||null, telefone:o.telefone ? fmtPhone(o.telefone) : null, email:o.email||null, pos,
         admissao:adm||null, status:status||'ativo', observacoes:o.observacoes||null};
       if (veiculo_id) r.d.veiculo_id = veiculo_id;
+      if (im1) r.d.imei1 = im1; if (im2) r.d.imei2 = im2;   // em branco na planilha: mantém o que já estava
       r.match = ex; r.act = ex ? 'atualizar' : 'novo';
       r.show = [o.nome || '—', b ? BASES[b].nome : (o.base||'—'), pos || '—', o.placa ? normPlaca(o.placa) : '—'];
       out.push(r);
