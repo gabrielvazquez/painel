@@ -1525,6 +1525,67 @@ button.po-tr:hover{background:var(--soft)}
   .bd-cal{padding:12px}
 }
 
+/* ===== v2.14: estoque › pedidos ===== */
+.est-tabs{margin-bottom:16px}
+.pd-bases{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.pd-bases .bs.on{border-color:var(--c);box-shadow:0 0 0 2px color-mix(in srgb,var(--c) 25%,transparent)}
+.pd-tbl tbody tr{cursor:pointer}
+.pd-tbl tbody tr:hover{background:#f8fafc}
+.pd-tbl td{vertical-align:middle}
+.pd-n{font-weight:700;color:var(--muted);font-size:12px;white-space:nowrap}
+.pd-prod{min-width:180px}
+.pd-prod b,.pd-dt span{display:block;font-weight:600}
+.pd-prod small,.pd-dt small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px}
+.pd-dt{white-space:nowrap}
+.pd-dt small.pd-late{color:#dc2626;font-weight:600}
+.pd-r.cancelado{opacity:.6}.pd-r.cancelado .pd-prod b{text-decoration:line-through}
+.pd-r td:first-child{box-shadow:inset 3px 0 0 var(--c)}
+.pd-canal{display:inline-flex;align-items:center;gap:5px;color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);border-radius:20px;padding:3px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.pd-ok{white-space:nowrap;color:#15803d;border-color:#bbf7d0;background:#f0fdf4}
+.pd-ok:hover{background:#dcfce7}
+.pd-sum{display:flex;flex-direction:column;gap:6px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.pd-sum b{font-size:15px}.pd-sum>span{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:var(--muted);font-size:12.5px}
+.pd-prev{display:flex;gap:10px;align-items:flex-start;background:#f0fdf4;border:1px solid #bbf7d0;color:#14532d;border-radius:12px;padding:10px 12px;font-size:13px;margin-top:4px}
+@media (max-width:760px){
+  .pd-tbl tr{padding:12px 4px 12px 12px!important}
+  .pd-tbl td.pd-n{order:-2}
+  .pd-tbl td.pd-prod{flex:1 1 calc(100% - 60px);order:-1;min-width:0}
+  .pd-tbl td.mc-act{margin-left:auto}
+  .pd-tbl td:first-child{box-shadow:none}
+  .pd-tbl tr{box-shadow:inset 3px 0 0 var(--c)}
+}
+
+/* ===== v2.14: diário compartilhado + duplas ===== */
+.bd-por{font-style:italic}
+.bd-tipo{width:100%}.bd-tipo button{flex:1;justify-content:center;display:flex;align-items:center;gap:6px}
+.bd-dup{background:#f0fdfa}
+.bd-dup-i{flex:none;width:26px;height:26px;border-radius:8px;background:#ccfbf1;color:#0f766e;display:grid;place-items:center}
+.bd-pairs{display:flex;flex-wrap:wrap;gap:6px;margin:3px 0 2px}
+.bd-pair{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid #99f6e4;border-radius:20px;padding:3px 10px 3px 4px;font-size:12.5px;font-weight:600;color:#134e4a}
+.bd-pair em{font-style:normal;font-size:10.5px;background:#0d9488;color:#fff;border-radius:50%;width:18px;height:18px;display:grid;place-items:center}
+.bd-pair i{font-style:normal;color:#5eead4;font-weight:700}
+.dup-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.dup-row{display:grid;grid-template-columns:26px minmax(0,1fr) auto minmax(0,1fr) 34px;align-items:center;gap:8px}
+.dup-row .sel{width:100%;min-width:0}
+.dup-n{width:24px;height:24px;border-radius:50%;background:#0d9488;color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.dup-e{color:var(--muted);font-weight:700}
+.dup-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dup-sobra{margin:12px 0 0;font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.dup-sobra b{color:#b45309}
+@media (max-width:600px){
+  .dup-row{grid-template-columns:24px minmax(0,1fr) 34px;row-gap:6px}
+  .dup-row .dup-e{display:none}
+  .dup-row select[data-dup$=":1"]{grid-column:2}
+  .dup-row .icon-btn{grid-row:1;grid-column:3}
+  .bd-top .btn:not(.pri){flex:1;justify-content:center}
+}
+@media (max-width:760px){
+  .toolbar .seg{width:100%;overflow-x:auto}.toolbar .seg button{flex:1 0 auto;justify-content:center}
+  .est-tabs button{flex:1;justify-content:center}
+  .est-tabs em{white-space:nowrap}
+  .pd-tbl td.pd-prod{padding-right:104px!important}
+}
+
 </style>
 </head>
 <body>
@@ -1537,7 +1598,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.13';
+const APP_VERSION = '2.14';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1611,8 +1672,8 @@ const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comport
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', assistente:'Assistente de base', pendente:'Aguardando liberação'};
 const isLid = p => p && (p.role === 'lider' || p.role === 'assistente');
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes'];
-const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes','pedidos'];
+const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot','ped'];
 const ADMIN_T = ['almocos','ponto_ajustes','horas_manuais'];   // só o encarregado lê (o banco já bloqueia; aqui só evita a viagem)
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
@@ -1892,16 +1953,26 @@ function seed(){
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(0), ordem:1, local:'ipiranga', local_nome:'Base Ipiranga', hora:'14:00', notas:'', tarefas:[], publico:true, created_at:h(20), updated_at:h(20)},
     {id:uid(), user_id:'u-admin', user_nome:'Encarregado Principal', data:dOff(1), ordem:0, local:null, local_nome:'Escritório central', hora:'09:00', notas:'Reunião com a gerência', tarefas:[], publico:true, created_at:h(2), updated_at:h(2)}
   ];
-  const an = o => ({id:uid(), user_id:'u-admin', data:dOff(0), texto:'', categoria:'Outro', prioridade:2, base:null, colaborador_id:null, veiculo_id:null, status:'aberto', lembrar_em:null, resolvido_em:null, created_at:h(5), updated_at:h(5), ...o});
+  const an = o => ({id:uid(), user_id:'u-admin', autor_nome:'Encarregado Principal', tipo:'nota', duplas:[], data:dOff(0), texto:'', categoria:'Outro', prioridade:2, base:null, colaborador_id:null, veiculo_id:null, status:'aberto', lembrar_em:null, resolvido_em:null, created_at:h(5), updated_at:h(5), ...o});
   const anotacoes = [
     an({titulo:'Moto com barulho no freio dianteiro', texto:'Líder avisou de manhã. Ver com a oficina se dá para trocar a pastilha esta semana.', categoria:'Veículo', prioridade:3, base:'pinheiros', veiculo_id:veiculos[0]?.id || null, lembrar_em:dOff(0)}),
     an({titulo:'Cobrar reposição de lacres azuis', categoria:'Material', base:'ipiranga', data:dOff(-2), lembrar_em:dOff(2)}),
     an({titulo:'Sistema de OS fora do ar à tarde', texto:'Abrir chamado na TI se repetir.', categoria:'Sistema', prioridade:1, data:dOff(-1)}),
     an({titulo:'Conversar sobre atrasos no retorno do almoço', categoria:'Equipe', base:'pinheiros', colaborador_id:'c2', data:dOff(-4)}),
     an({titulo:'Falta de cones na base', categoria:'Material', base:'sao-mateus', data:dOff(-6), status:'resolvido', resolvido_em:h(30)}),
-    an({titulo:'Anotação da Fernanda', user_id:'u-fernanda', base:'ipiranga'})
+    an({titulo:'Anotação da Fernanda', user_id:'u-fernanda', autor_nome:'Fernanda Souza', base:'ipiranga'}),
+    an({titulo:'Particular da Fernanda', user_id:'u-fernanda', autor_nome:'Fernanda Souza', base:null}),
+    an({titulo:'Duplas — Pinheiros', tipo:'duplas', user_id:'u-carlos', autor_nome:'Carlos Lima', base:'pinheiros', data:dOff(-1), categoria:'Equipe', duplas:[['c1','c2']]})
   ];
-  return {anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  const pd = (n, o) => ({id:uid(), numero:n, item_id:null, quantidade:1, unidade:'un', solicitante:'Encarregado Principal', comprador:'Marcos — Compras', canal:'E-mail', status:'pendente', obs:'', qtd_recebida:null, concluido_em:null, concluido_por:null, criado_por:'u-admin', criado_por_nome:'Encarregado Principal', created_at:h(n*20), updated_at:h(n*20), ...o});
+  const pedidos = [
+    pd(1, {produto:estoque_itens[0]?.nome || 'Lacre azul', item_id:estoque_itens[0]?.id || null, quantidade:500, unidade:estoque_itens[0]?.unidade || 'un', base:'pinheiros', data:dOff(-12), solicitante:'Carlos Lima', canal:'WhatsApp', status:'andamento', obs:'Fornecedor prometeu para esta semana'}),
+    pd(2, {produto:'Luva nitrílica G', quantidade:20, unidade:'cx', base:'ipiranga', data:dOff(-3), solicitante:'Fernanda Souza', comprador:'Patrícia — Suprimentos', canal:'Sistema'}),
+    pd(3, {produto:'Cone de sinalização 75cm', quantidade:10, base:'sao-mateus', data:dOff(-1), solicitante:'Rafael Mendes', canal:'Telefone'}),
+    pd(4, {produto:estoque_itens[1]?.nome || 'Fita isolante', item_id:estoque_itens[1]?.id || null, quantidade:30, unidade:estoque_itens[1]?.unidade || 'un', base:'pinheiros', data:dOff(-20), status:'concluido', qtd_recebida:30, concluido_em:h(200), concluido_por:'Carlos Lima'}),
+    pd(5, {produto:'Bota de segurança 42', quantidade:2, unidade:'par', base:'santo-andre', data:dOff(-9), solicitante:'Paula Ribeiro', canal:'E-mail', status:'cancelado', obs:'Pedido em duplicidade'})
+  ];
+  return {pedidos, anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -1919,6 +1990,8 @@ const DB = {
     if (t === 'estoque_movs') q = q.order('created_at', {ascending:false}).limit(2000);
     if (t === 'almocos' || t === 'ponto_ajustes') q = q.gte('data', iso(addDays(new Date(), -400))).limit(20000);
     if (t === 'visitas') q = q.gte('data', iso(addDays(new Date(), -120)));
+    if (t === 'pedidos') q = q.order('data', {ascending:false}).limit(3000);
+    if (t === 'anotacoes') q = q.gte('data', iso(addDays(new Date(), -400)));
     const {data, error} = await q; if (error) throw error; return data;
   },
   async insert(t, row){ return (await this.insertMany(t, [row]))[0]; },
@@ -1975,7 +2048,7 @@ const S = {
   pt:[], pc:[], alm:[], aju:[], visitas:[],
   pl:{v:'hoje', f:'', q:'', y:today0.getFullYear(), m:today0.getMonth(), d:iso(today0), sd:{}},
   hx:{y:today0.getFullYear(), m:today0.getMonth(), t:'', q:'', ac:'', b:'', p:''},
-  est:{q:'', c:'', b:'', al:false}
+  est:{q:'', c:'', b:'', al:false, tab:''}
 };
 const isAdmin = () => S.profile?.role === 'admin';
 const myBases = () => isAdmin() ? BKEYS.slice() : (S.profile?.bases || []).filter(b => BASES[b]);
@@ -2060,7 +2133,7 @@ const SUBS = {
   colaboradores:'Cadastro da equipe, importação por Excel e vínculo com veículos',
   frota:'Carros e motos com a situação atualizada pelas bases',
   diario:'Problemas das bases e pedidos do encarregado',
-  bordo:'Seu caderno de anotações: problemas do dia a dia, com calendário e lembretes',
+  bordo:'Anotações da equipe e duplas do dia, com calendário e lembretes',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
   escalas:'Plantões de sábado (dão folga) e ações de hora extra (contam horas): quem vai e quem é o responsável',
   horas:'Só o encarregado vê: horas das ações e lançamentos manuais, por base, por ação e por pessoa',
@@ -3478,7 +3551,7 @@ async function cleanQuinzena(key){
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
 // Assinatura dos dados: um hash por tabela, guardado; numa recarga parcial só as tabelas que vieram são recalculadas
 const SIGC = {};
-const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot'];
+const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot','ped'];
 const hstr = str => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length; };
 function dataSig(only){
   return SIGK.map(k => { const a = S[k] || [], c = SIGC[k];
@@ -4031,6 +4104,7 @@ async function estRpc(fn, args){
 }
 
 function pgEstoque(){
+  if (S.est.tab === 'pedidos') return pgPedidos();
   const st = S.est, bases = estBasesView(), q = quinzenaAtual();
   const itens = S.estItens.filter(i => i.ativo !== false);
   const cats = [...new Set(itens.map(i => i.categoria).filter(Boolean))].sort();
@@ -4038,7 +4112,7 @@ function pgEstoque(){
   const myB = myBases();
   const verif = BKEYS.filter(k => !S.base || k === S.base).map(k => ({k, r:revFeita('estoque', k)}));
   const movMes = S.estMovs.filter(m => m.created_at >= iso(new Date(new Date().getFullYear(), new Date().getMonth(), 1)) && bases.includes(m.base)).length;
-  $('#page').innerHTML = `
+  $('#page').innerHTML = `${estTabs()}
   <div class="est-top">
     <div class="card est-q"><div class="est-q-h">${ic('checks',18)}<div><b>Conferência de estoque — ${qLabel(q)}</b><small>A cada quinzena, cada base confere e atualiza a contagem.</small></div>
       <button class="btn sm pri" data-act="est-conf">${ic('checks',14)}Conferir ${myB.length === 1 ? 'minha base' : 'estoque'}</button></div>
@@ -5384,103 +5458,348 @@ async function ajXls(){
 }
 
 
-/* ========================= DIÁRIO DE BORDO (caderno de anotações de problemas) — v2.11 ========================= */
-// Cada pessoa tem o seu caderno: anota problemas do dia, marca quando resolver e escolhe um dia para ser lembrada.
+/* ========================= DIÁRIO DE BORDO (anotações da equipe + duplas do dia) — v2.14 ========================= */
+// Anotação com base: todos da base veem (o encarregado vê todas). Sem base: só quem escreveu.
+// Duplas do dia: para cada base e dia, quem trabalha com quem.
 const BD_CAT = {'Veículo':'#0891b2','Equipe':'#7c3aed','Material':'#ca8a04','Sistema':'#2563eb','Serviço':'#e11d48','Outro':'#64748b'};
 const BD_PRI = {3:{label:'Alta', color:'#dc2626'}, 2:{label:'Média', color:'#f59e0b'}, 1:{label:'Baixa', color:'#94a3b8'}};
+const DUP_COR = '#0d9488';
 const BD = {y:null, m:null, d:null, f:'aberto', q:'', cat:''};
-const bdAll = () => (S.anot || []).filter(a => sameId(a.user_id, S.profile?.id));   // o banco já só devolve as suas; aqui garante no modo teste
+// O banco já devolve só o que cada um pode ver; o filtro aqui vale para o modo teste
+const bdAll = () => (S.anot || []).filter(a => sameId(a.user_id, S.profile?.id) || (a.base && allowed(a.base)));
+const bdNotas = () => bdAll().filter(a => a.tipo !== 'duplas');
+const bdDups = () => bdAll().filter(a => a.tipo === 'duplas');
 const AN = id => S.anot.find(a => sameId(a.id, id));
 const bdHoje = () => iso(new Date());
-const bdDue = a => a.status === 'aberto' && a.lembrar_em && a.lembrar_em <= bdHoje();
+const bdDue = a => a.tipo !== 'duplas' && a.status === 'aberto' && a.lembrar_em && a.lembrar_em <= bdHoje();
+const bdMeu = a => sameId(a.user_id, S.profile?.id);
+const bdBaseDef = () => curBaseKey() || (myBases().length === 1 ? myBases()[0] : '');
+const bdNomeC = id => { const c = C(id) || CX(id); return c ? c.nome : 'Removido'; };
 const bdMatch = a => { const q = nk(BD.q);
-  return (BD.f === 'todos' || a.status === BD.f) && (!BD.cat || a.categoria === BD.cat) && (!S.base || !a.base || a.base === S.base) &&
-    (!q || nk([a.titulo, a.texto, a.categoria, bName(a.base), C(a.colaborador_id)?.nome, V(a.veiculo_id)?.placa].join(' ')).includes(q)); };
-const bdSort = l => l.slice().sort((a,b) => (a.status === 'resolvido') - (b.status === 'resolvido') || (bdDue(b) - bdDue(a)) || b.prioridade - a.prioridade || b.data.localeCompare(a.data));
+  if (BD.f === 'duplas' ? a.tipo !== 'duplas' : a.tipo === 'duplas') return false;
+  return (BD.f === 'todos' || BD.f === 'duplas' || a.status === BD.f) && (!BD.cat || a.tipo === 'duplas' || a.categoria === BD.cat) && (!S.base || !a.base || a.base === S.base) &&
+    (!q || nk([a.titulo, a.texto, a.categoria, bName(a.base), a.autor_nome, C(a.colaborador_id)?.nome, V(a.veiculo_id)?.placa, ...(a.duplas || []).flat().map(bdNomeC)].join(' ')).includes(q)); };
+const bdSort = l => l.slice().sort((a,b) => (b.tipo === 'duplas') - (a.tipo === 'duplas') || (a.status === 'resolvido') - (b.status === 'resolvido') || (bdDue(b) - bdDue(a)) || b.prioridade - a.prioridade || b.data.localeCompare(a.data));
 function pgBordo(){
   if (BD.y == null){ const d = new Date(); BD.y = d.getFullYear(); BD.m = d.getMonth(); BD.d = bdHoje(); }
-  const all = bdAll(), abertos = all.filter(a => a.status === 'aberto'), due = abertos.filter(bdDue);
-  const lista = bdSort(all.filter(bdMatch)), doDia = bdSort(all.filter(a => a.data === BD.d && (!BD.cat || a.categoria === BD.cat)));
+  const notas = bdNotas().filter(a => !S.base || !a.base || a.base === S.base), abertos = notas.filter(a => a.status === 'aberto'), due = abertos.filter(bdDue);
+  const dups = bdDups().filter(a => !S.base || a.base === S.base);
+  const lista = bdSort(bdAll().filter(bdMatch)), doDia = bdSort(bdAll().filter(a => a.data === BD.d && (!S.base || !a.base || a.base === S.base) && (!BD.cat || a.tipo === 'duplas' || a.categoria === BD.cat)));
+  const tit = {aberto:'Em aberto', resolvido:'Resolvidas', duplas:'Duplas montadas', todos:'Todas as anotações'}[BD.f];
   $('#page').innerHTML = `
   <div class="bd-top">
-    <div class="seg">${[['aberto','Em aberto', abertos.length],['resolvido','Resolvidos', all.length - abertos.length],['todos','Todos', all.length]].map(([k,l,n]) => `<button class="${BD.f===k?'on':''}" data-act="bd-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
+    <div class="seg">${[['aberto','Em aberto', abertos.length],['resolvido','Resolvidas', notas.length - abertos.length],['duplas','Duplas', dups.length],['todos','Todas', notas.length]].map(([k,l,n]) => `<button class="${BD.f===k?'on':''}" data-act="bd-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
     <label class="search">${ic('search',16)}<input id="bdq" placeholder="Buscar no diário..." value="${esc(BD.q)}"></label>
     <select class="sel" id="bdcat" aria-label="Categoria"><option value="">Todas as categorias</option>${opts(Object.keys(BD_CAT).map(k => [k,k]), BD.cat)}</select>
-    <button class="btn pri" data-act="bd-new">${ic('plus',16)}Anotar problema</button>
+    <button class="btn" data-act="bd-dup">${ic('users',16)}Duplas do dia</button>
+    <button class="btn pri" data-act="bd-new">${ic('plus',16)}Anotar</button>
   </div>
-  ${due.length ? `<div class="bd-due">${ic('bell',16)}<b>${due.length === 1 ? 'Para lembrar hoje:' : due.length + ' problemas para lembrar hoje:'}</b>${due.slice(0,4).map(a => `<button data-act="bd-open" data-id="${a.id}">${esc(a.titulo)}</button>`).join('')}</div>` : ''}
+  ${due.length ? `<div class="bd-due">${ic('bell',16)}<b>${due.length === 1 ? 'Para lembrar hoje:' : due.length + ' anotações para lembrar hoje:'}</b>${due.slice(0,4).map(a => `<button data-act="bd-open" data-id="${a.id}">${esc(a.titulo)}</button>`).join('')}</div>` : ''}
   <div class="bd-grid">
     <div class="card bd-cal">${bdCal()}</div>
     <div class="bd-side">
-      <div class="card"><div class="card-h"><div><h3>${BD.d === bdHoje() ? 'Hoje' : cap(parseISO(BD.d).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(BD.d).slice(0,5)}</h3><p class="ch-sub">${doDia.length ? doDia.length + ' anotação(ões) neste dia' : 'Nada anotado neste dia'}</p></div></div>
-        <div class="card-b"><div class="bd-qa">${ic('plus',16)}<input id="bdqa" placeholder="Anote um problema neste dia e aperte Enter" maxlength="160" enterkeyhint="done"></div>
+      <div class="card"><div class="card-h"><div><h3>${BD.d === bdHoje() ? 'Hoje' : cap(parseISO(BD.d).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(BD.d).slice(0,5)}</h3><p class="ch-sub">${doDia.length ? doDia.length + ' registro(s) neste dia' : 'Nada anotado neste dia'}</p></div><button class="btn sm" data-act="bd-dup">${ic('users',14)}Duplas</button></div>
+        <div class="card-b"><div class="bd-qa">${ic('plus',16)}<input id="bdqa" placeholder="Anote algo neste dia e aperte Enter" maxlength="160" enterkeyhint="done"></div>
         ${doDia.map(bdCard).join('')}</div></div>
     </div>
   </div>
-  <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>${BD.f === 'aberto' ? 'Problemas em aberto' : BD.f === 'resolvido' ? 'Problemas resolvidos' : 'Todas as anotações'}</h3><p class="ch-sub">${BD.f === 'aberto' ? 'Os que têm lembrete vencido e prioridade alta vêm primeiro' : 'Mais recentes primeiro'}</p></div><span class="muted s">${lista.length}</span></div>
-    <div class="card-b">${lista.length ? lista.slice(0, BD.lim || 60).map(bdCard).join('') + (lista.length > (BD.lim || 60) ? `<button class="btn sm" style="margin:10px auto 0;display:flex" data-act="bd-more">Mostrar mais</button>` : '') : empty('notebook', BD.f === 'aberto' ? 'Nenhum problema em aberto' : 'Nada por aqui', 'Use "Anotar problema" para registrar o que precisa acompanhar.')}</div></div>`;
+  <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>${tit}</h3><p class="ch-sub">${BD.f === 'aberto' ? 'Lembrete vencido e prioridade alta vêm primeiro' : 'Mais recentes primeiro'}</p></div><span class="muted s">${lista.length}</span></div>
+    <div class="card-b">${lista.length ? lista.slice(0, BD.lim || 60).map(bdCard).join('') + (lista.length > (BD.lim || 60) ? `<button class="btn sm" style="margin:10px auto 0;display:flex" data-act="bd-more">Mostrar mais</button>` : '') : empty(BD.f === 'duplas' ? 'users' : 'notebook', BD.f === 'aberto' ? 'Nada em aberto' : BD.f === 'duplas' ? 'Nenhuma dupla montada' : 'Nada por aqui', BD.f === 'duplas' ? 'Use "Duplas do dia" para montar as duplas de uma base.' : 'Use "Anotar" para registrar o que precisa acompanhar.')}</div></div>`;
   let tm; $('#bdq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { BD.q = e.target.value; pgBordo(); const n = $('#bdq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
   $('#bdcat').onchange = e => { BD.cat = e.target.value; pgBordo(); };
   $('#bdqa').onkeydown = async e => { if (e.key !== 'Enter') return; e.preventDefault(); const t = e.target.value.trim(); if (!t) return;
-    try { const r = await DB.insert('anotacoes', {user_id:S.profile.id, data:BD.d, titulo:t, texto:'', categoria:'Outro', prioridade:2, base:defBase() || null, status:'aberto', updated_at:nowISO()}); S.anot.push(r); S.sig = dataSig(); toast('Anotado. Toque no item para completar os detalhes.'); pgBordo(); $('#bdqa')?.focus(); } catch(x){ err(x); } };
+    try { const r = await DB.insert('anotacoes', {user_id:S.profile.id, autor_nome:S.profile.nome, tipo:'nota', data:BD.d, titulo:t, texto:'', categoria:'Outro', prioridade:2, base:bdBaseDef() || null, status:'aberto', updated_at:nowISO()}); S.anot.push(r); S.sig = dataSig(); toast('Anotado. Toque no item para completar os detalhes.'); pgBordo(); $('#bdqa')?.focus(); } catch(x){ err(x); } };
 }
 function bdCal(){
   const f = new Date(BD.y, BD.m, 1), start = addDays(f, -((f.getDay() + 6) % 7)), hj = bdHoje();
-  const by = {}; bdAll().forEach(a => (by[a.data] = by[a.data] || []).push(a));
+  const by = {}; bdAll().filter(a => !S.base || !a.base || a.base === S.base).forEach(a => (by[a.data] = by[a.data] || []).push(a));
   let cells = '';
   for (let i = 0; i < 42; i++){ const d = addDays(start, i), ds = iso(d); if (i >= 35 && d.getMonth() !== BD.m) break;
-    const l = by[ds] || [], ab = l.filter(a => a.status === 'aberto');
-    cells += `<button class="bd-d ${d.getMonth()!==BD.m?'out':''} ${ds===hj?'tdy':''} ${ds===BD.d?'sel':''} ${ab.length?'has':''}" data-act="bd-day" data-d="${ds}" aria-label="${fmtD(ds)}: ${l.length} anotação(ões)"><span>${d.getDate()}</span>
-      ${l.length ? `<i class="bd-dots">${l.slice(0,4).map(a => `<b style="background:${a.status === 'resolvido' ? '#cbd5e1' : BD_PRI[a.prioridade].color}"></b>`).join('')}</i>` : ''}</button>`; }
+    const l = by[ds] || [], nt = l.filter(a => a.tipo !== 'duplas'), dp = l.some(a => a.tipo === 'duplas'), ab = nt.filter(a => a.status === 'aberto');
+    cells += `<button class="bd-d ${d.getMonth()!==BD.m?'out':''} ${ds===hj?'tdy':''} ${ds===BD.d?'sel':''} ${ab.length?'has':''}" data-act="bd-day" data-d="${ds}" aria-label="${fmtD(ds)}: ${l.length} registro(s)"><span>${d.getDate()}</span>
+      ${l.length ? `<i class="bd-dots">${dp ? `<b class="dup" style="background:${DUP_COR}"></b>` : ''}${nt.slice(0,3).map(a => `<b style="background:${a.status === 'resolvido' ? '#cbd5e1' : BD_PRI[a.prioridade].color}"></b>`).join('')}</i>` : ''}</button>`; }
   return `<div class="cal-h" style="margin:0 0 10px"><button class="icon-btn bord" data-act="bd-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${cap(new Date(BD.y, BD.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}))}</h2><button class="icon-btn bord" data-act="bd-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button><button class="btn sm" data-act="bd-mes" data-k="0">Hoje</button></div>
     <div class="bd-cg">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(w => `<span class="bd-w">${w}</span>`).join('')}${cells}</div>
-    <div class="bd-leg">${Object.entries(BD_PRI).map(([k,o]) => `<span><i style="background:${o.color}"></i>${o.label}</span>`).join('')}<span><i style="background:#cbd5e1"></i>Resolvido</span></div>`;
+    <div class="bd-leg">${Object.entries(BD_PRI).map(([k,o]) => `<span><i style="background:${o.color}"></i>${o.label}</span>`).join('')}<span><i style="background:#cbd5e1"></i>Resolvida</span><span><i style="background:${DUP_COR};border-radius:2px"></i>Duplas</span></div>`;
 }
 function bdCard(a){
+  if (a.tipo === 'duplas') return bdDupCard(a);
   const c = a.colaborador_id && (C(a.colaborador_id) || CX(a.colaborador_id)), v = a.veiculo_id && V(a.veiculo_id), due = bdDue(a), done = a.status === 'resolvido';
   return `<div class="bd-it ${done?'done':''} ${due?'due':''}" style="--p:${BD_PRI[a.prioridade].color}" data-act="bd-open" data-id="${a.id}" role="button" tabindex="0">
-    <button class="bd-ck ${done?'on':''}" data-act="bd-tg" data-id="${a.id}" aria-label="${done ? 'Reabrir' : 'Marcar como resolvido'}">${ic('check',13)}</button>
+    <button class="bd-ck ${done?'on':''}" data-act="bd-tg" data-id="${a.id}" aria-label="${done ? 'Reabrir' : 'Marcar como resolvida'}">${ic('check',13)}</button>
     <div class="bd-b"><b>${esc(a.titulo)}</b>${a.texto ? `<small class="bd-tx">${esc(a.texto.split('\n')[0])}</small>` : ''}
-      <div class="bd-m"><span class="bd-cat" style="--c:${BD_CAT[a.categoria] || '#64748b'}">${esc(a.categoria)}</span><span>${ic('cal',11)}${fmtD(a.data).slice(0,5)}</span>${a.base ? `<span>${emblem(a.base,8,2)}${bName(a.base)}</span>` : ''}${c ? `<span>${ic('user',11)}${esc(firstName(c.nome))}</span>` : ''}${v ? `<span>${ic('car',11)}${esc(v.placa)}</span>` : ''}${a.lembrar_em && !done ? `<span class="${due?'late':''}">${ic('bell',11)}${due ? 'lembrar hoje' : 'lembrar ' + fmtD(a.lembrar_em).slice(0,5)}</span>` : ''}${done && a.resolvido_em ? `<span>${ic('check',11)}resolvido ${fmtD(a.resolvido_em).slice(0,5)}</span>` : ''}</div></div>
+      <div class="bd-m"><span class="bd-cat" style="--c:${BD_CAT[a.categoria] || '#64748b'}">${esc(a.categoria)}</span><span>${ic('cal',11)}${fmtD(a.data).slice(0,5)}</span>${a.base ? `<span>${emblem(a.base,8,2)}${bName(a.base)}</span>` : `<span title="Sem base: só você vê">${ic('lock',11)}Particular</span>`}${c ? `<span>${ic('user',11)}${esc(firstName(c.nome))}</span>` : ''}${v ? `<span>${ic('car',11)}${esc(v.placa)}</span>` : ''}${a.lembrar_em && !done ? `<span class="${due?'late':''}">${ic('bell',11)}${due ? 'lembrar hoje' : 'lembrar ' + fmtD(a.lembrar_em).slice(0,5)}</span>` : ''}${done && a.resolvido_em ? `<span>${ic('check',11)}resolvida ${fmtD(a.resolvido_em).slice(0,5)}</span>` : ''}${!bdMeu(a) && a.autor_nome ? `<span class="bd-por">por ${esc(firstName(a.autor_nome))}</span>` : ''}</div></div>
   </div>`;
 }
+function bdDupCard(a){
+  const ds = (a.duplas || []).filter(p => p && p.length);
+  return `<div class="bd-it bd-dup" style="--p:${DUP_COR}" data-act="bd-open" data-id="${a.id}" role="button" tabindex="0">
+    <span class="bd-dup-i">${ic('users',15)}</span>
+    <div class="bd-b"><b>Duplas — ${bName(a.base)}${BD.f === 'duplas' || a.data !== BD.d ? ` · ${fmtD(a.data).slice(0,5)}` : ''}</b>
+      <div class="bd-pairs">${ds.map((p, i) => `<span class="bd-pair"><em>${i + 1}</em>${p.map(id => `<span>${esc(firstName(bdNomeC(id)))}</span>`).join('<i>&amp;</i>')}</span>`).join('')}</div>
+      <div class="bd-m"><span>${ds.length} dupla(s)</span>${a.texto ? `<span>${esc(a.texto.split('\n')[0])}</span>` : ''}${!bdMeu(a) && a.autor_nome ? `<span class="bd-por">por ${esc(firstName(a.autor_nome))}</span>` : ''}</div></div>
+  </div>`;
+}
+const bdTipoSeg = (k, id) => id ? '' : `<div class="seg bd-tipo" style="margin-bottom:14px"><button class="${k === 'nota' ? 'on' : ''}" data-act="bd-new">${ic('notebook',14)}Anotação</button><button class="${k === 'duplas' ? 'on' : ''}" data-act="bd-dup">${ic('users',14)}Duplas do dia</button></div>`;
 function bdForm(id, preset = {}){
-  const a = id ? AN(id) : {titulo:'', texto:'', data:preset.data || BD.d || bdHoje(), categoria:'Outro', prioridade:2, base:defBase() || '', status:'aberto'};
+  const a = id ? AN(id) : {titulo:'', texto:'', data:preset.data || $('#mf [name=data]')?.value || BD.d || bdHoje(), categoria:'Outro', prioridade:2, base:preset.base ?? bdBaseDef(), status:'aberto'};
   if (id && !a) return;
+  if (a.tipo === 'duplas') return bdDupForm(id);
   const pool = colabsSorted().filter(c => c.status !== 'desligado' || sameId(c.id, a.colaborador_id)), vs = veicsV().slice().sort((x,y) => x.placa.localeCompare(y.placa));
-  openModal({wide:true, title: id ? 'Anotação do diário' : 'Anotar problema', body:`<form id="mf" class="form" autocomplete="off">
-    ${fld('O que aconteceu', inp('titulo', a.titulo, 'required maxlength="160" placeholder="Ex: Moto FDS9F92 com barulho no freio"'), true, true)}
+  const podeDel = id && (bdMeu(a) || isAdmin());
+  openModal({wide:true, title: id ? 'Anotação do diário' : 'Anotar', body:`${bdTipoSeg('nota', id)}<form id="mf" class="form" autocomplete="off">
+    ${fld('O que anotar', inp('titulo', a.titulo, 'required maxlength="160" placeholder="Ex: Moto FDS9F92 com barulho no freio"'), true, true)}
     ${fld('Detalhes', `<textarea name="texto" rows="4" placeholder="Anote o que for importante: quem avisou, o que já foi feito, próximos passos...">${esc(a.texto || '')}</textarea>`, true)}
     ${fld('Dia', inp('data', a.data, 'type="date" required'), false, true)}
     ${fld(ic('bell',13) + ' Lembrar em', inp('lembrar_em', a.lembrar_em || '', 'type="date"'), false, false, 'O lembrete aparece no sino e no topo do diário nesse dia.')}
     ${fld('Categoria', rchips('categoria', Object.fromEntries(Object.entries(BD_CAT).map(([k,c]) => [k, {label:k, color:c}])), a.categoria), true)}
     ${fld('Prioridade', rchips('prioridade', Object.fromEntries(Object.entries(BD_PRI).reverse()), String(a.prioridade)), true)}
-    ${fld('Base', `<select name="base"><option value="">Nenhuma</option>${opts(myBases().map(k => [k, BASES[k].nome]), a.base || '')}</select>`)}
+    ${fld('Base', `<select name="base"><option value="">Nenhuma (particular, só eu vejo)</option>${opts(myBases().map(k => [k, BASES[k].nome]), a.base || '')}</select>`, false, false, 'Com base, todos que cuidam dela veem a anotação.')}
     ${fld('Colaborador (opcional)', `<select name="colaborador_id"><option value="">Nenhum</option>${opts(pool.map(c => [c.id, c.nome]), a.colaborador_id || '')}</select>`)}
     ${fld('Veículo (opcional)', `<select name="veiculo_id"><option value="">Nenhum</option>${opts(vs.map(v => [v.id, v.placa + ' — ' + [v.marca, v.modelo].filter(Boolean).join(' ')]), a.veiculo_id || '')}</select>`)}
-    ${id ? fld('Situação', rchips('status', {aberto:{label:'Em aberto', color:'#f59e0b'}, resolvido:{label:'Resolvido', color:'#16a34a'}}, a.status)) : ''}
-  </form>${id ? `<p class="f-hint">Anotado em ${fmtDT(a.created_at)}${a.resolvido_em ? ' · resolvido em ' + fmtDT(a.resolvido_em) : ''}. Só você vê o seu diário.</p>` : '<p class="f-hint">Só você vê o seu diário de bordo.</p>'}`,
-  foot:`${id ? `<button class="btn danger left" data-act="bd-del" data-id="${id}">${ic('trash',15)}Excluir</button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-save" data-id="${id || ''}">${ic('check',15)}Salvar</button>`});
+    ${id ? fld('Situação', rchips('status', {aberto:{label:'Em aberto', color:'#f59e0b'}, resolvido:{label:'Resolvida', color:'#16a34a'}}, a.status)) : ''}
+  </form>${id ? `<p class="f-hint">Anotado por ${esc(bdMeu(a) ? 'você' : a.autor_nome || '—')} em ${fmtDT(a.created_at)}${a.resolvido_em ? ' · resolvida em ' + fmtDT(a.resolvido_em) : ''}.</p>` : ''}`,
+  foot:`${podeDel ? `<button class="btn danger left" data-act="bd-del" data-id="${id}">${ic('trash',15)}Excluir</button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-save" data-id="${id || ''}">${ic('check',15)}Salvar</button>`});
 }
 async function bdSave(id){
-  const f = formObj(); if (!f.titulo) return toast('Escreva o que aconteceu.', 'err'); if (!f.data) return toast('Informe o dia.', 'err');
+  const f = formObj(); if (!f.titulo) return toast('Escreva o que quer anotar.', 'err'); if (!f.data) return toast('Informe o dia.', 'err');
   const a0 = id ? AN(id) : null, st = f.status || a0?.status || 'aberto';
-  const row = {titulo:f.titulo, texto:f.texto || '', data:f.data, lembrar_em:f.lembrar_em || null, categoria:f.categoria || 'Outro', prioridade:+f.prioridade || 2, base:f.base || null, colaborador_id:f.colaborador_id || null, veiculo_id:f.veiculo_id || null, status:st,
+  const row = {tipo:'nota', titulo:f.titulo, texto:f.texto || '', data:f.data, lembrar_em:f.lembrar_em || null, categoria:f.categoria || 'Outro', prioridade:+f.prioridade || 2, base:f.base || null, colaborador_id:f.colaborador_id || null, veiculo_id:f.veiculo_id || null, status:st,
     resolvido_em: st === 'resolvido' ? (a0?.resolvido_em || nowISO()) : null, updated_at:nowISO()};
   try {
     if (a0){ await DB.update('anotacoes', id, row); Object.assign(a0, row); }
-    else { const r = await DB.insert('anotacoes', {...row, user_id:S.profile.id}); S.anot.push(r); }
-    S.sig = dataSig(); closeModal(); toast(a0 ? 'Anotação salva.' : 'Problema anotado no diário.'); S.page === 'bordo' ? pgBordo() : render();
+    else { const r = await DB.insert('anotacoes', {...row, user_id:S.profile.id, autor_nome:S.profile.nome}); S.anot.push(r); }
+    S.sig = dataSig(); closeModal(); toast(a0 ? 'Anotação salva.' : 'Anotado no diário.'); S.page === 'bordo' ? pgBordo() : render();
   } catch(e){ err(e); }
+}
+
+/* ----- Duplas do dia ----- */
+let DUPF = null;   // estado da janela: {id, base, data, pares:[[a,b],...], texto}
+function bdDupForm(id, preset = {}){
+  const a = id ? AN(id) : null;
+  if (id && !a) return;
+  const data = a?.data || preset.data || $('#mf [name=data]')?.value || BD.d || bdHoje();
+  let base = a?.base || preset.base || bdBaseDef() || myBases()[0] || '';
+  if (!a){ const ex = bdDups().find(x => x.base === base && x.data === data); if (ex) return bdDupForm(ex.id); }
+  DUPF = {id:a?.id || null, base, data, pares: a ? (a.duplas || []).map(p => [p[0] || '', p[1] || '']) : [['','']], texto:a?.texto || ''};
+  if (!DUPF.pares.length) DUPF.pares = [['','']];
+  const podeDel = a && (bdMeu(a) || isAdmin());
+  openModal({wide:true, title: a ? `Duplas — ${bName(a.base)}, ${fmtD(a.data)}` : 'Duplas do dia', body:`${bdTipoSeg('duplas', id)}<div id="dupbox"></div>`,
+    foot:`${podeDel ? `<button class="btn danger left" data-act="bd-del" data-id="${a.id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}${a ? `<button class="btn" data-act="bd-dup-copy">${ic('copy',15)}<span class="hide-s">Copiar texto</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-dup-save">${ic('check',15)}Salvar duplas</button>`,
+    onMount: () => bdDupDraw()});
+}
+function bdDupDraw(){
+  const st = DUPF, box = $('#dupbox'); if (!st || !box) return;
+  const pool = S.colabs.filter(c => c.base === st.base && c.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  const aus = c => { const e = ausenteEm(c.id, st.data); return e ? (EV[e.tipo]?.label || 'Ausente') : ''; };
+  const usados = st.pares.flat().filter(Boolean).map(String);
+  const sobra = pool.filter(c => !usados.includes(String(c.id)) && !aus(c) && c.status === 'ativo');
+  const optsFor = (cur) => `<option value="">Escolha...</option>` + pool.map(c => { const s = String(c.id), ja = s !== String(cur) && usados.includes(s), au = aus(c);
+    return `<option value="${c.id}" ${s === String(cur) ? 'selected' : ''} ${ja ? 'disabled' : ''}>${esc(c.nome)}${au ? ' — ' + au.toLowerCase() : c.status !== 'ativo' ? ' — ' + (CSTATUS[c.status]?.label || '').toLowerCase() : ''}${ja ? ' (já em outra dupla)' : ''}</option>`; }).join('');
+  const ult = !st.id && bdDups().filter(x => x.base === st.base && x.data < st.data).sort((a,b) => b.data.localeCompare(a.data))[0];
+  box.innerHTML = `<form id="mf" class="form" autocomplete="off" onsubmit="return false">
+    ${fld('Dia', `<input name="data" type="date" value="${st.data}" id="dupd" ${st.id ? 'disabled' : ''}>`, false, true)}
+    ${fld('Base', `<select name="base" id="dupb" ${st.id ? 'disabled' : ''}>${opts(myBases().map(k => [k, BASES[k].nome]), st.base)}</select>`, false, true)}
+  </form>
+  <div class="dup-list">${st.pares.map((p, i) => `<div class="dup-row"><span class="dup-n">${i + 1}</span>
+      <select class="sel" data-dup="${i}:0" aria-label="Dupla ${i + 1}, primeira pessoa">${optsFor(p[0])}</select><span class="dup-e">&amp;</span>
+      <select class="sel" data-dup="${i}:1" aria-label="Dupla ${i + 1}, segunda pessoa">${optsFor(p[1])}</select>
+      <button class="icon-btn" data-act="bd-dup-rm" data-k="${i}" title="Remover dupla" ${st.pares.length === 1 ? 'disabled' : ''}>${ic('x',15)}</button></div>`).join('')}</div>
+  <div class="dup-acts"><button class="btn sm" data-act="bd-dup-add">${ic('plus',14)}Adicionar dupla</button>${ult ? `<button class="btn sm" data-act="bd-dup-rep" data-id="${ult.id}">${ic('refresh',14)}Repetir as de ${fmtD(ult.data).slice(0,5)}</button>` : ''}</div>
+  ${pool.length ? `<p class="dup-sobra">${sobra.length ? `<b>Sem dupla (${sobra.length}):</b> ${sobra.map(c => esc(firstName(c.nome))).join(', ')}` : `${ic('check',13)} Todos os ativos da base estão em uma dupla.`}</p>` : `<p class="dup-sobra">Nenhum colaborador cadastrado em ${bName(st.base)}.</p>`}
+  <div class="form" style="margin-top:12px">${fld('Observação (opcional)', `<textarea id="dupt" rows="2" placeholder="Ex: dupla 2 fica na região do Butantã">${esc(st.texto)}</textarea>`, true)}</div>`;
+  $$('[data-dup]', box).forEach(s => s.onchange = () => { const [i, j] = s.dataset.dup.split(':').map(Number); st.pares[i][j] = s.value; bdDupDraw(); });
+  const dd = $('#dupd', box), db = $('#dupb', box), tt = $('#dupt', box);
+  tt.oninput = () => st.texto = tt.value;
+  const troca = () => { const ex = bdDups().find(x => x.base === db.value && x.data === dd.value);
+    if (ex){ toast('Já existem duplas desse dia nessa base. Abrindo para editar.'); return bdDupForm(ex.id); }
+    st.base = db.value; st.data = dd.value || st.data; st.pares = st.pares.map(() => ['','']); bdDupDraw(); };
+  if (!st.id){ dd.onchange = troca; db.onchange = troca; }
+}
+async function bdDupSave(){
+  const st = DUPF; if (!st) return;
+  if (!st.base || !allowed(st.base)) return toast('Escolha a base.', 'err');
+  const pares = st.pares.filter(p => p[0] || p[1]);
+  if (!pares.length) return toast('Monte pelo menos uma dupla.', 'err');
+  const inc = pares.findIndex(p => !p[0] || !p[1]); if (inc >= 0) return toast(`A dupla ${inc + 1} está incompleta: escolha as duas pessoas.`, 'err');
+  const row = {tipo:'duplas', titulo:`Duplas — ${bName(st.base)}`, texto:st.texto || '', duplas:pares.map(p => p.map(String)), categoria:'Equipe', prioridade:2, status:'aberto', updated_at:nowISO()};
+  try {
+    const a0 = st.id ? AN(st.id) : null;
+    if (a0){ await DB.update('anotacoes', a0.id, row); Object.assign(a0, row); }
+    else { const r = await DB.insert('anotacoes', {...row, base:st.base, data:st.data, user_id:S.profile.id, autor_nome:S.profile.nome}); S.anot.push(r); }
+    S.sig = dataSig(); closeModal(); BD.d = st.data; toast(`${pares.length} dupla(s) salva(s) para ${bName(st.base)}.`); S.page === 'bordo' ? pgBordo() : go('bordo');
+  } catch(e){ err(e); }
+}
+function bdDupTexto(a){
+  return `*Duplas ${bName(a.base)} — ${cap(parseISO(a.data).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(a.data)}*\n` +
+    (a.duplas || []).map((p, i) => `${i + 1}. ${p.map(bdNomeC).map(firstName).join(' e ')}`).join('\n') + (a.texto ? `\n\n${a.texto}` : '');
 }
 async function bdToggle(id){
   const a = AN(id); if (!a) return; const st = a.status === 'aberto' ? 'resolvido' : 'aberto';
   const row = {status:st, resolvido_em: st === 'resolvido' ? nowISO() : null, updated_at:nowISO()};
-  try { await DB.update('anotacoes', id, row); Object.assign(a, row); S.sig = dataSig(); toast(st === 'resolvido' ? 'Marcado como resolvido.' : 'Reaberto.'); pgBordo(); } catch(e){ err(e); }
+  try { await DB.update('anotacoes', id, row); Object.assign(a, row); S.sig = dataSig(); toast(st === 'resolvido' ? 'Marcada como resolvida.' : 'Reaberta.'); pgBordo(); } catch(e){ err(e); }
 }
 async function bdDel(id){
-  const a = AN(id); if (!a || !await confirmBox(`Excluir a anotação <b>${esc(a.titulo)}</b>?`)) return;
-  try { await DB.remove('anotacoes', id); S.anot = S.anot.filter(x => x !== a); S.sig = dataSig(); closeModal(); toast('Anotação excluída.'); pgBordo(); } catch(e){ err(e); }
+  const a = AN(id); if (!a || !await confirmBox(`Excluir ${a.tipo === 'duplas' ? `as duplas de <b>${bName(a.base)}</b> em ${fmtD(a.data)}` : `a anotação <b>${esc(a.titulo)}</b>`}?`)) return;
+  try { await DB.remove('anotacoes', id); S.anot = S.anot.filter(x => x !== a); S.sig = dataSig(); closeModal(); toast('Excluído.'); pgBordo(); } catch(e){ err(e); }
+}
+
+
+/* ========================= ESTOQUE › PEDIDOS (v2.14) ========================= */
+// Pedidos feitos ao pessoal que compra. Ao concluir, a quantidade recebida entra no estoque da base.
+const PED_ST = {pendente:{label:'Pedido feito', color:'#f59e0b', icon:'send'}, andamento:{label:'Em andamento', color:'#2563eb', icon:'truck'}, concluido:{label:'Concluído', color:'#16a34a', icon:'check'}, cancelado:{label:'Cancelado', color:'#94a3b8', icon:'x'}};
+const PED_CANAL = {'E-mail':{color:'#2563eb', icon:'mail'}, 'WhatsApp':{color:'#16a34a', icon:'msg'}, 'Telefone':{color:'#7c3aed', icon:'phone'}, 'Sistema':{color:'#0891b2', icon:'gauge'}, 'Pessoalmente':{color:'#ea580c', icon:'user'}, 'Outro':{color:'#64748b', icon:'more'}};
+const PD = {f:'abertos', q:'', b:'', canal:'', lim:0};
+const PDX = id => (S.ped || []).find(p => sameId(p.id, id));
+const pedAberto = p => p.status === 'pendente' || p.status === 'andamento';
+const pedDias = p => Math.max(0, Math.round((parseISO(bdHoje()) - parseISO(p.data)) / 864e5));
+const pedVis = () => (S.ped || []).filter(p => allowed(p.base) && (!S.base || p.base === S.base));
+const canalTag = c => { const o = PED_CANAL[c] || PED_CANAL.Outro; return `<span class="pd-canal" style="--c:${o.color}">${ic(o.icon,12)}${esc(c || '—')}</span>`; };
+const pedItemNome = p => p.item_id ? (itemOf(p.item_id)?.nome || p.produto) : p.produto;
+function estTabs(){
+  const n = pedVis().filter(pedAberto).length, t = S.est.tab || '';
+  return `<div class="ex-tabs col-tabs est-tabs" role="tablist">
+    <button class="${!t ? 'on' : ''}" data-act="est-tab" data-k="">${ic('box',15)}Itens<em>${S.estItens.filter(i => i.ativo !== false).length}</em></button>
+    <button class="${t === 'pedidos' ? 'on' : ''}" data-act="est-tab" data-k="pedidos">${ic('send',15)}Pedidos${n ? `<em title="em aberto">${n}</em>` : ''}</button>
+  </div>`;
+}
+function pgPedidos(){
+  const all = pedVis(), ab = all.filter(pedAberto), mes = iso(new Date()).slice(0, 7);
+  const q = nk(PD.q), velhos = ab.filter(p => pedDias(p) > 7);
+  const match = p => (PD.f === 'todos' || (PD.f === 'abertos' ? pedAberto(p) : p.status === PD.f)) && (!PD.b || p.base === PD.b) && (!PD.canal || p.canal === PD.canal) &&
+    (!q || nk([p.numero, p.produto, pedItemNome(p), p.solicitante, p.comprador, p.canal, bName(p.base), p.obs].join(' ')).includes(q));
+  const list = all.filter(match).sort((a,b) => PD.f === 'abertos'
+    ? (a.status === 'pendente') - (b.status === 'pendente') || a.data.localeCompare(b.data) || (a.numero - b.numero)
+    : b.data.localeCompare(a.data) || (b.numero - a.numero));
+  const bases = BKEYS.filter(k => allowed(k) && (!S.base || k === S.base));
+  const lim = PD.lim || 80;
+  $('#page').innerHTML = `${estTabs()}
+  <div class="esc-kpis">
+    <div class="card ek" style="--c:#f59e0b" data-act="pd-f" data-k="pendente" role="button"><span>${ic('send',16)}Pedido feito</span><b>${all.filter(p => p.status === 'pendente').length}</b><small>aguardando o pessoal da compra</small></div>
+    <div class="card ek" style="--c:#2563eb" data-act="pd-f" data-k="andamento" role="button"><span>${ic('truck',16)}Em andamento</span><b>${all.filter(p => p.status === 'andamento').length}</b><small>comprado, a caminho</small></div>
+    <div class="card ek" style="--c:#ef4444" data-act="pd-f" data-k="abertos" role="button"><span>${ic('clock',16)}Há mais de 7 dias</span><b>${velhos.length}</b><small>${velhos.length ? 'vale cobrar' : 'nenhum atrasado'}</small></div>
+    <div class="card ek" style="--c:#16a34a" data-act="pd-f" data-k="concluido" role="button"><span>${ic('check',16)}Concluídos no mês</span><b>${all.filter(p => p.status === 'concluido' && (p.concluido_em || '').slice(0, 7) === mes).length}</b><small>já entraram no estoque</small></div>
+  </div>
+  ${bases.length > 1 ? `<div class="pd-bases">${bases.map(k => { const n = ab.filter(p => p.base === k).length; return `<button class="bs ${PD.b === k ? 'on' : ''}" style="--c:${BASES[k].c}" data-act="pd-b" data-k="${k}">${emblem(k,14,4)}<span><b>${BASES[k].nome}</b><small>${n ? n + ' em aberto' : 'nada em aberto'}</small></span></button>`; }).join('')}</div>` : ''}
+  <div class="toolbar">
+    <div class="seg">${[['abertos','Em aberto', ab.length],['concluido','Concluídos', all.filter(p => p.status === 'concluido').length],['cancelado','Cancelados', all.filter(p => p.status === 'cancelado').length],['todos','Todos', all.length]].map(([k,l,n]) => `<button class="${PD.f===k?'on':''}" data-act="pd-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
+    <label class="search">${ic('search',16)}<input id="pdq" placeholder="Buscar produto, quem pediu, nº..." value="${esc(PD.q)}"></label>
+    <select class="sel" id="pdcanal" aria-label="Por onde"><option value="">Todos os canais</option>${opts(Object.keys(PED_CANAL).map(k => [k,k]), PD.canal)}</select>
+    <div class="tb-right"><button class="btn" data-act="pd-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button><button class="btn pri" data-act="pd-new">${ic('plus',16)}Novo pedido</button></div>
+  </div>
+  <div class="card">${list.length ? `<div class="tbl-wrap"><table class="mcards pd-tbl"><thead><tr><th>Nº</th><th>Produto</th><th>Base</th><th>Quem pediu</th><th>Pedido para</th><th>Por onde</th><th>Data</th><th>Situação</th><th></th></tr></thead><tbody>
+    ${list.slice(0, lim).map(pedRow).join('')}</tbody></table></div>
+    <div class="tfoot">${Math.min(list.length, lim)} de ${list.length} pedido(s)${list.length > lim ? ` · <button class="linkbtn" data-act="pd-more">Mostrar mais</button>` : ''}</div>`
+    : empty('send', PD.f === 'abertos' ? 'Nenhum pedido em aberto' : 'Nenhum pedido encontrado', 'Use "Novo pedido" para registrar o que foi pedido para o pessoal da compra.')}</div>`;
+  let tm; $('#pdq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { PD.q = e.target.value; pgPedidos(); const n = $('#pdq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  $('#pdcanal').onchange = e => { PD.canal = e.target.value; pgPedidos(); };
+}
+function pedRow(p){
+  const o = PED_ST[p.status], d = pedDias(p), late = pedAberto(p) && d > 7;
+  return `<tr class="pd-r ${p.status}" data-act="pd-open" data-id="${p.id}" role="button" tabindex="0" style="--c:${o.color}">
+    <td data-l="" class="pd-n">#${p.numero ?? '—'}</td>
+    <td data-l="" class="pd-prod"><b>${esc(pedItemNome(p))}</b><small>${fmtQ(p.status === 'concluido' && p.qtd_recebida != null ? p.qtd_recebida : p.quantidade, p.unidade)}${p.status === 'concluido' && p.qtd_recebida != null && +p.qtd_recebida !== +p.quantidade ? ` <span class="muted">(pedido: ${fmtQ(p.quantidade)})</span>` : ''}</small></td>
+    <td data-l="">${bTag(p.base)}</td>
+    <td data-l="Quem pediu">${esc(p.solicitante || '—')}</td>
+    <td data-l="Para">${esc(p.comprador || '—')}</td>
+    <td data-l="">${canalTag(p.canal)}</td>
+    <td data-l="" class="pd-dt"><span>${fmtD(p.data)}</span>${pedAberto(p) ? `<small class="${late ? 'pd-late' : ''}">${d === 0 ? 'hoje' : d === 1 ? 'há 1 dia' : 'há ' + d + ' dias'}</small>` : p.status === 'concluido' && p.concluido_em ? `<small>entrou ${fmtD(p.concluido_em).slice(0,5)}</small>` : ''}</td>
+    <td data-l="">${chip(o)}</td>
+    <td class="act mc-act">${pedAberto(p) ? `<button class="btn sm pd-ok" data-act="pd-concluir" data-id="${p.id}" title="Chegou: dar entrada no estoque">${ic('check',14)}<span>Concluir</span></button>` : ''}</td>
+  </tr>`;
+}
+function pedForm(id){
+  const p = id ? PDX(id) : {data:bdHoje(), quantidade:1, unidade:'un', base:defBase(), solicitante:S.profile.nome, comprador:'', canal:'E-mail', status:'pendente', obs:''};
+  if (id && !p) return;
+  if (id && !pedAberto(p)) return pedVer(id);
+  const its = S.estItens.filter(i => i.ativo !== false).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  const compr = [...new Set((S.ped || []).map(x => x.comprador).filter(Boolean))].sort();
+  const quem = [...new Set([...S.profiles.filter(x => x.ativo && x.role !== 'pendente').map(x => x.nome), ...(S.ped || []).map(x => x.solicitante)].filter(Boolean))].sort();
+  openModal({wide:true, title: id ? `Pedido #${p.numero}` : 'Novo pedido', body:`<form id="mf" class="form" autocomplete="off">
+    ${fld('Qual o produto', `<input name="produto" list="pdits" value="${esc(id ? pedItemNome(p) : '')}" required maxlength="120" placeholder="Escolha um item do estoque ou digite um novo"><datalist id="pdits">${its.map(i => `<option value="${esc(i.nome)}">${esc(i.categoria || '')} — ${esc(i.unidade || 'un')}</option>`).join('')}</datalist>`, true, true, 'Se o produto ainda não estiver no estoque, ele é cadastrado quando o pedido for concluído.')}
+    ${fld('Quantidade', inp('quantidade', p.quantidade, 'type="number" min="0.01" step="any" required inputmode="decimal"'), false, true)}
+    ${fld('Unidade', `<select name="unidade" id="pdun">${opts(EST_UN.map(u => [u,u]), p.unidade || 'un')}</select>`)}
+    ${fld('Pra qual base vai', `<select name="base" required>${baseOpts(p.base, !p.base)}</select>`, false, true)}
+    ${fld('Data do pedido', inp('data', p.data, 'type="date" required'), false, true)}
+    ${fld('Quem pediu', `<input name="solicitante" list="pdquem" value="${esc(p.solicitante || '')}" required maxlength="80"><datalist id="pdquem">${quem.map(n => `<option value="${esc(n)}">`).join('')}</datalist>`, false, true)}
+    ${fld('Pedido para (quem compra)', `<input name="comprador" list="pdcomp" value="${esc(p.comprador || '')}" required maxlength="80" placeholder="Ex: Marcos — Compras"><datalist id="pdcomp">${compr.map(n => `<option value="${esc(n)}">`).join('')}</datalist>`, false, true)}
+    ${fld('Por onde foi o pedido', rchips('canal', Object.fromEntries(Object.entries(PED_CANAL).map(([k,o]) => [k, {label:k, color:o.color}])), p.canal || 'E-mail'), true)}
+    ${fld('Situação', rchips('status', {pendente:PED_ST.pendente, andamento:PED_ST.andamento}, p.status), true)}
+    ${fld('Observações', `<textarea name="obs" rows="2" placeholder="Ex: nº do chamado, previsão de entrega, fornecedor...">${esc(p.obs || '')}</textarea>`, true)}
+  </form>${id ? `<p class="f-hint">Registrado por ${esc(p.criado_por_nome || '—')} em ${fmtDT(p.created_at)}.</p>` : ''}`,
+  foot:`${id ? `<button class="btn danger left" data-act="pd-del" data-id="${id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button><button class="btn" data-act="pd-cancel" data-id="${id}">${ic('x',15)}<span class="hide-s">Cancelar pedido</span></button>` : `<button class="btn" data-act="modal-close">Cancelar</button>`}<button class="btn" data-act="pd-save" data-id="${id || ''}">${ic('check',15)}Salvar</button>${id ? `<button class="btn pri" data-act="pd-concluir" data-id="${id}">${ic('box',15)}Concluir e dar entrada</button>` : ''}`,
+  onMount: ov => { const pr = $('[name=produto]', ov); pr.onchange = () => { const it = its.find(i => nk(i.nome) === nk(pr.value)); if (it) $('#pdun', ov).value = it.unidade || 'un'; }; }});
+}
+async function pedSave(id){
+  const f = formObj();
+  if (!f.produto) return toast('Informe o produto.', 'err');
+  if (!(+f.quantidade > 0)) return toast('Informe a quantidade.', 'err');
+  if (!f.base || !allowed(f.base)) return toast('Escolha a base.', 'err');
+  if (!f.solicitante) return toast('Informe quem pediu.', 'err');
+  if (!f.comprador) return toast('Informe para quem o pedido foi feito.', 'err');
+  const it = S.estItens.find(i => i.ativo !== false && nk(i.nome) === nk(f.produto));
+  const row = {produto:it ? it.nome : f.produto.trim(), item_id:it ? it.id : null, quantidade:+f.quantidade, unidade:f.unidade || 'un', base:f.base, data:f.data || bdHoje(), solicitante:f.solicitante.trim(), comprador:f.comprador.trim(), canal:f.canal || 'Outro', status:f.status || 'pendente', obs:f.obs || '', updated_at:nowISO()};
+  try {
+    const p0 = id ? PDX(id) : null;
+    if (p0){ await DB.update('pedidos', id, row); Object.assign(p0, row); }
+    else { const r = await DB.insert('pedidos', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome}); if (TEST && r.numero == null){ r.numero = Math.max(0, ...(S.ped || []).map(x => +x.numero || 0)) + 1; await DB.update('pedidos', r.id, {numero:r.numero}); } S.ped.push(r); }
+    S.sig = dataSig(); closeModal(); toast(p0 ? 'Pedido salvo.' : `Pedido registrado para ${bName(row.base)}.`); pgPedidos();
+  } catch(e){ err(e); }
+}
+function pedConcluir(id){
+  const p = PDX(id); if (!p || !pedAberto(p)) return;
+  const it = p.item_id ? itemOf(p.item_id) : S.estItens.find(i => i.ativo !== false && nk(i.nome) === nk(p.produto));
+  const atual = it ? qtdOf(it, p.base) : 0;
+  openModal({title:`Concluir pedido #${p.numero}`, body:`<form id="mf" class="form one" autocomplete="off">
+    <div class="pd-sum"><b>${esc(pedItemNome(p))}</b><span>${bTag(p.base)} · pedido em ${fmtD(p.data)} por ${esc(p.solicitante)} para ${esc(p.comprador)}</span></div>
+    ${fld('Quantidade que chegou', inp('qtd', p.quantidade, 'type="number" min="0.01" step="any" required inputmode="decimal" id="pdqtd"'), true, true)}
+    <div class="pd-prev" id="pdprev"></div>
+  </form>`,
+  foot:`<button class="btn" data-act="modal-close">Voltar</button><button class="btn pri" data-act="pd-ok" data-id="${id}">${ic('box',15)}Concluir e dar entrada</button>`,
+  onMount: ov => { const up = () => { const q = +$('#pdqtd', ov).value || 0;
+      $('#pdprev', ov).innerHTML = it ? `${ic('box',15)}<span>Entra no estoque de <b>${bName(p.base)}</b>: ${fmtQ(atual, it.unidade)} → <b>${fmtQ(atual + q, it.unidade)}</b></span>`
+        : `${ic('plus',15)}<span><b>${esc(p.produto)}</b> ainda não está no estoque: será cadastrado (${esc(p.unidade)}) e entra com <b>${fmtQ(q, p.unidade)}</b> em ${bName(p.base)}.</span>`; };
+    $('#pdqtd', ov).oninput = up; up(); $('#pdqtd', ov).select(); }});
+}
+async function pedOk(id){
+  const p = PDX(id), q = +($('#pdqtd')?.value || 0); if (!p) return;
+  if (!(q > 0)) return toast('Informe a quantidade que chegou.', 'err');
+  try {
+    if (TEST){
+      let it = p.item_id ? itemOf(p.item_id) : S.estItens.find(i => i.ativo !== false && nk(i.nome) === nk(p.produto));
+      if (!it){ it = await DB.insert('estoque_itens', {nome:p.produto, unidade:p.unidade, categoria:'Outros', minimo_padrao:0, ativo:true, criado_por:S.profile.id, criado_por_nome:S.profile.nome}); }
+      await estRpc('estoque_movimentar', {p_item:it.id, p_base:p.base, p_tipo:'entrada', p_qtd:q, p_motivo:`Pedido #${p.numero}${p.comprador ? ' — ' + p.comprador : ''}`, p_destino:null});
+      await DB.update('pedidos', id, {status:'concluido', item_id:it.id, qtd_recebida:q, concluido_em:nowISO(), concluido_por:S.profile.nome, updated_at:nowISO()});
+    } else { const {error} = await sb.rpc('pedido_concluir', {pid:id, qtd:q}); if (error) throw error; }
+    closeModal(); toast(`Pedido #${p.numero} concluído: ${fmtQ(q, p.unidade)} entraram no estoque de ${bName(p.base)}.`);
+    await loadAll(); render();
+  } catch(e){ err(e); }
+}
+function pedVer(id){
+  const p = PDX(id); if (!p) return;
+  const row = (l, v) => `<div><small>${l}</small><b>${v}</b></div>`;
+  openModal({title:`Pedido #${p.numero}`, body:`<div class="pd-sum"><b>${esc(pedItemNome(p))}</b><span>${chip(PED_ST[p.status])}</span></div>
+    <div class="dl">${row('Quantidade pedida', fmtQ(p.quantidade, p.unidade))}${p.qtd_recebida != null ? row('Quantidade que chegou', fmtQ(p.qtd_recebida, p.unidade)) : ''}
+    ${row('Base', bTag(p.base))}${row('Data do pedido', fmtD(p.data))}${row('Quem pediu', esc(p.solicitante))}${row('Pedido para', esc(p.comprador || '—'))}${row('Por onde', canalTag(p.canal))}
+    ${p.concluido_em ? row('Concluído', esc(fmtDT(p.concluido_em)) + (p.concluido_por ? ' por ' + esc(firstName(p.concluido_por)) : '')) : ''}${p.obs ? `<div class="full"><small>Observações</small><b style="white-space:pre-wrap;font-weight:400">${esc(p.obs)}</b></div>` : ''}</div>
+    ${p.status === 'concluido' ? '<p class="f-hint">Este pedido já entrou no estoque. Se algo veio errado, corrija pelo botão Movimentar do item.</p>' : ''}`,
+  foot:`${p.status === 'cancelado' ? `<button class="btn danger left" data-act="pd-del" data-id="${id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="pd-reabrir" data-id="${id}">${ic('refresh',15)}Reabrir</button>` : isAdmin() ? `<button class="btn danger left" data-act="pd-del" data-id="${id}">${ic('trash',15)}Excluir registro</button>` : ''}${p.item_id && itemOf(p.item_id) ? `<button class="btn" data-act="est-open" data-id="${p.item_id}">${ic('box',15)}Ver item no estoque</button>` : ''}<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+async function pedStatus(id, st){
+  const p = PDX(id); if (!p) return;
+  if (st === 'cancelado' && !await confirmBox(`Cancelar o pedido <b>#${p.numero} — ${esc(pedItemNome(p))}</b>?`, 'Cancelar pedido')) return;
+  try { await DB.update('pedidos', id, {status:st, updated_at:nowISO()}); p.status = st; S.sig = dataSig(); closeModal(); toast(st === 'cancelado' ? 'Pedido cancelado.' : 'Pedido reaberto.'); pgPedidos(); } catch(e){ err(e); }
+}
+async function pedDel(id){
+  const p = PDX(id); if (!p || !await confirmBox(`Excluir o pedido <b>#${p.numero} — ${esc(pedItemNome(p))}</b>?${p.status === 'concluido' ? '<br><span class="muted">O que já entrou no estoque continua lá.</span>' : ''}`)) return;
+  try { await DB.remove('pedidos', id); S.ped = S.ped.filter(x => x !== p); S.sig = dataSig(); closeModal(); toast('Pedido excluído.'); pgPedidos(); } catch(e){ err(e); }
+}
+async function pedXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const rows = [['Nº','Produto','Quantidade','Unidade','Base','Quem pediu','Pedido para','Por onde','Data do pedido','Situação','Qtd. recebida','Concluído em','Observações']];
+  pedVis().sort((a,b) => b.data.localeCompare(a.data) || b.numero - a.numero).forEach(p => rows.push([p.numero, pedItemNome(p), +p.quantidade, p.unidade, bName(p.base), p.solicitante, p.comprador, p.canal, fmtD(p.data), PED_ST[p.status].label, p.qtd_recebida ?? '', p.concluido_em ? fmtDT(p.concluido_em) : '', p.obs || '']));
+  const wb = X.utils.book_new(), ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = [6,30,10,7,13,22,22,13,13,14,12,17,34].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, ws, 'Pedidos'); X.writeFile(wb, `Pedidos_${iso(new Date())}.xlsx`); toast('Pedidos exportados.');
 }
 
 
@@ -5715,6 +6034,11 @@ const ACT = {
   'est-new': () => estItemForm(), 'est-edit': a => { closeModal(); estItemForm(a.dataset.id); }, 'est-save': a => estSaveItem(a.dataset.id || null), 'est-del': a => estDelItem(a.dataset.id),
   'est-open': a => estOpen(a.dataset.id), 'est-mov': a => estMovForm(a.dataset.id, a.dataset.k, a.dataset.base), 'est-mov-save': () => estMovSave(),
   'est-conf': a => estConferir(a.dataset.k), 'est-conf-save': a => estConfSave(a.dataset.k), 'est-hist': () => estHist(), 'est-xls': () => estXls(),
+  'est-tab': a => { S.est.tab = a.dataset.k; pgEstoque(); },
+  'pd-new': () => pedForm(), 'pd-open': a => pedForm(a.dataset.id), 'pd-save': a => pedSave(a.dataset.id || null), 'pd-del': a => pedDel(a.dataset.id),
+  'pd-concluir': (a, e) => { e?.stopPropagation?.(); pedConcluir(a.dataset.id); }, 'pd-ok': a => pedOk(a.dataset.id),
+  'pd-cancel': a => pedStatus(a.dataset.id, 'cancelado'), 'pd-reabrir': a => pedStatus(a.dataset.id, 'pendente'), 'pd-xls': () => pedXls(),
+  'pd-f': a => { PD.f = a.dataset.k; PD.lim = 0; if (S.est.tab !== 'pedidos'){ S.est.tab = 'pedidos'; } pgEstoque(); }, 'pd-b': a => { PD.b = PD.b === a.dataset.k ? '' : a.dataset.k; pgPedidos(); }, 'pd-more': () => { PD.lim = (PD.lim || 80) + 80; pgPedidos(); },
   'est-alerta': () => { S.est.al = !S.est.al || S.page !== 'estoque'; S.page === 'estoque' ? pgEstoque() : go('estoque'); },
   'rev-open': a => openRevisao(a.dataset.k), 'rev-save': a => revSave(a.dataset.k),
   'notif': () => { if ($('#ov')) closeModal(); openNotif(); }, 'notif-close': () => $('#npanel')?.remove(), 'notif-read': () => marcarLidos(), 'notif-rem': () => dispensarLembretes(),
@@ -5747,7 +6071,14 @@ const ACT = {
   'cal-today': () => { const d = new Date(); S.cal.y = d.getFullYear(); S.cal.m = d.getMonth(); pgCal(); },
   'cal-type': a => { const t = S.cal.tipos, k = a.dataset.k; t.has(k) ? t.delete(k) : t.add(k); pgCal(); },
   'cal-clear': () => { S.cal.tipos.clear(); pgCal(); },
-  'bd-new': () => bdForm(), 'bd-open': a => { if (S.page !== 'bordo') go('bordo'); bdForm(a.dataset.id); }, 'bd-save': a => bdSave(a.dataset.id || null), 'bd-del': a => bdDel(a.dataset.id), 'bd-go': () => go('bordo'),
+  'bd-dup': () => bdDupForm(null, {data:$('#ov #mf [name=data]')?.value, base:$('#ov #mf [name=base]')?.value}), 'bd-dup-save': () => bdDupSave(),
+  'bd-dup-add': () => { DUPF.pares.push(['','']); bdDupDraw(); $$('.dup-row').pop()?.querySelector('select')?.focus(); },
+  'bd-dup-rm': a => { DUPF.pares.splice(+a.dataset.k, 1); if (!DUPF.pares.length) DUPF.pares = [['','']]; bdDupDraw(); },
+  'bd-dup-rep': a => { const x = AN(a.dataset.id); if (!x) return; const ok = new Set(S.colabs.filter(c => c.base === DUPF.base && c.status === 'ativo' && !ausenteEm(c.id, DUPF.data)).map(c => String(c.id)));
+    DUPF.pares = (x.duplas || []).map(p => p.map(id => ok.has(String(id)) ? String(id) : '')); const fora = (x.duplas || []).flat().filter(id => !ok.has(String(id))).length;
+    bdDupDraw(); if (fora) toast(`${fora} pessoa(s) de ${fmtD(x.data).slice(0,5)} não estão disponíveis hoje: complete as duplas.`); },
+  'bd-dup-copy': () => { const a = DUPF?.id && AN(DUPF.id); if (a) copyText(bdDupTexto(a)); },
+  'bd-new': () => bdForm(null, {data:$('#ov #mf [name=data]')?.value, base:$('#ov #mf [name=base]')?.value}), 'bd-open': a => { if (S.page !== 'bordo') go('bordo'); bdForm(a.dataset.id); }, 'bd-save': a => bdSave(a.dataset.id || null), 'bd-del': a => bdDel(a.dataset.id), 'bd-go': () => go('bordo'),
   'bd-tg': (a, e) => { e?.stopPropagation?.(); bdToggle(a.dataset.id); }, 'bd-f': a => { BD.f = a.dataset.k; BD.lim = 0; pgBordo(); }, 'bd-more': () => { BD.lim = (BD.lim || 60) + 60; pgBordo(); },
   'bd-day': a => { BD.d = a.dataset.d; pgBordo(); }, 'bd-mes': a => { const k = +a.dataset.k; if (!k){ const d = new Date(); BD.y = d.getFullYear(); BD.m = d.getMonth(); BD.d = bdHoje(); } else { const d = new Date(BD.y, BD.m + k, 1); BD.y = d.getFullYear(); BD.m = d.getMonth(); } pgBordo(); },
   'cal-cell': a => calDay(a.dataset.date), 'cal-day': a => calDay(a.dataset.date),
