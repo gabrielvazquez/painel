@@ -1586,6 +1586,142 @@ button.po-tr:hover{background:var(--soft)}
   .pd-tbl td.pd-prod{padding-right:104px!important}
 }
 
+/* ===== v2.15: arrecadação ===== */
+.ar-tabs{margin-bottom:16px}
+.ex-tabs em.hot{background:#ef4444;color:#fff}
+.ar-alert{display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,#fff7ed,#fffbeb);border:1px solid #fed7aa;color:#9a3412;border-radius:14px;padding:12px 16px;margin-bottom:16px}
+.ar-alert>svg{flex:none}.ar-alert>div{flex:1;min-width:0}
+.ar-alert b{display:block;font-size:14px}.ar-alert small{display:block;font-size:12.5px;opacity:.85;margin-top:2px}
+.ar-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:end;border-radius:20px;padding:22px 26px;margin-bottom:16px;color:#fff;
+  background:radial-gradient(120% 140% at 100% 0%,#22c55e33 0,transparent 55%),linear-gradient(135deg,#064e3b 0%,#047857 55%,#10b981 100%);box-shadow:0 18px 40px -18px #04785799}
+.ar-hero:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:34px solid #ffffff10;pointer-events:none}
+.ar-mes{display:flex;align-items:center;gap:6px;margin:-6px 0 12px -8px}
+.ar-mes span{font-weight:600;font-size:15px}
+.ar-mes .icon-btn{color:#fff;background:#ffffff1a;border:0}.ar-mes .icon-btn:hover{background:#ffffff33}
+.ar-hero-l small{display:block;opacity:.8;font-size:12.5px}
+.ar-big{display:block;font-size:clamp(30px,4.2vw,44px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:4px 0 8px;font-variant-numeric:tabular-nums}
+.ar-sub{font-size:12.5px;opacity:.9}
+.ar-var{font-weight:700;padding:2px 8px;border-radius:20px;background:#ffffff26}
+.ar-var.down{background:#fecaca33;color:#fee2e2}
+.ar-bars{display:flex;align-items:flex-end;gap:10px;height:150px;position:relative;z-index:1}
+.ar-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;min-width:0}
+.ar-bar i{width:100%;max-width:56px;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,#ffffffee,#ffffff8c);transition:height .4s ease}
+.ar-bar.alvo i{background:linear-gradient(180deg,#fde68a,#fbbf24)}
+.ar-bar.fut i{background:#ffffff26}
+.ar-bar em{font-style:normal;font-size:11px;font-weight:600;white-space:nowrap;opacity:.95}
+.ar-bar span{font-size:11px;opacity:.75;font-weight:600}
+.ar-kpis .ar-k-n{font-size:20px}
+.ar-bases{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.ar-bc{display:flex;flex-direction:column;gap:6px;text-align:left;background:#fff;border:1px solid var(--line);border-top:4px solid var(--c);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.ar-bc:hover{transform:translateY(-1px)}
+.ar-bc.on{box-shadow:0 0 0 2px var(--c)}
+.ar-bc-h{display:flex;align-items:center;gap:8px;font-size:13px}
+.ar-bc strong{font-size:19px;font-variant-numeric:tabular-nums}
+.ar-bc small{color:var(--muted);font-size:11.5px;min-height:14px}
+.ar-prog{display:block;height:6px;border-radius:6px;background:#e5e7eb;overflow:hidden}
+.ar-prog i{display:block;height:100%;background:linear-gradient(90deg,#10b981,#16a34a);border-radius:6px;transition:width .3s}
+.ar-card{padding:0;overflow:hidden}
+.ar-scroll{overflow-x:auto}
+.ar-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
+.ar-tbl th{background:#f8fafc;text-align:right;padding:10px 12px;font-weight:600;color:var(--ink2);border-bottom:1px solid var(--line);white-space:nowrap}
+.ar-tbl th small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+.ar-tbl th.alvo{background:#fffbeb;box-shadow:inset 0 3px 0 #f59e0b}
+.ar-tbl td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle;white-space:nowrap}
+.ar-tbl tbody tr:hover td{background:#f8fafc}
+.ar-tbl .ar-who{text-align:left;position:sticky;left:0;background:#fff;z-index:1;min-width:230px;box-shadow:1px 0 0 var(--line)}
+.ar-tbl th.ar-who{background:#f8fafc}
+.ar-tbl tbody tr:hover .ar-who{background:#f8fafc}
+.ar-p{display:flex;align-items:center;gap:10px;cursor:pointer;position:relative}
+.ar-p>span:last-child{min-width:0}
+.ar-p b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.ar-p small{display:flex;align-items:center;gap:4px;color:var(--muted);font-size:11px}
+.ar-medal{position:absolute;left:-4px;top:-4px;z-index:2;width:17px;height:17px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;box-shadow:0 0 0 2px #fff}
+.ar-medal.m0{background:linear-gradient(135deg,#fbbf24,#d97706)}.ar-medal.m1{background:linear-gradient(135deg,#cbd5e1,#64748b)}.ar-medal.m2{background:linear-gradient(135deg,#fdba74,#c2410c)}
+.ar-c button{border:1px solid transparent;background:none;border-radius:9px;padding:6px 8px;font:inherit;font-variant-numeric:tabular-nums;cursor:pointer;position:relative;display:inline-flex;flex-direction:column;align-items:flex-end;gap:2px}
+.ar-v:hover{background:#f1f5f9;border-color:var(--line)}
+.ar-v.normal{font-weight:600;color:var(--ink)}
+.ar-v small{font-size:10.5px;color:var(--muted);text-decoration:line-through}
+.ar-ob{position:absolute;top:3px;right:2px;width:5px;height:5px;border-radius:50%;background:#f59e0b}
+.ar-pend{color:#b45309!important;border:1px dashed #fcd34d!important;background:#fffbeb!important;font-size:11.5px!important;flex-direction:row!important;align-items:center!important;gap:3px!important;padding:4px 8px!important}
+.ar-pend.cur{color:var(--muted)!important;border-color:var(--line)!important;background:#f8fafc!important}
+.ar-pend:hover{background:#fef3c7!important}
+.ar-fut{color:#cbd5e1}
+.ar-tag{display:inline-flex;align-items:center;gap:4px;border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600}
+.ar-tag.dupla{background:#ccfbf1;color:#0f766e}.ar-tag.sem_pos{background:#e2e8f0;color:#475569}
+.ar-tot{background:#f0fdf4!important;min-width:150px}
+.ar-tot b{display:block;font-size:14px;color:#15803d;font-variant-numeric:tabular-nums}
+.ar-tot small{display:block;color:var(--muted);font-size:11px}
+.ar-tbl tfoot td{background:#f8fafc;font-variant-numeric:tabular-nums;border-bottom:0}
+.ar-tbl tfoot .ar-who{background:#f8fafc}
+.ar-leg{margin-top:10px}
+/* lançar */
+.ar-lw{padding:14px 16px;margin-bottom:14px}
+.ar-wk{display:flex;align-items:center;gap:12px}
+.ar-wk>div{flex:1;text-align:center}.ar-wk b{display:block;font-size:16px}.ar-wk small{color:var(--muted);font-size:12px}
+.ar-chips{display:flex;gap:6px;overflow-x:auto;margin-top:12px;padding-bottom:2px}
+.ar-chips button{flex:none;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:5px 12px;font-size:12px;color:var(--ink2)}
+.ar-chips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ar-chips em{font-style:normal;background:#ef4444;color:#fff;border-radius:10px;padding:0 6px;font-size:10.5px;font-weight:700}
+.ar-chips i{color:#16a34a;display:flex}.ar-chips button.on i{color:#86efac}
+.ar-bsel{margin-bottom:12px}
+.ar-ll{display:flex;flex-direction:column}
+.ar-l{display:grid;grid-template-columns:minmax(200px,1.4fr) minmax(150px,.9fr) auto 110px 34px;grid-template-areas:"p v t s d" "x x x x x" "o o o o o";align-items:center;gap:6px 14px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.ar-l:last-child{border-bottom:0}
+.ar-l-p{grid-area:p;display:flex;align-items:center;gap:10px;min-width:0}
+.ar-l-p>span{min-width:0}.ar-l-p b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar-l-p small{display:flex;align-items:center;gap:4px;flex-wrap:wrap;color:var(--muted);font-size:11.5px}.ar-l-p em{color:#b45309;font-style:normal}
+.ar-l-v{grid-area:v}.ar-l-t{grid-area:t;display:flex;gap:6px}.ar-l-s{grid-area:s;text-align:right}.ar-l-del{grid-area:d}
+.ar-l-x{grid-area:x;padding-left:46px}.ar-l-x .sel{max-width:340px}
+.ar-l-o{grid-area:o;padding-left:46px}
+.ar-tg.obs.on{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+.ar-obs{font-size:12.5px!important}
+.ar-obs{width:100%;max-width:520px;border:0;border-bottom:1px dashed var(--line);background:transparent;font:inherit;font-size:12px;padding:3px 0;color:var(--ink2);outline:0}
+.ar-obs:focus{border-bottom-color:var(--accent)}
+.ar-money{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:11px;padding:0 10px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.ar-money:focus-within{border-color:#10b981;box-shadow:0 0 0 3px #10b98126}
+.ar-money span{color:var(--muted);font-size:12.5px;font-weight:600}
+.ar-money input{border:0;outline:0;background:none;font:inherit;font-size:15px;font-weight:600;padding:9px 0;width:100%;min-width:0;text-align:right;font-variant-numeric:tabular-nums}
+.ar-money.off{opacity:.55;background:#f8fafc}
+.ar-money.big input{font-size:22px;padding:12px 0}
+.ar-tg{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 11px;font-size:12px;font-weight:500;color:var(--ink2);white-space:nowrap;transition:.12s}
+.ar-tg:hover{border-color:#94a3b8}
+.ar-tg.dupla.on{background:#0d9488;border-color:#0d9488;color:#fff}
+.ar-tg.sem_pos.on{background:#475569;border-color:#475569;color:#fff}
+.ar-l.dupla{background:linear-gradient(90deg,#f0fdfa,transparent 60%)}.ar-l.sem_pos{background:linear-gradient(90deg,#f8fafc,transparent 60%)}
+.ar-st{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#b45309;background:#fffbeb;border-radius:20px;padding:2px 9px}
+.ar-st.ok{color:#15803d;background:#f0fdf4}.ar-st.mod{color:#1d4ed8;background:#eff6ff}
+.ar-foot{position:sticky;bottom:12px;z-index:20;margin-top:14px}
+.ar-foot-i{display:flex;align-items:center;gap:20px;background:#0f172aee;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;border-radius:16px;padding:12px 14px 12px 20px;box-shadow:0 16px 40px -12px #0f172a80}
+.ar-foot-i small{display:block;font-size:11px;opacity:.7}.ar-foot-i b{font-size:17px;font-variant-numeric:tabular-nums}
+.ar-foot-i .ar-prog{flex:1;background:#ffffff26}
+.ar-foot-i .btn.pri{background:#10b981;border-color:#10b981}.ar-foot-i .btn[disabled]{opacity:.6}
+.ar-ed-h{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ar-ed-h b{display:block;font-size:15px}.ar-ed-h small{display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:12px;margin-top:3px}
+/* registro */
+.ar-log{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.ar-log:last-child{border-bottom:0}
+.ar-log-i{flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff)}
+.ar-log>div{flex:1;min-width:0}.ar-log small{display:block;color:var(--muted);font-size:12px;margin-top:2px;font-variant-numeric:tabular-nums}.ar-log small b{color:var(--ink)}
+.ar-log-w{flex:none;color:var(--muted);font-size:11.5px}
+.ar-hist{max-height:220px;overflow:auto}
+@media (max-width:900px){
+  .ar-hero{grid-template-columns:minmax(0,1fr);padding:18px}
+  .ar-bars{height:110px}
+  .ar-l{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"p s" "v v" "t d" "x x" "o o";padding:14px 2px}
+  .ar-l-x,.ar-l-o{padding-left:0}.ar-l-s{text-align:right}.ar-l-t{flex-wrap:wrap}
+  .ar-tabs{overflow-x:auto}.ar-tabs button{white-space:nowrap;flex:none}
+  .ar-wk b{font-size:14px}
+  .ar-foot{bottom:calc(74px + env(safe-area-inset-bottom))}
+  .ar-foot-i{gap:12px;padding:10px 10px 10px 14px;flex-wrap:wrap}.ar-foot-i .ar-prog{order:5;flex-basis:100%}
+  .ar-foot-i .btn.pri{margin-left:auto}
+  .ar-tbl .ar-who{min-width:170px}.ar-p b{max-width:130px}
+  .ar-alert{flex-wrap:wrap}.ar-alert .btn{width:100%;justify-content:center}
+}
+@media (max-width:600px){
+  .ar-bases{grid-template-columns:1fr 1fr;gap:8px}.ar-bc{padding:10px}.ar-bc strong{font-size:15px}.ar-bc small{font-size:10.5px}
+  .ar-kpis .ar-k-n{font-size:17px}
+}
+
 </style>
 </head>
 <body>
@@ -1598,7 +1734,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.14';
+const APP_VERSION = '2.15';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1672,9 +1808,9 @@ const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comport
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', assistente:'Assistente de base', pendente:'Aguardando liberação'};
 const isLid = p => p && (p.role === 'lider' || p.role === 'assistente');
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes','pedidos'];
-const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot','ped'];
-const ADMIN_T = ['almocos','ponto_ajustes','horas_manuais'];   // só o encarregado lê (o banco já bloqueia; aqui só evita a viagem)
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes','pedidos','arrecadacoes','arrecadacao_log'];
+const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot','ped','arr','arrLog'];
+const ADMIN_T = ['almocos','ponto_ajustes','horas_manuais','arrecadacao_log'];   // só o encarregado lê (o banco já bloqueia; aqui só evita a viagem)
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
   sex_seguinte:{label:'Sexta-feira seguinte', dow:5, dir:1},
@@ -1972,7 +2108,16 @@ function seed(){
     pd(4, {produto:estoque_itens[1]?.nome || 'Fita isolante', item_id:estoque_itens[1]?.id || null, quantidade:30, unidade:estoque_itens[1]?.unidade || 'un', base:'pinheiros', data:dOff(-20), status:'concluido', qtd_recebida:30, concluido_em:h(200), concluido_por:'Carlos Lima'}),
     pd(5, {produto:'Bota de segurança 42', quantidade:2, unidade:'par', base:'santo-andre', data:dOff(-9), solicitante:'Paula Ribeiro', canal:'E-mail', status:'cancelado', obs:'Pedido em duplicidade'})
   ];
-  return {pedidos, anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  const arrecadacoes = [], arrecadacao_log = [];
+  { const seg = d => { const x = new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
+    const s0 = seg(new Date()); let n = 0;
+    for (let w = 1; w <= 7; w++){ const s = iso(new Date(s0.getTime() - w * 7 * 864e5));
+      colaboradores.filter(c => c.status === 'ativo').forEach((c, i) => { if (w === 1 && c.base !== 'ipiranga') return;
+        const sit = !c.pos ? 'sem_pos' : (i + w) % 9 === 0 ? 'dupla' : 'normal', v = sit === 'normal' ? Math.round((900 + ((i * 37 + w * 53) % 23) * 61.5) * 100) / 100 : 0;
+        arrecadacoes.push({id:uid(), colaborador_id:c.id, base:c.base, semana:s, valor:v, situacao:sit, dupla_com:null, obs:'', lancado_por:'u-carlos', lancado_por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', created_at:h(w * 168 - 20), updated_at:h(w * 168 - 20)});
+        if (w <= 2) arrecadacao_log.push({id:++n, colaborador_id:c.id, colaborador_nome:c.nome, base:c.base, semana:s, acao:'lançou', valor_antes:null, valor_depois:v, situacao_antes:null, situacao_depois:sit, por_id:'u-carlos', por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', em:h(w * 168 - 20)}); }); }
+    arrecadacao_log.sort((a,b) => b.em.localeCompare(a.em)); }
+  return {arrecadacoes, arrecadacao_log, pedidos, anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -1991,6 +2136,8 @@ const DB = {
     if (t === 'almocos' || t === 'ponto_ajustes') q = q.gte('data', iso(addDays(new Date(), -400))).limit(20000);
     if (t === 'visitas') q = q.gte('data', iso(addDays(new Date(), -120)));
     if (t === 'pedidos') q = q.order('data', {ascending:false}).limit(3000);
+    if (t === 'arrecadacoes') q = q.gte('semana', iso(addDays(new Date(), -800))).limit(20000);
+    if (t === 'arrecadacao_log') q = q.order('em', {ascending:false}).limit(3000);
     if (t === 'anotacoes') q = q.gte('data', iso(addDays(new Date(), -400)));
     const {data, error} = await q; if (error) throw error; return data;
   },
@@ -2123,6 +2270,7 @@ const NAV = [
       : chsV('pedido').filter(c => c.status==='aberto').length},
   {id:'bordo',label:'Diário de bordo',short:'Diário',icon:'notebook',color:'#9333ea', badge:() => bdAll().filter(bdDue).length},
   {id:'escalas',label:'Escalas e plantões',short:'Escalas',icon:'calclock',color:'#ea580c',m:1, badge:() => S.escalas.filter(e => e.status !== 'cancelada' && e.data === iso(addDays(new Date(),1)) && (allowed(e.base) || sameId(e.responsavel_id, S.profile.id))).length},
+  {id:'arrecadacao',label:'Arrecadação',short:'Arrecadação',icon:'coin',color:'#16a34a', badge:() => arPendMinhas().length},
   {id:'estoque',label:'Estoque',short:'Estoque',icon:'box',color:'#ca8a04', badge:() => alertasEstoque(isAdmin() ? BKEYS : myBases()).length},
   {id:'calendario',label:'Ausências',short:'Ausências',icon:'calx',color:'#16a34a'},
   {id:'usuarios',label:'Usuários e bases',short:'Usuários',icon:'shieldu',color:'#475569',admin:true, badge:() => S.profiles.filter(p => p.role==='pendente').length}
@@ -2137,10 +2285,11 @@ const SUBS = {
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
   escalas:'Plantões de sábado (dão folga) e ações de hora extra (contam horas): quem vai e quem é o responsável',
   horas:'Só o encarregado vê: horas das ações e lançamentos manuais, por base, por ação e por pessoa',
+  arrecadacao:'Quanto cada funcionário arrecadou, lançado toda semana, com a soma do mês',
   estoque:'Estoque total e de cada base, com avisos quando um item estiver acabando',
   usuarios:'Quem acessa o painel, com qual perfil e de quais bases'
 };
-const PAGES = {dashboard:pgDashboard, planner:pgPlanner, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, bordo:pgBordo, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, calendario:pgCal, usuarios:pgUsers};
+const PAGES = {dashboard:pgDashboard, planner:pgPlanner, colaboradores:pgColab, frota:pgFrota, diario:pgDiario, bordo:pgBordo, escalas:pgEscalas, horas:pgHoras, estoque:pgEstoque, arrecadacao:pgArrec, calendario:pgCal, usuarios:pgUsers};
 
 function go(page){ if ($('#ov')) closeModal(); $('#npanel')?.remove(); S.page = page; if (location.hash !== '#'+page) history.replaceState(null,'','#'+page); closePop(); render(); window.scrollTo(0,0); }
 window.addEventListener('hashchange', () => { const p = location.hash.slice(1); if (S.profile && PAGES[p] && p !== S.page){ S.page = p; render(); } });
@@ -3341,6 +3490,8 @@ function buildNotifs0(){
     if (hj.length) rem.push({icon:'planner', c:PL_COR, t:`Hoje no planner: ${hj.length} tarefa(s)`, s:plSort(hj).slice(0,3).map(t => (t.hora ? hhmm(t.hora) + ' ' : '') + t.titulo).join(', '), act:'pl-go', k:'hoje', w:1, key:'rem:pl:hj:' + hj.length}); }
   { const bd = (S.anot||[]).filter(a => sameId(a.user_id, me) && bdDue(a));
     if (bd.length) rem.push({icon:'notebook', c:'#9333ea', urgent:true, t:bd.length === 1 ? 'Diário de bordo: lembrar hoje' : `Diário de bordo: ${bd.length} problemas para lembrar`, s:bd.slice(0,3).map(a => a.titulo).join(', '), act:'bd-go', w:0, key:'rem:bd:' + bd.length}); }
+  { const ap = arPendMinhas();
+    if (ap.length) rem.push({icon:'coin', c:'#16a34a', urgent:true, t:`Lance a arrecadação da semana ${arLbl(arAlvo())}`, s:`${ap.length} funcionário(s) sem lançamento` + (isAdmin() ? ': ' + [...new Set(ap.map(c => c.base))].map(bName).join(', ') : ''), act:'ar-lancar', w:0, key:'rem:arr:' + arAlvo() + ':' + ap.length}); }
   // Visitas marcadas na base que eu lidero
   (S.visitas||[]).forEach(v => { if (sameId(v.user_id, me) || !v.local || !ownBases().includes(v.local) || v.data < today || !after(v.created_at)) return;
     news.push({key:`vi:${v.id}`, icon:'map', c:BASES[v.local]?.c, t:`${firstName(v.user_nome)} vai à Base ${bName(v.local)}`, s:`${plDia(v.data, true)}${v.hora ? ' às ' + hhmm(v.hora) : ''}${v.notas ? ' — ' + v.notas : ''}`, when:v.created_at, act:'pl-go', k:'visitas'}); });
@@ -3551,7 +3702,7 @@ async function cleanQuinzena(key){
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
 // Assinatura dos dados: um hash por tabela, guardado; numa recarga parcial só as tabelas que vieram são recalculadas
 const SIGC = {};
-const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot','ped'];
+const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot','ped','arr','arrLog'];
 const hstr = str => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length; };
 function dataSig(only){
   return SIGK.map(k => { const a = S[k] || [], c = SIGC[k];
@@ -5803,6 +5954,290 @@ async function pedXls(){
 }
 
 
+/* ========================= ARRECADAÇÃO (v2.15) ========================= */
+// Lançamento semanal (segunda a domingo) do valor arrecadado por funcionário.
+// "Em dupla" e "Sem POS" registram a semana mas NÃO entram na soma.
+Object.assign(ICONS, {
+  coin:'<circle cx="12" cy="12" r="9"/><path d="M14.8 9.2c-.5-.8-1.5-1.3-2.8-1.3-1.7 0-2.8.8-2.8 2s1 1.7 2.8 2.1 2.8 1 2.8 2.2-1.1 2-2.8 2c-1.4 0-2.4-.6-2.9-1.4M12 6.5v1.4m0 8.2v1.4"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/>',
+  pos:'<rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M9 6.5h6v3H9zM9 13h.01M12 13h.01M15 13h.01M9 16h.01M12 16h.01M15 16h.01"/>',
+  pair:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20c.5-3 2.7-5 5.5-5s5 2 5.5 5M10.5 20c.5-3 2.7-5 5.5-5s5 2 5.5 5"/>'
+});
+const AR_SIT = {normal:{label:'Normal', color:'#16a34a'}, dupla:{label:'Em dupla', color:'#0d9488'}, sem_pos:{label:'Sem POS', color:'#64748b'}};
+const AR = {mes:null, tab:'', q:'', ord:'total', sem:null, b:'', lq:'', lb:'', la:''};
+const brl = v => (+v || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+const brlC = v => { const n = +v || 0; return n >= 1e6 ? 'R$ ' + (n / 1e6).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' mi' : n >= 1e4 ? 'R$ ' + (n / 1e3).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' mil' : brl(n); };
+const parseBRL = s => { s = String(s ?? '').replace(/[R$\s]/g, ''); if (!s) return null; if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); const n = Number(s); return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : NaN; };
+const brlIn = v => v == null || v === '' ? '' : (+v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+const arSeg = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
+const arAlvo = () => iso(addDays(arSeg(new Date()), -7));                      // semana passada: a que deve ser lançada agora
+const arAtual = () => iso(arSeg(new Date()));
+const arFim = s => iso(addDays(parseISO(s), 6));
+const arLbl = s => `${fmtD(s).slice(0,5)} a ${fmtD(arFim(s)).slice(0,5)}`;
+const arMesDe = s => iso(addDays(parseISO(s), 3)).slice(0, 7);                  // a semana pertence ao mês da quinta-feira
+function arSemanas(ym){
+  const [y, m] = ym.split('-').map(Number), out = [];
+  for (let d = arSeg(new Date(y, m - 1, 1)); d <= new Date(y, m, 0); d = addDays(d, 7)){ const s = iso(d); if (arMesDe(s) === ym) out.push(s); }
+  return out;
+}
+const arBases = () => BKEYS.filter(k => allowed(k) && (!S.base || k === S.base) && (!AR.b || k === AR.b));
+const arRec = (cid, s) => (S.arr || []).find(r => sameId(r.colaborador_id, cid) && r.semana === s);
+const arConta = r => r && r.situacao === 'normal';
+// Quem precisa de lançamento numa semana: ativos das bases (e quem já tem lançamento nela)
+const arPessoas = (s, bases = arBases()) => { const ids = new Set((S.arr || []).filter(r => r.semana === s).map(r => String(r.colaborador_id)));
+  return S.colabs.filter(c => bases.includes(c.base) && (c.status === 'ativo' || ids.has(String(c.id)))).sort((a,b) => a.nome.localeCompare(b.nome,'pt')); };
+const arPend = (s, bases) => arPessoas(s, bases).filter(c => !arRec(c.id, s));
+const arPendMinhas = () => { if (!S.profile || !(isAdmin() || isLid(S.profile))) return []; return arPend(arAlvo(), BKEYS.filter(allowed)).filter(c => c.status === 'ativo'); };
+
+function arTabs(){
+  const t = AR.tab, p = arPendMinhas().filter(c => !S.base || c.base === S.base).length;
+  return `<div class="ex-tabs col-tabs ar-tabs" role="tablist">
+    <button class="${!t ? 'on' : ''}" data-act="ar-tab" data-k="">${ic('dash',15)}Resumo do mês</button>
+    <button class="${t === 'lancar' ? 'on' : ''}" data-act="ar-tab" data-k="lancar">${ic('coin',15)}Lançar semana${p ? `<em class="hot">${p}</em>` : ''}</button>
+    ${isAdmin() ? `<button class="${t === 'log' ? 'on' : ''}" data-act="ar-tab" data-k="log">${ic('clock',15)}Registro<em>${(S.arrLog || []).length}</em></button>` : ''}
+  </div>`;
+}
+function pgArrec(){
+  if (!AR.mes) AR.mes = arMesDe(arAlvo());
+  if (AR.tab === 'lancar') return pgArLancar();
+  if (AR.tab === 'log' && isAdmin()) return pgArLog();
+  const ym = AR.mes, sems = arSemanas(ym), bases = arBases(), hj = arAtual(), alvo = arAlvo();
+  const recs = (S.arr || []).filter(r => sems.includes(r.semana) && bases.includes(r.base));
+  const cont = recs.filter(arConta), total = cont.reduce((s, r) => s + +r.valor, 0);
+  const pessoas = [...new Map([...sems.flatMap(s => arPessoas(s, bases)), ...recs.map(r => C(r.colaborador_id) || CX(r.colaborador_id)).filter(Boolean)].map(c => [String(c.id), c])).values()];
+  const linhas = pessoas.map(c => { const rs = sems.map(s => arRec(c.id, s)); const vs = rs.filter(arConta); const t = vs.reduce((s, r) => s + +r.valor, 0);
+    return {c, rs, t, n:vs.length, med: vs.length ? t / vs.length : 0}; });
+  const q = nk(AR.q);
+  const lista = linhas.filter(l => !q || nk(l.c.nome + ' ' + bName(l.c.base)).includes(q))
+    .sort((a,b) => AR.ord === 'nome' ? a.c.nome.localeCompare(b.c.nome,'pt') : AR.ord === 'media' ? b.med - a.med : b.t - a.t || a.c.nome.localeCompare(b.c.nome,'pt'));
+  const rank = linhas.filter(l => l.t > 0).sort((a,b) => b.t - a.t);
+  const pos = new Map(rank.map((l, i) => [String(l.c.id), i]));
+  const semTot = sems.map(s => recs.filter(r => r.semana === s && arConta(r)).reduce((a, r) => a + +r.valor, 0)), mx = Math.max(1, ...semTot);
+  const contados = linhas.filter(l => l.n), media = contados.length ? total / contados.length : 0;
+  const pendAlvo = sems.includes(alvo) ? arPend(alvo, bases).filter(c => c.status === 'ativo') : [];
+  const totPessoasAlvo = sems.includes(alvo) ? arPessoas(alvo, bases).length : 0;
+  const mesNome = cap(new Date(+ym.slice(0,4), +ym.slice(5) - 1, 1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'}));
+  const prevAnt = (() => { const d = new Date(+ym.slice(0,4), +ym.slice(5) - 2, 1); const ym2 = iso(d).slice(0,7), s2 = arSemanas(ym2); return (S.arr || []).filter(r => s2.includes(r.semana) && bases.includes(r.base) && arConta(r)).reduce((a, r) => a + +r.valor, 0); })();
+  const varPct = prevAnt ? Math.round((total - prevAnt) / prevAnt * 100) : null;
+  $('#page').innerHTML = `${arTabs()}
+  ${arAviso()}
+  <div class="ar-hero">
+    <div class="ar-hero-l">
+      <div class="ar-mes"><button class="icon-btn" data-act="ar-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',18)}</button><span>${mesNome}</span><button class="icon-btn" data-act="ar-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',18)}</button></div>
+      <small>Total arrecadado${S.base || AR.b ? ' em ' + bName(S.base || AR.b) : bases.length > 1 ? ' nas ' + bases.length + ' bases' : ''}</small>
+      <b class="ar-big">${brl(total)}</b>
+      <div class="ar-sub">${varPct != null ? `<span class="ar-var ${varPct >= 0 ? 'up' : 'down'}">${varPct >= 0 ? '▲' : '▼'} ${Math.abs(varPct)}%</span> vs. mês anterior · ` : ''}${contados.length} funcionário(s) contabilizado(s)</div>
+    </div>
+    <div class="ar-bars" aria-label="Total por semana">${sems.map((s, i) => `<div class="ar-bar ${s === alvo ? 'alvo' : ''} ${s > hj ? 'fut' : ''}" title="Semana ${i + 1} (${arLbl(s)}): ${brl(semTot[i])}"><em>${semTot[i] ? brlC(semTot[i]) : ''}</em><i style="height:${Math.max(4, semTot[i] / mx * 100)}%"></i><span>S${i + 1}</span></div>`).join('')}</div>
+  </div>
+  <div class="esc-kpis ar-kpis">
+    <div class="card ek" style="--c:#16a34a"><span>${ic('coin',16)}Média por funcionário</span><b>${brl(media)}</b><small>no mês, só quem foi contabilizado</small></div>
+    <div class="card ek" style="--c:#ca8a04"><span>${ic('trophy',16)}Maior arrecadação</span><b class="ar-k-n">${rank[0] ? esc(firstName(rank[0].c.nome)) : '—'}</b><small>${rank[0] ? brl(rank[0].t) + ' · ' + bName(rank[0].c.base) : 'sem lançamentos'}</small></div>
+    <div class="card ek" style="--c:#0d9488"><span>${ic('pair',16)}Em dupla / sem POS</span><b>${recs.filter(r => r.situacao === 'dupla').length} / ${recs.filter(r => r.situacao === 'sem_pos').length}</b><small>semanas que não entram na soma</small></div>
+    <div class="card ek" style="--c:${pendAlvo.length ? '#ef4444' : '#2563eb'}" ${pendAlvo.length ? 'data-act="ar-lancar" role="button"' : ''}><span>${ic('checks',16)}Semana ${arLbl(alvo)}</span><b>${sems.includes(alvo) ? `${totPessoasAlvo - pendAlvo.length}/${totPessoasAlvo}` : '—'}</b><small>${!sems.includes(alvo) ? 'não é deste mês' : pendAlvo.length ? pendAlvo.length + ' sem lançamento — toque para lançar' : 'tudo lançado'}</small></div>
+  </div>
+  ${!S.base && BKEYS.filter(allowed).length > 1 ? `<div class="ar-bases">${BKEYS.filter(allowed).map(k => { const t = (S.arr || []).filter(r => sems.includes(r.semana) && r.base === k && arConta(r)).reduce((a, r) => a + +r.valor, 0);
+      const tp = sems.includes(alvo) ? arPessoas(alvo, [k]).length : 0, pp = sems.includes(alvo) ? arPend(alvo, [k]).filter(c => c.status === 'ativo').length : 0, pc = tp ? Math.round((tp - pp) / tp * 100) : 100;
+      return `<button class="ar-bc ${AR.b === k ? 'on' : ''}" style="--c:${BASES[k].c}" data-act="ar-b" data-k="${k}"><span class="ar-bc-h">${emblem(k,16,5)}<b>${BASES[k].nome}</b></span><strong>${brl(t)}</strong><span class="ar-prog"><i style="width:${pc}%"></i></span><small>${sems.includes(alvo) ? (pp ? `${pp} sem lançamento na semana ${arLbl(alvo)}` : 'semana em dia') : ' '}</small></button>`; }).join('')}</div>` : ''}
+  <div class="toolbar">
+    <label class="search">${ic('search',16)}<input id="arq" placeholder="Buscar funcionário..." value="${esc(AR.q)}"></label>
+    <select class="sel" id="arord" aria-label="Ordenar"><option value="total" ${AR.ord === 'total' ? 'selected' : ''}>Maior total</option><option value="media" ${AR.ord === 'media' ? 'selected' : ''}>Maior média</option><option value="nome" ${AR.ord === 'nome' ? 'selected' : ''}>Nome (A→Z)</option></select>
+    <div class="tb-right"><button class="btn" data-act="ar-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button><button class="btn pri" data-act="ar-lancar">${ic('coin',16)}Lançar semana</button></div>
+  </div>
+  <div class="card ar-card">${lista.length ? `<div class="ar-scroll"><table class="ar-tbl"><thead><tr><th class="ar-who">Funcionário</th>${sems.map((s, i) => `<th class="ar-w ${s === alvo ? 'alvo' : ''}"><b>Semana ${i + 1}</b><small>${arLbl(s)}</small></th>`).join('')}<th class="ar-tot">Total do mês</th></tr></thead><tbody>
+    ${lista.map(l => { const p = pos.get(String(l.c.id)); return `<tr><td class="ar-who"><div class="ar-p" data-act="c-open" data-id="${l.c.id}" role="button">${p != null && p < 3 ? `<span class="ar-medal m${p}">${p + 1}</span>` : ''}${avc(l.c, 32)}<span><b>${esc(l.c.nome)}</b><small>${emblem(l.c.base,7,2)}${bName(l.c.base)}${!l.c.pos ? ' · sem POS cadastrado' : ''}</small></span></div></td>
+      ${sems.map(s => arCell(l.c, s, arRec(l.c.id, s))).join('')}
+      <td class="ar-tot"><b>${brl(l.t)}</b><small>${l.n ? `${l.n} semana(s) · média ${brlC(l.med)}` : 'nada contabilizado'}</small></td></tr>`; }).join('')}
+    </tbody><tfoot><tr><td class="ar-who"><b>Total</b></td>${semTot.map(t => `<td><b>${t ? brl(t) : '—'}</b></td>`).join('')}<td class="ar-tot"><b>${brl(total)}</b></td></tr></tfoot></table></div>`
+    : empty('coin', 'Ninguém para mostrar', 'Cadastre os colaboradores das bases para lançar a arrecadação.')}</div>
+  <p class="f-hint ar-leg"><span class="ar-tag dupla">Em dupla</span> e <span class="ar-tag sem_pos">Sem POS</span> ficam registrados, mas não entram na soma. Toque em qualquer semana para lançar ou editar.</p>`;
+  let tm; $('#arq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { AR.q = e.target.value; pgArrec(); const n = $('#arq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  $('#arord').onchange = e => { AR.ord = e.target.value; pgArrec(); };
+}
+function arCell(c, s, r){
+  const fut = s > arAtual(), atual = s === arAtual();
+  if (!r) return `<td class="ar-c">${fut ? '<span class="ar-fut">—</span>' : `<button class="ar-pend ${atual ? 'cur' : ''}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="${atual ? 'Semana em andamento' : 'Sem lançamento'}">${atual ? 'em andamento' : ic('plus',12) + 'lançar'}</button>`}</td>`;
+  return `<td class="ar-c"><button class="ar-v ${r.situacao}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="Lançado por ${esc(r.lancado_por_nome || '—')}${r.obs ? ' — ' + esc(r.obs) : ''}">${r.situacao === 'normal' ? brl(r.valor) : `<span class="ar-tag ${r.situacao}">${AR_SIT[r.situacao].label}</span>${+r.valor ? `<small>${brl(r.valor)}</small>` : ''}`}${r.obs ? '<i class="ar-ob"></i>' : ''}</button></td>`;
+}
+function arAviso(){
+  const p = arPendMinhas().filter(c => !S.base || c.base === S.base), alvo = arAlvo();
+  if (!p.length) return '';
+  const bs = [...new Set(p.map(c => c.base))];
+  return `<div class="ar-alert">${ic('bell',18)}<div><b>Lance a arrecadação da semana ${arLbl(alvo)}</b><small>${p.length} funcionário(s) ainda sem lançamento${bs.length > 1 || isAdmin() ? ': ' + bs.map(b => `${bName(b)} (${p.filter(c => c.base === b).length})`).join(', ') : ''}. O lançamento é feito toda semana.</small></div><button class="btn pri sm" data-act="ar-lancar" data-k="${alvo}">Lançar agora</button></div>`;
+}
+
+/* ----- Lançar semana (todos de uma vez) ----- */
+let ARL = null;   // rascunho: {cid: {valor, situacao, dupla_com, obs}}
+function pgArLancar(){
+  if (!AR.sem) AR.sem = arAlvo();
+  const s = AR.sem, bases = arBases(), pessoas = arPessoas(s, bases), fut = s > arAtual();
+  if (!ARL || ARL.s !== s){ ARL = {s, d:{}}; pessoas.forEach(c => { const r = arRec(c.id, s);
+    ARL.d[c.id] = r ? {valor:brlIn(r.valor), situacao:r.situacao, dupla_com:r.dupla_com || '', obs:r.obs || '', salvo:true} : {valor:'', situacao:c.pos ? 'normal' : 'sem_pos', dupla_com:'', obs:'', sug:!c.pos}; }); }
+  const sems = [-3,-2,-1,0,1].map(k => iso(addDays(parseISO(arAlvo()), 7 * k)));
+  const ordem = pessoas.slice().sort((a,b) => !!arRec(a.id, s) - !!arRec(b.id, s) || a.base.localeCompare(b.base) || a.nome.localeCompare(b.nome,'pt'));
+  $('#page').innerHTML = `${arTabs()}
+  <div class="card ar-lw">
+    <div class="ar-wk"><button class="icon-btn bord" data-act="ar-sem" data-k="-7" aria-label="Semana anterior">${ic('chevL',18)}</button>
+      <div><b>Semana de ${fmtD(s)} a ${fmtD(arFim(s))}</b><small>${s === arAlvo() ? 'Semana passada — é a que deve ser lançada agora' : s === arAtual() ? 'Semana atual (ainda em andamento)' : fut ? 'Semana futura' : 'Semana anterior'}</small></div>
+      <button class="icon-btn bord" data-act="ar-sem" data-k="7" aria-label="Próxima semana">${ic('chevR',18)}</button></div>
+    <div class="ar-chips">${sems.map(x => { const pp = arPend(x, bases).filter(c => c.status === 'ativo').length; return `<button class="${x === s ? 'on' : ''}" data-act="ar-sem-go" data-k="${x}">${arLbl(x)}${x <= arAlvo() ? (pp ? `<em>${pp}</em>` : `<i>${ic('check',11)}</i>`) : ''}</button>`; }).join('')}</div>
+  </div>
+  ${!S.base && BKEYS.filter(allowed).length > 1 ? `<div class="chips ar-bsel"><button class="fchip ${!AR.b ? 'on' : ''}" data-act="ar-b" data-k="">Todas</button>${BKEYS.filter(allowed).map(k => `<button class="fchip ${AR.b === k ? 'on' : ''}" style="--c:${BASES[k].c}" data-act="ar-b" data-k="${k}"><i class="d"></i>${BASES[k].nome}<b>${arPend(s, [k]).filter(c => c.status === 'ativo').length || ''}</b></button>`).join('')}</div>` : ''}
+  <div class="card">${pessoas.length ? `<div class="ar-ll">${ordem.map(c => arLinha(c)).join('')}</div>` : empty('users','Nenhum funcionário ativo','Não há colaboradores ativos nas bases escolhidas.')}</div>
+  <div class="ar-foot" id="arfoot"></div>`;
+  arFoot();
+  $$('.ar-in').forEach(i => { i.oninput = () => { const d = ARL.d[i.dataset.id]; d.valor = i.value; d.sug = false; arMark(i.dataset.id); arFoot(); };
+    i.onblur = () => { const v = parseBRL(i.value); if (v != null && !isNaN(v)){ i.value = brlIn(v); ARL.d[i.dataset.id].valor = i.value; } };
+    i.onkeydown = e => { if (e.key === 'Enter'){ e.preventDefault(); const all = $$('.ar-in:not([disabled])'); const k = all.indexOf(i); (all[k + 1] || $('[data-act=ar-salvar]'))?.focus(); } }; });
+  $$('.ar-dsel').forEach(x => x.onchange = () => { ARL.d[x.dataset.id].dupla_com = x.value; arMark(x.dataset.id); });
+  $$('.ar-obs').forEach(x => x.oninput = () => { ARL.d[x.dataset.id].obs = x.value; arMark(x.dataset.id); });
+}
+function arLinha(c){
+  const d = ARL.d[c.id], r = arRec(c.id, ARL.s), aus = ausenteEm(c.id, ARL.s) || ausenteEm(c.id, arFim(ARL.s));
+  const pool = S.colabs.filter(x => x.base === c.base && !sameId(x.id, c.id) && x.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  return `<div class="ar-l ${d.situacao}" id="arl-${c.id}">
+    <div class="ar-l-p">${avc(c, 36)}<span><b>${esc(c.nome)}</b><small>${emblem(c.base,7,2)}${bName(c.base)}${c.pos ? ` · POS …${esc(String(c.pos).slice(-4))}` : ' · <em>sem POS cadastrado</em>'}${aus ? ` · <em>${esc(EV[aus.tipo]?.label || 'ausente')}</em>` : ''}</small></span></div>
+    <div class="ar-l-v"><label class="ar-money ${d.situacao !== 'normal' ? 'off' : ''}"><span>R$</span><input class="ar-in" data-id="${c.id}" inputmode="decimal" placeholder="0,00" value="${esc(d.valor)}" aria-label="Valor arrecadado por ${esc(c.nome)}"></label></div>
+    <div class="ar-l-t"><button class="ar-tg dupla ${d.situacao === 'dupla' ? 'on' : ''}" data-act="ar-sit" data-id="${c.id}" data-k="dupla">${ic('pair',14)}Em dupla</button><button class="ar-tg sem_pos ${d.situacao === 'sem_pos' ? 'on' : ''}" data-act="ar-sit" data-id="${c.id}" data-k="sem_pos">${ic('pos',14)}Sem POS</button><button class="ar-tg obs ${d.obs || d.vObs ? 'on' : ''}" data-act="ar-vobs" data-id="${c.id}" title="Observação">${ic('msg',14)}<span class="hide-s">Obs.</span></button></div>
+    <div class="ar-l-s"><span class="ar-st ${d.salvo ? 'ok' : ''}" id="ars-${c.id}">${d.salvo ? ic('check',12) + 'salvo' : d.sug ? 'sem POS no cadastro' : 'pendente'}</span></div>
+    ${d.situacao === 'dupla' ? `<div class="ar-l-x"><select class="sel ar-dsel" data-id="${c.id}" aria-label="Em dupla com"><option value="">Em dupla com... (opcional)</option>${opts(pool.map(x => [x.id, x.nome]), d.dupla_com)}</select></div>` : ''}
+    ${d.obs || d.vObs ? `<div class="ar-l-x ar-l-o"><input class="ar-obs" data-id="${c.id}" placeholder="Observação (opcional)" value="${esc(d.obs)}" maxlength="140"></div>` : ''}
+    ${r && (isAdmin() || allowed(c.base)) ? `<button class="icon-btn ar-l-del" data-act="ar-del" data-id="${r.id}" title="Apagar lançamento">${ic('trash',15)}</button>` : ''}
+  </div>`;
+}
+function arMark(cid){ const d = ARL.d[cid]; d.salvo = false; const e = $('#ars-' + cid); if (e){ e.className = 'ar-st mod'; e.textContent = 'alterado'; } }
+function arFoot(){
+  const el = $('#arfoot'); if (!el || !ARL) return;
+  const ids = Object.keys(ARL.d), ok = ids.filter(k => { const d = ARL.d[k]; return d.situacao !== 'normal' || (d.valor !== '' && !isNaN(parseBRL(d.valor))); });
+  const tot = ids.reduce((s, k) => { const d = ARL.d[k]; return s + (d.situacao === 'normal' ? (parseBRL(d.valor) || 0) : 0); }, 0);
+  const mud = ids.filter(k => !ARL.d[k].salvo && ok.includes(k)).length;
+  el.innerHTML = `<div class="ar-foot-i"><div><small>Total da semana</small><b>${brl(tot)}</b></div><div><small>Preenchidos</small><b>${ok.length}/${ids.length}</b></div>
+    <span class="ar-prog"><i style="width:${ids.length ? ok.length / ids.length * 100 : 0}%"></i></span>
+    <button class="btn pri" data-act="ar-salvar" ${mud ? '' : 'disabled'}>${ic('check',16)}${mud ? `Salvar ${mud} lançamento(s)` : 'Tudo salvo'}</button></div>`;
+}
+async function arSalvar(){
+  if (!ARL) return; const s = ARL.s, rows = [], bad = [];
+  for (const [cid, d] of Object.entries(ARL.d)){
+    if (d.salvo) continue;
+    const c = C(cid); if (!c || !allowed(c.base)) continue;
+    let v = d.situacao === 'normal' ? parseBRL(d.valor) : (parseBRL(d.valor) || 0);
+    if (d.situacao === 'normal' && v == null) continue;                       // em branco: continua pendente
+    if (isNaN(v)) { bad.push(c.nome); continue; }
+    rows.push({c, r:arRec(cid, s), row:{colaborador_id:c.id, base:c.base, semana:s, valor:v, situacao:d.situacao, dupla_com:d.situacao === 'dupla' && d.dupla_com ? d.dupla_com : null, obs:d.obs || '', updated_at:nowISO()}});
+  }
+  if (bad.length) return toast(`Valor inválido para ${bad.slice(0,3).map(firstName).join(', ')}. Use só números, ex: 1.250,50`, 'err');
+  if (!rows.length) return toast('Nada novo para salvar.');
+  const btn = $('[data-act=ar-salvar]'); if (btn){ btn.disabled = true; btn.textContent = 'Salvando...'; }
+  try {
+    const novos = rows.filter(x => !x.r), alts = rows.filter(x => x.r);
+    if (novos.length) await DB.insertMany('arrecadacoes', novos.map(x => ({...x.row, lancado_por:S.profile.id, lancado_por_nome:S.profile.nome})));
+    for (const x of alts) await DB.update('arrecadacoes', x.r.id, {...x.row, lancado_por_nome:S.profile.nome});
+    if (TEST) arTestLog(rows);
+    toast(`${rows.length} lançamento(s) salvo(s) — semana ${arLbl(s)}.`);
+    ARL = null; await loadAll(); render();
+  } catch(e){ err(e); arFoot(); }
+}
+function arTestLog(rows, del){
+  const d = Store.load(); d.arrecadacao_log = d.arrecadacao_log || [];
+  rows.forEach(x => d.arrecadacao_log.unshift({id:Date.now() + Math.random(), colaborador_id:x.c.id, colaborador_nome:x.c.nome, base:x.c.base, semana:x.row?.semana || x.r.semana, acao: del ? 'apagou' : x.r ? 'alterou' : 'lançou',
+    valor_antes:x.r?.valor ?? null, valor_depois: del ? null : x.row.valor, situacao_antes:x.r?.situacao ?? null, situacao_depois: del ? null : x.row.situacao, por_id:S.profile.id, por_nome:S.profile.nome, em:nowISO()}));
+  Store.save();
+}
+
+/* ----- Editar uma semana de um funcionário ----- */
+function arEdit(cid, s){
+  const c = C(cid) || CX(cid); if (!c) return;
+  if (!allowed(c.base)) return toast('Você só lança a arrecadação das suas bases.', 'err');
+  const r = arRec(cid, s), pool = S.colabs.filter(x => x.base === c.base && !sameId(x.id, cid) && x.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  const hist = isAdmin() ? (S.arrLog || []).filter(l => sameId(l.colaborador_id, cid) && l.semana === s).slice(0, 8) : [];
+  openModal({title:'Arrecadação da semana', body:`<div class="ar-ed-h">${avc(c, 44)}<span><b>${esc(c.nome)}</b><small>${bTag(c.base)} Semana de ${fmtD(s)} a ${fmtD(arFim(s))}</small></span></div>
+    <form id="mf" class="form one" autocomplete="off">
+      ${fld('Situação', rchips('situacao', AR_SIT, r?.situacao || (c.pos ? 'normal' : 'sem_pos')), true, false, '"Em dupla" e "Sem POS" não entram na soma do funcionário.')}
+      ${fld('Valor arrecadado', `<label class="ar-money big"><span>R$</span><input name="valor" id="arev" inputmode="decimal" placeholder="0,00" value="${r ? brlIn(r.valor) : ''}"></label>`, true)}
+      ${fld('Em dupla com (opcional)', `<select name="dupla_com"><option value="">—</option>${opts(pool.map(x => [x.id, x.nome]), r?.dupla_com || '')}</select>`, true)}
+      ${fld('Observação', inp('obs', r?.obs || '', 'maxlength="140" placeholder="Opcional"'), true)}
+    </form>
+    ${r ? `<p class="f-hint">Último lançamento por ${esc(r.lancado_por_nome || '—')} em ${fmtDT(r.updated_at || r.created_at)}.</p>` : ''}
+    ${hist.length ? `<div class="sec">Histórico desta semana</div><div class="ar-hist">${hist.map(arLogItem).join('')}</div>` : ''}`,
+  foot:`${r ? `<button class="btn danger left" data-act="ar-del" data-id="${r.id}">${ic('trash',15)}Apagar</button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="ar-ed-save" data-id="${cid}" data-k="${s}">${ic('check',15)}Salvar</button>`,
+  onMount: ov => { const i = $('#arev', ov); i.focus(); i.onblur = () => { const v = parseBRL(i.value); if (v != null && !isNaN(v)) i.value = brlIn(v); }; }});
+}
+async function arEdSave(cid, s){
+  const c = C(cid) || CX(cid), f = formObj(), r = arRec(cid, s);
+  const v = parseBRL(f.valor), sit = f.situacao || 'normal';
+  if (sit === 'normal' && v == null) return toast('Informe o valor arrecadado.', 'err');
+  if (isNaN(v)) return toast('Valor inválido. Use só números, ex: 1.250,50', 'err');
+  const row = {colaborador_id:c.id, base:c.base, semana:s, valor:v || 0, situacao:sit, dupla_com:f.dupla_com || null, obs:f.obs || '', updated_at:nowISO()};
+  try {
+    if (r) await DB.update('arrecadacoes', r.id, {...row, lancado_por_nome:S.profile.nome}); else await DB.insert('arrecadacoes', {...row, lancado_por:S.profile.id, lancado_por_nome:S.profile.nome});
+    if (TEST) arTestLog([{c, r, row}]);
+    closeModal(); toast(`${firstName(c.nome)}: ${sit === 'normal' ? brl(v) : AR_SIT[sit].label} na semana ${arLbl(s)}.`); ARL = null; await loadAll(); render();
+  } catch(e){ err(e); }
+}
+async function arDel(id){
+  const r = (S.arr || []).find(x => sameId(x.id, id)); if (!r) return; const c = C(r.colaborador_id) || CX(r.colaborador_id);
+  if (!await confirmBox(`Apagar o lançamento de <b>${esc(c?.nome || '')}</b> na semana ${arLbl(r.semana)}?`)) return;
+  try { await DB.remove('arrecadacoes', id); if (TEST) arTestLog([{c, r}], true); closeModal(); toast('Lançamento apagado.'); ARL = null; await loadAll(); render(); } catch(e){ err(e); }
+}
+
+/* ----- Registro (só o encarregado) ----- */
+function arLogItem(l){
+  const sit = x => x && x !== 'normal' ? ` (${AR_SIT[x]?.label.toLowerCase()})` : '';
+  const de = l.valor_antes != null ? brl(l.valor_antes) + sit(l.situacao_antes) : '', para = l.valor_depois != null ? brl(l.valor_depois) + sit(l.situacao_depois) : '';
+  const cor = l.acao === 'apagou' ? '#dc2626' : l.acao === 'alterou' ? '#2563eb' : '#16a34a';
+  return `<div class="ar-log" style="--c:${cor}"><span class="ar-log-i">${ic(l.acao === 'apagou' ? 'trash' : l.acao === 'alterou' ? 'edit' : 'plus', 13)}</span>
+    <div><b>${esc(l.por_nome || '—')}</b> ${l.acao} <b>${esc(l.colaborador_nome || '—')}</b> <span class="muted">· semana ${l.semana ? arLbl(l.semana) : '—'} · ${bName(l.base)}</span>
+    <small>${l.acao === 'alterou' ? `${de} → <b>${para}</b>` : l.acao === 'apagou' ? `era ${de}` : para}</small></div><span class="ar-log-w" title="${fmtDT(l.em)}">${ago(l.em)}</span></div>`;
+}
+function pgArLog(){
+  const q = nk(AR.lq);
+  const l = (S.arrLog || []).filter(x => (!S.base || x.base === S.base) && (!AR.lb || x.base === AR.lb) && (!AR.la || x.acao === AR.la) && (!q || nk([x.por_nome, x.colaborador_nome, bName(x.base)].join(' ')).includes(q)));
+  const hj = iso(new Date()), sem = iso(addDays(new Date(), -7));
+  $('#page').innerHTML = `${arTabs()}
+  <div class="esc-kpis">
+    <div class="card ek" style="--c:#16a34a"><span>${ic('plus',16)}Lançamentos hoje</span><b>${(S.arrLog || []).filter(x => (x.em || '').slice(0,10) === hj).length}</b></div>
+    <div class="card ek" style="--c:#2563eb"><span>${ic('edit',16)}Alterações (7 dias)</span><b>${(S.arrLog || []).filter(x => x.acao === 'alterou' && (x.em || '') >= sem).length}</b></div>
+    <div class="card ek" style="--c:#dc2626"><span>${ic('trash',16)}Apagados (7 dias)</span><b>${(S.arrLog || []).filter(x => x.acao === 'apagou' && (x.em || '') >= sem).length}</b></div>
+    <div class="card ek" style="--c:#7c3aed"><span>${ic('users',16)}Quem lançou (7 dias)</span><b>${new Set((S.arrLog || []).filter(x => (x.em || '') >= sem).map(x => x.por_nome)).size}</b></div>
+  </div>
+  <div class="toolbar">
+    <label class="search">${ic('search',16)}<input id="arlq" placeholder="Buscar por quem lançou ou funcionário..." value="${esc(AR.lq)}"></label>
+    <select class="sel" id="arla"><option value="">Todas as ações</option>${opts([['lançou','Lançou'],['alterou','Alterou'],['apagou','Apagou']], AR.la)}</select>
+    ${!S.base ? `<select class="sel" id="arlb"><option value="">Todas as bases</option>${opts(BKEYS.map(k => [k, BASES[k].nome]), AR.lb)}</select>` : ''}
+    <div class="tb-right"><button class="btn" data-act="ar-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button></div>
+  </div>
+  <div class="card"><div class="card-h"><div><h3>Tudo o que foi lançado</h3><p class="ch-sub">Cada lançamento, alteração e exclusão, com quem fez e quando. Ninguém consegue apagar este registro.</p></div><span class="muted s">${l.length}</span></div>
+    <div class="card-b">${l.length ? l.slice(0, 300).map(arLogItem).join('') : empty('clock','Nada registrado ainda','Os lançamentos aparecem aqui assim que forem feitos.')}</div></div>`;
+  let tm; $('#arlq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { AR.lq = e.target.value; pgArLog(); const n = $('#arlq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  $('#arla').onchange = e => { AR.la = e.target.value; pgArLog(); };
+  const lb = $('#arlb'); if (lb) lb.onchange = e => { AR.lb = e.target.value; pgArLog(); };
+}
+
+/* ----- Exportar ----- */
+async function arXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const ym = AR.mes || arMesDe(arAlvo()), sems = arSemanas(ym), bases = arBases();
+  const pessoas = [...new Map([...sems.flatMap(s => arPessoas(s, bases))].map(c => [String(c.id), c])).values()].sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  const cel = r => !r ? '' : r.situacao === 'normal' ? +r.valor : AR_SIT[r.situacao].label;
+  const res = [['Funcionário','Base','POS', ...sems.map((s, i) => `Semana ${i + 1} (${arLbl(s)})`), 'Total do mês', 'Semanas contabilizadas', 'Média por semana']];
+  pessoas.forEach(c => { const rs = sems.map(s => arRec(c.id, s)), v = rs.filter(arConta), t = v.reduce((a, r) => a + +r.valor, 0);
+    res.push([c.nome, bName(c.base), c.pos || '', ...rs.map(cel), t, v.length, v.length ? Math.round(t / v.length * 100) / 100 : 0]); });
+  res.push(['TOTAL', '', '', ...sems.map(s => (S.arr || []).filter(r => r.semana === s && bases.includes(r.base) && arConta(r)).reduce((a, r) => a + +r.valor, 0)), (S.arr || []).filter(r => sems.includes(r.semana) && bases.includes(r.base) && arConta(r)).reduce((a, r) => a + +r.valor, 0), '', '']);
+  const det = [['Semana (segunda)','Semana','Funcionário','Base','Situação','Valor','Conta na soma','Em dupla com','Observação','Lançado por','Atualizado em']];
+  (S.arr || []).filter(r => bases.includes(r.base)).sort((a,b) => b.semana.localeCompare(a.semana)).forEach(r => { const c = C(r.colaborador_id) || CX(r.colaborador_id);
+    det.push([fmtD(r.semana), arLbl(r.semana), c?.nome || '', bName(r.base), AR_SIT[r.situacao].label, +r.valor, arConta(r) ? 'Sim' : 'Não', r.dupla_com ? (C(r.dupla_com)?.nome || '') : '', r.obs || '', r.lancado_por_nome || '', fmtDT(r.updated_at || r.created_at)]); });
+  const wb = X.utils.book_new();
+  const money = ws => { Object.keys(ws).forEach(k => { const c = ws[k]; if (c && c.t === 'n' && !/^[A-C]\d|^[H]\d/.test(k)) c.z = '"R$" #,##0.00'; }); };
+  const w1 = X.utils.aoa_to_sheet(res); w1['!cols'] = [30,13,22,...sems.map(() => 22),16,12,14].map(w => ({wch:w})); money(w1);
+  const w2 = X.utils.aoa_to_sheet(det); w2['!cols'] = [12,16,30,13,11,14,10,26,30,20,17].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, w1, 'Resumo ' + ym); X.utils.book_append_sheet(wb, w2, 'Lançamentos');
+  if (isAdmin()){ const lg = [['Quando','Quem','Ação','Funcionário','Base','Semana','Valor antes','Situação antes','Valor depois','Situação depois']];
+    (S.arrLog || []).forEach(l => lg.push([fmtDT(l.em), l.por_nome || '', l.acao, l.colaborador_nome || '', bName(l.base), l.semana ? arLbl(l.semana) : '', l.valor_antes ?? '', l.situacao_antes ? AR_SIT[l.situacao_antes]?.label : '', l.valor_depois ?? '', l.situacao_depois ? AR_SIT[l.situacao_depois]?.label : '']));
+    const w3 = X.utils.aoa_to_sheet(lg); w3['!cols'] = [17,20,9,30,13,16,13,13,13,13].map(w => ({wch:w})); X.utils.book_append_sheet(wb, w3, 'Registro'); }
+  X.writeFile(wb, `Arrecadacao_${ym}${S.base || AR.b ? '_' + bName(S.base || AR.b).replace(/\s/g,'') : ''}.xlsx`); toast('Arrecadação exportada.');
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -6034,6 +6469,17 @@ const ACT = {
   'est-new': () => estItemForm(), 'est-edit': a => { closeModal(); estItemForm(a.dataset.id); }, 'est-save': a => estSaveItem(a.dataset.id || null), 'est-del': a => estDelItem(a.dataset.id),
   'est-open': a => estOpen(a.dataset.id), 'est-mov': a => estMovForm(a.dataset.id, a.dataset.k, a.dataset.base), 'est-mov-save': () => estMovSave(),
   'est-conf': a => estConferir(a.dataset.k), 'est-conf-save': a => estConfSave(a.dataset.k), 'est-hist': () => estHist(), 'est-xls': () => estXls(),
+  'ar-tab': a => { AR.tab = a.dataset.k; ARL = null; pgArrec(); window.scrollTo(0, 0); },
+  'ar-go': () => { AR.tab = ''; go('arrecadacao'); },
+  'ar-lancar': a => { AR.tab = 'lancar'; if (a?.dataset?.k) AR.sem = a.dataset.k; else if (!AR.sem) AR.sem = arAlvo(); ARL = null; S.page === 'arrecadacao' ? pgArrec() : go('arrecadacao'); },
+  'ar-mes': a => { const [y, m] = AR.mes.split('-').map(Number), d = new Date(y, m - 1 + +a.dataset.k, 1); AR.mes = iso(d).slice(0, 7); pgArrec(); },
+  'ar-b': a => { AR.b = AR.b === a.dataset.k ? '' : a.dataset.k; ARL = null; pgArrec(); },
+  'ar-sem': a => { AR.sem = iso(addDays(parseISO(AR.sem || arAlvo()), +a.dataset.k)); ARL = null; pgArLancar(); },
+  'ar-sem-go': a => { AR.sem = a.dataset.k; ARL = null; pgArLancar(); },
+  'ar-sit': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; d.situacao = d.situacao === a.dataset.k ? 'normal' : a.dataset.k; d.sug = false; d.salvo = false;
+    const c = C(a.dataset.id), row = $('#arl-' + a.dataset.id); if (c && row){ const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); } },
+  'ar-vobs': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; d.vObs = !d.vObs || !!d.obs; const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); $(`.ar-obs[data-id="${a.dataset.id}"]`)?.focus(); },
+  'ar-salvar': () => arSalvar(), 'ar-edit': a => arEdit(a.dataset.id, a.dataset.k), 'ar-ed-save': a => arEdSave(a.dataset.id, a.dataset.k), 'ar-del': a => arDel(a.dataset.id), 'ar-xls': () => arXls(),
   'est-tab': a => { S.est.tab = a.dataset.k; pgEstoque(); },
   'pd-new': () => pedForm(), 'pd-open': a => pedForm(a.dataset.id), 'pd-save': a => pedSave(a.dataset.id || null), 'pd-del': a => pedDel(a.dataset.id),
   'pd-concluir': (a, e) => { e?.stopPropagation?.(); pedConcluir(a.dataset.id); }, 'pd-ok': a => pedOk(a.dataset.id),
