@@ -5963,6 +5963,8 @@ Object.assign(ICONS, {
   pos:'<rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M9 6.5h6v3H9zM9 13h.01M12 13h.01M15 13h.01M9 16h.01M12 16h.01M15 16h.01"/>',
   pair:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20c.5-3 2.7-5 5.5-5s5 2 5.5 5M10.5 20c.5-3 2.7-5 5.5-5s5 2 5.5 5"/>'
 });
+// Controle começa em setembro/2026: semanas anteriores não ficam pendentes (semana de 31/08 é a 1ª de setembro, pela quinta-feira)
+const AR_INICIO = '2026-08-31';
 const AR_SIT = {normal:{label:'Normal', color:'#16a34a'}, dupla:{label:'Em dupla', color:'#0d9488'}, sem_pos:{label:'Sem POS', color:'#64748b'}};
 const AR = {mes:null, tab:'', q:'', ord:'total', sem:null, b:'', lq:'', lb:'', la:''};
 const brl = v => (+v || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
@@ -5986,7 +5988,7 @@ const arConta = r => r && r.situacao === 'normal';
 // Quem precisa de lançamento numa semana: ativos das bases (e quem já tem lançamento nela)
 const arPessoas = (s, bases = arBases()) => { const ids = new Set((S.arr || []).filter(r => r.semana === s).map(r => String(r.colaborador_id)));
   return S.colabs.filter(c => bases.includes(c.base) && (c.status === 'ativo' || ids.has(String(c.id)))).sort((a,b) => a.nome.localeCompare(b.nome,'pt')); };
-const arPend = (s, bases) => arPessoas(s, bases).filter(c => !arRec(c.id, s));
+const arPend = (s, bases) => s < AR_INICIO ? [] : arPessoas(s, bases).filter(c => !arRec(c.id, s));
 const arPendMinhas = () => { if (!S.profile || !(isAdmin() || isLid(S.profile))) return []; return arPend(arAlvo(), BKEYS.filter(allowed)).filter(c => c.status === 'ativo'); };
 
 function arTabs(){
@@ -6056,7 +6058,7 @@ function pgArrec(){
 }
 function arCell(c, s, r){
   const fut = s > arAtual(), atual = s === arAtual();
-  if (!r) return `<td class="ar-c">${fut ? '<span class="ar-fut">—</span>' : `<button class="ar-pend ${atual ? 'cur' : ''}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="${atual ? 'Semana em andamento' : 'Sem lançamento'}">${atual ? 'em andamento' : ic('plus',12) + 'lançar'}</button>`}</td>`;
+  if (!r) return `<td class="ar-c">${fut || s < AR_INICIO ? '<span class="ar-fut">—</span>' : `<button class="ar-pend ${atual ? 'cur' : ''}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="${atual ? 'Semana em andamento' : 'Sem lançamento'}">${atual ? 'em andamento' : ic('plus',12) + 'lançar'}</button>`}</td>`;
   return `<td class="ar-c"><button class="ar-v ${r.situacao}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="Lançado por ${esc(r.lancado_por_nome || '—')}${r.obs ? ' — ' + esc(r.obs) : ''}">${r.situacao === 'normal' ? brl(r.valor) : `<span class="ar-tag ${r.situacao}">${AR_SIT[r.situacao].label}</span>${+r.valor ? `<small>${brl(r.valor)}</small>` : ''}`}${r.obs ? '<i class="ar-ob"></i>' : ''}</button></td>`;
 }
 function arAviso(){
@@ -6073,11 +6075,11 @@ function pgArLancar(){
   const s = AR.sem, bases = arBases(), pessoas = arPessoas(s, bases), fut = s > arAtual();
   if (!ARL || ARL.s !== s){ ARL = {s, d:{}}; pessoas.forEach(c => { const r = arRec(c.id, s);
     ARL.d[c.id] = r ? {valor:brlIn(r.valor), situacao:r.situacao, dupla_com:r.dupla_com || '', obs:r.obs || '', salvo:true} : {valor:'', situacao:c.pos ? 'normal' : 'sem_pos', dupla_com:'', obs:'', sug:!c.pos}; }); }
-  const sems = [-3,-2,-1,0,1].map(k => iso(addDays(parseISO(arAlvo()), 7 * k)));
+  const sems = [-3,-2,-1,0,1].map(k => iso(addDays(parseISO(arAlvo()), 7 * k))).filter(x => x >= AR_INICIO);
   const ordem = pessoas.slice().sort((a,b) => !!arRec(a.id, s) - !!arRec(b.id, s) || a.base.localeCompare(b.base) || a.nome.localeCompare(b.nome,'pt'));
   $('#page').innerHTML = `${arTabs()}
   <div class="card ar-lw">
-    <div class="ar-wk"><button class="icon-btn bord" data-act="ar-sem" data-k="-7" aria-label="Semana anterior">${ic('chevL',18)}</button>
+    <div class="ar-wk"><button class="icon-btn bord" data-act="ar-sem" data-k="-7" aria-label="Semana anterior" ${s <= AR_INICIO ? 'disabled' : ''}>${ic('chevL',18)}</button>
       <div><b>Semana de ${fmtD(s)} a ${fmtD(arFim(s))}</b><small>${s === arAlvo() ? 'Semana passada — é a que deve ser lançada agora' : s === arAtual() ? 'Semana atual (ainda em andamento)' : fut ? 'Semana futura' : 'Semana anterior'}</small></div>
       <button class="icon-btn bord" data-act="ar-sem" data-k="7" aria-label="Próxima semana">${ic('chevR',18)}</button></div>
     <div class="ar-chips">${sems.map(x => { const pp = arPend(x, bases).filter(c => c.status === 'ativo').length; return `<button class="${x === s ? 'on' : ''}" data-act="ar-sem-go" data-k="${x}">${arLbl(x)}${x <= arAlvo() ? (pp ? `<em>${pp}</em>` : `<i>${ic('check',11)}</i>`) : ''}</button>`; }).join('')}</div>
@@ -6474,7 +6476,7 @@ const ACT = {
   'ar-lancar': a => { AR.tab = 'lancar'; if (a?.dataset?.k) AR.sem = a.dataset.k; else if (!AR.sem) AR.sem = arAlvo(); ARL = null; S.page === 'arrecadacao' ? pgArrec() : go('arrecadacao'); },
   'ar-mes': a => { const [y, m] = AR.mes.split('-').map(Number), d = new Date(y, m - 1 + +a.dataset.k, 1); AR.mes = iso(d).slice(0, 7); pgArrec(); },
   'ar-b': a => { AR.b = AR.b === a.dataset.k ? '' : a.dataset.k; ARL = null; pgArrec(); },
-  'ar-sem': a => { AR.sem = iso(addDays(parseISO(AR.sem || arAlvo()), +a.dataset.k)); ARL = null; pgArLancar(); },
+  'ar-sem': a => { AR.sem = iso(addDays(parseISO(AR.sem || arAlvo()), +a.dataset.k)); if (AR.sem < AR_INICIO) AR.sem = AR_INICIO; ARL = null; pgArLancar(); },
   'ar-sem-go': a => { AR.sem = a.dataset.k; ARL = null; pgArLancar(); },
   'ar-sit': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; d.situacao = d.situacao === a.dataset.k ? 'normal' : a.dataset.k; d.sug = false; d.salvo = false;
     const c = C(a.dataset.id), row = $('#arl-' + a.dataset.id); if (c && row){ const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); } },
