@@ -1,12 +1,14 @@
 // Painel de Controle — service worker: abre sem internet e mostra as notificações dos lembretes.
-const CACHE = 'painel-v2.15';
+const CACHE = 'painel-v2.16';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './badge-96.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
   if (r.method !== 'GET' || u.origin !== location.origin) return;            // Supabase, fontes e bibliotecas: direto na rede
-  e.respondWith(fetch(r).then(res => { if (res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put(r, cp)); } return res; })
+  // Página e sw sempre conferidos no servidor (sem usar cópia velha do navegador), para a versão nova aparecer na hora
+  const fresh = r.mode === 'navigate' || /\.(html|webmanifest)$|\/$/.test(u.pathname);
+  e.respondWith((fresh ? fetch(r.url, {cache:'no-cache', credentials:'same-origin'}) : fetch(r)).then(res => { if (res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put(r, cp)); } return res; })
     .catch(() => caches.match(r).then(m => m || (r.mode === 'navigate' ? caches.match('./index.html') : Response.error()))));
 });
 self.addEventListener('push', e => {

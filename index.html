@@ -1722,6 +1722,34 @@ button.po-tr:hover{background:var(--soft)}
   .ar-kpis .ar-k-n{font-size:17px}
 }
 
+.ar-fech{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;background:#00000026;border-radius:20px;padding:4px 11px;margin-bottom:8px}
+.ar-fech.ok{background:#ffffff;color:#047857}
+
+/* ===== v2.16: reuniões e atas ===== */
+.bd-dh-b{display:flex;gap:6px}
+.bd-reu{background:#faf5ff}
+.bd-reu.feita{background:#fff}
+.bd-reu-i{flex:none;width:46px;border-radius:10px;background:#ede9fe;color:#5b21b6;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5px 0;line-height:1.1}
+.bd-reu-i b{font-size:13px}.bd-reu-i small{font-size:10px;opacity:.8}
+.bd-m .bd-ata{color:#5b21b6;font-weight:600}
+.reu-ps{display:flex;flex-wrap:wrap;gap:6px}
+.reu-p{position:relative}
+.reu-p input{position:absolute;opacity:0;pointer-events:none}
+.reu-p>span{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:20px;padding:3px 10px 3px 3px;font-size:12.5px;cursor:pointer;transition:.12s;background:#fff}
+.reu-p input:checked+span{border-color:#7c3aed;background:#f5f3ff;color:#5b21b6;font-weight:600}
+.reu-p input:focus-visible+span{outline:2px solid #7c3aed}
+.reu-drop{display:flex;flex-direction:column;align-items:center;gap:4px;border:2px dashed #c4b5fd;border-radius:14px;background:#faf5ff;color:#5b21b6;padding:18px;cursor:pointer;text-align:center;transition:.15s}
+.reu-drop:hover,.reu-drop.over{background:#f3e8ff;border-color:#7c3aed}
+.reu-drop small{color:var(--muted);font-size:11.5px}
+#reulist{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.reu-f{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 10px;background:#fff}
+.reu-f.pend{border-style:dashed;background:#fafafa}
+.reu-fi{flex:none;width:30px;height:30px;border-radius:8px;background:#ede9fe;color:#6d28d9;display:grid;place-items:center}
+.reu-fn{flex:1;min-width:0;text-align:left;border:0;background:none;padding:0;cursor:pointer;font:inherit}
+.reu-fn b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reu-fn small{color:var(--muted);font-size:11px}
+@media (max-width:600px){ .bd-dh-b .btn{padding:6px 9px} }
+
 </style>
 </head>
 <body>
@@ -1734,7 +1762,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.15';
+const APP_VERSION = '2.16';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2098,6 +2126,8 @@ function seed(){
     an({titulo:'Falta de cones na base', categoria:'Material', base:'sao-mateus', data:dOff(-6), status:'resolvido', resolvido_em:h(30)}),
     an({titulo:'Anotação da Fernanda', user_id:'u-fernanda', autor_nome:'Fernanda Souza', base:'ipiranga'}),
     an({titulo:'Particular da Fernanda', user_id:'u-fernanda', autor_nome:'Fernanda Souza', base:null}),
+    an({titulo:'Alinhamento semanal com os líderes', tipo:'reuniao', base:'pinheiros', data:dOff(0), hora:'15:00', local:'Base Pinheiros', participantes:'Encarregado Principal, Carlos Lima', texto:'Pauta: arrecadação do mês, plantões e estoque de lacres.', categoria:'Equipe', arquivos:[]}),
+    an({titulo:'Reunião de segurança', tipo:'reuniao', base:'ipiranga', data:dOff(-5), hora:'09:00', local:'Teams', participantes:'Encarregado Principal, Fernanda Souza', status:'resolvido', resolvido_em:h(110), categoria:'Equipe', arquivos:[{path:'x/ata.pdf', nome:'Ata reunião segurança.pdf', tamanho:182000, mime:'application/pdf', por:'Fernanda Souza', em:h(100)}]}),
     an({titulo:'Duplas — Pinheiros', tipo:'duplas', user_id:'u-carlos', autor_nome:'Carlos Lima', base:'pinheiros', data:dOff(-1), categoria:'Equipe', duplas:[['c1','c2']]})
   ];
   const pd = (n, o) => ({id:uid(), numero:n, item_id:null, quantidade:1, unidade:'un', solicitante:'Encarregado Principal', comprador:'Marcos — Compras', canal:'E-mail', status:'pendente', obs:'', qtd_recebida:null, concluido_em:null, concluido_por:null, criado_por:'u-admin', criado_por_nome:'Encarregado Principal', created_at:h(n*20), updated_at:h(n*20), ...o});
@@ -2109,13 +2139,12 @@ function seed(){
     pd(5, {produto:'Bota de segurança 42', quantidade:2, unidade:'par', base:'santo-andre', data:dOff(-9), solicitante:'Paula Ribeiro', canal:'E-mail', status:'cancelado', obs:'Pedido em duplicidade'})
   ];
   const arrecadacoes = [], arrecadacao_log = [];
-  { const seg = d => { const x = new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
-    const s0 = seg(new Date()); let n = 0;
-    for (let w = 1; w <= 7; w++){ const s = iso(new Date(s0.getTime() - w * 7 * 864e5));
+  { let n = 0, s = arAtual();
+    for (let w = 1; w <= 9; w++){ s = arAnt(s); if (s < AR_INICIO) break; const per = s;
       colaboradores.filter(c => c.status === 'ativo').forEach((c, i) => { if (w === 1 && c.base !== 'ipiranga') return;
-        const sit = !c.pos ? 'sem_pos' : (i + w) % 9 === 0 ? 'dupla' : 'normal', v = sit === 'normal' ? Math.round((900 + ((i * 37 + w * 53) % 23) * 61.5) * 100) / 100 : 0;
-        arrecadacoes.push({id:uid(), colaborador_id:c.id, base:c.base, semana:s, valor:v, situacao:sit, dupla_com:null, obs:'', lancado_por:'u-carlos', lancado_por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', created_at:h(w * 168 - 20), updated_at:h(w * 168 - 20)});
-        if (w <= 2) arrecadacao_log.push({id:++n, colaborador_id:c.id, colaborador_nome:c.nome, base:c.base, semana:s, acao:'lançou', valor_antes:null, valor_depois:v, situacao_antes:null, situacao_depois:sit, por_id:'u-carlos', por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', em:h(w * 168 - 20)}); }); }
+        const sit = !c.pos ? 'sem_pos' : (i + w) % 9 === 0 ? 'dupla' : 'normal', v = sit === 'normal' ? Math.round((900 + ((i * 37 + w * 53) % 23) * 61.5) * arDias(per) / 7 * 100) / 100 : 0;
+        arrecadacoes.push({id:uid(), colaborador_id:c.id, base:c.base, semana:per, valor:v, situacao:sit, dupla_com:null, obs:'', lancado_por:'u-carlos', lancado_por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', created_at:h(w * 168 - 20), updated_at:h(w * 168 - 20)});
+        if (w <= 2) arrecadacao_log.push({id:++n, colaborador_id:c.id, colaborador_nome:c.nome, base:c.base, semana:per, acao:'lançou', valor_antes:null, valor_depois:v, situacao_antes:null, situacao_depois:sit, por_id:'u-carlos', por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', em:h(w * 168 - 20)}); }); }
     arrecadacao_log.sort((a,b) => b.em.localeCompare(a.em)); }
   return {arrecadacoes, arrecadacao_log, pedidos, anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
@@ -2281,7 +2310,7 @@ const SUBS = {
   colaboradores:'Cadastro da equipe, importação por Excel e vínculo com veículos',
   frota:'Carros e motos com a situação atualizada pelas bases',
   diario:'Problemas das bases e pedidos do encarregado',
-  bordo:'Anotações da equipe e duplas do dia, com calendário e lembretes',
+  bordo:'Anotações da equipe, duplas do dia e reuniões com atas, com calendário e lembretes',
   calendario:'Folgas, atestados, consultas médicas e outras ausências',
   escalas:'Plantões de sábado (dão folga) e ações de hora extra (contam horas): quem vai e quem é o responsável',
   horas:'Só o encarregado vê: horas das ações e lançamentos manuais, por base, por ação e por pessoa',
@@ -3490,6 +3519,8 @@ function buildNotifs0(){
     if (hj.length) rem.push({icon:'planner', c:PL_COR, t:`Hoje no planner: ${hj.length} tarefa(s)`, s:plSort(hj).slice(0,3).map(t => (t.hora ? hhmm(t.hora) + ' ' : '') + t.titulo).join(', '), act:'pl-go', k:'hoje', w:1, key:'rem:pl:hj:' + hj.length}); }
   { const bd = (S.anot||[]).filter(a => sameId(a.user_id, me) && bdDue(a));
     if (bd.length) rem.push({icon:'notebook', c:'#9333ea', urgent:true, t:bd.length === 1 ? 'Diário de bordo: lembrar hoje' : `Diário de bordo: ${bd.length} problemas para lembrar`, s:bd.slice(0,3).map(a => a.titulo).join(', '), act:'bd-go', w:0, key:'rem:bd:' + bd.length}); }
+  { const rh = (S.anot || []).filter(a => a.tipo === 'reuniao' && a.status === 'aberto' && a.data === today && (sameId(a.user_id, me) || (a.base && allowed(a.base))));
+    rh.forEach(a => rem.push({icon:'cal', c:'#7c3aed', urgent:true, t:`Reunião hoje${a.hora ? ' às ' + hhmm(a.hora) : ''}: ${a.titulo}`, s:[a.local, a.base ? bName(a.base) : ''].filter(Boolean).join(' · '), act:'bd-open', id:a.id, w:0, key:'rem:reu:' + a.id})); }
   { const ap = arPendMinhas();
     if (ap.length) rem.push({icon:'coin', c:'#16a34a', urgent:true, t:`Lance a arrecadação da semana ${arLbl(arAlvo())}`, s:`${ap.length} funcionário(s) sem lançamento` + (isAdmin() ? ': ' + [...new Set(ap.map(c => c.base))].map(bName).join(', ') : ''), act:'ar-lancar', w:0, key:'rem:arr:' + arAlvo() + ':' + ap.length}); }
   // Visitas marcadas na base que eu lidero
@@ -5618,44 +5649,48 @@ const DUP_COR = '#0d9488';
 const BD = {y:null, m:null, d:null, f:'aberto', q:'', cat:''};
 // O banco já devolve só o que cada um pode ver; o filtro aqui vale para o modo teste
 const bdAll = () => (S.anot || []).filter(a => sameId(a.user_id, S.profile?.id) || (a.base && allowed(a.base)));
-const bdNotas = () => bdAll().filter(a => a.tipo !== 'duplas');
+const bdNotas = () => bdAll().filter(a => !a.tipo || a.tipo === 'nota');
 const bdDups = () => bdAll().filter(a => a.tipo === 'duplas');
+const bdReus = () => bdAll().filter(a => a.tipo === 'reuniao');
+const REU_COR = '#7c3aed';
 const AN = id => S.anot.find(a => sameId(a.id, id));
 const bdHoje = () => iso(new Date());
-const bdDue = a => a.tipo !== 'duplas' && a.status === 'aberto' && a.lembrar_em && a.lembrar_em <= bdHoje();
+const bdDue = a => (!a.tipo || a.tipo === 'nota') && a.status === 'aberto' && a.lembrar_em && a.lembrar_em <= bdHoje();
 const bdMeu = a => sameId(a.user_id, S.profile?.id);
 const bdBaseDef = () => curBaseKey() || (myBases().length === 1 ? myBases()[0] : '');
 const bdNomeC = id => { const c = C(id) || CX(id); return c ? c.nome : 'Removido'; };
 const bdMatch = a => { const q = nk(BD.q);
-  if (BD.f === 'duplas' ? a.tipo !== 'duplas' : a.tipo === 'duplas') return false;
-  return (BD.f === 'todos' || BD.f === 'duplas' || a.status === BD.f) && (!BD.cat || a.tipo === 'duplas' || a.categoria === BD.cat) && (!S.base || !a.base || a.base === S.base) &&
-    (!q || nk([a.titulo, a.texto, a.categoria, bName(a.base), a.autor_nome, C(a.colaborador_id)?.nome, V(a.veiculo_id)?.placa, ...(a.duplas || []).flat().map(bdNomeC)].join(' ')).includes(q)); };
-const bdSort = l => l.slice().sort((a,b) => (b.tipo === 'duplas') - (a.tipo === 'duplas') || (a.status === 'resolvido') - (b.status === 'resolvido') || (bdDue(b) - bdDue(a)) || b.prioridade - a.prioridade || b.data.localeCompare(a.data));
+  const tp = a.tipo || 'nota'; if (BD.f === 'duplas' ? tp !== 'duplas' : BD.f === 'reunioes' ? tp !== 'reuniao' : tp !== 'nota') return false;
+  return (BD.f === 'todos' || BD.f === 'duplas' || BD.f === 'reunioes' || a.status === BD.f) && (!BD.cat || tp !== 'nota' || a.categoria === BD.cat) && (!S.base || !a.base || a.base === S.base) &&
+    (!q || nk([a.titulo, a.texto, a.categoria, bName(a.base), a.autor_nome, a.local, a.participantes, ...(a.arquivos || []).map(x => x.nome), C(a.colaborador_id)?.nome, V(a.veiculo_id)?.placa, ...(a.duplas || []).flat().map(bdNomeC)].join(' ')).includes(q)); };
+const bdSort = l => l.slice().sort((a,b) => (b.tipo === 'reuniao') - (a.tipo === 'reuniao') || (b.tipo === 'duplas') - (a.tipo === 'duplas') || (a.status === 'resolvido') - (b.status === 'resolvido') || (bdDue(b) - bdDue(a)) || b.prioridade - a.prioridade || b.data.localeCompare(a.data));
 function pgBordo(){
   if (BD.y == null){ const d = new Date(); BD.y = d.getFullYear(); BD.m = d.getMonth(); BD.d = bdHoje(); }
   const notas = bdNotas().filter(a => !S.base || !a.base || a.base === S.base), abertos = notas.filter(a => a.status === 'aberto'), due = abertos.filter(bdDue);
   const dups = bdDups().filter(a => !S.base || a.base === S.base);
-  const lista = bdSort(bdAll().filter(bdMatch)), doDia = bdSort(bdAll().filter(a => a.data === BD.d && (!S.base || !a.base || a.base === S.base) && (!BD.cat || a.tipo === 'duplas' || a.categoria === BD.cat)));
-  const tit = {aberto:'Em aberto', resolvido:'Resolvidas', duplas:'Duplas montadas', todos:'Todas as anotações'}[BD.f];
+  const lista = bdSort(bdAll().filter(bdMatch)), doDia = bdSort(bdAll().filter(a => a.data === BD.d && (!S.base || !a.base || a.base === S.base) && (!BD.cat || (a.tipo && a.tipo !== 'nota') || a.categoria === BD.cat)));
+  const tit = {aberto:'Em aberto', resolvido:'Resolvidas', duplas:'Duplas montadas', reunioes:'Reuniões', todos:'Todas as anotações'}[BD.f];
+  const reus = bdReus().filter(a => !S.base || !a.base || a.base === S.base);
   $('#page').innerHTML = `
   <div class="bd-top">
-    <div class="seg">${[['aberto','Em aberto', abertos.length],['resolvido','Resolvidas', notas.length - abertos.length],['duplas','Duplas', dups.length],['todos','Todas', notas.length]].map(([k,l,n]) => `<button class="${BD.f===k?'on':''}" data-act="bd-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
+    <div class="seg">${[['aberto','Em aberto', abertos.length],['resolvido','Resolvidas', notas.length - abertos.length],['duplas','Duplas', dups.length],['reunioes','Reuniões', reus.length],['todos','Todas', notas.length]].map(([k,l,n]) => `<button class="${BD.f===k?'on':''}" data-act="bd-f" data-k="${k}">${l} <span class="muted">${n}</span></button>`).join('')}</div>
     <label class="search">${ic('search',16)}<input id="bdq" placeholder="Buscar no diário..." value="${esc(BD.q)}"></label>
     <select class="sel" id="bdcat" aria-label="Categoria"><option value="">Todas as categorias</option>${opts(Object.keys(BD_CAT).map(k => [k,k]), BD.cat)}</select>
     <button class="btn" data-act="bd-dup">${ic('users',16)}Duplas do dia</button>
+    <button class="btn" data-act="bd-reu">${ic('cal',16)}Reunião</button>
     <button class="btn pri" data-act="bd-new">${ic('plus',16)}Anotar</button>
   </div>
   ${due.length ? `<div class="bd-due">${ic('bell',16)}<b>${due.length === 1 ? 'Para lembrar hoje:' : due.length + ' anotações para lembrar hoje:'}</b>${due.slice(0,4).map(a => `<button data-act="bd-open" data-id="${a.id}">${esc(a.titulo)}</button>`).join('')}</div>` : ''}
   <div class="bd-grid">
     <div class="card bd-cal">${bdCal()}</div>
     <div class="bd-side">
-      <div class="card"><div class="card-h"><div><h3>${BD.d === bdHoje() ? 'Hoje' : cap(parseISO(BD.d).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(BD.d).slice(0,5)}</h3><p class="ch-sub">${doDia.length ? doDia.length + ' registro(s) neste dia' : 'Nada anotado neste dia'}</p></div><button class="btn sm" data-act="bd-dup">${ic('users',14)}Duplas</button></div>
+      <div class="card"><div class="card-h"><div><h3>${BD.d === bdHoje() ? 'Hoje' : cap(parseISO(BD.d).toLocaleDateString('pt-BR',{weekday:'long'}))}, ${fmtD(BD.d).slice(0,5)}</h3><p class="ch-sub">${doDia.length ? doDia.length + ' registro(s) neste dia' : 'Nada anotado neste dia'}</p></div><span class="bd-dh-b"><button class="btn sm" data-act="bd-reu">${ic('cal',14)}Reunião</button><button class="btn sm" data-act="bd-dup">${ic('users',14)}Duplas</button></span></div>
         <div class="card-b"><div class="bd-qa">${ic('plus',16)}<input id="bdqa" placeholder="Anote algo neste dia e aperte Enter" maxlength="160" enterkeyhint="done"></div>
         ${doDia.map(bdCard).join('')}</div></div>
     </div>
   </div>
   <div class="card" style="margin-top:18px"><div class="card-h"><div><h3>${tit}</h3><p class="ch-sub">${BD.f === 'aberto' ? 'Lembrete vencido e prioridade alta vêm primeiro' : 'Mais recentes primeiro'}</p></div><span class="muted s">${lista.length}</span></div>
-    <div class="card-b">${lista.length ? lista.slice(0, BD.lim || 60).map(bdCard).join('') + (lista.length > (BD.lim || 60) ? `<button class="btn sm" style="margin:10px auto 0;display:flex" data-act="bd-more">Mostrar mais</button>` : '') : empty(BD.f === 'duplas' ? 'users' : 'notebook', BD.f === 'aberto' ? 'Nada em aberto' : BD.f === 'duplas' ? 'Nenhuma dupla montada' : 'Nada por aqui', BD.f === 'duplas' ? 'Use "Duplas do dia" para montar as duplas de uma base.' : 'Use "Anotar" para registrar o que precisa acompanhar.')}</div></div>`;
+    <div class="card-b">${lista.length ? lista.slice(0, BD.lim || 60).map(bdCard).join('') + (lista.length > (BD.lim || 60) ? `<button class="btn sm" style="margin:10px auto 0;display:flex" data-act="bd-more">Mostrar mais</button>` : '') : empty(BD.f === 'duplas' ? 'users' : BD.f === 'reunioes' ? 'cal' : 'notebook', BD.f === 'aberto' ? 'Nada em aberto' : BD.f === 'duplas' ? 'Nenhuma dupla montada' : BD.f === 'reunioes' ? 'Nenhuma reunião registrada' : 'Nada por aqui', BD.f === 'duplas' ? 'Use "Duplas do dia" para montar as duplas de uma base.' : BD.f === 'reunioes' ? 'Use "Reunião" para agendar ou registrar uma reunião e anexar a ata.' : 'Use "Anotar" para registrar o que precisa acompanhar.')}</div></div>`;
   let tm; $('#bdq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { BD.q = e.target.value; pgBordo(); const n = $('#bdq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
   $('#bdcat').onchange = e => { BD.cat = e.target.value; pgBordo(); };
   $('#bdqa').onkeydown = async e => { if (e.key !== 'Enter') return; e.preventDefault(); const t = e.target.value.trim(); if (!t) return;
@@ -5666,15 +5701,16 @@ function bdCal(){
   const by = {}; bdAll().filter(a => !S.base || !a.base || a.base === S.base).forEach(a => (by[a.data] = by[a.data] || []).push(a));
   let cells = '';
   for (let i = 0; i < 42; i++){ const d = addDays(start, i), ds = iso(d); if (i >= 35 && d.getMonth() !== BD.m) break;
-    const l = by[ds] || [], nt = l.filter(a => a.tipo !== 'duplas'), dp = l.some(a => a.tipo === 'duplas'), ab = nt.filter(a => a.status === 'aberto');
+    const l = by[ds] || [], nt = l.filter(a => !a.tipo || a.tipo === 'nota'), dp = l.some(a => a.tipo === 'duplas'), ru = l.some(a => a.tipo === 'reuniao'), ab = nt.filter(a => a.status === 'aberto');
     cells += `<button class="bd-d ${d.getMonth()!==BD.m?'out':''} ${ds===hj?'tdy':''} ${ds===BD.d?'sel':''} ${ab.length?'has':''}" data-act="bd-day" data-d="${ds}" aria-label="${fmtD(ds)}: ${l.length} registro(s)"><span>${d.getDate()}</span>
-      ${l.length ? `<i class="bd-dots">${dp ? `<b class="dup" style="background:${DUP_COR}"></b>` : ''}${nt.slice(0,3).map(a => `<b style="background:${a.status === 'resolvido' ? '#cbd5e1' : BD_PRI[a.prioridade].color}"></b>`).join('')}</i>` : ''}</button>`; }
+      ${l.length ? `<i class="bd-dots">${ru ? `<b class="dup" style="background:${REU_COR}"></b>` : ''}${dp ? `<b class="dup" style="background:${DUP_COR}"></b>` : ''}${nt.slice(0,3).map(a => `<b style="background:${a.status === 'resolvido' ? '#cbd5e1' : BD_PRI[a.prioridade].color}"></b>`).join('')}</i>` : ''}</button>`; }
   return `<div class="cal-h" style="margin:0 0 10px"><button class="icon-btn bord" data-act="bd-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',17)}</button><h2>${cap(new Date(BD.y, BD.m, 1).toLocaleDateString('pt-BR',{month:'long',year:'numeric'}))}</h2><button class="icon-btn bord" data-act="bd-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',17)}</button><button class="btn sm" data-act="bd-mes" data-k="0">Hoje</button></div>
     <div class="bd-cg">${['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'].map(w => `<span class="bd-w">${w}</span>`).join('')}${cells}</div>
-    <div class="bd-leg">${Object.entries(BD_PRI).map(([k,o]) => `<span><i style="background:${o.color}"></i>${o.label}</span>`).join('')}<span><i style="background:#cbd5e1"></i>Resolvida</span><span><i style="background:${DUP_COR};border-radius:2px"></i>Duplas</span></div>`;
+    <div class="bd-leg">${Object.entries(BD_PRI).map(([k,o]) => `<span><i style="background:${o.color}"></i>${o.label}</span>`).join('')}<span><i style="background:#cbd5e1"></i>Resolvida</span><span><i style="background:${DUP_COR};border-radius:2px"></i>Duplas</span><span><i style="background:${REU_COR};border-radius:2px"></i>Reunião</span></div>`;
 }
 function bdCard(a){
   if (a.tipo === 'duplas') return bdDupCard(a);
+  if (a.tipo === 'reuniao') return bdReuCard(a);
   const c = a.colaborador_id && (C(a.colaborador_id) || CX(a.colaborador_id)), v = a.veiculo_id && V(a.veiculo_id), due = bdDue(a), done = a.status === 'resolvido';
   return `<div class="bd-it ${done?'done':''} ${due?'due':''}" style="--p:${BD_PRI[a.prioridade].color}" data-act="bd-open" data-id="${a.id}" role="button" tabindex="0">
     <button class="bd-ck ${done?'on':''}" data-act="bd-tg" data-id="${a.id}" aria-label="${done ? 'Reabrir' : 'Marcar como resolvida'}">${ic('check',13)}</button>
@@ -5691,11 +5727,12 @@ function bdDupCard(a){
       <div class="bd-m"><span>${ds.length} dupla(s)</span>${a.texto ? `<span>${esc(a.texto.split('\n')[0])}</span>` : ''}${!bdMeu(a) && a.autor_nome ? `<span class="bd-por">por ${esc(firstName(a.autor_nome))}</span>` : ''}</div></div>
   </div>`;
 }
-const bdTipoSeg = (k, id) => id ? '' : `<div class="seg bd-tipo" style="margin-bottom:14px"><button class="${k === 'nota' ? 'on' : ''}" data-act="bd-new">${ic('notebook',14)}Anotação</button><button class="${k === 'duplas' ? 'on' : ''}" data-act="bd-dup">${ic('users',14)}Duplas do dia</button></div>`;
+const bdTipoSeg = (k, id) => id ? '' : `<div class="seg bd-tipo" style="margin-bottom:14px"><button class="${k === 'nota' ? 'on' : ''}" data-act="bd-new">${ic('notebook',14)}Anotação</button><button class="${k === 'duplas' ? 'on' : ''}" data-act="bd-dup">${ic('users',14)}Duplas do dia</button><button class="${k === 'reuniao' ? 'on' : ''}" data-act="bd-reu">${ic('cal',14)}Reunião</button></div>`;
 function bdForm(id, preset = {}){
   const a = id ? AN(id) : {titulo:'', texto:'', data:preset.data || $('#mf [name=data]')?.value || BD.d || bdHoje(), categoria:'Outro', prioridade:2, base:preset.base ?? bdBaseDef(), status:'aberto'};
   if (id && !a) return;
   if (a.tipo === 'duplas') return bdDupForm(id);
+  if (a.tipo === 'reuniao') return bdReuForm(id);
   const pool = colabsSorted().filter(c => c.status !== 'desligado' || sameId(c.id, a.colaborador_id)), vs = veicsV().slice().sort((x,y) => x.placa.localeCompare(y.placa));
   const podeDel = id && (bdMeu(a) || isAdmin());
   openModal({wide:true, title: id ? 'Anotação do diário' : 'Anotar', body:`${bdTipoSeg('nota', id)}<form id="mf" class="form" autocomplete="off">
@@ -5791,8 +5828,117 @@ async function bdToggle(id){
   try { await DB.update('anotacoes', id, row); Object.assign(a, row); S.sig = dataSig(); toast(st === 'resolvido' ? 'Marcada como resolvida.' : 'Reaberta.'); pgBordo(); } catch(e){ err(e); }
 }
 async function bdDel(id){
-  const a = AN(id); if (!a || !await confirmBox(`Excluir ${a.tipo === 'duplas' ? `as duplas de <b>${bName(a.base)}</b> em ${fmtD(a.data)}` : `a anotação <b>${esc(a.titulo)}</b>`}?`)) return;
-  try { await DB.remove('anotacoes', id); S.anot = S.anot.filter(x => x !== a); S.sig = dataSig(); closeModal(); toast('Excluído.'); pgBordo(); } catch(e){ err(e); }
+  const a = AN(id); if (!a || !await confirmBox(`Excluir ${a.tipo === 'reuniao' ? `a reunião <b>${esc(a.titulo)}</b>${(a.arquivos || []).length ? ' e as atas anexadas' : ''}` : a.tipo === 'duplas' ? `as duplas de <b>${bName(a.base)}</b> em ${fmtD(a.data)}` : `a anotação <b>${esc(a.titulo)}</b>`}?`)) return;
+  try { if (a.tipo === 'reuniao' && (a.arquivos || []).length && !TEST) await sb.storage.from('atas').remove(a.arquivos.map(f => f.path)).catch(() => {});
+    await DB.remove('anotacoes', id); S.anot = S.anot.filter(x => x !== a); S.sig = dataSig(); closeModal(); toast('Excluído.'); pgBordo(); } catch(e){ err(e); }
+}
+
+/* ----- Reuniões e atas (v2.16) ----- */
+const ATA_TIPOS = ['application/pdf','image/jpeg','image/png','image/webp','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/plain'];
+const ATA_EXT = /\.(pdf|jpe?g|png|webp|docx?|xlsx?|txt)$/i;
+const ataIco = n => /\.pdf$/i.test(n) ? 'file' : /\.(jpe?g|png|webp)$/i.test(n) ? 'camera' : /\.xlsx?$/i.test(n) ? 'list' : 'file';
+const fmtKB = b => b >= 1048576 ? (b / 1048576).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB';
+let BDR = null;   // janela da reunião: {id, files:[File]} — arquivos escolhidos antes de salvar uma reunião nova
+function bdReuCard(a){
+  const at = (a.arquivos || []).length, feita = a.status === 'resolvido', hoje = a.data === bdHoje();
+  const np = (a.participantes || '').split(',').map(x => x.trim()).filter(Boolean).length;
+  return `<div class="bd-it bd-reu ${feita ? 'feita' : ''}" style="--p:${REU_COR}" data-act="bd-open" data-id="${a.id}" role="button" tabindex="0">
+    <span class="bd-reu-i"><b>${a.hora ? hhmm(a.hora) : fmtD(a.data).slice(0,5)}</b><small>${a.hora ? fmtD(a.data).slice(0,5) : 'dia'}</small></span>
+    <div class="bd-b"><b>${esc(a.titulo)}</b>${a.texto ? `<small class="bd-tx">${esc(a.texto.split('\n')[0])}</small>` : ''}
+      <div class="bd-m"><span class="bd-cat" style="--c:${REU_COR}">${feita ? 'Realizada' : hoje ? 'Hoje' : a.data < bdHoje() ? 'Sem ata/realização' : 'Agendada'}</span>${a.local ? `<span>${ic('map',11)}${esc(a.local)}</span>` : ''}${a.base ? `<span>${emblem(a.base,8,2)}${bName(a.base)}</span>` : `<span>${ic('lock',11)}Particular</span>`}${np ? `<span>${ic('users',11)}${np} participante(s)</span>` : ''}<span class="${at ? 'bd-ata' : ''}">${ic('clip',11)}${at ? at + ' ata(s)' : 'sem ata'}</span>${!bdMeu(a) && a.autor_nome ? `<span class="bd-por">por ${esc(firstName(a.autor_nome))}</span>` : ''}</div></div>
+  </div>`;
+}
+function bdReuForm(id, preset = {}){
+  const a = id ? AN(id) : {titulo:'', texto:'', data:preset.data || $('#ov #mf [name=data]')?.value || BD.d || bdHoje(), hora:'', local:'', participantes:'', base:preset.base ?? bdBaseDef(), status:'aberto', arquivos:[]};
+  if (id && !a) return;
+  BDR = {id:id || null, files:[]};
+  const pessoas = S.profiles.filter(p => p.ativo && p.role !== 'pendente').sort((x,y) => x.nome.localeCompare(y.nome,'pt'));
+  const sel = new Set((a.participantes || '').split(',').map(x => x.trim()).filter(Boolean));
+  const outros = [...sel].filter(n => !pessoas.some(p => p.nome === n));
+  const podeDel = id && (bdMeu(a) || isAdmin());
+  openModal({wide:true, title: id ? 'Reunião' : 'Nova reunião', body:`${bdTipoSeg('reuniao', id)}<form id="mf" class="form" autocomplete="off" onsubmit="return false">
+    ${fld('Assunto', inp('titulo', a.titulo, 'required maxlength="160" placeholder="Ex: Alinhamento semanal com os líderes"'), true, true)}
+    ${fld('Dia', inp('data', a.data, 'type="date" required'), false, true)}
+    ${fld('Horário', inp('hora', a.hora ? hhmm(a.hora) : '', 'type="time"'))}
+    ${fld('Local', inp('local', a.local || '', 'maxlength="80" placeholder="Ex: Base Pinheiros, Teams, escritório..."'))}
+    ${fld('Base', `<select name="base"><option value="">Nenhuma (particular, só eu vejo)</option>${opts(myBases().map(k => [k, BASES[k].nome]), a.base || '')}</select>`, false, false, 'Com base, todos que cuidam dela veem a reunião e as atas.')}
+    ${fld('Participantes', `<div class="reu-ps">${pessoas.map(p => `<label class="reu-p"><input type="checkbox" name="ps" value="${esc(p.nome)}" ${sel.has(p.nome) ? 'checked' : ''}><span>${avatar(p.nome, 20)}${esc(firstName(p.nome))}</span></label>`).join('')}</div>${inp('outros', outros.join(', '), 'maxlength="300" placeholder="Outros participantes (separe por vírgula)" style="margin-top:8px"')}`, true)}
+    ${fld('Pauta e decisões', `<textarea name="texto" rows="4" placeholder="O que foi (ou será) tratado, decisões, responsáveis e prazos...">${esc(a.texto || '')}</textarea>`, true)}
+    ${fld('Situação', rchips('status', {aberto:{label:'Agendada', color:'#f59e0b'}, resolvido:{label:'Realizada', color:'#16a34a'}}, a.status), true)}
+  </form>
+  <div class="sec">Atas e documentos</div>
+  <label class="reu-drop" id="reudrop">${ic('upload',22)}<b>Toque para enviar a ata</b><small>PDF, foto, Word ou Excel · até 15 MB cada · pode mandar vários</small><input type="file" id="reufile" multiple accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx,.txt" hidden></label>
+  <div id="reulist">${bdAtaList(a)}</div>
+  ${id ? `<p class="f-hint">Registrada por ${esc(bdMeu(a) ? 'você' : a.autor_nome || '—')} em ${fmtDT(a.created_at)}.</p>` : ''}`,
+  foot:`${podeDel ? `<button class="btn danger left" data-act="bd-del" data-id="${id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-reu-save">${ic('check',15)}Salvar reunião</button>`,
+  onMount: ov => {
+    const fi = $('#reufile', ov), dz = $('#reudrop', ov);
+    fi.onchange = () => { bdAtaAdd([...fi.files]); fi.value = ''; };
+    dz.ondragover = e => { e.preventDefault(); dz.classList.add('over'); }; dz.ondragleave = () => dz.classList.remove('over');
+    dz.ondrop = e => { e.preventDefault(); dz.classList.remove('over'); bdAtaAdd([...e.dataTransfer.files]); };
+  }});
+}
+function bdAtaList(a){
+  const arq = (a?.arquivos || []).map((f, i) => `<div class="reu-f"><span class="reu-fi">${ic(ataIco(f.nome),16)}</span><button class="reu-fn" data-act="bd-ata-open" data-id="${a.id}" data-k="${i}"><b>${esc(f.nome)}</b><small>${fmtKB(f.tamanho || 0)} · ${esc(firstName(f.por || ''))} · ${fmtD(f.em)}</small></button><button class="icon-btn" data-act="bd-ata-open" data-id="${a.id}" data-k="${i}" title="Abrir">${ic('download',15)}</button><button class="icon-btn" data-act="bd-ata-del" data-id="${a.id}" data-k="${i}" title="Remover">${ic('trash',15)}</button></div>`).join('');
+  const pend = (BDR?.files || []).map((f, i) => `<div class="reu-f pend"><span class="reu-fi">${ic(ataIco(f.name),16)}</span><span class="reu-fn"><b>${esc(f.name)}</b><small>${fmtKB(f.size)} · será enviado ao salvar</small></span><button class="icon-btn" data-act="bd-ata-rm" data-k="${i}" title="Tirar">${ic('x',15)}</button></div>`).join('');
+  return arq + pend || '<p class="muted s" style="margin:8px 0 0">Nenhuma ata anexada ainda.</p>';
+}
+function bdAtaOk(f){
+  if (f.size > 15 * 1048576){ toast(`${f.name}: maior que 15 MB.`, 'err'); return false; }
+  if (!ATA_EXT.test(f.name) && !ATA_TIPOS.includes(f.type)){ toast(`${f.name}: tipo de arquivo não aceito (use PDF, foto, Word ou Excel).`, 'err'); return false; }
+  return true;
+}
+async function bdAtaAdd(files){
+  files = files.filter(bdAtaOk); if (!files.length || !BDR) return;
+  if (!BDR.id){ BDR.files.push(...files); $('#reulist').innerHTML = bdAtaList(null); return; }
+  const a = AN(BDR.id); if (!a) return;
+  try { await bdAtaUpload(a, files); toast(files.length === 1 ? 'Ata enviada.' : `${files.length} arquivos enviados.`); $('#reulist').innerHTML = bdAtaList(a); S.page === 'bordo' && pgBordo(); }
+  catch(e){ err(e); }
+}
+async function bdAtaUpload(a, files){
+  const novos = [];
+  for (const f of files){
+    const nome = f.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w.\-]+/g, '_').slice(-80);
+    const path = `${a.id}/${Date.now()}-${nome}`, mime = f.type || ({pdf:'application/pdf', doc:'application/msword', docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', xls:'application/vnd.ms-excel', xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', txt:'text/plain'}[f.name.split('.').pop().toLowerCase()] || 'application/octet-stream');
+    toast(`Enviando ${f.name}...`);
+    if (TEST) FILES[path] = f;
+    else { const {error} = await sb.storage.from('atas').upload(path, f, {contentType:mime, upsert:false}); if (error) throw error; }
+    novos.push({path, nome:f.name, tamanho:f.size, mime, por:S.profile.nome, em:nowISO()});
+  }
+  const arquivos = [...(a.arquivos || []), ...novos];
+  await DB.update('anotacoes', a.id, {arquivos, updated_at:nowISO()}); a.arquivos = arquivos; S.sig = dataSig();
+}
+async function bdAtaOpen(id, k){
+  const a = AN(id), f = a?.arquivos?.[+k]; if (!f) return;
+  const w = window.open('', '_blank');
+  try {
+    let url;
+    if (TEST){ if (!FILES[f.path]) throw new Error('Arquivo de teste indisponível.'); url = URL.createObjectURL(FILES[f.path]); }
+    else { const {data, error} = await sb.storage.from('atas').createSignedUrl(f.path, 300, {download: /\.(docx?|xlsx?|txt)$/i.test(f.nome) ? f.nome : false}); if (error) throw error; url = data.signedUrl; }
+    if (w) w.location = url; else location.href = url;
+  } catch(e){ if (w) w.close(); err(e); }
+}
+async function bdAtaDel(id, k){
+  const a = AN(id), f = a?.arquivos?.[+k]; if (!f || !await confirmBox(`Remover o arquivo <b>${esc(f.nome)}</b> desta reunião?`, 'Remover')) return;
+  try {
+    if (!TEST){ const {error} = await sb.storage.from('atas').remove([f.path]); if (error) throw error; } else delete FILES[f.path];
+    const arquivos = a.arquivos.filter((_, i) => i !== +k); await DB.update('anotacoes', a.id, {arquivos, updated_at:nowISO()}); a.arquivos = arquivos; S.sig = dataSig();
+    toast('Arquivo removido.'); bdReuForm(id);
+  } catch(e){ err(e); }
+}
+async function bdReuSave(){
+  const f = formObj(); if (!f.titulo) return toast('Escreva o assunto da reunião.', 'err'); if (!f.data) return toast('Informe o dia.', 'err');
+  const ps = [...$$('#mf [name=ps]:checked').map(x => x.value), ...(f.outros || '').split(',').map(x => x.trim()).filter(Boolean)];
+  const a0 = BDR?.id ? AN(BDR.id) : null, st = f.status || 'aberto';
+  const row = {tipo:'reuniao', titulo:f.titulo, texto:f.texto || '', data:f.data, hora:f.hora || null, local:f.local || '', participantes:[...new Set(ps)].join(', '), base:f.base || null, categoria:'Equipe', prioridade:2, status:st,
+    resolvido_em: st === 'resolvido' ? (a0?.resolvido_em || nowISO()) : null, updated_at:nowISO()};
+  try {
+    let a = a0;
+    if (a0){ await DB.update('anotacoes', a0.id, row); Object.assign(a0, row); }
+    else { a = await DB.insert('anotacoes', {...row, arquivos:[], user_id:S.profile.id, autor_nome:S.profile.nome}); S.anot.push(a); }
+    if (BDR?.files?.length){ try { await bdAtaUpload(a, BDR.files); } catch(e){ err(e); toast('A reunião foi salva, mas a ata não. Abra a reunião e envie de novo.', 'err'); } }
+    S.sig = dataSig(); closeModal(); BD.d = row.data; toast(a0 ? 'Reunião salva.' : 'Reunião registrada no diário.'); S.page === 'bordo' ? pgBordo() : go('bordo');
+  } catch(e){ err(e); }
 }
 
 
@@ -5963,25 +6109,29 @@ Object.assign(ICONS, {
   pos:'<rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M9 6.5h6v3H9zM9 13h.01M12 13h.01M15 13h.01M9 16h.01M12 16h.01M15 16h.01"/>',
   pair:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2.5 20c.5-3 2.7-5 5.5-5s5 2 5.5 5M10.5 20c.5-3 2.7-5 5.5-5s5 2 5.5 5"/>'
 });
-// Controle começa em setembro/2026: semanas anteriores não ficam pendentes (semana de 31/08 é a 1ª de setembro, pela quinta-feira)
-const AR_INICIO = '2026-08-31';
+// Controle começa em setembro/2026: semanas anteriores não ficam pendentes
+const AR_INICIO = '2026-09-01';
 const AR_SIT = {normal:{label:'Normal', color:'#16a34a'}, dupla:{label:'Em dupla', color:'#0d9488'}, sem_pos:{label:'Sem POS', color:'#64748b'}};
 const AR = {mes:null, tab:'', q:'', ord:'total', sem:null, b:'', lq:'', lb:'', la:''};
 const brl = v => (+v || 0).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
 const brlC = v => { const n = +v || 0; return n >= 1e6 ? 'R$ ' + (n / 1e6).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' mi' : n >= 1e4 ? 'R$ ' + (n / 1e3).toLocaleString('pt-BR', {maximumFractionDigits:1}) + ' mil' : brl(n); };
 const parseBRL = s => { s = String(s ?? '').replace(/[R$\s]/g, ''); if (!s) return null; if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.'); const n = Number(s); return isFinite(n) && n >= 0 ? Math.round(n * 100) / 100 : NaN; };
 const brlIn = v => v == null || v === '' ? '' : (+v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+// Fechamento mensal: a semana (segunda a domingo) é cortada na virada do mês.
+// Ex.: 28/09 a 04/10 vira 28/09–30/09 (setembro) e 01/10–04/10 (outubro). Cada período é identificado pelo 1º dia dele.
 const arSeg = d => { const x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; };
-const arAlvo = () => iso(addDays(arSeg(new Date()), -7));                      // semana passada: a que deve ser lançada agora
-const arAtual = () => iso(arSeg(new Date()));
-const arFim = s => iso(addDays(parseISO(s), 6));
-const arLbl = s => `${fmtD(s).slice(0,5)} a ${fmtD(arFim(s)).slice(0,5)}`;
-const arMesDe = s => iso(addDays(parseISO(s), 3)).slice(0, 7);                  // a semana pertence ao mês da quinta-feira
-function arSemanas(ym){
-  const [y, m] = ym.split('-').map(Number), out = [];
-  for (let d = arSeg(new Date(y, m - 1, 1)); d <= new Date(y, m, 0); d = addDays(d, 7)){ const s = iso(d); if (arMesDe(s) === ym) out.push(s); }
-  return out;
-}
+const arIni = d => { const s = arSeg(d), m1 = new Date(d.getFullYear(), d.getMonth(), 1); return s < m1 ? m1 : s; };
+const arFim = s => { const d = parseISO(s), dom = addDays(arSeg(d), 6), ult = new Date(d.getFullYear(), d.getMonth() + 1, 0); return iso(dom < ult ? dom : ult); };
+const arAtual = () => iso(arIni(new Date()));
+const arAnt = s => iso(arIni(addDays(parseISO(s), -1)));
+const arProx = s => iso(addDays(parseISO(arFim(s)), 1));
+const arAlvo = () => arAnt(arAtual());                                         // último período já encerrado: o que deve ser lançado agora
+const arDias = s => Math.round((parseISO(arFim(s)) - parseISO(s)) / 864e5) + 1;
+const arLbl = s => s === arFim(s) ? fmtD(s).slice(0,5) : `${fmtD(s).slice(0,5)} a ${fmtD(arFim(s)).slice(0,5)}`;
+const arMesDe = s => s.slice(0, 7);
+function arSemanas(ym){ const out = []; for (let s = ym + '-01'; s.slice(0, 7) === ym; s = arProx(s)) out.push(s); return out; }
+// Períodos já encerrados (os últimos 6) — os que podem ter pendência
+const arEncerrados = () => { const out = []; let s = arAlvo(); for (let k = 0; k < 6 && s >= AR_INICIO; k++){ out.push(s); s = arAnt(s); } return out; };
 const arBases = () => BKEYS.filter(k => allowed(k) && (!S.base || k === S.base) && (!AR.b || k === AR.b));
 const arRec = (cid, s) => (S.arr || []).find(r => sameId(r.colaborador_id, cid) && r.semana === s);
 const arConta = r => r && r.situacao === 'normal';
@@ -5989,7 +6139,8 @@ const arConta = r => r && r.situacao === 'normal';
 const arPessoas = (s, bases = arBases()) => { const ids = new Set((S.arr || []).filter(r => r.semana === s).map(r => String(r.colaborador_id)));
   return S.colabs.filter(c => bases.includes(c.base) && (c.status === 'ativo' || ids.has(String(c.id)))).sort((a,b) => a.nome.localeCompare(b.nome,'pt')); };
 const arPend = (s, bases) => s < AR_INICIO ? [] : arPessoas(s, bases).filter(c => !arRec(c.id, s));
-const arPendMinhas = () => { if (!S.profile || !(isAdmin() || isLid(S.profile))) return []; return arPend(arAlvo(), BKEYS.filter(allowed)).filter(c => c.status === 'ativo'); };
+const arPendPer = (bases = BKEYS.filter(allowed)) => { if (!S.profile || !(isAdmin() || isLid(S.profile))) return []; return arEncerrados().map(s => ({s, l:arPend(s, bases).filter(c => c.status === 'ativo')})).filter(x => x.l.length).reverse(); };
+const arPendMinhas = () => arPendPer().flatMap(x => x.l);
 
 function arTabs(){
   const t = AR.tab, p = arPendMinhas().filter(c => !S.base || c.base === S.base).length;
@@ -6028,9 +6179,11 @@ function pgArrec(){
       <div class="ar-mes"><button class="icon-btn" data-act="ar-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',18)}</button><span>${mesNome}</span><button class="icon-btn" data-act="ar-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',18)}</button></div>
       <small>Total arrecadado${S.base || AR.b ? ' em ' + bName(S.base || AR.b) : bases.length > 1 ? ' nas ' + bases.length + ' bases' : ''}</small>
       <b class="ar-big">${brl(total)}</b>
+      ${(() => { const fim = arFim(sems[sems.length - 1]), acabou = fim < iso(new Date()), pend = sems.filter(s => s >= AR_INICIO && arFim(s) < iso(new Date())).reduce((a, s) => a + arPend(s, bases).filter(c => c.status === 'ativo').length, 0);
+        return `<div class="ar-fech ${acabou && !pend ? 'ok' : ''}">${acabou ? (pend ? `${ic('alert',13)} Fechamento pendente: ${pend} lançamento(s)` : `${ic('check',13)} Mês fechado`) : `${ic('clock',13)} Fecha em ${fmtD(fim)}${pend ? ` · ${pend} pendente(s)` : ''}`}</div>`; })()}
       <div class="ar-sub">${varPct != null ? `<span class="ar-var ${varPct >= 0 ? 'up' : 'down'}">${varPct >= 0 ? '▲' : '▼'} ${Math.abs(varPct)}%</span> vs. mês anterior · ` : ''}${contados.length} funcionário(s) contabilizado(s)</div>
     </div>
-    <div class="ar-bars" aria-label="Total por semana">${sems.map((s, i) => `<div class="ar-bar ${s === alvo ? 'alvo' : ''} ${s > hj ? 'fut' : ''}" title="Semana ${i + 1} (${arLbl(s)}): ${brl(semTot[i])}"><em>${semTot[i] ? brlC(semTot[i]) : ''}</em><i style="height:${Math.max(4, semTot[i] / mx * 100)}%"></i><span>S${i + 1}</span></div>`).join('')}</div>
+    <div class="ar-bars" aria-label="Total por semana">${sems.map((s, i) => `<div class="ar-bar ${s === alvo ? 'alvo' : ''} ${s > hj ? 'fut' : ''}" title="Semana ${i + 1} (${arLbl(s)}${arDias(s) < 7 ? ', ' + arDias(s) + ' dia(s)' : ''}): ${brl(semTot[i])}"><em>${semTot[i] ? brlC(semTot[i]) : ''}</em><i style="height:${Math.max(4, semTot[i] / mx * 100)}%"></i><span>S${i + 1}</span></div>`).join('')}</div>
   </div>
   <div class="esc-kpis ar-kpis">
     <div class="card ek" style="--c:#16a34a"><span>${ic('coin',16)}Média por funcionário</span><b>${brl(media)}</b><small>no mês, só quem foi contabilizado</small></div>
@@ -6046,7 +6199,7 @@ function pgArrec(){
     <select class="sel" id="arord" aria-label="Ordenar"><option value="total" ${AR.ord === 'total' ? 'selected' : ''}>Maior total</option><option value="media" ${AR.ord === 'media' ? 'selected' : ''}>Maior média</option><option value="nome" ${AR.ord === 'nome' ? 'selected' : ''}>Nome (A→Z)</option></select>
     <div class="tb-right"><button class="btn" data-act="ar-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button><button class="btn pri" data-act="ar-lancar">${ic('coin',16)}Lançar semana</button></div>
   </div>
-  <div class="card ar-card">${lista.length ? `<div class="ar-scroll"><table class="ar-tbl"><thead><tr><th class="ar-who">Funcionário</th>${sems.map((s, i) => `<th class="ar-w ${s === alvo ? 'alvo' : ''}"><b>Semana ${i + 1}</b><small>${arLbl(s)}</small></th>`).join('')}<th class="ar-tot">Total do mês</th></tr></thead><tbody>
+  <div class="card ar-card">${lista.length ? `<div class="ar-scroll"><table class="ar-tbl"><thead><tr><th class="ar-who">Funcionário</th>${sems.map((s, i) => `<th class="ar-w ${s === alvo ? 'alvo' : ''}"><b>Semana ${i + 1}</b><small>${arLbl(s)}${arDias(s) < 7 ? ` · ${arDias(s)} dia${arDias(s) > 1 ? 's' : ''}` : ''}</small></th>`).join('')}<th class="ar-tot">Total do mês</th></tr></thead><tbody>
     ${lista.map(l => { const p = pos.get(String(l.c.id)); return `<tr><td class="ar-who"><div class="ar-p" data-act="c-open" data-id="${l.c.id}" role="button">${p != null && p < 3 ? `<span class="ar-medal m${p}">${p + 1}</span>` : ''}${avc(l.c, 32)}<span><b>${esc(l.c.nome)}</b><small>${emblem(l.c.base,7,2)}${bName(l.c.base)}${!l.c.pos ? ' · sem POS cadastrado' : ''}</small></span></div></td>
       ${sems.map(s => arCell(l.c, s, arRec(l.c.id, s))).join('')}
       <td class="ar-tot"><b>${brl(l.t)}</b><small>${l.n ? `${l.n} semana(s) · média ${brlC(l.med)}` : 'nada contabilizado'}</small></td></tr>`; }).join('')}
@@ -6062,12 +6215,11 @@ function arCell(c, s, r){
   return `<td class="ar-c"><button class="ar-v ${r.situacao}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="Lançado por ${esc(r.lancado_por_nome || '—')}${r.obs ? ' — ' + esc(r.obs) : ''}">${r.situacao === 'normal' ? brl(r.valor) : `<span class="ar-tag ${r.situacao}">${AR_SIT[r.situacao].label}</span>${+r.valor ? `<small>${brl(r.valor)}</small>` : ''}`}${r.obs ? '<i class="ar-ob"></i>' : ''}</button></td>`;
 }
 function arAviso(){
-  const p = arPendMinhas().filter(c => !S.base || c.base === S.base), alvo = arAlvo();
-  if (!p.length) return '';
-  const bs = [...new Set(p.map(c => c.base))];
-  return `<div class="ar-alert">${ic('bell',18)}<div><b>Lance a arrecadação da semana ${arLbl(alvo)}</b><small>${p.length} funcionário(s) ainda sem lançamento${bs.length > 1 || isAdmin() ? ': ' + bs.map(b => `${bName(b)} (${p.filter(c => c.base === b).length})`).join(', ') : ''}. O lançamento é feito toda semana.</small></div><button class="btn pri sm" data-act="ar-lancar" data-k="${alvo}">Lançar agora</button></div>`;
+  const per = arPendPer(BKEYS.filter(k => allowed(k) && (!S.base || k === S.base)));
+  if (!per.length) return '';
+  const n = per.reduce((a, x) => a + x.l.length, 0);
+  return `<div class="ar-alert">${ic('bell',18)}<div><b>${per.length === 1 ? `Lance a arrecadação de ${arLbl(per[0].s)}` : `Há ${per.length} períodos com arrecadação para lançar`}</b><small>${per.map(x => `${arLbl(x.s)}: ${x.l.length} funcionário(s)${isAdmin() ? ' (' + [...new Set(x.l.map(c => bName(c.base)))].join(', ') + ')' : ''}`).join(' · ')}. A arrecadação é lançada toda semana e fecha no fim de cada mês.</small></div><button class="btn pri sm" data-act="ar-lancar" data-k="${per[0].s}">Lançar agora</button></div>`;
 }
-
 /* ----- Lançar semana (todos de uma vez) ----- */
 let ARL = null;   // rascunho: {cid: {valor, situacao, dupla_com, obs}}
 function pgArLancar(){
@@ -6075,13 +6227,13 @@ function pgArLancar(){
   const s = AR.sem, bases = arBases(), pessoas = arPessoas(s, bases), fut = s > arAtual();
   if (!ARL || ARL.s !== s){ ARL = {s, d:{}}; pessoas.forEach(c => { const r = arRec(c.id, s);
     ARL.d[c.id] = r ? {valor:brlIn(r.valor), situacao:r.situacao, dupla_com:r.dupla_com || '', obs:r.obs || '', salvo:true} : {valor:'', situacao:c.pos ? 'normal' : 'sem_pos', dupla_com:'', obs:'', sug:!c.pos}; }); }
-  const sems = [-3,-2,-1,0,1].map(k => iso(addDays(parseISO(arAlvo()), 7 * k))).filter(x => x >= AR_INICIO);
+  const sems = (() => { const o = [arAtual()]; let x = arAtual(); for (let k = 0; k < 5; k++){ x = arAnt(x); if (x < AR_INICIO) break; o.unshift(x); } if (!o.includes(s)) o.push(s); return o.sort(); })();
   const ordem = pessoas.slice().sort((a,b) => !!arRec(a.id, s) - !!arRec(b.id, s) || a.base.localeCompare(b.base) || a.nome.localeCompare(b.nome,'pt'));
   $('#page').innerHTML = `${arTabs()}
   <div class="card ar-lw">
-    <div class="ar-wk"><button class="icon-btn bord" data-act="ar-sem" data-k="-7" aria-label="Semana anterior" ${s <= AR_INICIO ? 'disabled' : ''}>${ic('chevL',18)}</button>
-      <div><b>Semana de ${fmtD(s)} a ${fmtD(arFim(s))}</b><small>${s === arAlvo() ? 'Semana passada — é a que deve ser lançada agora' : s === arAtual() ? 'Semana atual (ainda em andamento)' : fut ? 'Semana futura' : 'Semana anterior'}</small></div>
-      <button class="icon-btn bord" data-act="ar-sem" data-k="7" aria-label="Próxima semana">${ic('chevR',18)}</button></div>
+    <div class="ar-wk"><button class="icon-btn bord" data-act="ar-sem" data-k="-1" aria-label="Semana anterior" ${arAnt(s) < AR_INICIO ? 'disabled' : ''}>${ic('chevL',18)}</button>
+      <div><b>${s === arFim(s) ? 'Dia ' + fmtD(s) : `Semana de ${fmtD(s)} a ${fmtD(arFim(s))}`}</b><small>${s === arAlvo() ? 'Última semana encerrada — é a que deve ser lançada agora' : s === arAtual() ? 'Semana atual (ainda em andamento)' : fut ? 'Semana futura' : 'Semana anterior'}${arDias(s) < 7 ? ` · semana cortada pelo fechamento de ${cap(parseISO(s).toLocaleDateString('pt-BR',{month:'long'}))} (${arDias(s)} dia${arDias(s) > 1 ? 's' : ''})` : ''}</small></div>
+      <button class="icon-btn bord" data-act="ar-sem" data-k="1" aria-label="Próxima semana">${ic('chevR',18)}</button></div>
     <div class="ar-chips">${sems.map(x => { const pp = arPend(x, bases).filter(c => c.status === 'ativo').length; return `<button class="${x === s ? 'on' : ''}" data-act="ar-sem-go" data-k="${x}">${arLbl(x)}${x <= arAlvo() ? (pp ? `<em>${pp}</em>` : `<i>${ic('check',11)}</i>`) : ''}</button>`; }).join('')}</div>
   </div>
   ${!S.base && BKEYS.filter(allowed).length > 1 ? `<div class="chips ar-bsel"><button class="fchip ${!AR.b ? 'on' : ''}" data-act="ar-b" data-k="">Todas</button>${BKEYS.filter(allowed).map(k => `<button class="fchip ${AR.b === k ? 'on' : ''}" style="--c:${BASES[k].c}" data-act="ar-b" data-k="${k}"><i class="d"></i>${BASES[k].nome}<b>${arPend(s, [k]).filter(c => c.status === 'ativo').length || ''}</b></button>`).join('')}</div>` : ''}
@@ -6152,7 +6304,7 @@ function arEdit(cid, s){
   if (!allowed(c.base)) return toast('Você só lança a arrecadação das suas bases.', 'err');
   const r = arRec(cid, s), pool = S.colabs.filter(x => x.base === c.base && !sameId(x.id, cid) && x.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
   const hist = isAdmin() ? (S.arrLog || []).filter(l => sameId(l.colaborador_id, cid) && l.semana === s).slice(0, 8) : [];
-  openModal({title:'Arrecadação da semana', body:`<div class="ar-ed-h">${avc(c, 44)}<span><b>${esc(c.nome)}</b><small>${bTag(c.base)} Semana de ${fmtD(s)} a ${fmtD(arFim(s))}</small></span></div>
+  openModal({title:'Arrecadação da semana', body:`<div class="ar-ed-h">${avc(c, 44)}<span><b>${esc(c.nome)}</b><small>${bTag(c.base)} ${s === arFim(s) ? 'Dia ' + fmtD(s) : `Semana de ${fmtD(s)} a ${fmtD(arFim(s))}`}</small></span></div>
     <form id="mf" class="form one" autocomplete="off">
       ${fld('Situação', rchips('situacao', AR_SIT, r?.situacao || (c.pos ? 'normal' : 'sem_pos')), true, false, '"Em dupla" e "Sem POS" não entram na soma do funcionário.')}
       ${fld('Valor arrecadado', `<label class="ar-money big"><span>R$</span><input name="valor" id="arev" inputmode="decimal" placeholder="0,00" value="${r ? brlIn(r.valor) : ''}"></label>`, true)}
@@ -6476,7 +6628,7 @@ const ACT = {
   'ar-lancar': a => { AR.tab = 'lancar'; if (a?.dataset?.k) AR.sem = a.dataset.k; else if (!AR.sem) AR.sem = arAlvo(); ARL = null; S.page === 'arrecadacao' ? pgArrec() : go('arrecadacao'); },
   'ar-mes': a => { const [y, m] = AR.mes.split('-').map(Number), d = new Date(y, m - 1 + +a.dataset.k, 1); AR.mes = iso(d).slice(0, 7); pgArrec(); },
   'ar-b': a => { AR.b = AR.b === a.dataset.k ? '' : a.dataset.k; ARL = null; pgArrec(); },
-  'ar-sem': a => { AR.sem = iso(addDays(parseISO(AR.sem || arAlvo()), +a.dataset.k)); if (AR.sem < AR_INICIO) AR.sem = AR_INICIO; ARL = null; pgArLancar(); },
+  'ar-sem': a => { const s0 = AR.sem || arAlvo(); AR.sem = +a.dataset.k < 0 ? arAnt(s0) : arProx(s0); if (AR.sem < AR_INICIO) AR.sem = AR_INICIO; ARL = null; pgArLancar(); },
   'ar-sem-go': a => { AR.sem = a.dataset.k; ARL = null; pgArLancar(); },
   'ar-sit': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; d.situacao = d.situacao === a.dataset.k ? 'normal' : a.dataset.k; d.sug = false; d.salvo = false;
     const c = C(a.dataset.id), row = $('#arl-' + a.dataset.id); if (c && row){ const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); } },
@@ -6520,6 +6672,9 @@ const ACT = {
   'cal-type': a => { const t = S.cal.tipos, k = a.dataset.k; t.has(k) ? t.delete(k) : t.add(k); pgCal(); },
   'cal-clear': () => { S.cal.tipos.clear(); pgCal(); },
   'bd-dup': () => bdDupForm(null, {data:$('#ov #mf [name=data]')?.value, base:$('#ov #mf [name=base]')?.value}), 'bd-dup-save': () => bdDupSave(),
+  'bd-reu': () => bdReuForm(null, {data:$('#ov #mf [name=data]')?.value, base:$('#ov #mf [name=base]')?.value}), 'bd-reu-save': () => bdReuSave(),
+  'bd-ata-open': a => bdAtaOpen(a.dataset.id, a.dataset.k), 'bd-ata-del': a => bdAtaDel(a.dataset.id, a.dataset.k),
+  'bd-ata-rm': a => { BDR?.files.splice(+a.dataset.k, 1); $('#reulist').innerHTML = bdAtaList(null); },
   'bd-dup-add': () => { DUPF.pares.push(['','']); bdDupDraw(); $$('.dup-row').pop()?.querySelector('select')?.focus(); },
   'bd-dup-rm': a => { DUPF.pares.splice(+a.dataset.k, 1); if (!DUPF.pares.length) DUPF.pares = [['','']]; bdDupDraw(); },
   'bd-dup-rep': a => { const x = AN(a.dataset.id); if (!x) return; const ok = new Set(S.colabs.filter(c => c.base === DUPF.base && c.status === 'ativo' && !ausenteEm(c.id, DUPF.data)).map(c => String(c.id)));
