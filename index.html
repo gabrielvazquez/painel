@@ -1750,6 +1750,12 @@ button.po-tr:hover{background:var(--soft)}
 .reu-fn small{color:var(--muted);font-size:11px}
 @media (max-width:600px){ .bd-dh-b .btn{padding:6px 9px} }
 
+/* ===== v2.17: veículo em dupla ===== */
+.dupla-tag{display:inline-flex;align-items:center;gap:3px;background:#ccfbf1;color:#0f766e;border-radius:20px;padding:1px 7px;font-size:10.5px;font-weight:700;margin-right:6px}
+.dupla-tx{display:inline-flex;align-items:center;gap:3px;color:#0f766e;font-weight:600}
+.who.dupla .avs{display:inline-flex}.who.dupla .avs>.av{margin-left:-8px;box-shadow:0 0 0 2px #fff}.who.dupla .avs>.av:first-child{margin-left:0}
+.esc-f .btn{flex:1 1 auto}
+
 </style>
 </head>
 <body>
@@ -1762,7 +1768,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.16';
+const APP_VERSION = '2.17';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2239,6 +2245,8 @@ const C = id => S.colabs.find(x => sameId(x.id, id));
 const V = id => S.veics.find(x => sameId(x.id, id));
 const CHM = id => S.chamados.find(x => sameId(x.id, id));
 const condutorOf = vid => S.colabs.find(c => c.veiculo_id && sameId(c.veiculo_id, vid));
+const condutoresOf = vid => S.colabs.filter(c => c.veiculo_id && sameId(c.veiculo_id, vid)).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+const condNomes = vid => { const l = condutoresOf(vid).map(c => firstName(c.nome)); return l.length > 1 ? l.slice(0, -1).join(', ') + ' e ' + l[l.length - 1] : l[0] || ''; };
 const colabsV = () => S.colabs.filter(c => inScope(c.base));
 const veicsV = () => S.veics.filter(v => inScope(v.base));
 // Pessoa de um evento: colaborador ou, no caso de folga de plantão do líder, o próprio líder
@@ -2385,6 +2393,28 @@ function openModal({title, body, foot='', wide=false, onMount}){
 function closeModal(){ const had = $('#ov'); had?.remove(); document.body.style.overflow = '';
   if (had && S.stale && S.profile){ S.stale = false; loadAll().then(() => { if ($('#rail') && !$('#ov')) render(); }); } }
 function closePop(){ $('#pop')?.remove(); }
+// Pergunta com várias opções; devolve a chave escolhida (ou null se cancelar)
+function escolhaBox(msg, botoes){
+  return new Promise(res => {
+    const el = document.createElement('div'); el.className = 'ov'; el.style.zIndex = 70;
+    el.innerHTML = `<div class="modal" style="max-width:420px"><div class="m-b" style="text-align:center;padding:26px 24px 8px"><div class="cf-ico" style="--red:#2563eb;background:#eff6ff;color:#2563eb">${ic('car',24)}</div><p style="margin:14px 0 0;font-size:13.5px;line-height:1.6">${msg}</p></div><div class="m-f esc-f" style="justify-content:center;flex-wrap:wrap;border:0;background:none"><button class="btn" data-x="">Cancelar</button>${botoes.map(b => `<button class="btn ${b.pri ? 'pri' : ''}" data-x="${b.k}">${b.label}</button>`).join('')}</div></div>`;
+    el.addEventListener('click', e => { const b = e.target.closest('[data-x]'); if (b || e.target === el){ el.remove(); res(b?.dataset.x || null); } });
+    document.body.appendChild(el); $('.btn.pri', el)?.focus();
+  });
+}
+// Ao vincular um veículo que já tem condutor: transferir ou usar em dupla? Devolve 'livre' | 'dupla' | 'transferir' | null
+async function veicModo(vid, cid){
+  const v = V(vid); if (!v) return 'livre';
+  const outros = condutoresOf(vid).filter(c => !sameId(c.id, cid));
+  if (!outros.length) return 'livre';
+  if (v.dupla){
+    if (outros.length < 2) return 'dupla';
+    const r = await escolhaBox(`${v.tipo === 'moto' ? 'A moto' : 'O carro'} <b>${esc(v.placa)}</b> já está em dupla com <b>${esc(condNomes(vid))}</b>.`, [{k:'transferir', label:'Tirar os dois e passar só para este', pri:true}]);
+    return r;
+  }
+  return escolhaBox(`<b>${esc(v.placa)}</b> está hoje com <b>${esc(outros.map(c => firstName(c.nome)).join(', '))}</b>. O que fazer?`,
+    [{k:'transferir', label:'Transferir'}, {k:'dupla', label:'Usar em dupla', pri:true}]);
+}
 function confirmBox(msg, ok='Excluir'){
   return new Promise(res => {
     const el = document.createElement('div'); el.className = 'ov'; el.style.zIndex = 70;
@@ -2577,7 +2607,7 @@ function pgDashboard(){
       <div class="card-b">
         <div class="fleet-bar">${segs.map(s => s.n ? `<button style="--c:${s.color};flex:${s.n}" data-act="dash-v" data-k="${s.k}" title="${s.label}: ${s.n}"></button>` : '').join('') || '<span class="muted">Nenhum veículo cadastrado.</span>'}</div>
         <div class="fleet-leg">${segs.map(s => `<button data-act="dash-v" data-k="${s.k}" style="--c:${s.color}"><i></i>${s.label}<b>${s.n}</b></button>`).join('')}</div>
-        <div class="yard">${yard.map(v => { const s = VSTATUS[v.status]||VSTATUS.ok, c = condutorOf(v.id); return `<button class="yt" style="--c:${s.color}" data-act="v-open" data-id="${v.id}"><span class="yt-top">${ic(v.tipo==='moto'?'bike':'car',15)}${!S.base && myBases().length>1 ? `<span class="yt-b" style="--b:${bOf(v.base)?.c||'#94a3b8'}" title="${bName(v.base)}"></span>` : ''}<i title="${s.label}"></i></span>${plate(v.placa,true)}<span class="yt-m">${esc(v.modelo||'')}</span><span class="yt-c">${c?esc(firstName(c.nome)):'Sem condutor'}</span></button>`; }).join('') || '<span class="muted">Nenhum veículo nesta base.</span>'}</div>
+        <div class="yard">${yard.map(v => { const s = VSTATUS[v.status]||VSTATUS.ok, c = condutorOf(v.id); return `<button class="yt" style="--c:${s.color}" data-act="v-open" data-id="${v.id}"><span class="yt-top">${ic(v.tipo==='moto'?'bike':'car',15)}${!S.base && myBases().length>1 ? `<span class="yt-b" style="--b:${bOf(v.base)?.c||'#94a3b8'}" title="${bName(v.base)}"></span>` : ''}<i title="${s.label}"></i></span>${plate(v.placa,true)}<span class="yt-m">${esc(v.modelo||'')}</span><span class="yt-c">${condutoresOf(v.id).length > 1 ? esc(condNomes(v.id)) : c?esc(firstName(c.nome)):'Sem condutor'}</span></button>`; }).join('') || '<span class="muted">Nenhum veículo nesta base.</span>'}</div>
       </div>
     </div>
 
@@ -2699,8 +2729,8 @@ function openColab(id){
         ${c.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(c.observacoes)}</div></div>`:''}
       </div>
       <div class="sec">Veículo vinculado</div>
-      ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.</div>`}
-      ${isAdmin() || allowed(c.base) ? `<div class="vinc"><select class="sel" data-chg="c-veic" data-id="${c.id}" aria-label="Escolher veículo">${colabSelects(c.base, c, c.id).veic.replace('— Sem veículo —', v ? '— Desvincular veículo —' : '— Escolha um veículo da base —')}</select><span class="f-hint">${v ? 'Troque ou desvincule aqui mesmo.' : 'Escolha e pronto: o vínculo é salvo na hora. Se o veículo estiver com outra pessoa, ele é transferido.'}</span></div>` : ''}
+      ${v?`<div class="minicard" data-act="v-open" data-id="${v.id}">${plate(v.placa)}<div style="flex:1"><b class="fw5">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</b><div class="muted s">${v.tipo==='moto'?'Moto':'Carro'}${v.cor?' — '+esc(v.cor):''}${(() => { const os = condutoresOf(v.id).filter(x => !sameId(x.id, c.id)); return os.length ? ` · <b class="dupla-tx">${ic('users',12)} em dupla com ${esc(os.map(x => firstName(x.nome)).join(' e '))}</b>` : ''; })()}</div></div>${chip(VSTATUS[v.status])}</div>`:`<div class="box muted">Nenhum veículo vinculado.</div>`}
+      ${isAdmin() || allowed(c.base) ? `<div class="vinc"><select class="sel" data-chg="c-veic" data-id="${c.id}" aria-label="Escolher veículo">${colabSelects(c.base, c, c.id).veic.replace('— Sem veículo —', v ? '— Desvincular veículo —' : '— Escolha um veículo da base —')}</select><span class="f-hint">${v ? 'Troque ou desvincule aqui mesmo.' : 'Escolha e pronto: o vínculo é salvo na hora. Se o veículo estiver com outra pessoa, você escolhe entre transferir ou usar em dupla.'}</span></div>` : ''}
     </div>
     <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
     <div data-pane="esc" hidden>${colabEscalas(escs)}</div>
@@ -2714,8 +2744,8 @@ function openColab(id){
   });
 }
 function colabSelects(base, c, id){
-  const vOpts = S.veics.filter(v => v.base === base || sameId(v.id, c.veiculo_id)).sort((a,b)=>a.placa.localeCompare(b.placa)).map(v => { const d = condutorOf(v.id); const busy = d && !sameId(d.id,id);
-    return [v.id, `${v.placa} — ${[v.marca,v.modelo].filter(Boolean).join(' ')}${busy?` (hoje com ${firstName(d.nome)})`:''}`]; });
+  const vOpts = S.veics.filter(v => v.base === base || sameId(v.id, c.veiculo_id)).sort((a,b)=>a.placa.localeCompare(b.placa)).map(v => { const os = condutoresOf(v.id).filter(x => !sameId(x.id, id));
+    return [v.id, `${v.placa} — ${[v.marca,v.modelo].filter(Boolean).join(' ')}${os.length ? v.dupla ? (os.length >= 2 ? ` (dupla completa: ${os.map(x => firstName(x.nome)).join(' e ')})` : ` (dupla com ${firstName(os[0].nome)})`) : ` (hoje com ${os.map(x => firstName(x.nome)).join(', ')})` : v.dupla ? ' (uso em dupla)' : ''}`]; });
   const lid = [...lidersOf(base), ...assistsOf(base)];
   return {
     lider: `<option value="">— Sem líder —</option>${opts(lid.map(p=>[p.id,p.nome]), c.lider_id)}`,
@@ -2755,7 +2785,11 @@ async function saveColab(id){
   const row = {imei1:imeiN(f.imei1) || null, imei2:imeiN(f.imei2) || null, nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
     admissao:f.admissao, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
   try {
-    if (row.veiculo_id){ const other = condutorOf(row.veiculo_id); if (other && !sameId(other.id,id)) await DB.update('colaboradores', other.id, {veiculo_id:null}); }
+    if (row.veiculo_id && !sameId(row.veiculo_id, id ? C(id)?.veiculo_id : '')){
+      const modo = await veicModo(row.veiculo_id, id); if (!modo) return;
+      if (modo === 'transferir') for (const o of condutoresOf(row.veiculo_id).filter(x => !sameId(x.id, id))) await DB.update('colaboradores', o.id, {veiculo_id:null});
+      if (modo === 'dupla' && !V(row.veiculo_id)?.dupla) await DB.update('veiculos', row.veiculo_id, {dupla:true});
+    }
     if (id) await DB.update('colaboradores', id, row); else await DB.insert('colaboradores', row);
     closeModal(); toast(id ? 'Colaborador atualizado.' : 'Colaborador cadastrado.'); await reload();
   } catch(e){ err(e); }
@@ -2787,7 +2821,7 @@ function pgFrota(){
 function frotaFiltered(){
   const f = S.f, q = f.vq.toLowerCase().trim();
   return veicsV().filter(v => (!f.vt || v.tipo===f.vt) && (!f.vs || v.status===f.vs) &&
-    (!q || [v.placa,v.marca,v.modelo,v.cor,v.ano,condutorOf(v.id)?.nome,bName(v.base)].join(' ').toLowerCase().includes(q)))
+    (!q || [v.placa,v.marca,v.modelo,v.cor,v.ano,...condutoresOf(v.id).map(x => x.nome),v.dupla ? 'dupla' : '',bName(v.base)].join(' ').toLowerCase().includes(q)))
     .sort((a,b) => VORDER.indexOf(a.status)-VORDER.indexOf(b.status) || a.placa.localeCompare(b.placa));
 }
 function frotaList(){
@@ -2801,7 +2835,7 @@ function vcard(v){
       <button class="chip" style="--c:${s.color}" data-act="v-status" data-id="${v.id}" title="Alterar situação"><i class="d"></i>${s.label}<span class="caret">▼</span></button></div>
     <div class="vmid">${plate(v.placa)}<div class="vmodel">${esc([v.marca,v.modelo].filter(Boolean).join(' '))}</div><div class="vmeta">${[v.ano,v.cor,fmtKm(v.km)].filter(Boolean).map(esc).join(' — ')}</div></div>
     ${v.status_obs?`<div class="vobs">${ic('alert',14)}<span>${esc(v.status_obs)}</span></div>`:''}
-    <div class="vfoot">${c?`<div class="who">${avc(c,26)}<b>${esc(c.nome)}</b></div>`:'<span class="muted">Sem condutor</span>'}<span class="muted">${v.tipo==='moto'?'Moto':'Carro'}</span></div>
+    <div class="vfoot">${(() => { const cs = condutoresOf(v.id); return cs.length > 1 ? `<div class="who dupla"><span class="avs">${cs.slice(0,3).map(x => avc(x,26)).join('')}</span><b>${esc(condNomes(v.id))}</b></div>` : c ? `<div class="who">${avc(c,26)}<b>${esc(c.nome)}</b></div>` : '<span class="muted">Sem condutor</span>'; })()}<span class="muted">${v.dupla ? `<span class="dupla-tag">${ic('users',11)}Dupla</span>` : ''}${v.tipo==='moto'?'Moto':'Carro'}</span></div>
     <div class="vupd">Atualizado ${ago(v.status_em)}${v.status_por?' por '+esc(v.status_por):''}</div></div>`;
 }
 function openStatusPop(btn, vid){
@@ -2841,7 +2875,7 @@ function openVeic(id){
     <div class="dl" style="margin-top:14px">
       <div><small>Quilometragem</small><b>${fmtKm(v.km)||'—'}</b></div>
       <div><small>Última atualização</small><b>${fmtDT(v.status_em)}</b>${v.status_por?`<div class="muted s">por ${esc(v.status_por)}</div>`:''}</div>
-      <div class="full"><small>Condutor</small>${c?`<div class="minicard" data-act="c-open" data-id="${c.id}">${avc(c,32)}<div style="flex:1"><b class="fw5">${esc(c.nome)}</b><div class="muted s">${esc(c.cargo||'')}${c.telefone?' — '+esc(c.telefone):''}</div></div>${chip(CSTATUS[c.status])}</div>`:'<b class="muted">Sem condutor vinculado</b>'}</div>
+      <div class="full"><small>${condutoresOf(v.id).length > 1 ? 'Condutores (em dupla)' : 'Condutor'}${v.dupla && condutoresOf(v.id).length < 2 ? ' · uso em dupla liberado' : ''}</small>${condutoresOf(v.id).length ? condutoresOf(v.id).map(c => `<div class="minicard" data-act="c-open" data-id="${c.id}" style="margin-top:6px">${avc(c,32)}<div style="flex:1"><b class="fw5">${esc(c.nome)}</b><div class="muted s">${esc(c.cargo||'')}${c.telefone?' — '+esc(c.telefone):''}</div></div>${chip(CSTATUS[c.status])}</div>`).join('') : '<b class="muted">Sem condutor vinculado</b>'}</div>
       ${v.observacoes?`<div class="full"><small>Observações</small><div class="box">${esc(v.observacoes)}</div></div>`:''}
     </div>
     <div class="sec">Histórico de situação</div>
@@ -2851,8 +2885,9 @@ function openVeic(id){
 function veicForm(id){
   if (id && !allowed(V(id)?.base)) return;
   const adm = isAdmin();
-  const v = id ? V(id) : {tipo:'carro', status:'ok', base:defBase()}; const cur = id ? condutorOf(id) : null;
-  const condOpts = base => `<option value="">— Sem condutor —</option>${opts(colabsSorted(base).map(c => [c.id, c.nome + (c.veiculo_id && !sameId(c.veiculo_id,id) ? ` (tem ${V(c.veiculo_id)?.placa||'veículo'})` : '')]), cur?.id)}`;
+  const v = id ? V(id) : {tipo:'carro', status:'ok', base:defBase(), dupla:false}; const curs = id ? condutoresOf(id) : [];
+  const condOpts = (base, sel, vazio = '— Sem condutor —') => `<option value="">${vazio}</option>${opts(colabsSorted(base).filter(c => c.status !== 'desligado' || sameId(c.id, sel)).map(c => [c.id, c.nome + (c.veiculo_id && !sameId(c.veiculo_id,id) ? ` (tem ${V(c.veiculo_id)?.placa||'veículo'})` : '')]), sel)}`;
+  const podeCond = adm || allowed(v.base);
   openModal({title: id ? 'Editar veículo' : 'Novo veículo', wide:true, body:`<form id="mf" class="form" autocomplete="off">
     ${fld('Tipo', rchips('tipo',TIPOV,v.tipo||'carro'), false, true)}
     ${adm || !id ? (myBases().length === 1 && !adm ? `<input type="hidden" name="base" value="${myBases()[0]}">${fld('Base', `<div class="fixed-base">${bTag(myBases()[0])}</div>`)}` : fld('Base', `<select name="base" id="fbase" required>${baseOpts(v.base, !v.base)}</select>`, false, true)) : `<input type="hidden" name="base" value="${v.base}">${fld('Base', `<div class="fixed-base">${bTag(v.base)}</div>`)}`}
@@ -2862,11 +2897,14 @@ function veicForm(id){
     ${fld('Ano', inp('ano',v.ano,'type="number" min="1980" max="2100" inputmode="numeric"'))}
     ${fld('Cor', inp('cor',v.cor))}
     ${fld('Quilometragem', inp('km',v.km,'type="number" min="0" inputmode="numeric"'))}
-    ${adm ? fld('Condutor', `<select name="condutor" id="fcond">${condOpts(v.base)}</select>`, true) : ''}
+    ${podeCond ? `${fld('Uso do veículo', `<div class="radios"><label class="rchip" style="--c:#2563eb"><input type="radio" name="dupla" value="" ${!v.dupla ? 'checked' : ''}><span><i class="d"></i>Uma pessoa</span></label><label class="rchip" style="--c:#0d9488"><input type="radio" name="dupla" value="1" ${v.dupla ? 'checked' : ''}><span><i class="d"></i>${ic('users',13)} Em dupla</span></label></div>`, true, false, 'Em dupla, duas pessoas usam o mesmo veículo.')}
+    ${fld('Condutor', `<select name="condutor" id="fcond">${condOpts(v.base, curs[0]?.id)}</select>`, false)}
+    <div class="f" id="fcond2w" ${v.dupla ? '' : 'hidden'}><label>Segundo condutor (dupla)</label><select name="condutor2" id="fcond2">${condOpts(v.base, curs[1]?.id, '— Ninguém ainda —')}</select></div>` : ''}
     ${fld('Situação', rchips('status',VSTATUS,v.status||'ok'), true)}
     ${fld('Observações', `<textarea name="observacoes" rows="3" placeholder="Seguro, revisões, detalhes do veículo...">${esc(v.observacoes||'')}</textarea>`, true)}
   </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="v-save" data-id="${id||''}">${ic('check',15)}Salvar veículo</button>`,
-  onMount: ov => { const fb = $('#fbase',ov), fc = $('#fcond',ov); if (fb && fc) fb.onchange = e => { fc.innerHTML = condOpts(e.target.value); }; }});
+  onMount: ov => { const fb = $('#fbase',ov), fc = $('#fcond',ov), fc2 = $('#fcond2',ov); if (fb && fc) fb.onchange = e => { fc.innerHTML = condOpts(e.target.value); if (fc2) fc2.innerHTML = condOpts(e.target.value, '', '— Ninguém ainda —'); };
+    $$('[name=dupla]', ov).forEach(r => r.onchange = () => { const w = $('#fcond2w', ov); if (w) w.hidden = !$('[name=dupla][value="1"]', ov).checked; }); }});
 }
 const placaOk = p => /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(p);
 const normPlaca = p => String(p||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
@@ -2877,17 +2915,18 @@ async function saveVeic(id){
   if (!BASES[f.base] || !allowed(f.base)) return toast('Escolha a base do veículo.','err');
   if (S.veics.some(v => v.placa===placa && !sameId(v.id,id))) return toast('Já existe um veículo com essa placa.','err');
   const old = id ? V(id) : null;
-  const row = {tipo:f.tipo||'carro', base:f.base, placa, marca:f.marca, modelo:f.modelo, ano:f.ano?parseInt(f.ano):null, cor:f.cor, km:f.km?parseInt(f.km):null, status:f.status||'ok', observacoes:f.observacoes};
+  const row = {dupla:!!f.dupla, tipo:f.tipo||'carro', base:f.base, placa, marca:f.marca, modelo:f.modelo, ano:f.ano?parseInt(f.ano):null, cor:f.cor, km:f.km?parseInt(f.km):null, status:f.status||'ok', observacoes:f.observacoes};
+  if (f.condutor && f.condutor2 && row.dupla && String(f.condutor) === String(f.condutor2)) return toast('Escolha duas pessoas diferentes para a dupla.', 'err');
   const stChanged = !old || old.status !== row.status;
   if (stChanged){ row.status_em = nowISO(); row.status_por = S.profile.nome; row.status_obs = null; }
   try {
     let vid = id;
     if (id) await DB.update('veiculos', id, row); else vid = (await DB.insert('veiculos', row)).id;
     if (stChanged) await DB.insert('veiculo_historico', {veiculo_id:vid, status:row.status, obs: old ? 'Alterado no cadastro' : 'Veículo cadastrado', por_id:S.profile.id, por_nome:S.profile.nome});
-    const cur = condutorOf(vid), want = f.condutor || null;
-    if (isAdmin() && !sameId(cur?.id ?? '', want ?? '')){
-      if (cur) await DB.update('colaboradores', cur.id, {veiculo_id:null});
-      if (want) await DB.update('colaboradores', want, {veiculo_id:vid});
+    if ('condutor' in f){
+      const want = [...new Set([f.condutor, row.dupla ? f.condutor2 : ''].filter(Boolean).map(String))];
+      for (const c of condutoresOf(vid)) if (!want.includes(String(c.id))) await DB.update('colaboradores', c.id, {veiculo_id:null});
+      for (const cid of want) if (!sameId(C(cid)?.veiculo_id, vid)) await DB.update('colaboradores', cid, {veiculo_id:vid});
     }
     closeModal(); toast(id ? 'Veículo atualizado.' : 'Veículo cadastrado.'); await reload();
   } catch(e){ err(e); }
@@ -3166,7 +3205,9 @@ async function applyImport(){
       }
     } else {
       for (const r of ok){ const vid = r.d.veiculo_id; if (!vid) continue;
-        const holder = condutorOf(vid); if (holder && !(r.match && sameId(holder.id, r.match.id))){ await DB.update('colaboradores', holder.id, {veiculo_id:null}); holder.veiculo_id = null; } }
+        const vv = V(vid), outros = condutoresOf(vid).filter(h => !(r.match && sameId(h.id, r.match.id)));
+        if (vv?.dupla && outros.length < 2) continue;                                  // veículo em dupla: entra junto
+        for (const holder of outros){ await DB.update('colaboradores', holder.id, {veiculo_id:null}); holder.veiculo_id = null; } }
       await DB.insertMany('colaboradores', ok.filter(r => r.act === 'novo').map(r => ({...r.d, veiculo_id:r.d.veiculo_id || null})));
       for (const r of ok.filter(r => r.act === 'atualizar')) await DB.update('colaboradores', r.match.id, clean(r.d));
     }
@@ -6416,10 +6457,13 @@ function pgUsers(){
 }
 const CHG = {
   'c-veic': async t => { const cid = t.dataset.id, vid = t.value || null, c = C(cid); if (!c) return;
+    const modo = vid ? await veicModo(vid, cid) : 'livre'; if (!modo){ t.value = c.veiculo_id || ''; return; }
+    const dupla = modo === 'dupla';
     try {
-      if (TEST){ const d = Store.load(); d.colaboradores.forEach(x => { if (vid && sameId(x.veiculo_id, vid) && !sameId(x.id, cid)) x.veiculo_id = null; if (sameId(x.id, cid)) x.veiculo_id = vid; }); Store.save(); }
-      else { const {error} = await sb.rpc('colaborador_veiculo', {cid, vid}); if (error) throw error; }
-      toast(vid ? `Veículo ${V(vid)?.placa || ''} vinculado a ${firstName(c.nome)}.` : 'Veículo desvinculado.'); await loadAll(); render(); openColab(cid);
+      if (TEST){ const d = Store.load(); if (dupla){ const vv = d.veiculos.find(x => sameId(x.id, vid)); if (vv) vv.dupla = true; }
+        d.colaboradores.forEach(x => { if (!dupla && vid && sameId(x.veiculo_id, vid) && !sameId(x.id, cid)) x.veiculo_id = null; if (sameId(x.id, cid)) x.veiculo_id = vid; }); Store.save(); }
+      else { const {error} = await sb.rpc('colaborador_veiculo', {cid, vid, dupla}); if (error) throw error; }
+      toast(vid ? `Veículo ${V(vid)?.placa || ''} vinculado a ${firstName(c.nome)}${dupla ? ' (em dupla)' : ''}.` : 'Veículo desvinculado.'); await loadAll(); render(); openColab(cid);
     } catch(e){ err(e); } },
   'folga-regra': t => saveFolgaRegra(t.dataset.k, t.value),
   'acao-ativo': async t => { try { await DB.update('acoes', t.dataset.id, {ativo:t.checked}); toast(t.checked ? 'Ação ativada.' : 'Ação desativada.'); await loadAll(); } catch(e){ err(e); } },
