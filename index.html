@@ -1838,6 +1838,13 @@ button.po-tr:hover{background:var(--soft)}
   .col-tabs{overflow-x:auto}.col-tabs button{white-space:nowrap;flex:none}
 }
 
+/* ===== v2.20: saída de estoque ligada ao colaborador ===== */
+.mcol-box{background:#f0fdfa;border:1px solid #99f6e4;border-radius:12px;padding:10px 12px}
+.mcol-box label{display:flex;align-items:center;gap:6px}
+.mcol-x{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:8px;margin-top:8px}
+.mcol-x input,.mcol-x select{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:#fff}
+@media (max-width:600px){.mcol-x{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1850,7 +1857,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.19';
+const APP_VERSION = '2.20';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -4527,7 +4534,7 @@ function estOpen(id){
     <p class="f-hint">O aviso aparece no sino do líder da base quando a quantidade chega ao mínimo. A linha no gráfico marca o mínimo.</p>
     <div class="sec">Movimentações</div>
     ${movs.length ? `<div class="mv-list">${movs.map(movRow).join('')}</div>` : '<div class="box muted">Nenhuma movimentação ainda.</div>'}`,
-    foot:`${canEdit ? `<button class="btn" data-act="est-edit" data-id="${it.id}">${ic('edit',15)}Editar item</button>` : ''}<button class="btn" data-act="est-mov" data-id="${it.id}" data-k="transferencia">${ic('swap',15)}<span class="hide-s">Transferir</span></button><button class="btn pri" data-act="est-mov" data-id="${it.id}" data-k="entrada">${ic('plus',15)}Movimentar</button>`,
+    foot:`${canEdit ? `<button class="btn" data-act="est-edit" data-id="${it.id}">${ic('edit',15)}Editar item</button>` : ''}<button class="btn" data-act="est-mov" data-id="${it.id}" data-k="saida" data-col="1">${ic('user',15)}<span class="hide-s">Entregar a colaborador</span></button><button class="btn" data-act="est-mov" data-id="${it.id}" data-k="transferencia">${ic('swap',15)}<span class="hide-s">Transferir</span></button><button class="btn pri" data-act="est-mov" data-id="${it.id}" data-k="entrada">${ic('plus',15)}Movimentar</button>`,
     onMount: ov => $$('.et-min', ov).forEach(i => i.addEventListener('change', async () => {
       const v = +i.value; if (isNaN(v) || v < 0) return toast('Mínimo inválido.','err');
       try { await estRpc('estoque_definir_minimo', {p_item:i.dataset.id, p_base:i.dataset.k, p_minimo:v}); toast(`Aviso de ${BASES[i.dataset.k].nome}: ${fmtQ(v, it.unidade)}.`); await loadAll(); estOpen(id); } catch(e){ err(e); } }))});
@@ -4537,7 +4544,7 @@ function movRow(m){
   const q = m.tipo === 'saida' || m.tipo === 'transferencia' ? '−' + fmtQ(m.quantidade) : m.tipo === 'ajuste' ? '= ' + fmtQ(m.quantidade) : '+' + fmtQ(m.quantidade);
   return `<div class="mv" style="--c:${o.color}"><span class="mv-i">${ic(o.icon,14)}</span><div class="mv-t"><b>${o.label}${m.tipo==='transferencia' ? ' para ' + bName(m.base_destino) : ''} — ${bName(m.base)}</b><small>${it && S.page === 'estoque' && $('#ov .est-dh') ? '' : esc(it?.nome || '') + ' — '}${esc(m.motivo || '')}${m.motivo ? ' — ' : ''}${esc(firstName(m.por_nome||''))}, ${fmtDT(m.created_at)}</small></div><div class="mv-q"><b>${q}</b><small>saldo ${fmtQ(m.saldo_apos)}</small></div></div>`;
 }
-function estMovForm(id, tipo, base){
+function estMovForm(id, tipo, base, colab){
   const myB = myBases(); if (!myB.length) return toast('Você não tem base para movimentar.','err');
   const its = S.estItens.filter(i => i.ativo !== false).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
   if (!its.length) return toast('Cadastre um item primeiro.','err');
@@ -4548,19 +4555,27 @@ function estMovForm(id, tipo, base){
     ${fld('Base', myB.length === 1 ? `<input type="hidden" name="base" value="${myB[0]}"><div class="fixed-base">${bTag(myB[0])}</div>` : `<select name="base" id="mbase">${myB.map(k => `<option value="${k}" ${k===b0?'selected':''}>${BASES[k].nome}</option>`).join('')}</select>`)}
     <div class="f" id="mdestw" hidden><label>Para a base <em>*</em></label><select name="destino" id="mdest">${BKEYS.map(k => `<option value="${k}">${BASES[k].nome}</option>`).join('')}</select></div>
     <div class="f"><label id="mqlbl">Quantidade <em>*</em></label><input name="quantidade" id="mq" type="number" min="0" step="any" inputmode="decimal" required></div>
+    <div class="f full mcol-box" id="mcolw" hidden><label>${ic('user',14)} Entregar para um colaborador <span class="muted">(opcional)</span></label>
+      <select name="colab" id="mcol"></select>
+      <div class="mcol-x" id="mcolx" hidden><input name="tamanho" placeholder="Tamanho (ex: 42, G)" maxlength="12"><select name="ep_motivo">${opts(EP_MOT.map(m => [m, m]), 'Primeira entrega')}</select><input name="troca_em" type="date" title="Próxima troca (opcional)"></div>
+      <span class="f-hint">A saída fica registrada como entrega na ficha do colaborador (aba EPIs).</span></div>
     ${fld('Motivo / observação', inp('motivo','','maxlength="120" placeholder="Ex: compra, uso na OS 123, devolução..."'), true)}
     <div class="f full"><div class="mv-prev" id="mprev"></div></div>
   </form>`,
   foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="est-mov-save">${ic('check',15)}Confirmar</button>`,
   onMount: ov => {
+    let colB = null;
     const prev = () => { const it = itemOf($('#mitem',ov).value), t = $('[name=tipo]:checked',ov).value, b = $('[name=base]',ov).value, q = +($('#mq',ov).value || 0);
-      $('#mdestw',ov).hidden = t !== 'transferencia'; $('#mqlbl',ov).innerHTML = (t === 'ajuste' ? 'Quantidade contada agora' : 'Quantidade') + ' <em>*</em>';
+      $('#mdestw',ov).hidden = t !== 'transferencia';
+      $('#mcolw',ov).hidden = t !== 'saida';
+      if (colB !== b){ colB = b; const mc = $('#mcol',ov), cur = mc.value || ov._colab || ''; mc.innerHTML = `<option value="">— Não, só tirar do estoque —</option>${opts(S.colabs.filter(c => c.base === b && c.status !== 'desligado').sort((x,y) => x.nome.localeCompare(y.nome,'pt')).map(c => [c.id, c.nome]), cur)}`; }
+      $('#mcolx',ov).hidden = !$('#mcol',ov).value; $('#mqlbl',ov).innerHTML = (t === 'ajuste' ? 'Quantidade contada agora' : 'Quantidade') + ' <em>*</em>';
       if ($('#mdest',ov).value === b) $('#mdest',ov).value = BKEYS.find(k => k !== b);
       const cur = qtdOf(it, b), m = minOf(it, b);
       const nv = t === 'entrada' ? cur + q : t === 'ajuste' ? q : cur - q;
       const n = nivel(nv, m);
       $('#mprev',ov).innerHTML = `<span>Saldo em ${bName(b)}: <b>${fmtQ(cur, it.unidade)}</b></span>${q || t === 'ajuste' ? `<span>${ic('chevR',14)}</span><span>Fica: <b style="color:${nv < 0 ? '#dc2626' : NIV[n].color}">${nv < 0 ? 'saldo insuficiente' : fmtQ(nv, it.unidade)}</b>${nv >= 0 && n !== 'ok' ? ' — ' + NIV[n].label.toLowerCase() : ''}</span>` : ''}`; };
-    $$('input,select', ov).forEach(x => { x.addEventListener('input', prev); x.addEventListener('change', prev); }); prev();
+    ov._colab = colab || ''; $$('input,select', ov).forEach(x => { x.addEventListener('input', prev); x.addEventListener('change', prev); }); prev();
     setTimeout(() => $('#mq',ov).focus(), 50);
   }});
 }
@@ -4571,8 +4586,13 @@ async function estMovSave(){
   if (f.tipo === 'transferencia' && (!f.destino || f.destino === f.base)) return toast('Escolha a base de destino.','err');
   if ((f.tipo === 'saida' || f.tipo === 'transferencia') && q > qtdOf(it, f.base)) return toast(`Saldo insuficiente em ${bName(f.base)}.`,'err');
   try {
-    const nv = await estRpc('estoque_movimentar', {p_item:it.id, p_base:f.base, p_tipo:f.tipo, p_qtd:q, p_motivo:f.motivo, p_destino:f.tipo === 'transferencia' ? f.destino : null});
-    closeModal(); toast(`${MOV[f.tipo].label} registrada. ${it.nome} em ${bName(f.base)}: ${fmtQ(nv, it.unidade)}.`); await reload();
+    const c = f.tipo === 'saida' && f.colab ? C(f.colab) : null;
+    const nv = await estRpc('estoque_movimentar', {p_item:it.id, p_base:f.base, p_tipo:f.tipo, p_qtd:q, p_motivo:f.motivo || (c ? `Entrega para ${c.nome}` : ''), p_destino:f.tipo === 'transferencia' ? f.destino : null});
+    if (c){
+      try { await DB.insert('entregas', {colaborador_id:c.id, base:c.base, data:iso(new Date()), item_id:it.id, material:it.nome, categoria:epCatItem(it), quantidade:q, unidade:it.unidade || 'un', tamanho:(f.tamanho || '').trim(), motivo:f.ep_motivo || 'Primeira entrega', troca_em:f.troca_em || null, obs:f.motivo || '', baixa_estoque:true, entregue_por:S.profile.id, entregue_por_nome:S.profile.nome, updated_at:nowISO()}); }
+      catch(x){ err(x); toast('A saída do estoque foi feita, mas a entrega não ficou registrada no colaborador. Registre em Colaboradores → EPIs (sem baixa).', 'err'); }
+    }
+    closeModal(); toast(`${MOV[f.tipo].label} registrada. ${it.nome} em ${bName(f.base)}: ${fmtQ(nv, it.unidade)}.${c ? ` Entregue para ${firstName(c.nome)}.` : ''}`); await reload();
   } catch(e){ err(e); }
 }
 function estConferir(base){
@@ -6665,6 +6685,7 @@ const epDe = cid => (S.ent || []).filter(e => sameId(e.colaborador_id, cid)).sor
 const epTroca = e => e.troca_em ? (e.troca_em < iso(new Date()) ? 'vencida' : e.troca_em <= iso(addDays(new Date(), 15)) ? 'breve' : '') : '';
 // Só a entrega mais recente de cada material conta para a próxima troca
 const epAtuais = list => { const m = new Map(); list.slice().sort((a,b) => b.data.localeCompare(a.data)).forEach(e => { const k = String(e.colaborador_id) + '|' + nk(e.material); if (!m.has(k)) m.set(k, e); }); return [...m.values()]; };
+const epCatItem = it => /epi/i.test(it.categoria || '') ? 'EPI' : /ferrament/i.test(it.categoria || '') ? 'Ferramenta' : /uniform/i.test(it.categoria || '') ? 'Uniforme' : (EP_SUG.find(x => nk(x[0]) === nk(it.nome))?.[1] || 'Material');
 const epCatOf = nome => { const s = EP_SUG.find(x => nk(x[0]) === nk(nome)); if (s) return s[1]; const it = S.estItens.find(i => nk(i.nome) === nk(nome)); return it && /epi/i.test(it.categoria || '') ? 'EPI' : it ? 'Material' : 'EPI'; };
 function pgEpis(){
   const all = epVis(), mes = iso(new Date()).slice(0, 7);
@@ -6730,7 +6751,7 @@ function epPessoa(cid){
     ${l.length ? `<div class="ep-hist">${l.map(e => `<div class="ep-hi" data-act="ep-edit" data-id="${e.id}" role="button" tabindex="0" style="--c:${EP_CAT[e.categoria]?.color || '#64748b'}"><span class="ep-hd"><b>${fmtD(e.data).slice(0,5)}</b><small>${fmtD(e.data).slice(6)}</small></span>
       <div><b>${fmtQ(e.quantidade, e.unidade)} · ${esc(e.material)}${e.tamanho ? ` (tam. ${esc(e.tamanho)})` : ''}</b><small>${esc(e.motivo)}${e.troca_em ? ` · próxima troca ${fmtD(e.troca_em)}` : ''}${e.baixa_estoque ? ' · saiu do estoque' : ''} · entregue por ${esc(firstName(e.entregue_por_nome || '—'))}${e.obs ? ' · ' + esc(e.obs) : ''}</small></div>${ic('edit',14)}</div>`).join('')}</div>`
       : `<div class="box muted">Nenhuma entrega registrada ainda.</div>`}`,
-  foot:`<button class="btn" data-act="modal-close">Fechar</button>${allowed(c.base) ? `<button class="btn pri" data-act="ep-new" data-id="${c.id}">${ic('plus',15)}Registrar entrega</button>` : ''}`});
+  foot:`<button class="btn" data-act="modal-close">Fechar</button>${allowed(c.base) ? `<button class="btn" data-act="est-mov" data-k="saida" data-base="${c.base}" data-colab="${c.id}">${ic('box',15)}<span class="hide-s">Tirar do estoque</span></button><button class="btn pri" data-act="ep-new" data-id="${c.id}">${ic('plus',15)}Registrar entrega</button>` : ''}`});
 }
 // Registrar (várias linhas de uma vez) ou editar uma entrega
 let EPF = null;
@@ -6751,7 +6772,7 @@ function epForm(cid, id){
     ${fld('Motivo', rchips('motivo', Object.fromEntries(EP_MOT.map((m, i) => [m, {label:m, color:['#16a34a','#f59e0b','#dc2626','#e11d48','#2563eb','#64748b'][i]}])), e0?.motivo || 'Primeira entrega'), true)}
     ${fld('Próxima troca (opcional)', inp('troca_em', e0?.troca_em || '', 'type="date"'), false, false, 'Aparece o aviso quando estiver perto.')}
     ${fld('Observação', inp('obs', e0?.obs || '', 'maxlength="200" placeholder="Ex: número do CA, estado do anterior..."'))}
-    ${e0 ? '' : `<label class="tgl ep-baixa"><input type="checkbox" id="epbaixa"> Dar baixa no estoque da base (para os itens que existem no estoque)</label>`}
+    ${e0 ? '' : `<label class="tgl ep-baixa"><input type="checkbox" id="epbaixa"> Tirar do estoque da base (os itens que existem no estoque)</label>`}
   </form>
   ${e0?.baixa_estoque ? '<p class="f-hint">Esta entrega saiu do estoque da base. Mudar a quantidade aqui não corrige o estoque.</p>' : ''}`,
   foot:`${e0 ? `<button class="btn danger left" data-act="ep-del" data-id="${e0.id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="ep-save">${ic('check',15)}${e0 ? 'Salvar' : 'Registrar entrega'}</button>`,
@@ -6774,6 +6795,8 @@ function epLinhas(){
   $$('.ep-mat', box).forEach(x => x.addEventListener('change', () => setTimeout(() => { if (document.body.contains(box)) epLinhas(); })));   // fora do evento: evita refazer a tela no meio do blur
   set('ep-ct', (l, v) => l.categoria = v); set('ep-qt', (l, v) => l.quantidade = +v || 1); set('ep-un', (l, v) => l.unidade = v); set('ep-tm', (l, v) => l.tamanho = v);
   const pc = $('#epc'); if (pc && !pc._ep){ pc._ep = 1; pc.addEventListener('change', () => setTimeout(epLinhas)); }
+  const bx = $('#epbaixa'); if (bx){ if (!bx._ep){ bx._ep = 1; bx.addEventListener('change', () => bx._mexeu = true); }
+    if (!bx._mexeu) bx.checked = EPF.linhas.some(l => S.estItens.some(x => x.ativo !== false && nk(x.nome) === nk(l.material))); }
 }
 async function epSave(){
   const f = {...formObj(), ...Object.fromEntries(new FormData($('#mf2')))};
@@ -7070,7 +7093,7 @@ const ACT = {
   'esc-fa': a => { closeModal(); S.esc.ac = a.dataset.k; S.esc.t = ''; S.page === 'escalas' ? pgEscalas() : go('escalas'); },
   'fresh': () => { $('#fresh')?.remove(); const y = window.scrollY; render(); window.scrollTo(0, y); },
   'est-new': () => estItemForm(), 'est-edit': a => { closeModal(); estItemForm(a.dataset.id); }, 'est-save': a => estSaveItem(a.dataset.id || null), 'est-del': a => estDelItem(a.dataset.id),
-  'est-open': a => estOpen(a.dataset.id), 'est-mov': a => estMovForm(a.dataset.id, a.dataset.k, a.dataset.base), 'est-mov-save': () => estMovSave(),
+  'est-open': a => estOpen(a.dataset.id), 'est-mov': a => { estMovForm(a.dataset.id, a.dataset.k, a.dataset.base, a.dataset.colab); if (a.dataset.col) setTimeout(() => $('#mcol')?.focus(), 80); }, 'est-mov-save': () => estMovSave(),
   'est-conf': a => estConferir(a.dataset.k), 'est-conf-save': a => estConfSave(a.dataset.k), 'est-hist': () => estHist(), 'est-xls': () => estXls(),
   'ar-tab': a => { AR.tab = a.dataset.k; ARL = null; pgArrec(); window.scrollTo(0, 0); },
   'ar-go': () => { AR.tab = ''; go('arrecadacao'); },

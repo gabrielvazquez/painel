@@ -1,5 +1,5 @@
 // Painel de Controle — service worker: abre sem internet e mostra as notificações dos lembretes.
-const CACHE = 'painel-v2.19';
+const CACHE = 'painel-v2.20';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/badge-96.png'];
 // Guarda cada arquivo separado: se um faltar, o resto continua (antes um ícone faltando travava a instalação)
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => {})))).then(() => self.skipWaiting())); });
