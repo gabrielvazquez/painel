@@ -1,7 +1,8 @@
 // Painel de Controle — service worker: abre sem internet e mostra as notificações dos lembretes.
-const CACHE = 'painel-v2.17';
-const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './badge-96.png'];
-self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
+const CACHE = 'painel-v2.18';
+const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/badge-96.png'];
+// Guarda cada arquivo separado: se um faltar, o resto continua (antes um ícone faltando travava a instalação)
+self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => Promise.all(SHELL.map(u => c.add(u).catch(() => {})))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   const r = e.request, u = new URL(r.url);
@@ -14,7 +15,7 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   let d = {}; try { d = e.data ? e.data.json() : {}; } catch (x) { d = {title: 'Painel de Controle', body: e.data ? e.data.text() : ''}; }
   e.waitUntil(self.registration.showNotification(d.title || 'Painel de Controle', {
-    body: d.body || '', icon: 'icon-192.png', badge: 'badge-96.png', tag: d.tag || undefined, renotify: !!d.tag,
+    body: d.body || '', icon: 'icons/icon-192.png', badge: 'icons/badge-96.png', tag: d.tag || undefined, renotify: !!d.tag,
     requireInteraction: d.kind === 'lembrete', data: {url: d.url || './#planner', task: d.task || null}
   }));
 });

@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Painel de Controle">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Crect width=%2248%22 height=%2248%22 rx=%2214%22 fill=%22%230b4ea2%22/%3E%3Cpath d=%22M24 8.5s-11.2 12.6-11.2 20.2a11.2 11.2 0 0 0 22.4 0C35.2 21.1 24 8.5 24 8.5z%22 fill=%22%23fff%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1756,6 +1756,49 @@ button.po-tr:hover{background:var(--soft)}
 .who.dupla .avs{display:inline-flex}.who.dupla .avs>.av{margin-left:-8px;box-shadow:0 0 0 2px #fff}.who.dupla .avs>.av:first-child{margin-left:0}
 .esc-f .btn{flex:1 1 auto}
 
+/* ===== v2.18: plantões em lote ===== */
+.lt-step{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lt-step:first-child{padding-top:0}.lt-step:last-child{border-bottom:0}
+.lt-n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:13px;display:grid;place-items:center}
+.lt-c{flex:1;min-width:0}.lt-c>b{display:block;font-size:14px;margin:3px 0 10px}
+.lt-mes{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}.lt-mes>span{font-weight:600;min-width:130px;text-align:center}
+.lt-dts{display:flex;flex-wrap:wrap;gap:8px}
+.lt-dt{display:flex;flex-direction:column;align-items:center;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:6px 12px;min-width:62px;line-height:1.15;transition:.12s}
+.lt-dt small{font-size:10.5px;color:var(--muted);text-transform:capitalize}.lt-dt b{font-size:14px}
+.lt-dt.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 20%,transparent)}
+.lt-dt.past{opacity:.45}
+.lt-add{display:flex;align-items:center;gap:4px;border:1.5px dashed var(--line);border-radius:12px;padding:4px 8px;color:var(--muted)}
+.lt-add input{border:0;background:none;font:inherit;font-size:12px;width:130px;outline:0}
+.lt-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.lt-b{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;background:#fff}
+.lt-b input{display:none}.lt-b.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 8%,#fff);font-weight:600}
+.lt-h{margin-top:10px}.lt-h label{display:flex;align-items:center;gap:6px;font-size:13px}.lt-h input{border:1px solid var(--line);border-radius:9px;padding:6px 8px;font:inherit}
+.lt-auto{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.lt-auto>span{font-size:13px;font-weight:600}.lt-auto input{width:64px;border:1px solid var(--line);border-radius:9px;padding:6px 8px;font:inherit}
+.lt-auto small{flex-basis:100%;font-size:11.5px}
+.lt-list{display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow:auto;padding-right:2px}
+.lt-l{display:grid;grid-template-columns:24px minmax(130px,.8fr) minmax(170px,1fr) minmax(0,1.6fr);align-items:start;gap:10px;border:1px solid var(--line);border-left:4px solid var(--c);border-radius:12px;padding:10px 12px;background:#fff}
+.lt-l.off{opacity:.5;background:#f8fafc}
+.lt-on{padding-top:4px}.lt-on input{width:16px;height:16px}
+.lt-l-h b{display:block;font-size:13.5px}.lt-l-h span{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.lt-ja{display:inline-flex;align-items:center;gap:3px;font-style:normal;font-size:11px;color:#b45309;background:#fffbeb;border-radius:20px;padding:1px 7px;margin-top:3px}
+.lt-l-r small{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}.lt-l-r .sel{width:100%}
+.lt-l-m summary{display:flex;align-items:center;gap:8px;cursor:pointer;list-style:none;border:1px solid var(--line);border-radius:10px;padding:6px 8px;min-height:38px}
+.lt-l-m summary::-webkit-details-marker{display:none}
+.lt-l-m summary em{margin-left:auto;font-style:normal;font-size:12px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:3px}
+.lt-pp{display:flex;flex-wrap:wrap;gap:4px;min-width:0}.lt-pp .pp{font-size:11.5px}
+.lt-pick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.lt-pick label{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-size:12px;cursor:pointer}
+.lt-pick label.on{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.lt-pick input{display:none}.lt-pick em{font-style:normal;color:#b45309;font-size:11px}
+.lt-sum{margin-right:auto;font-size:12.5px;color:var(--muted)}.lt-sum b{color:var(--ink)}
+@media (max-width:760px){
+  .lt-l{grid-template-columns:22px minmax(0,1fr)}.lt-l-r,.lt-l-m{grid-column:2}
+  .lt-list{max-height:none}
+  .lt-sum{flex-basis:100%;text-align:center;margin:0 0 6px}
+  .ex-new .lt-btn span{display:none}
+}
+
 </style>
 </head>
 <body>
@@ -1768,7 +1811,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.17';
+const APP_VERSION = '2.18';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2082,12 +2125,12 @@ function seed(){
   ];
   const ES = (id,base,tipo,data,hi,hf,acao,membros,resp,status,obs,por,porNome) => ({id,base,tipo,data,hora_inicio:hi,hora_fim:hf,acao_id:acao,membros,responsavel_id:resp,status,observacao:obs,criado_por:por,criado_por_nome:porNome,created_at:h(30),updated_at:h(30)});
   const escalas = [
-    ES('s1','pinheiros','plantao',sat(0),'07:00','13:00',null,['c1','c2'],'u-carlos','confirmada','Plantão de emergência','u-carlos','Carlos Lima'),
-    ES('s2','ipiranga','plantao',sat(0),'07:00','13:00',null,['c3'],'u-fernanda','planejada',null,'u-fernanda','Fernanda Souza'),
+    ES('s1','pinheiros','plantao',sat(0),'08:00','17:00',null,['c1','c2'],'u-carlos','confirmada','Plantão de emergência','u-carlos','Carlos Lima'),
+    ES('s2','ipiranga','plantao',sat(0),'08:00','17:00',null,['c3'],'u-fernanda','planejada',null,'u-fernanda','Fernanda Souza'),
     ES('s3','sao-mateus','hora_extra',dOff(1),'18:00','22:00','a1',['c5'],null,'confirmada','Fechamento de cavaletes','u-admin','Encarregado Principal'),
     ES('s4','santo-andre','hora_extra',dOff(-3),'17:00','21:00','a2',['c9','c10'],'u-paula','realizada',null,'u-paula','Paula Ribeiro'),
     ES('s5','pinheiros','hora_extra',dOff(-8),'17:00','20:00','a3',['c1','c2'],'u-carlos','realizada',null,'u-carlos','Carlos Lima'),
-    ES('s6','pinheiros','plantao',sat(1),'07:00','13:00',null,['c7'],'u-carlos','planejada',null,'u-carlos','Carlos Lima')
+    ES('s6','pinheiros','plantao',sat(1),'08:00','17:00',null,['c7'],'u-carlos','planejada',null,'u-carlos','Carlos Lima')
   ];
   const IT = (id,nome,categoria,unidade,min) => ({id,nome,categoria,unidade,minimo_padrao:min,descricao:null,ativo:true,criado_por:'u-admin',criado_por_nome:'Encarregado Principal',created_at:h(500)});
   const estoque_itens = [IT('i1','Lacre azul','Lacres','un',150), IT('i2','Lacre vermelho','Lacres','un',100), IT('i3','Luva de vaqueta','EPI','par',10), IT('i4','Fita isolante','Elétrico','rolo',15), IT('i5','Cone de sinalização','Sinalização','un',4)];
@@ -3921,6 +3964,7 @@ function pgEscalas(){
     <div class="ex-tabs" role="tablist">${tabs.map(([k,l,n,late]) => `<button role="tab" class="${st.tab===k?'on':''}" data-act="esc-tab" data-k="${k}">${l}${n != null ? `<em class="${late?'late':''}">${n}</em>` : ''}</button>`).join('')}</div>
     <div class="ex-new">
       <button class="btn he-btn" data-act="esc-new" data-k="hora_extra">${ic('plus',16)}<span>Hora extra</span></button>
+      <button class="btn lt-btn" data-act="esc-lote">${ic('list',16)}<span>Plantões em lote</span></button>
       <button class="btn pri pl-btn" data-act="esc-new" data-k="plantao">${ic('plus',16)}<span>Plantão</span></button>
     </div>
   </div>
@@ -4012,7 +4056,7 @@ function escForm(id, preset={}){
   if (id) markReadPrefix(`esc:${id}:`);
   const ro = e0 && !canEditEsc(e0);
   const tipo = e0?.tipo || preset.tipo || 'plantao';
-  const e = e0 || {tipo, base:preset.base || defBase() || BKEYS[0], data:preset.data || (tipo === 'plantao' ? nextSat() : iso(new Date())), hora_inicio: tipo === 'plantao' ? '07:00' : '17:00', hora_fim: tipo === 'plantao' ? '13:00' : '21:00', status:'planejada', membros:preset.membros || [], acao_id:preset.acao_id || null, responsavel_id:null};
+  const e = e0 || {tipo, base:preset.base || defBase() || BKEYS[0], data:preset.data || (tipo === 'plantao' ? nextSat() : iso(new Date())), hora_inicio: tipo === 'plantao' ? PL_HI : '17:00', hora_fim: tipo === 'plantao' ? PL_HF : '21:00', status:'planejada', membros:preset.membros || [], acao_id:preset.acao_id || null, responsavel_id:null};
   if (!e0) e.responsavel_id = preset.responsavel_id || liderOf(e.base)?.id || null;
   if (ro){
     const r = P(e.responsavel_id);
@@ -4103,7 +4147,7 @@ function escForm(id, preset={}){
     $$('[name=tipo]',ov).forEach(r => r.onchange = () => { const pl = r.value === 'plantao'; $('#facao',ov).hidden = pl; $('#ffolga',ov).hidden = !pl; $('#frcl',ov).hidden = pl; $('#frcpl',ov).hidden = !pl; if (pl) $('#frc',ov).checked = false;
       $('#frespreq',ov).innerHTML = pl ? 'pelo plantão <em>*</em>' : 'pela ação (opcional)';
       $('#fresphint',ov).textContent = pl ? 'Todo plantão precisa de um responsável. Pode ser qualquer líder, de qualquer base, ou o encarregado.' : 'Quem coordena a ação no dia.';
-      if (!id){ $('#fhi',ov).value = pl ? '07:00' : '17:00'; $('#fhf',ov).value = pl ? '13:00' : '21:00'; $('#fdata',ov).value = pl ? nextSat() : iso(new Date()); showDur(); draw(); } });
+      if (!id){ $('#fhi',ov).value = pl ? PL_HI : '17:00'; $('#fhf',ov).value = pl ? PL_HF : '21:00'; $('#fdata',ov).value = pl ? nextSat() : iso(new Date()); showDur(); draw(); } });
     $('#facs',ov).onchange = ev => { const n = ev.target.value === '__nova'; $('#fnova',ov).hidden = !n; if (n) $('#fnova',ov).focus(); };
   }});
 }
@@ -5091,7 +5135,7 @@ function plAlarm(t){
   box.appendChild(el);
   if (plCfg().som) plBeep();
   if ('Notification' in window && Notification.permission === 'granted' && (document.hidden || !document.hasFocus())){
-    const op = {body:quando + (t.notas ? '\n' + t.notas.slice(0,80) : ''), icon:'icon-192.png', badge:'badge-96.png', tag:'pl-' + t.id, requireInteraction:true, data:{url:'./#planner', task:t.id}};
+    const op = {body:quando + (t.notas ? '\n' + t.notas.slice(0,80) : ''), icon:'icons/icon-192.png', badge:'icons/badge-96.png', tag:'pl-' + t.id, requireInteraction:true, data:{url:'./#planner', task:t.id}};
     (swReg ? swReg.showNotification(t.titulo, op) : Promise.reject()).catch(() => { try { new Notification(t.titulo, op); } catch(e){} });
   }
   if (PT(t.id) && !sameId(t.id, 'teste')){ PT(t.id).lembrado_em = nowISO(); DB.update('planner_tarefas', t.id, {lembrado_em:PT(t.id).lembrado_em}).catch(() => {}); }
@@ -6433,6 +6477,132 @@ async function arXls(){
 }
 
 
+/* ========================= PLANTÕES EM LOTE (v2.18) ========================= */
+// Monta vários plantões de uma vez: várias datas × várias bases, cada um com o seu líder de plantão.
+const PL_HI = '08:00', PL_HF = '17:00';           // horário padrão do plantão
+let LT = null;                                   // {mes, datas:Set, bases:Set, hi, hf, n, linhas:Map(key -> {base, data, resp, membros:Set, on})}
+const ltKey = (b, d) => b + '|' + d;
+const ltSabados = ym => { const [y, m] = ym.split('-').map(Number), out = []; for (let d = new Date(y, m - 1, 1); d.getMonth() === m - 1; d = addDays(d, 1)) if (d.getDay() === 6) out.push(iso(d)); return out; };
+function escLote(){
+  const hj = iso(new Date());
+  const mes = (ltSabados(hj.slice(0, 7)).filter(s => s >= hj).length >= 2 ? hj : iso(new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1))).slice(0, 7);   // fim do mês: já abre o próximo
+  const bases = BKEYS.filter(k => allowed(k) && (!S.base || k === S.base));
+  LT = {mes, datas:new Set(ltSabados(mes).filter(s => s >= hj)), bases:new Set(bases), hi:PL_HI, hf:PL_HF, n:2, linhas:new Map(), obs:''};
+  openModal({wide:true, title:'Plantões em lote', body:`<div id="ltbox"></div>`,
+    foot:`<span class="lt-sum" id="ltsum"></span><button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="lt-save">${ic('check',15)}Criar plantões</button>`,
+    onMount: () => ltDraw()});
+}
+function ltSync(){
+  // cria/remove linhas conforme datas × bases escolhidas, preservando o que já foi preenchido
+  const want = new Set();
+  [...LT.datas].sort().forEach(d => [...LT.bases].forEach(b => { const k = ltKey(b, d); want.add(k);
+    if (!LT.linhas.has(k)){ const ja = S.escalas.find(e => e.tipo === 'plantao' && e.base === b && e.data === d && e.status !== 'cancelada');
+      LT.linhas.set(k, {base:b, data:d, resp:liderOf(b)?.id || '', membros:new Set(), on:!ja, ja}); } }));
+  [...LT.linhas.keys()].forEach(k => { if (!want.has(k)) LT.linhas.delete(k); });
+}
+const ltPool = b => S.colabs.filter(c => c.base === b && c.status === 'ativo').sort((x,y) => x.nome.localeCompare(y.nome,'pt'));
+function ltDraw(){
+  const box = $('#ltbox'); if (!box || !LT) return;
+  ltSync();
+  const [y, m] = LT.mes.split('-').map(Number), sabs = ltSabados(LT.mes), hj = iso(new Date());
+  const linhas = [...LT.linhas.values()].sort((a,b) => a.data.localeCompare(b.data) || BKEYS.indexOf(a.base) - BKEYS.indexOf(b.base));
+  const resps = respList();
+  const extra = [...LT.datas].filter(d => !sabs.includes(d)).sort();
+  box.innerHTML = `
+  <div class="lt-step"><span class="lt-n">1</span><div class="lt-c">
+    <b>Datas</b>
+    <div class="lt-mes"><button class="icon-btn bord" data-act="lt-mes" data-k="-1" aria-label="Mês anterior">${ic('chevL',16)}</button><span>${cap(new Date(y, m - 1, 1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'}))}</span><button class="icon-btn bord" data-act="lt-mes" data-k="1" aria-label="Próximo mês">${ic('chevR',16)}</button>
+      <button class="btn sm" data-act="lt-sabs">Todos os sábados</button><button class="btn sm" data-act="lt-limpa">Limpar</button></div>
+    <div class="lt-dts">${sabs.map(s => `<button class="lt-dt ${LT.datas.has(s) ? 'on' : ''} ${s < hj ? 'past' : ''}" data-act="lt-dt" data-k="${s}"><small>sáb</small><b>${fmtD(s).slice(0,5)}</b></button>`).join('')}
+      ${extra.map(s => `<button class="lt-dt on" data-act="lt-dt" data-k="${s}"><small>${parseISO(s).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')}</small><b>${fmtD(s).slice(0,5)}</b></button>`).join('')}
+      <label class="lt-add">${ic('plus',13)}<input type="date" id="ltadd" aria-label="Adicionar outra data"></label></div>
+  </div></div>
+  <div class="lt-step"><span class="lt-n">2</span><div class="lt-c">
+    <b>Bases e horário</b>
+    <div class="lt-row">${BKEYS.filter(allowed).map(k => `<label class="lt-b ${LT.bases.has(k) ? 'on' : ''}" style="--c:${BASES[k].c}"><input type="checkbox" data-ltb="${k}" ${LT.bases.has(k) ? 'checked' : ''}>${emblem(k,12,4)}${BASES[k].nome}</label>`).join('')}</div>
+    <div class="lt-row lt-h"><label>Início <input type="time" id="lthi" value="${LT.hi}"></label><label>Fim <input type="time" id="lthf" value="${LT.hf}"></label><span class="muted s" id="ltdur"></span></div>
+  </div></div>
+  <div class="lt-step"><span class="lt-n">3</span><div class="lt-c">
+    <b>Líder de plantão e equipe</b>
+    <div class="lt-row lt-auto"><span>Pessoas por plantão</span><input type="number" id="ltn" min="1" max="20" value="${LT.n}"><button class="btn sm pri" data-act="lt-auto">${ic('refresh',14)}Sugerir rodízio</button><small class="muted">Distribui a equipe de cada base entre as datas, quem fez menos plantões no mês primeiro, pulando quem estiver ausente.</small></div>
+    ${linhas.length ? `<div class="lt-list">${linhas.map(l => ltLinha(l, resps)).join('')}</div>` : `<p class="muted" style="margin:10px 0 0">Escolha pelo menos uma data e uma base.</p>`}
+    <div class="form" style="margin-top:12px">${fld('Observação (vai em todos)', `<input id="ltobs" value="${esc(LT.obs)}" maxlength="200" placeholder="Opcional">`, true)}</div>
+  </div></div>`;
+  $('#ltadd', box).onchange = e => { if (e.target.value){ LT.datas.add(e.target.value); ltDraw(); } };
+  $$('[data-ltb]', box).forEach(i => i.onchange = () => { i.checked ? LT.bases.add(i.dataset.ltb) : LT.bases.delete(i.dataset.ltb); ltDraw(); });
+  const dur = () => { const x = {hora_inicio:$('#lthi').value, hora_fim:$('#lthf').value}; $('#ltdur').textContent = x.hora_inicio && x.hora_fim ? durTxt(x) : ''; };
+  $('#lthi', box).onchange = e => { LT.hi = e.target.value; dur(); }; $('#lthf', box).onchange = e => { LT.hf = e.target.value; dur(); }; dur();
+  $('#ltn', box).onchange = e => { LT.n = Math.max(1, Math.min(20, +e.target.value || 1)); };
+  $('#ltobs', box).oninput = e => { LT.obs = e.target.value; };
+  $$('[data-ltr]', box).forEach(s => s.onchange = () => { LT.linhas.get(s.dataset.ltr).resp = s.value; ltSum(); });
+  $$('[data-lton]', box).forEach(i => i.onchange = () => { LT.linhas.get(i.dataset.lton).on = i.checked; i.closest('.lt-l').classList.toggle('off', !i.checked); ltSum(); });
+  $$('[data-ltm]', box).forEach(i => i.onchange = () => { const l = LT.linhas.get(i.dataset.ltm); i.checked ? l.membros.add(i.value) : l.membros.delete(i.value); ltDrawLinha(i.dataset.ltm); });
+  ltSum();
+}
+function ltLinha(l, resps = respList()){
+  const k = ltKey(l.base, l.data), pool = ltPool(l.base);
+  const ms = [...l.membros].map(id => C(id) || CX(id)).filter(Boolean);
+  return `<div class="lt-l ${l.on ? '' : 'off'}" id="ltl-${k.replace('|','_')}" style="--c:${BASES[l.base].c}">
+    <label class="lt-on" title="Incluir"><input type="checkbox" data-lton="${k}" ${l.on ? 'checked' : ''}></label>
+    <div class="lt-l-h"><b>${cap(parseISO(l.data).toLocaleDateString('pt-BR',{weekday:'short'}).replace('.',''))} ${fmtD(l.data).slice(0,5)}</b><span>${emblem(l.base,9,3)}${BASES[l.base].nome}</span>${l.ja ? `<em class="lt-ja" title="${esc(escTitle(l.ja))}">${ic('alert',11)} já tem plantão</em>` : ''}</div>
+    <div class="lt-l-r"><small>Líder de plantão</small><select class="sel" data-ltr="${k}"><option value="">— Escolha —</option>${opts(resps.map(p => [p.id, p.nome + (p.role === 'admin' ? ' (encarregado)' : (p.bases||[])[0] ? ' — ' + bName(p.bases[0]) : '')]), l.resp)}</select></div>
+    <details class="lt-l-m"><summary><span class="lt-pp">${ms.length ? ms.map(c => `<span class="pp">${avc(c,18)}${esc(firstName(c.nome))}</span>`).join('') : '<span class="muted">Ninguém escolhido</span>'}</span><em>${ms.length} ${ic('chevD',12)}</em></summary>
+      <div class="lt-pick">${pool.map(c => { const aus = ausenteEm(c.id, l.data), on = l.membros.has(String(c.id)); return `<label class="${on ? 'on' : ''}"><input type="checkbox" data-ltm="${k}" value="${c.id}" ${on ? 'checked' : ''}>${esc(c.nome)}${aus ? ` <em>${esc((EV[aus.tipo]||EV.outro).label)}</em>` : ''}</label>`; }).join('') || '<span class="muted s">Ninguém ativo nesta base.</span>'}</div></details>
+  </div>`;
+}
+function ltDrawLinha(k){
+  const l = LT.linhas.get(k), el = $('#ltl-' + k.replace('|','_')); if (!l || !el) return;
+  const aberto = el.querySelector('details')?.open;
+  el.outerHTML = ltLinha(l);
+  const n = $('#ltl-' + k.replace('|','_'));
+  if (aberto) n.querySelector('details').open = true;
+  $$('[data-ltm]', n).forEach(i => i.onchange = () => { i.checked ? l.membros.add(i.value) : l.membros.delete(i.value); ltDrawLinha(k); });
+  $('[data-ltr]', n).onchange = e => { l.resp = e.target.value; ltSum(); };
+  $('[data-lton]', n).onchange = e => { l.on = e.target.checked; n.classList.toggle('off', !l.on); ltSum(); };
+  ltSum();
+}
+function ltSum(){
+  const ls = [...LT.linhas.values()].filter(l => l.on), sem = ls.filter(l => !l.membros.size).length, semR = ls.filter(l => !l.resp).length;
+  const el = $('#ltsum'); if (el) el.innerHTML = ls.length ? `<b>${ls.length}</b> plantão(ões) · ${ls.reduce((a, l) => a + l.membros.size, 0)} vaga(s)${sem ? ` · <span class="late">${sem} sem equipe</span>` : ''}${semR ? ` · <span class="late">${semR} sem líder</span>` : ''}` : 'Nenhum plantão marcado';
+}
+function ltAuto(){
+  // rodízio: para cada base, distribui quem fez menos plantões no mês, sem repetir a pessoa na mesma data
+  const n = LT.n, cont = new Map();
+  const ls = [...LT.linhas.values()].filter(l => l.on).sort((a,b) => a.data.localeCompare(b.data));
+  const ini = ls.length ? ls[0].data.slice(0,8) + '01' : '', fim = ls.length ? ls[ls.length - 1].data : '';
+  S.escalas.filter(e => e.tipo === 'plantao' && e.status !== 'cancelada' && e.data >= ini && e.data <= fim).forEach(e => (e.membros || []).forEach(id => cont.set(String(id), (cont.get(String(id)) || 0) + 1)));
+  const usados = new Map(); // data -> Set
+  S.escalas.filter(e => e.status !== 'cancelada').forEach(e => (e.membros || []).forEach(id => { const s = usados.get(e.data) || new Set(); s.add(String(id)); usados.set(e.data, s); }));
+  ls.forEach(l => {
+    const u = usados.get(l.data) || new Set();
+    const cand = ltPool(l.base).filter(c => !ausenteEm(c.id, l.data) && !u.has(String(c.id)))
+      .sort((a,b) => (cont.get(String(a.id)) || 0) - (cont.get(String(b.id)) || 0) || a.nome.localeCompare(b.nome,'pt'));
+    l.membros = new Set(cand.slice(0, n).map(c => String(c.id)));
+    l.membros.forEach(id => { cont.set(id, (cont.get(id) || 0) + 1); u.add(id); });
+    usados.set(l.data, u);
+  });
+  ltDraw(); toast('Rodízio sugerido. Confira e ajuste o que precisar.');
+}
+async function ltSave(){
+  const ls = [...LT.linhas.values()].filter(l => l.on);
+  if (!ls.length) return toast('Marque pelo menos um plantão.', 'err');
+  if (!LT.hi || !LT.hf) return toast('Informe o horário de início e fim.', 'err');
+  const semR = ls.filter(l => !l.resp); if (semR.length) return toast(`Escolha o líder de plantão de ${semR.length} plantão(ões).`, 'err');
+  const semE = ls.filter(l => !l.membros.size); if (semE.length) return toast(`${semE.length} plantão(ões) sem ninguém escalado. Use "Sugerir rodízio" ou escolha as pessoas.`, 'err');
+  const ja = ls.filter(l => l.ja).length;
+  if (!await confirmBox(`Criar <b>${ls.length}</b> plantão(ões) de ${LT.hi} às ${LT.hf}?${ja ? `<br><span class="muted">${ja} deles em data/base que já tem plantão.</span>` : ''}<br><span class="muted">As folgas seguem a regra de cada base.</span>`, 'Criar plantões')) return;
+  const btn = $('[data-act=lt-save]'); if (btn){ btn.disabled = true; btn.textContent = 'Criando...'; }
+  try {
+    const rows = ls.map(l => ({tipo:'plantao', base:l.base, data:l.data, hora_inicio:LT.hi, hora_fim:LT.hf, acao_id:null, membros:[...l.membros], responsavel_id:l.resp, resp_conta:false, status:'planejada', observacao:LT.obs || null, folga_data:folgaPadrao(l.base, l.data) || null, criado_por:S.profile.id, criado_por_nome:S.profile.nome, updated_at:nowISO()}));
+    const ins = await DB.insertMany('escalas', rows);
+    let nf = 0;
+    for (const e of ins){ if (!e.folga_data) continue; const plan = new Map((e.membros || []).map(id => [String(id), e.folga_data])); nf += await syncFolgas(e, plan); }
+    closeModal(); toast(`${ins.length} plantão(ões) criado(s).${nf ? ` Folga lançada para ${nf} pessoa(s).` : ''}`);
+    LT = null; await reload();
+  } catch(e){ err(e); if (btn){ btn.disabled = false; btn.innerHTML = `${ic('check',15)}Tentar de novo`; } }
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -6678,6 +6848,11 @@ const ACT = {
     const c = C(a.dataset.id), row = $('#arl-' + a.dataset.id); if (c && row){ const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); } },
   'ar-vobs': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; d.vObs = !d.vObs || !!d.obs; const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); $(`.ar-obs[data-id="${a.dataset.id}"]`)?.focus(); },
   'ar-salvar': () => arSalvar(), 'ar-edit': a => arEdit(a.dataset.id, a.dataset.k), 'ar-ed-save': a => arEdSave(a.dataset.id, a.dataset.k), 'ar-del': a => arDel(a.dataset.id), 'ar-xls': () => arXls(),
+  'esc-lote': () => escLote(), 'lt-save': () => ltSave(), 'lt-auto': () => ltAuto(),
+  'lt-mes': a => { const [y, m] = LT.mes.split('-').map(Number); LT.mes = iso(new Date(y, m - 1 + +a.dataset.k, 1)).slice(0, 7); ltDraw(); },
+  'lt-sabs': () => { const hj = iso(new Date()); ltSabados(LT.mes).filter(s => s >= hj).forEach(s => LT.datas.add(s)); ltDraw(); },
+  'lt-limpa': () => { LT.datas.clear(); ltDraw(); },
+  'lt-dt': a => { LT.datas.has(a.dataset.k) ? LT.datas.delete(a.dataset.k) : LT.datas.add(a.dataset.k); ltDraw(); },
   'est-tab': a => { S.est.tab = a.dataset.k; pgEstoque(); },
   'pd-new': () => pedForm(), 'pd-open': a => pedForm(a.dataset.id), 'pd-save': a => pedSave(a.dataset.id || null), 'pd-del': a => pedDel(a.dataset.id),
   'pd-concluir': (a, e) => { e?.stopPropagation?.(); pedConcluir(a.dataset.id); }, 'pd-ok': a => pedOk(a.dataset.id),
