@@ -1845,6 +1845,28 @@ button.po-tr:hover{background:var(--soft)}
 .mcol-x input,.mcol-x select{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:#fff}
 @media (max-width:600px){.mcol-x{grid-template-columns:1fr}}
 
+/* ===== v2.21: planilhas nas solicitações ===== */
+.sol-up{margin-top:12px}
+.sol-drop{display:flex;align-items:center;gap:10px;border:1.5px dashed #86efac;background:#f0fdf4;color:#166534;border-radius:12px;padding:10px 14px;cursor:pointer;transition:.15s}
+.sol-drop:hover,.sol-drop.over{background:#dcfce7;border-color:#16a34a}
+.sol-drop span{display:flex;flex-direction:column}.sol-drop b{font-size:13px}.sol-drop small{color:var(--muted);font-size:11.5px}
+#solpend,.sol-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.sol-f{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:6px 8px 6px 10px;background:#fff;color:#15803d;min-width:0}
+.sol-f b{flex:1;min-width:0;color:var(--ink);font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sol-f small{color:var(--muted);font-size:11px;white-space:nowrap}
+.sol-f.pend{border-style:dashed;background:#fafafa}
+.sol-list.in-msg{margin-top:6px}.sol-list.in-msg .sol-f{background:#ffffffcc}
+.sol-vm{max-width:min(1100px,96vw)}
+.sol-abas{display:flex;gap:4px;padding:8px 20px 0;overflow-x:auto}
+.sol-abas button{border:1px solid var(--line);background:#fff;border-radius:8px 8px 0 0;padding:6px 12px;font-size:12px;white-space:nowrap}
+.sol-abas button.on{background:#16a34a;color:#fff;border-color:#16a34a}
+.sol-tw{overflow:auto;max-height:60vh;border:1px solid var(--line);border-radius:10px}
+.sol-t{border-collapse:collapse;font-size:12px;width:max-content;min-width:100%}
+.sol-t td,.sol-t th{border:1px solid #e5e7eb;padding:4px 8px;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+.sol-t th{width:1%;background:#f8fafc;color:var(--muted);font-weight:500;position:sticky;left:0}
+.sol-t tr:first-child td{background:#f0fdf4;font-weight:600;position:sticky;top:0}
+@media (max-width:600px){.sol-f{flex-wrap:wrap}.sol-f b{flex-basis:calc(100% - 30px)}}
+
 </style>
 </head>
 <body>
@@ -1857,7 +1879,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.20';
+const APP_VERSION = '2.21';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -3360,7 +3382,7 @@ function pgDiario(){
 function diarioList(){
   const f = S.f, q = f.tq.toLowerCase().trim(), tt = f.tt, today = iso(new Date()), multi = !S.base && myBases().length > 1;
   const list = chsV(tt).filter(c => (!f.tl || sameId(c.autor_id,f.tl) || sameId(c.destinatario_id,f.tl) || (tt==='pedido' && (P(f.tl)?.bases||[]).includes(c.base))) && (!f.ts || c.status===f.ts) && (!f.tc || c.categoria===f.tc) &&
-    (!q || [c.titulo,c.descricao,c.autor_nome,'#'+c.id,C(c.colaborador_id)?.nome,V(c.veiculo_id)?.placa,bName(c.base),...msgsOf(c.id).map(m=>m.texto)].join(' ').toLowerCase().includes(q)));
+    (!q || [c.titulo,c.descricao,c.autor_nome,'#'+c.id,C(c.colaborador_id)?.nome,V(c.veiculo_id)?.placa,bName(c.base),...msgsOf(c.id).map(m=>m.texto),...(c.arquivos||[]).map(a=>a.nome),...msgsOf(c.id).flatMap(m=>(m.arquivos||[]).map(a=>a.nome))].join(' ').toLowerCase().includes(q)));
   $('#list').innerHTML = list.length ? list.map(c => { const col = C(c.colaborador_id), v = V(c.veiculo_id), ms = msgsOf(c.id), lastM = ms[ms.length-1];
     const late = tt === 'pedido' && c.status !== 'resolvido' && c.prazo && c.prazo < today;
     const novo = lastM && !sameId(lastM.autor_id, S.profile.id) && c.status !== 'resolvido';
@@ -3369,6 +3391,7 @@ function diarioList(){
       <span class="num">#${c.id}</span>${multi ? emblem(c.base,30,9) : avatar(c.autor_nome,32)}
       <div class="body"><div class="t">${esc(c.titulo)}</div><div class="m">${multi?`<span class="fw5" style="color:${bOf(c.base)?.c||'inherit'}">${bName(c.base)}</span>`:''}<span>${tt==='pedido' ? 'Para ' + esc(dest) : esc(c.autor_nome)}</span><span>${ago(c.created_at)}</span><span class="tag hide-s" style="--c:#64748b">#${esc(c.categoria||'Outro')}</span>${col?`<span class="hide-s">${ic('user',12)} ${esc(col.nome)}</span>`:''}${v?plate(v.placa,true):''}${c.prazo && tt==='pedido'?`<span class="${late?'late':''}">${ic('clock',12)} ${late?'Venceu':'Prazo'} ${fmtD(c.prazo)}</span>`:''}${c.lido_em && c.status!=='aberto'?`<span class="seen" title="Ciente: ${esc(c.lido_por||'')} em ${fmtDT(c.lido_em)}">${ic('checks',13)} Visto</span>`:''}</div></div>
       <span class="hide-m">${chip(PRIOR[c.prioridade],false)}</span>
+ ${(() => { const n = (c.arquivos || []).length + ms.reduce((a, m) => a + (m.arquivos || []).length, 0); return n ? `<span class="mcount" title="${n} anexo(s)">${ic('clip',15)}${n}</span>` : ''; })()}
       ${ms.length?`<span class="mcount ${novo?'new':''}" title="${novo?'Mensagem nova':'Mensagens'}">${ic('msg',15)}${ms.length}</span>`:''}
       <span class="tk-st">${pipe(c)}${chip(chSt(c))}</span>
       ${quickBtns(c)}</div>`; }).join('')
@@ -3393,9 +3416,9 @@ function chForm(id){
     ${fld('Colaborador envolvido', `<select name="colaborador_id" id="fcol">${colOpts(b, c?.colaborador_id)}</select>`)}
     ${fld('Veículo relacionado', `<select name="veiculo_id" id="fvei">${veiOpts(b, c?.veiculo_id)}</select>`)}
     ${fld('Descrição', `<textarea name="descricao" rows="5" placeholder="O que aconteceu, quem está envolvido e o que é preciso para resolver.">${esc(c?.descricao||'')}</textarea>`, true, true)}
-  </form>${c ? '' : '<p class="f-hint">O encarregado dá ciência, trata e conclui. Você acompanha e pode complementar com mensagens.</p>'}`,
+  </form>${c ? solList(c.arquivos) : ''}${solDrop()}${c ? '' : '<p class="f-hint">O encarregado dá ciência, trata e conclui. Você acompanha e pode complementar com mensagens.</p>'}`,
   foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="t-save" data-id="${c?.id||''}">${ic(c?'check':'send',15)}${c?'Salvar alterações':'Enviar ao encarregado'}</button>`,
-  onMount: ov => { const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fcol',ov).innerHTML = colOpts(e.target.value); $('#fvei',ov).innerHTML = veiOpts(e.target.value); }; }});
+  onMount: ov => { solMount(ov); const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fcol',ov).innerHTML = colOpts(e.target.value); $('#fvei',ov).innerHTML = veiOpts(e.target.value); }; }});
 }
 function pedidoForm(id){
   if (!isAdmin()) return;
@@ -3413,9 +3436,9 @@ function pedidoForm(id){
     ${fld('Prazo', inp('prazo',c ? c.prazo : iso(d3),'type="date"'))}
     ${fld('Prioridade', rchips('prioridade',PRIOR,c?.prioridade||'media'), true)}
     ${fld('Detalhes', `<textarea name="descricao" rows="5" placeholder="Explique o pedido, o formato esperado e qualquer informação útil.">${esc(c?.descricao||'')}</textarea>`, true, true)}
-  </form>${ownBases().length && !c ? `<p class="f-hint">${bName(ownBases()[0])} não aparece porque você é o líder dessa base.</p>` : ''}`,
+  </form>${c ? solList(c.arquivos) : ''}${solDrop('Ex: a planilha que a base deve preencher · Excel, CSV, PDF ou foto')}${ownBases().length && !c ? `<p class="f-hint">${bName(ownBases()[0])} não aparece porque você é o líder dessa base.</p>` : ''}`,
   foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="p-save" data-id="${c?.id||''}">${ic(c?'check':'send',15)}${c?'Salvar alterações':'Enviar pedido'}</button>`,
-  onMount: ov => { const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fdest',ov).innerHTML = destInfo(e.target.value); }; }});
+  onMount: ov => { solMount(ov); const s = $('#fbase',ov); if (s) s.onchange = e => { $('#fdest',ov).innerHTML = destInfo(e.target.value); }; }});
 }
 async function saveCh(tipo, id){
   const f = formObj();
@@ -3427,8 +3450,9 @@ async function saveCh(tipo, id){
     const row = {titulo:f.titulo, descricao:f.descricao, categoria:f.categoria||'Outro', prioridade:f.prioridade||'media', updated_at:nowISO()};
     if (tipo === 'pedido') row.prazo = f.prazo;
     else { row.colaborador_id = f.colaborador_id; row.veiculo_id = f.veiculo_id; }
-    if (id){ await DB.update('chamados', id, row); closeModal(); toast(`#${id} atualizado.`); return reload(); }
-    Object.assign(row, {tipo, base:f.base, status:'aberto', autor_id:S.profile.id, autor_nome:S.profile.nome});
+    const novos = SOLF.length ? await solUpload(f.base) : [];
+    if (id){ if (novos.length) row.arquivos = [...(CHM(id)?.arquivos || []), ...novos]; await DB.update('chamados', id, row); closeModal(); toast(`#${id} atualizado.${novos.length ? ` ${novos.length} anexo(s) enviado(s).` : ''}`); return reload(); }
+    Object.assign(row, {tipo, base:f.base, status:'aberto', autor_id:S.profile.id, autor_nome:S.profile.nome}); if (novos.length) row.arquivos = novos;   // só manda o campo quando há anexo
     if (tipo === 'pedido') row.destinatario_id = liderOf(f.base)?.id || null;
     const r = await DB.insert('chamados', row);
     closeModal(); toast(tipo === 'pedido' ? `Pedido #${r.id} enviado para ${bName(f.base)}.` : `Problema #${r.id} enviado ao encarregado.`); S.f.tt = tipo; await reload();
@@ -3465,13 +3489,14 @@ function openCh(id){
       ${v?`<div><small>Veículo</small><span class="lnk" data-act="v-open" data-id="${v.id}">${plate(v.placa,true)} ${esc(v.modelo)}</span></div>`:''}
     </div>
     <div class="sec">Descrição</div><div class="box">${esc(c.descricao||'—')}</div>
+    ${(c.arquivos || []).length ? `<div class="sec">Anexos (${c.arquivos.length})</div>${solList(c.arquivos)}` : ''}
     <div class="sec">Conversa</div>
     <div class="thread">${thread.length ? thread.map(m => { const mine = sameId(m.autor_id, S.profile.id); const isG = m.autor_id == null || P(m.autor_id)?.role === 'admin';
-      return `<div class="msg ${mine?'me':''} ${isG?'g':''}">${avatar(m.autor_nome,28)}<div class="bub"><div class="mh"><b>${esc(m.autor_nome)}</b>${isG?'<span class="gtag">Encarregado</span>':''}<small>${fmtDT(m.created_at)}</small></div><p>${esc(m.texto)}</p></div></div>`; }).join('')
+      return `<div class="msg ${mine?'me':''} ${isG?'g':''}">${avatar(m.autor_nome,28)}<div class="bub"><div class="mh"><b>${esc(m.autor_nome)}</b>${isG?'<span class="gtag">Encarregado</span>':''}<small>${fmtDT(m.created_at)}</small></div>${m.texto ? `<p>${esc(m.texto)}</p>` : ''}${solList(m.arquivos, 'in-msg')}</div></div>`; }).join('')
       : `<div class="box muted">Nenhuma mensagem ainda.</div>`}</div>
-    ${!done ? `<textarea id="resp" class="ta" rows="3" placeholder="${handle ? 'Escreva o retorno: o que foi feito, quando fica pronto...' : 'Mensagem para ' + (tp==='pedido' ? esc(dest) : 'o encarregado') + '...'}"></textarea>` : ''}`,
+    ${!done ? `<textarea id="resp" class="ta" rows="3" placeholder="${handle ? 'Escreva o retorno: o que foi feito, quando fica pronto...' : 'Mensagem para ' + (tp==='pedido' ? esc(dest) : 'o encarregado') + '...'}"></textarea>${solDrop('Mande a planilha junto com a mensagem · Excel, CSV, PDF ou foto')}` : ''}`,
     foot: `${adm?`<button class="btn danger left" data-act="ch-del" data-id="${c.id}">${ic('trash',15)}Excluir</button>`:''}${actions || '<button class="btn pri" data-act="modal-close">Fechar</button>'}`,
-    onMount: ov => { const b = $('.thread', ov); if (b) b.scrollTop = b.scrollHeight; }});
+    onMount: ov => { solMount(ov); const b = $('.thread', ov); if (b) b.scrollTop = b.scrollHeight; }});
 }
 async function setChStatus(c, st){
   const n = nowISO(), patch = {status:st, updated_at:n, resolvido_em: st === 'resolvido' ? (c.resolvido_em || n) : null};
@@ -3482,13 +3507,15 @@ async function sendCh(id, st){
   const c = CHM(id); if (!c) return;
   const txt = ($('#resp')?.value || '').trim();
   if (st && !canHandle(c)) st = null;
-  if (!st && !txt) return toast('Escreva uma mensagem.','err');
-  if (!st && txt && canHandle(c) && c.status === 'aberto') st = 'andamento';
+  const temArq = SOLF.length > 0;
+  if (!st && !txt && !temArq) return toast('Escreva uma mensagem ou anexe uma planilha.','err');
+  if (!st && (txt || temArq) && canHandle(c) && c.status === 'aberto') st = 'andamento';
   try {
-    if (txt) await DB.insert('mensagens', {chamado_id:c.id, autor_id:S.profile.id, autor_nome:S.profile.nome, texto:txt});
+    const arquivos = temArq ? await solUpload(c.base) : [];
+    if (txt || arquivos.length) await DB.insert('mensagens', {chamado_id:c.id, autor_id:S.profile.id, autor_nome:S.profile.nome, texto:txt || '', ...(arquivos.length ? {arquivos} : {})});
     if (st && st !== c.status) await setChStatus(c, st);
     closeModal();
-    toast(st === 'resolvido' ? `#${id} concluída.` : st === 'andamento' ? `#${id} em tratamento.` : 'Mensagem enviada.');
+    toast((st === 'resolvido' ? `#${id} concluída.` : st === 'andamento' ? `#${id} em tratamento.` : 'Mensagem enviada.') + (temArq ? ' Anexo enviado.' : ''));
     await reload();
   } catch(e){ err(e); }
 }
@@ -6861,6 +6888,77 @@ async function epXls(){
 }
 
 
+/* ========================= PLANILHAS E ANEXOS NAS SOLICITAÇÕES (v2.21) ========================= */
+const SOL_EXT = /\.(xlsx|xlsm|xls|ods|csv|pdf|jpe?g|png|webp|docx?|txt)$/i;
+const SOL_PLAN = /\.(xlsx|xlsm|xls|ods|csv)$/i;
+const SOL_MIME = {xlsx:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', xlsm:'application/vnd.ms-excel.sheet.macroEnabled.12', xls:'application/vnd.ms-excel', ods:'application/vnd.oasis.opendocument.spreadsheet', csv:'text/csv', pdf:'application/pdf', jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', webp:'image/webp', doc:'application/msword', docx:'application/vnd.openxmlformats-officedocument.wordprocessingml.document', txt:'text/plain'};
+const solExt = n => (String(n).split('.').pop() || '').toLowerCase();
+const solIco = n => SOL_PLAN.test(n) ? 'list' : /\.pdf$/i.test(n) ? 'file' : /\.(jpe?g|png|webp)$/i.test(n) ? 'camera' : 'file';
+let SOLF = [];   // arquivos escolhidos na janela aberta (ainda não enviados)
+// Área de anexar: "planilhas" em destaque, mas aceita PDF, foto e Word também
+function solDrop(dica){
+  SOLF = [];
+  return `<div class="sol-up"><label class="sol-drop" id="soldrop">${ic('upload',18)}<span><b>Anexar planilha</b><small>${dica || 'Excel, CSV, PDF ou foto · até 20 MB cada'}</small></span><input type="file" id="solfile" multiple accept=".xlsx,.xlsm,.xls,.ods,.csv,.pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.txt" hidden></label><div id="solpend"></div></div>`;
+}
+function solMount(ov){
+  const fi = $('#solfile', ov), dz = $('#soldrop', ov); if (!fi) return;
+  const add = fs => { fs.forEach(f => { if (f.size > 20 * 1048576) return toast(`${f.name}: maior que 20 MB.`, 'err'); if (!SOL_EXT.test(f.name)) return toast(`${f.name}: tipo não aceito. Use Excel, CSV, PDF, foto ou Word.`, 'err'); SOLF.push(f); }); solPend(); };
+  fi.onchange = () => { add([...fi.files]); fi.value = ''; };
+  dz.ondragover = e => { e.preventDefault(); dz.classList.add('over'); }; dz.ondragleave = () => dz.classList.remove('over');
+  dz.ondrop = e => { e.preventDefault(); dz.classList.remove('over'); add([...e.dataTransfer.files]); };
+}
+function solPend(){
+  const el = $('#solpend'); if (!el) return;
+  el.innerHTML = SOLF.map((f, i) => `<span class="sol-f pend">${ic(solIco(f.name),14)}<b>${esc(f.name)}</b><small>${fmtKB(f.size)}</small><button class="icon-btn xs" data-act="sol-rm" data-k="${i}" title="Tirar">${ic('x',13)}</button></span>`).join('');
+}
+async function solUpload(base){
+  const out = [];
+  for (const f of SOLF){
+    const nome = f.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w.\-]+/g, '_').slice(-80);
+    const path = `${base}/${iso(new Date()).slice(0, 7)}/${Date.now()}-${Math.random().toString(36).slice(2, 6)}-${nome}`;
+    const mime = f.type || SOL_MIME[solExt(f.name)] || 'application/octet-stream';
+    if (TEST) FILES[path] = f;
+    else { const {error} = await sb.storage.from('solicitacoes').upload(path, f, {contentType:mime, upsert:false}); if (error) throw error; }
+    out.push({path, nome:f.name, tamanho:f.size, mime, por:S.profile.nome, em:nowISO()});
+  }
+  SOLF = [];
+  return out;
+}
+// Lista de anexos (com "Ver" para planilhas e "Baixar" para todos)
+const solList = (arr, cls = '') => (arr || []).length ? `<div class="sol-list ${cls}">${arr.map(a => `<span class="sol-f">${ic(solIco(a.nome),14)}<b title="${esc(a.nome)}">${esc(a.nome)}</b><small>${fmtKB(a.tamanho || 0)}${a.por ? ' · ' + esc(firstName(a.por)) : ''}</small>${SOL_PLAN.test(a.nome) ? `<button class="btn sm" data-act="sol-ver" data-p="${esc(a.path)}" data-n="${esc(a.nome)}">${ic('eye',13)}Ver</button>` : ''}<button class="btn sm" data-act="sol-baixar" data-p="${esc(a.path)}" data-n="${esc(a.nome)}">${ic('download',13)}Baixar</button></span>`).join('')}</div>` : '';
+async function solBlob(path){
+  if (TEST){ if (!FILES[path]) throw new Error('Arquivo de teste indisponível.'); return FILES[path]; }
+  const {data, error} = await sb.storage.from('solicitacoes').download(path); if (error) throw error; return data;
+}
+async function solBaixar(path, nome){
+  try {
+    const b = await solBlob(path), u = URL.createObjectURL(b), a = document.createElement('a');
+    a.href = u; a.download = nome || 'anexo'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000);
+  } catch(e){ err(e); }
+}
+// Mostra a planilha dentro do painel (primeiras 200 linhas de cada aba)
+async function solVer(path, nome){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  try {
+    toast('Abrindo a planilha...');
+    const buf = await (await solBlob(path)).arrayBuffer(), wb = X.read(buf, {type:'array', cellDates:true});
+    const abas = wb.SheetNames || [];
+    const tab = i => { const aoa = X.utils.sheet_to_json(wb.Sheets[abas[i]], {header:1, raw:false, defval:''}); const max = Math.min(200, aoa.length), cols = Math.min(30, Math.max(0, ...aoa.slice(0, max).map(r => r.length)));
+      return aoa.length ? `<div class="sol-tw"><table class="sol-t"><tbody>${aoa.slice(0, max).map((r, ri) => `<tr>${ri === 0 ? '' : ''}<th>${ri + 1}</th>${Array.from({length:cols}, (_, ci) => `<td>${esc(String(r[ci] ?? ''))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${aoa.length > max ? `<p class="f-hint">Mostrando ${max} de ${aoa.length} linhas. Baixe para ver tudo.</p>` : ''}` : '<p class="muted">Aba vazia.</p>'; };
+    const el = document.createElement('div'); el.className = 'ov'; el.style.zIndex = 75;
+    el.innerHTML = `<div class="modal wide sol-vm"><div class="m-h"><h3>${ic('list',16)} ${esc(nome)}</h3><button class="icon-btn" data-x="1" aria-label="Fechar">${ic('x',18)}</button></div>
+      ${abas.length > 1 ? `<div class="sol-abas">${abas.map((n, i) => `<button class="${i ? '' : 'on'}" data-aba="${i}">${esc(n)}</button>`).join('')}</div>` : ''}
+      <div class="m-b" id="solvb">${tab(0)}</div>
+      <div class="m-f"><button class="btn" data-x="1">Fechar</button><button class="btn pri" data-sb="1">${ic('download',15)}Baixar</button></div></div>`;
+    el.addEventListener('click', e => { const ab = e.target.closest('[data-aba]');
+      if (ab){ $$('[data-aba]', el).forEach(x => x.classList.toggle('on', x === ab)); $('#solvb', el).innerHTML = tab(+ab.dataset.aba); return; }
+      if (e.target.closest('[data-sb]')) return solBaixar(path, nome);
+      if (e.target.closest('[data-x]') || e.target === el) el.remove(); });
+    document.body.appendChild(el);
+  } catch(e){ err(e); toast('Não consegui abrir essa planilha aqui. Use "Baixar".', 'err'); }
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -7109,6 +7207,7 @@ const ACT = {
   'ep-v': a => { EP.v = a.dataset.k; EP.lim = 0; pgEpis(); }, 'ep-new': a => epForm(a?.dataset?.id), 'ep-edit': a => epForm(null, a.dataset.id), 'ep-save': () => epSave(), 'ep-del': a => epDel(a.dataset.id),
   'ep-pessoa': a => epPessoa(a.dataset.id), 'ep-add': () => { EPF.linhas.push({material:'', quantidade:1, unidade:'un', tamanho:'', categoria:'EPI'}); epLinhas(); $$('.ep-mat').pop()?.focus(); },
   'ep-rm': a => { EPF.linhas.splice(+a.dataset.k, 1); epLinhas(); }, 'ep-xls': () => epXls(), 'ep-more': () => { EP.lim = (EP.lim || 80) + 80; pgEpis(); }, 'ep-trocas': () => epTrocasVer(),
+  'sol-rm': a => { SOLF.splice(+a.dataset.k, 1); solPend(); }, 'sol-ver': a => solVer(a.dataset.p, a.dataset.n), 'sol-baixar': a => solBaixar(a.dataset.p, a.dataset.n),
   'esc-lote': () => escLote(), 'lt-save': () => ltSave(), 'lt-auto': () => ltAuto(),
   'lt-mes': a => { const [y, m] = LT.mes.split('-').map(Number); LT.mes = iso(new Date(y, m - 1 + +a.dataset.k, 1)).slice(0, 7); ltDraw(); },
   'lt-sabs': () => { const hj = iso(new Date()); ltSabados(LT.mes).filter(s => s >= hj).forEach(s => LT.datas.add(s)); ltDraw(); },
