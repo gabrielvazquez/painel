@@ -1799,6 +1799,45 @@ button.po-tr:hover{background:var(--soft)}
   .ex-new .lt-btn span{display:none}
 }
 
+/* ===== v2.19: EPIs e materiais ===== */
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.ep-card{padding:14px;display:flex;flex-direction:column;gap:10px}
+.ep-card.venc{box-shadow:inset 3px 0 0 #dc2626,var(--shadow)}
+.ep-h{display:flex;align-items:center;gap:10px;cursor:pointer}
+.ep-h>div{flex:1;min-width:0}.ep-h b{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ep-h small{display:flex;align-items:center;gap:4px;color:var(--muted);font-size:11.5px}
+.ep-n{display:flex;flex-direction:column;align-items:center;font-size:18px;font-weight:800;line-height:1;color:var(--ink)}.ep-n small{font-size:10px;font-weight:500;color:var(--muted)}
+.ep-items{display:flex;flex-wrap:wrap;gap:5px;min-height:24px}
+.ep-chip{display:inline-flex;align-items:center;gap:4px;background:color-mix(in srgb,var(--c) 10%,#fff);color:color-mix(in srgb,var(--c) 85%,#000);border:1px solid color-mix(in srgb,var(--c) 25%,#fff);border-radius:20px;padding:2px 9px;font-size:11.5px;font-weight:600}
+.ep-chip em{font-style:normal;opacity:.7;font-weight:500}
+.ep-chip.vencida{border-color:#dc2626;box-shadow:0 0 0 1px #dc2626 inset}.ep-chip.breve{border-color:#f59e0b}
+.ep-chip.mais{--c:#64748b}
+.ep-items.big .ep-chip{flex-direction:column;align-items:flex-start;border-radius:12px;padding:6px 10px;font-size:12.5px}
+.ep-items.big .ep-chip small{font-weight:400;font-size:10.5px;opacity:.8}
+.ep-f{display:flex;align-items:center;gap:6px;border-top:1px solid var(--line);padding-top:10px}.ep-f small{flex:1;color:var(--muted);font-size:11.5px}
+.ep-who{display:inline-flex;align-items:center;gap:7px}
+.ep-cat{display:inline-block;color:var(--c);background:color-mix(in srgb,var(--c) 10%,#fff);border-radius:20px;padding:1px 7px;font-size:10.5px;font-weight:700;margin-right:4px}
+.ep-est{color:#0d9488}
+.ep-tr.vencida{color:#dc2626;font-weight:700}.ep-tr.breve{color:#b45309;font-weight:600}
+.ep-tbl tbody tr{cursor:pointer}.ep-tbl tbody tr:hover{background:#f8fafc}
+.ep-ph{display:flex;align-items:center;gap:12px;margin-bottom:6px}.ep-ph b{display:block;font-size:16px}.ep-ph small{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12px;margin-top:3px}
+.ep-hist{display:flex;flex-direction:column;gap:6px}
+.ep-hi{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-left:3px solid var(--c);border-radius:10px;padding:8px 10px;cursor:pointer;background:#fff;color:var(--muted)}
+.ep-hi:hover{background:#f8fafc}
+.ep-hi>div{flex:1;min-width:0}.ep-hi>div b{display:block;font-size:13px;color:var(--ink)}.ep-hi>div small{display:block;font-size:11.5px}
+.ep-hd{flex:none;width:42px;text-align:center;line-height:1.1}.ep-hd b{display:block;font-size:13px;color:var(--ink)}.ep-hd small{font-size:10px}
+.ep-l{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr) 80px 80px 90px 34px;gap:8px;align-items:center;margin-bottom:8px}
+.ep-l input,.ep-l .sel{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:13px;background:#fff}
+.ep-sd{grid-column:1/-1;color:#0f766e;font-size:11.5px;display:flex;align-items:center;gap:4px;margin-top:-4px}
+.ep-baixa{grid-column:1/-1}
+@media (max-width:700px){
+  .ep-l{grid-template-columns:minmax(0,1fr) 34px;border:1px solid var(--line);border-radius:12px;padding:8px}
+  .ep-l .ep-mat{grid-column:1}.ep-l>button,.ep-l>span:not(.ep-sd){grid-column:2;grid-row:1}
+  .ep-l .ep-ct,.ep-l .ep-qt,.ep-l .ep-un,.ep-l .ep-tm{grid-column:1/-1}
+  .ep-grid{grid-template-columns:minmax(0,1fr)}
+  .col-tabs{overflow-x:auto}.col-tabs button{white-space:nowrap;flex:none}
+}
+
 </style>
 </head>
 <body>
@@ -1811,7 +1850,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.18';
+const APP_VERSION = '2.19';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -1885,8 +1924,8 @@ const CATS = ['Equipe','Veículo','Equipamento','Material','Segurança','Comport
 const CATS_P = ['Relatório','Escala','Documentação','Frota','Equipe','Segurança','Outro'];
 const ROLE = {admin:'Encarregado', lider:'Líder de base', assistente:'Assistente de base', pendente:'Aguardando liberação'};
 const isLid = p => p && (p.role === 'lider' || p.role === 'assistente');
-const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes','pedidos','arrecadacoes','arrecadacao_log'];
-const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot','ped','arr','arrLog'];
+const TABLES = ['profiles','colaboradores','veiculos','chamados','mensagens','eventos','veiculo_historico','anexos','escalas','acoes','estoque_itens','estoque_saldos','estoque_movs','revisoes','config_bases','horas_manuais','planner_tarefas','planner_comentarios','almocos','ponto_ajustes','visitas','anotacoes','pedidos','arrecadacoes','arrecadacao_log','entregas'];
+const SKEYS = ['profiles','colabs','veics','chamados','msgs','eventos','hist','anexos','escalas','acoes','estItens','estSaldos','estMovs','revisoes','cfgBases','horasMan','pt','pc','alm','aju','visitas','anot','ped','arr','arrLog','ent'];
 const ADMIN_T = ['almocos','ponto_ajustes','horas_manuais','arrecadacao_log'];   // só o encarregado lê (o banco já bloqueia; aqui só evita a viagem)
 const FOLGA_REGRAS = {
   seg_seguinte:{label:'Segunda-feira seguinte', dow:1, dir:1},
@@ -2195,7 +2234,12 @@ function seed(){
         arrecadacoes.push({id:uid(), colaborador_id:c.id, base:c.base, semana:per, valor:v, situacao:sit, dupla_com:null, obs:'', lancado_por:'u-carlos', lancado_por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', created_at:h(w * 168 - 20), updated_at:h(w * 168 - 20)});
         if (w <= 2) arrecadacao_log.push({id:++n, colaborador_id:c.id, colaborador_nome:c.nome, base:c.base, semana:per, acao:'lançou', valor_antes:null, valor_depois:v, situacao_antes:null, situacao_depois:sit, por_id:'u-carlos', por_nome:c.base === 'pinheiros' ? 'Carlos Lima' : 'Fernanda Souza', em:h(w * 168 - 20)}); }); }
     arrecadacao_log.sort((a,b) => b.em.localeCompare(a.em)); }
-  return {arrecadacoes, arrecadacao_log, pedidos, anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
+  const entregas = [];
+  { const E = (cid, d, mat, cat, q, un, tam, mot, troca) => { const c = colaboradores.find(x => x.id === cid); if (c) entregas.push({id:uid(), colaborador_id:cid, base:c.base, data:dOff(d), item_id:null, material:mat, categoria:cat, quantidade:q, unidade:un, tamanho:tam, motivo:mot, troca_em:troca == null ? null : dOff(troca), obs:'', baixa_estoque:false, entregue_por:'u-carlos', entregue_por_nome:'Carlos Lima', created_at:h(-d*24), updated_at:h(-d*24)}); };
+    E('c1',-200,'Bota de segurança','EPI',1,'par','38','Primeira entrega',-20); E('c1',-30,'Luva de vaqueta','EPI',2,'par','M','Troca por desgaste',60); E('c1',-30,'Camisa do uniforme','Uniforme',2,'un','P','Primeira entrega',null);
+    E('c2',-10,'Bota de segurança','EPI',1,'par','42','Primeira entrega',170); E('c2',-10,'Colete refletivo','EPI',1,'un','G','Primeira entrega',10);
+    E('c3',-3,'Capa de chuva','EPI',1,'un','G','Perda',null); E('c4',-60,'Lanterna','Ferramenta',1,'un','','Primeira entrega',null); }
+  return {entregas, arrecadacoes, arrecadacao_log, pedidos, anotacoes, almocos, ponto_ajustes, visitas, planner_tarefas, planner_comentarios, profiles, veiculos, colaboradores, chamados, mensagens, eventos, veiculo_historico, anexos:[], escalas, acoes, estoque_itens, estoque_saldos, estoque_movs, revisoes, config_bases, horas_manuais:[{id:'hm1', base:'pinheiros', colaborador_id:'c1', profile_id:null, data:dOff(-2), horas:2, motivo:'Ficou até mais tarde no vazamento da Rua Cardeal', criado_por:'u-carlos', criado_por_nome:'Carlos Lima', created_at:h(40)}]};
 }
 const FILES = {};
 const Store = {
@@ -2215,6 +2259,7 @@ const DB = {
     if (t === 'visitas') q = q.gte('data', iso(addDays(new Date(), -120)));
     if (t === 'pedidos') q = q.order('data', {ascending:false}).limit(3000);
     if (t === 'arrecadacoes') q = q.gte('semana', iso(addDays(new Date(), -800))).limit(20000);
+    if (t === 'entregas') q = q.order('data', {ascending:false}).limit(20000);
     if (t === 'arrecadacao_log') q = q.order('em', {ascending:false}).limit(3000);
     if (t === 'anotacoes') q = q.gte('data', iso(addDays(new Date(), -400)));
     const {data, error} = await q; if (error) throw error; return data;
@@ -2707,6 +2752,7 @@ function pgColab(){
   const lid = S.profiles.filter(p => isLid(p) && (p.bases||[]).some(inScope));
   if (S.f.ctab === 'almoco' && isAdmin()) return pgAlmoco();
   if (S.f.ctab === 'ajustes' && isAdmin()) return pgAjustes();
+  if (S.f.ctab === 'epi') return pgEpis();
   $('#page').innerHTML = `${colTabs()}
   <div class="filters">${fchip('c-fs','','Todos',list.length,theme().c,!f.cs)}${Object.entries(CSTATUS).map(([k,o]) => fchip('c-fs',k,o.label,list.filter(c=>c.status===k).length,o.color,f.cs===k)).join('')}</div>
   <div class="toolbar">
@@ -2756,7 +2802,7 @@ function openColab(id){
   const escs = S.escalas.filter(e => (e.membros||[]).some(m => sameId(m, id)));
   openModal({wide:true, title:'Ficha do colaborador', body:`
     <div class="hero" style="padding:0 0 16px"><div class="ph-wrap">${c.foto ? `<button class="ph-view" data-act="foto-ver" data-id="${c.id}" aria-label="Ver foto">${avc(c,76)}</button>` : avc(c,76)}${fotoPode(c) ? `<button class="ph-btn" data-act="foto-pick" data-id="${c.id}" title="${c.foto ? 'Trocar foto' : 'Adicionar foto'}" aria-label="${c.foto ? 'Trocar foto' : 'Adicionar foto'}">${ic('camera',15)}</button>` : ''}</div><div><h2>${esc(c.nome)}</h2><p>${esc(c.cargo||'Sem cargo')} &nbsp;${chip(CSTATUS[c.status])} ${bTag(c.base)}</p>${fotoPode(c) ? `<p class="ph-links"><button class="linkbtn" data-act="foto-pick" data-id="${c.id}">${ic('camera',13)} ${c.foto ? 'Trocar foto' : 'Adicionar foto'}</button>${c.foto ? `<button class="linkbtn danger-t" data-act="foto-del" data-id="${c.id}">Remover</button>` : ''}</p>` : ''}</div></div>
-    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="esc">Escalas (${escs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Solicitações (${chs.length})</button>${isAdmin() ? `<button class="mtab" data-act="mtab" data-k="po">Ponto</button>` : ''}</div>
+    <div class="mtabs"><button class="mtab on" data-act="mtab" data-k="det">Detalhes</button><button class="mtab" data-act="mtab" data-k="aus">Ausências (${evs.length})</button><button class="mtab" data-act="mtab" data-k="esc">Escalas (${escs.length})</button><button class="mtab" data-act="mtab" data-k="ch">Solicitações (${chs.length})</button><button class="mtab" data-act="mtab" data-k="epi">EPIs (${epDe(id).length})</button>${isAdmin() ? `<button class="mtab" data-act="mtab" data-k="po">Ponto</button>` : ''}</div>
     <div data-pane="det">
       <div class="dl">
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
@@ -2777,6 +2823,7 @@ function openColab(id){
     </div>
     <div data-pane="aus" hidden>${agendaList(evs,'Nenhuma ausência registrada para este colaborador.')}</div>
     <div data-pane="esc" hidden>${colabEscalas(escs)}</div>
+    <div data-pane="epi" hidden>${(() => { const l = epDe(id); return (l.length ? `<div class="ep-hist">${l.slice(0, 12).map(e => `<div class="ep-hi" data-act="ep-edit" data-id="${e.id}" role="button" style="--c:${EP_CAT[e.categoria]?.color || '#64748b'}"><span class="ep-hd"><b>${fmtD(e.data).slice(0,5)}</b><small>${fmtD(e.data).slice(6)}</small></span><div><b>${fmtQ(e.quantidade, e.unidade)} · ${esc(e.material)}${e.tamanho ? ' (tam. ' + esc(e.tamanho) + ')' : ''}</b><small>${esc(e.motivo)}${e.troca_em ? ' · troca ' + fmtD(e.troca_em) : ''}</small></div></div>`).join('')}</div>` : '<div class="box muted">Nenhuma entrega registrada.</div>') + (allowed(c.base) ? `<button class="btn sm pri" style="margin-top:12px" data-act="ep-new" data-id="${c.id}">${ic('plus',14)}Registrar entrega</button>` : ''); })()}</div>
     <div data-pane="ch" hidden>${tableChamados(sortCh(chs))}</div>
     ${isAdmin() ? `<div data-pane="po" hidden>${(() => { const aj = S.aju.filter(r => sameId(r.colaborador_id, id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 8), al = S.alm.filter(r => sameId(r.colaborador_id, id) || nk(r.nome) === nk(c.nome)).sort((a,b) => b.data.localeCompare(a.data)).slice(0, 8);
       return `<div class="sec" style="margin-top:0">Ajustes de ponto</div>${aj.length ? aj.map(r => `<div class="aj-ti"><b>${fmtD(r.data)}</b> <span class="muted">${r.hora ? '· ' + hhmm(r.hora) : ''}</span>${r.obs ? `<p>${esc(r.obs)}</p>` : ''}</div>`).join('') : '<p class="muted s">Nenhum ajuste.</p>'}
@@ -3817,7 +3864,7 @@ async function cleanQuinzena(key){
 let rtTimer = null, rtRetry = null, rtTries = 0, hbTimer = null, hiddenAt = 0;
 // Assinatura dos dados: um hash por tabela, guardado; numa recarga parcial só as tabelas que vieram são recalculadas
 const SIGC = {};
-const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot','ped','arr','arrLog'];
+const SIGK = ['profiles','colabs','veics','chamados','msgs','eventos','anexos','escalas','acoes','estItens','estSaldos','revisoes','estMovs','hist','pt','pc','alm','aju','visitas','anot','ped','arr','arrLog','ent'];
 const hstr = str => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return h + ':' + str.length; };
 function dataSig(only){
   return SIGK.map(k => { const a = S[k] || [], c = SIGC[k];
@@ -5383,13 +5430,17 @@ const diaTxt = ds => cap(parseISO(ds).toLocaleDateString('pt-BR',{weekday:'long'
 const hNow = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
 function equipeCtl(){ return S.colabs.filter(c => c.status !== 'desligado' && inScope(c.base)).sort((a,b) => (a.base||'').localeCompare(b.base||'') || a.nome.localeCompare(b.nome,'pt')); }
 function colTabs(){
-  if (!isAdmin()) return '';
   const t = S.f.ctab || '', hj = iso(new Date());
+  const nEp = typeof epAtuais === 'function' ? epAtuais(epVis()).filter(e => epTroca(e) === 'vencida').length : 0;
+  if (!isAdmin()) return `<div class="ex-tabs col-tabs" role="tablist">
+    <button class="${!t ? 'on' : ''}" data-act="c-tab" data-k="">${ic('users',15)}Equipe<em>${colabsV().length}</em></button>
+    <button class="${t === 'epi' ? 'on' : ''}" data-act="c-tab" data-k="epi">${ic('shield',15)}EPIs e materiais${nEp ? `<em class="hot">${nEp}</em>` : ''}</button></div>`;
   const nAl = S.alm.filter(r => r.data === hj).length, nAj = S.aju.filter(r => r.data === hj).length;
   return `<div class="ex-tabs col-tabs" role="tablist">
     <button class="${!t ? 'on' : ''}" data-act="c-tab" data-k="">${ic('users',15)}Equipe<em>${colabsV().length}</em></button>
     <button class="${t === 'almoco' ? 'on' : ''}" data-act="c-tab" data-k="almoco">${ic('clock',15)}Almoço${nAl ? `<em>${nAl} hoje</em>` : ''}</button>
     <button class="${t === 'ajustes' ? 'on' : ''}" data-act="c-tab" data-k="ajustes">${ic('checks',15)}Ajustes de ponto${nAj ? `<em>${nAj} hoje</em>` : ''}</button>
+    <button class="${t === 'epi' ? 'on' : ''}" data-act="c-tab" data-k="epi">${ic('shield',15)}EPIs e materiais${nEp ? `<em class="hot">${nEp}</em>` : ''}</button>
   </div>`;
 }
 const baseChipsAl = (cur, act) => (!S.base && myBases().length > 1) ? `<div class="po-bases"><button class="fchip ${!cur?'on':''}" style="--c:${ALLB.c}" data-act="${act}" data-k="">Todas</button>${myBases().map(k => `<button class="fchip ${cur===k?'on':''}" style="--c:${BASES[k].c}" data-act="${act}" data-k="${k}">${emblem(k,10,3)}${BASES[k].nome}</button>`).join('')}</div>` : '';
@@ -6603,6 +6654,190 @@ async function ltSave(){
 }
 
 
+/* ========================= EPIs E MATERIAIS ENTREGUES (v2.19) ========================= */
+const EP_CAT = {EPI:{label:'EPI', color:'#ea580c', icon:'shield'}, Uniforme:{label:'Uniforme', color:'#2563eb', icon:'user'}, Ferramenta:{label:'Ferramenta', color:'#475569', icon:'cog'}, Material:{label:'Material', color:'#0d9488', icon:'box'}};
+const EP_MOT = ['Primeira entrega', 'Troca por desgaste', 'Perda', 'Dano', 'Reposição', 'Outro'];
+const EP_SUG = [['Bota de segurança','EPI','par'],['Luva de vaqueta','EPI','par'],['Luva nitrílica','EPI','par'],['Capacete','EPI','un'],['Óculos de proteção','EPI','un'],['Protetor auricular','EPI','un'],['Máscara PFF2','EPI','un'],['Colete refletivo','EPI','un'],['Capa de chuva','EPI','un'],['Protetor solar','EPI','un'],
+  ['Camisa do uniforme','Uniforme','un'],['Calça do uniforme','Uniforme','un'],['Jaqueta','Uniforme','un'],['Boné','Uniforme','un'],['Crachá','Uniforme','un'],['Lanterna','Ferramenta','un'],['Chave de registro','Ferramenta','un'],['Alicate','Ferramenta','un'],['Celular','Material','un'],['Carregador','Material','un'],['Lacres','Material','un'],['Cone de sinalização','Material','un']];
+const EP = {v:'pessoas', q:'', cat:'', per:'', lim:0};
+const epVis = () => (S.ent || []).filter(e => allowed(e.base) && inScope(e.base));
+const epDe = cid => (S.ent || []).filter(e => sameId(e.colaborador_id, cid)).sort((a,b) => b.data.localeCompare(a.data) || (b.created_at || '').localeCompare(a.created_at || ''));
+const epTroca = e => e.troca_em ? (e.troca_em < iso(new Date()) ? 'vencida' : e.troca_em <= iso(addDays(new Date(), 15)) ? 'breve' : '') : '';
+// Só a entrega mais recente de cada material conta para a próxima troca
+const epAtuais = list => { const m = new Map(); list.slice().sort((a,b) => b.data.localeCompare(a.data)).forEach(e => { const k = String(e.colaborador_id) + '|' + nk(e.material); if (!m.has(k)) m.set(k, e); }); return [...m.values()]; };
+const epCatOf = nome => { const s = EP_SUG.find(x => nk(x[0]) === nk(nome)); if (s) return s[1]; const it = S.estItens.find(i => nk(i.nome) === nk(nome)); return it && /epi/i.test(it.categoria || '') ? 'EPI' : it ? 'Material' : 'EPI'; };
+function pgEpis(){
+  const all = epVis(), mes = iso(new Date()).slice(0, 7);
+  const doMes = all.filter(e => e.data.slice(0, 7) === mes);
+  const trocas = epAtuais(all).filter(e => epTroca(e));
+  const q = nk(EP.q);
+  const pessoas = S.colabs.filter(c => inScope(c.base) && c.status !== 'desligado' && allowed(c.base)).sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  const per = EP.per, ini = per === '30' ? iso(addDays(new Date(), -30)) : per === '90' ? iso(addDays(new Date(), -90)) : per === 'ano' ? iso(new Date()).slice(0,4) + '-01-01' : '';
+  const hist = all.filter(e => (!EP.cat || e.categoria === EP.cat) && (!ini || e.data >= ini) && (!q || nk([e.material, e.tamanho, e.motivo, e.obs, e.entregue_por_nome, (C(e.colaborador_id) || CX(e.colaborador_id))?.nome, bName(e.base)].join(' ')).includes(q)))
+    .sort((a,b) => b.data.localeCompare(a.data) || (b.created_at || '').localeCompare(a.created_at || ''));
+  const lim = EP.lim || 80;
+  $('#page').innerHTML = `${colTabs()}
+  <div class="esc-kpis">
+    <div class="card ek" style="--c:#ea580c"><span>${ic('shield',16)}Entregas no mês</span><b>${doMes.length}</b><small>${doMes.reduce((a, e) => a + +e.quantidade, 0)} item(ns) entregue(s)</small></div>
+    <div class="card ek" style="--c:#2563eb"><span>${ic('users',16)}Atendidos no mês</span><b>${new Set(doMes.map(e => String(e.colaborador_id))).size}</b><small>de ${pessoas.length} colaborador(es)</small></div>
+    <div class="card ek" style="--c:#dc2626" ${trocas.length ? 'data-act="ep-trocas" role="button"' : ''}><span>${ic('alert',16)}Trocas vencidas / em 15 dias</span><b>${trocas.filter(e => epTroca(e) === 'vencida').length} / ${trocas.filter(e => epTroca(e) === 'breve').length}</b><small>${trocas.length ? 'toque para ver quem' : 'nenhuma troca prevista'}</small></div>
+    <div class="card ek" style="--c:#64748b"><span>${ic('alert',16)}Nunca receberam</span><b>${pessoas.filter(c => !all.some(e => sameId(e.colaborador_id, c.id))).length}</b><small>colaborador(es) sem entrega registrada</small></div>
+  </div>
+  <div class="toolbar">
+    <div class="seg">${[['pessoas','Por colaborador'],['hist','Histórico']].map(([k,l]) => `<button class="${EP.v===k?'on':''}" data-act="ep-v" data-k="${k}">${l}</button>`).join('')}</div>
+    <label class="search">${ic('search',16)}<input id="epq" placeholder="${EP.v === 'hist' ? 'Buscar material, colaborador, tamanho...' : 'Buscar colaborador...'}" value="${esc(EP.q)}"></label>
+    ${EP.v === 'hist' ? `<select class="sel" id="epcat"><option value="">Todas as categorias</option>${opts(Object.keys(EP_CAT).map(k => [k,k]), EP.cat)}</select>
+    <select class="sel" id="epper"><option value="">Todo o período</option>${opts([['30','Últimos 30 dias'],['90','Últimos 90 dias'],['ano','Este ano']], EP.per)}</select>` : ''}
+    <div class="tb-right"><button class="btn" data-act="ep-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button><button class="btn pri" data-act="ep-new">${ic('plus',16)}Registrar entrega</button></div>
+  </div>
+  ${EP.v === 'hist' ? `<div class="card">${hist.length ? `<div class="tbl-wrap"><table class="mcards ep-tbl"><thead><tr><th>Data</th><th>Colaborador</th><th>Material</th><th>Qtd.</th><th>Motivo</th><th>Próxima troca</th><th>Entregue por</th><th></th></tr></thead><tbody>
+      ${hist.slice(0, lim).map(epRow).join('')}</tbody></table></div><div class="tfoot">${Math.min(lim, hist.length)} de ${hist.length} entrega(s)${hist.length > lim ? ` · <button class="linkbtn" data-act="ep-more">Mostrar mais</button>` : ''}</div>`
+      : empty('shield', 'Nenhuma entrega encontrada', 'Use "Registrar entrega" para lançar o EPI ou material entregue.')}</div>`
+  : `<div class="ep-grid">${pessoas.filter(c => !q || nk(c.nome + ' ' + bName(c.base) + ' ' + (c.cargo || '')).includes(q)).map(epCard).join('') || `<div class="card">${empty('users','Ninguém encontrado','Ajuste a busca.')}</div>`}</div>`}`;
+  let tm; $('#epq').oninput = e => { clearTimeout(tm); tm = setTimeout(() => { EP.q = e.target.value; pgEpis(); const n = $('#epq'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); }, 250); };
+  const ec = $('#epcat'); if (ec) ec.onchange = e => { EP.cat = e.target.value; pgEpis(); };
+  const ep = $('#epper'); if (ep) ep.onchange = e => { EP.per = e.target.value; pgEpis(); };
+}
+function epCard(c){
+  const l = epDe(c.id), at = epAtuais(l), alerta = at.filter(e => epTroca(e)), ult = l[0];
+  return `<div class="card ep-card ${alerta.some(e => epTroca(e) === 'vencida') ? 'venc' : ''}">
+    <div class="ep-h" data-act="ep-pessoa" data-id="${c.id}" role="button" tabindex="0">${avc(c, 38)}<div><b>${esc(c.nome)}</b><small>${emblem(c.base,7,2)}${bName(c.base)}${c.cargo ? ' · ' + esc(c.cargo) : ''}</small></div><span class="ep-n">${l.length}<small>entrega${l.length === 1 ? '' : 's'}</small></span></div>
+    <div class="ep-items">${at.slice(0, 6).map(e => `<span class="ep-chip ${epTroca(e)}" style="--c:${EP_CAT[e.categoria]?.color || '#64748b'}" title="${esc(e.material)}${e.tamanho ? ' (' + esc(e.tamanho) + ')' : ''} — ${fmtD(e.data)}${e.troca_em ? ' · troca ' + fmtD(e.troca_em) : ''}">${esc(e.material)}${e.tamanho ? ` <em>${esc(e.tamanho)}</em>` : ''}</span>`).join('')}${at.length > 6 ? `<span class="ep-chip mais">+${at.length - 6}</span>` : ''}${!at.length ? '<span class="muted s">Nenhuma entrega registrada</span>' : ''}</div>
+    <div class="ep-f"><small>${ult ? `Última: ${fmtD(ult.data)}` : ''}${alerta.length ? ` · <b class="late">${alerta.length} troca(s) ${alerta.some(e => epTroca(e) === 'vencida') ? 'vencida(s)' : 'em breve'}</b>` : ''}</small>
+      <button class="btn sm" data-act="ep-pessoa" data-id="${c.id}">${ic('list',14)}Ver</button><button class="btn sm pri" data-act="ep-new" data-id="${c.id}">${ic('plus',14)}Entregar</button></div>
+  </div>`;
+}
+function epRow(e){
+  const c = C(e.colaborador_id) || CX(e.colaborador_id), t = epTroca(e), cat = EP_CAT[e.categoria] || EP_CAT.Material;
+  return `<tr data-act="ep-edit" data-id="${e.id}" role="button" tabindex="0">
+    <td data-l="">${fmtD(e.data)}</td>
+    <td data-l=""><span class="ep-who">${avc(c, 24)}<b>${esc(c?.nome || '—')}</b></span></td>
+    <td data-l=""><span class="ep-cat" style="--c:${cat.color}">${esc(cat.label)}</span> <b>${esc(e.material)}</b>${e.tamanho ? ` <span class="muted">tam. ${esc(e.tamanho)}</span>` : ''}${e.baixa_estoque ? ` <span class="ep-est" title="Saiu do estoque da base">${ic('box',11)}</span>` : ''}</td>
+    <td data-l="Qtd.">${fmtQ(e.quantidade, e.unidade)}</td>
+    <td data-l="">${esc(e.motivo)}</td>
+    <td data-l="Troca">${e.troca_em ? `<span class="ep-tr ${t}">${fmtD(e.troca_em)}</span>` : '<span class="muted">—</span>'}</td>
+    <td data-l="Por">${esc(firstName(e.entregue_por_nome || '—'))}</td>
+    <td class="act mc-act"><button class="icon-btn" data-act="ep-edit" data-id="${e.id}" title="Editar">${ic('edit',15)}</button></td>
+  </tr>`;
+}
+// Ficha de EPIs de um colaborador
+function epPessoa(cid){
+  const c = C(cid) || CX(cid); if (!c) return;
+  const l = epDe(cid), at = epAtuais(l);
+  openModal({wide:true, title:'EPIs e materiais', body:`<div class="ep-ph">${avc(c, 48)}<div><b>${esc(c.nome)}</b><small>${bTag(c.base)}${c.cargo ? ' ' + esc(c.cargo) : ''}</small></div></div>
+    ${at.length ? `<div class="sec">Com ele hoje</div><div class="ep-items big">${at.map(e => `<span class="ep-chip ${epTroca(e)}" style="--c:${EP_CAT[e.categoria]?.color || '#64748b'}">${esc(e.material)}${e.tamanho ? ` <em>${esc(e.tamanho)}</em>` : ''}<small>${fmtD(e.data)}${e.troca_em ? ' · troca ' + fmtD(e.troca_em) : ''}</small></span>`).join('')}</div>` : ''}
+    <div class="sec">Histórico de entregas (${l.length})</div>
+    ${l.length ? `<div class="ep-hist">${l.map(e => `<div class="ep-hi" data-act="ep-edit" data-id="${e.id}" role="button" tabindex="0" style="--c:${EP_CAT[e.categoria]?.color || '#64748b'}"><span class="ep-hd"><b>${fmtD(e.data).slice(0,5)}</b><small>${fmtD(e.data).slice(6)}</small></span>
+      <div><b>${fmtQ(e.quantidade, e.unidade)} · ${esc(e.material)}${e.tamanho ? ` (tam. ${esc(e.tamanho)})` : ''}</b><small>${esc(e.motivo)}${e.troca_em ? ` · próxima troca ${fmtD(e.troca_em)}` : ''}${e.baixa_estoque ? ' · saiu do estoque' : ''} · entregue por ${esc(firstName(e.entregue_por_nome || '—'))}${e.obs ? ' · ' + esc(e.obs) : ''}</small></div>${ic('edit',14)}</div>`).join('')}</div>`
+      : `<div class="box muted">Nenhuma entrega registrada ainda.</div>`}`,
+  foot:`<button class="btn" data-act="modal-close">Fechar</button>${allowed(c.base) ? `<button class="btn pri" data-act="ep-new" data-id="${c.id}">${ic('plus',15)}Registrar entrega</button>` : ''}`});
+}
+// Registrar (várias linhas de uma vez) ou editar uma entrega
+let EPF = null;
+function epForm(cid, id){
+  const e0 = id ? (S.ent || []).find(x => sameId(x.id, id)) : null;
+  const pessoas = S.colabs.filter(c => allowed(c.base) && c.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
+  EPF = {id:e0?.id || null, linhas: e0 ? [{material:e0.material, quantidade:e0.quantidade, unidade:e0.unidade, tamanho:e0.tamanho, categoria:e0.categoria}] : [{material:'', quantidade:1, unidade:'un', tamanho:'', categoria:'EPI'}]};
+  const sug = [...new Set([...EP_SUG.map(x => x[0]), ...S.estItens.filter(i => i.ativo !== false).map(i => i.nome), ...(S.ent || []).map(e => e.material)])].sort((a,b) => a.localeCompare(b,'pt'));
+  openModal({wide:true, title: e0 ? 'Editar entrega' : 'Registrar entrega', body:`<form id="mf" class="form" autocomplete="off" onsubmit="return false">
+    ${fld('Colaborador', `<select name="colaborador_id" id="epc" required ${e0 ? 'disabled' : ''}><option value="">— Escolha —</option>${opts(pessoas.map(c => [c.id, c.nome + ' — ' + bName(c.base)]), e0?.colaborador_id || cid || '')}</select>`, false, true)}
+    ${fld('Data da entrega', inp('data', e0?.data || iso(new Date()), 'type="date" required'), false, true)}
+  </form>
+  <div class="sec">${e0 ? 'Material' : 'O que foi entregue'}</div>
+  <datalist id="epsug">${sug.map(n => `<option value="${esc(n)}">`).join('')}</datalist>
+  <div id="eplinhas"></div>
+  ${e0 ? '' : `<button class="btn sm" data-act="ep-add" style="margin-top:8px">${ic('plus',14)}Adicionar outro item</button>`}
+  <form id="mf2" class="form" autocomplete="off" onsubmit="return false" style="margin-top:14px">
+    ${fld('Motivo', rchips('motivo', Object.fromEntries(EP_MOT.map((m, i) => [m, {label:m, color:['#16a34a','#f59e0b','#dc2626','#e11d48','#2563eb','#64748b'][i]}])), e0?.motivo || 'Primeira entrega'), true)}
+    ${fld('Próxima troca (opcional)', inp('troca_em', e0?.troca_em || '', 'type="date"'), false, false, 'Aparece o aviso quando estiver perto.')}
+    ${fld('Observação', inp('obs', e0?.obs || '', 'maxlength="200" placeholder="Ex: número do CA, estado do anterior..."'))}
+    ${e0 ? '' : `<label class="tgl ep-baixa"><input type="checkbox" id="epbaixa"> Dar baixa no estoque da base (para os itens que existem no estoque)</label>`}
+  </form>
+  ${e0?.baixa_estoque ? '<p class="f-hint">Esta entrega saiu do estoque da base. Mudar a quantidade aqui não corrige o estoque.</p>' : ''}`,
+  foot:`${e0 ? `<button class="btn danger left" data-act="ep-del" data-id="${e0.id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button>` : ''}<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="ep-save">${ic('check',15)}${e0 ? 'Salvar' : 'Registrar entrega'}</button>`,
+  onMount: () => epLinhas()});
+}
+function epLinhas(){
+  const box = $('#eplinhas'); if (!box || !EPF) return;
+  box.innerHTML = EPF.linhas.map((l, i) => `<div class="ep-l">
+    <input class="ep-mat" data-i="${i}" list="epsug" placeholder="Material (ex: Bota de segurança)" value="${esc(l.material)}" maxlength="80" aria-label="Material">
+    <select class="sel ep-ct" data-i="${i}" aria-label="Categoria">${opts(Object.keys(EP_CAT).map(k => [k,k]), l.categoria)}</select>
+    <input class="ep-qt" data-i="${i}" type="number" min="0.01" step="any" value="${l.quantidade}" aria-label="Quantidade">
+    <select class="sel ep-un" data-i="${i}" aria-label="Unidade">${opts(EST_UN.map(u => [u,u]), l.unidade)}</select>
+    <input class="ep-tm" data-i="${i}" placeholder="Tamanho" value="${esc(l.tamanho)}" maxlength="12" aria-label="Tamanho">
+    ${EPF.linhas.length > 1 ? `<button class="icon-btn" data-act="ep-rm" data-k="${i}" title="Tirar">${ic('x',15)}</button>` : '<span></span>'}
+    ${(() => { const it = S.estItens.find(x => nk(x.nome) === nk(l.material)); const b = $('#epc')?.value && C($('#epc').value)?.base; return it && b ? `<small class="ep-sd">${ic('box',11)} No estoque de ${bName(b)}: ${fmtQ(qtdOf(it, b), it.unidade)}</small>` : ''; })()}
+  </div>`).join('');
+  const set = (cls, f) => $$('.' + cls, box).forEach(x => x.oninput = x.onchange = () => { f(EPF.linhas[+x.dataset.i], x.value); });
+  set('ep-mat', (l, v) => { l.material = v; const s = EP_SUG.find(x => nk(x[0]) === nk(v)), it = S.estItens.find(x => nk(x.nome) === nk(v));
+    if (s || it){ l.categoria = epCatOf(v); l.unidade = it?.unidade || s?.[2] || l.unidade; const row = $$('.ep-l', box)[EPF.linhas.indexOf(l)]; if (row){ row.querySelector('.ep-ct').value = l.categoria; row.querySelector('.ep-un').value = l.unidade; } } });
+  $$('.ep-mat', box).forEach(x => x.addEventListener('change', () => setTimeout(() => { if (document.body.contains(box)) epLinhas(); })));   // fora do evento: evita refazer a tela no meio do blur
+  set('ep-ct', (l, v) => l.categoria = v); set('ep-qt', (l, v) => l.quantidade = +v || 1); set('ep-un', (l, v) => l.unidade = v); set('ep-tm', (l, v) => l.tamanho = v);
+  const pc = $('#epc'); if (pc && !pc._ep){ pc._ep = 1; pc.addEventListener('change', () => setTimeout(epLinhas)); }
+}
+async function epSave(){
+  const f = {...formObj(), ...Object.fromEntries(new FormData($('#mf2')))};
+  const e0 = EPF?.id ? (S.ent || []).find(x => sameId(x.id, EPF.id)) : null;
+  const cid = e0?.colaborador_id || $('#epc')?.value, c = C(cid) || CX(cid);
+  if (!c) return toast('Escolha o colaborador.', 'err');
+  if (!allowed(c.base)) return toast('Você só registra entregas das suas bases.', 'err');
+  if (!f.data) return toast('Informe a data da entrega.', 'err');
+  const ls = EPF.linhas.filter(l => l.material.trim());
+  if (!ls.length) return toast('Informe o material entregue.', 'err');
+  if (ls.some(l => !(+l.quantidade > 0))) return toast('Quantidade inválida.', 'err');
+  const comum = {data:f.data, motivo:f.motivo || 'Primeira entrega', troca_em:f.troca_em || null, obs:f.obs || '', updated_at:nowISO()};
+  try {
+    if (e0){
+      const l = ls[0], it = S.estItens.find(x => nk(x.nome) === nk(l.material));
+      await DB.update('entregas', e0.id, {...comum, material:l.material.trim(), categoria:l.categoria, quantidade:+l.quantidade, unidade:l.unidade, tamanho:(l.tamanho || '').trim(), item_id:it?.id || e0.item_id || null});
+      closeModal(); toast('Entrega atualizada.');
+    } else {
+      const baixa = $('#epbaixa')?.checked, rows = [];
+      for (const l of ls){
+        const it = S.estItens.find(x => x.ativo !== false && nk(x.nome) === nk(l.material));
+        let saiu = false;
+        if (baixa && it){
+          try { await estRpc('estoque_movimentar', {p_item:it.id, p_base:c.base, p_tipo:'saida', p_qtd:+l.quantidade, p_motivo:`Entrega para ${c.nome}`, p_destino:null}); saiu = true; }
+          catch(x){ if (!await confirmBox(`Não deu para tirar <b>${esc(l.material)}</b> do estoque de ${bName(c.base)} (${esc(x.message || 'saldo insuficiente')}).<br>Registrar a entrega mesmo assim, sem baixa?`, 'Registrar')) return; }
+        }
+        rows.push({...comum, colaborador_id:c.id, base:c.base, item_id:it?.id || null, material:l.material.trim(), categoria:l.categoria, quantidade:+l.quantidade, unidade:l.unidade, tamanho:(l.tamanho || '').trim(), baixa_estoque:saiu, entregue_por:S.profile.id, entregue_por_nome:S.profile.nome});
+      }
+      await DB.insertMany('entregas', rows);
+      closeModal(); toast(`${rows.length} item(ns) registrado(s) para ${firstName(c.nome)}.`);
+    }
+    await loadAll(); render();
+  } catch(x){ err(x); }
+}
+async function epDel(id){
+  const e = (S.ent || []).find(x => sameId(x.id, id)); if (!e) return;
+  const c = C(e.colaborador_id) || CX(e.colaborador_id);
+  if (!await confirmBox(`Excluir a entrega de <b>${esc(e.material)}</b> para ${esc(c?.nome || '')} (${fmtD(e.data)})?`)) return;
+  try {
+    if (e.baixa_estoque && e.item_id && itemOf(e.item_id) && await confirmBox(`Essa entrega tinha saído do estoque. Devolver <b>${fmtQ(e.quantidade, e.unidade)}</b> ao estoque de ${bName(e.base)}?`, 'Devolver'))
+      await estRpc('estoque_movimentar', {p_item:e.item_id, p_base:e.base, p_tipo:'entrada', p_qtd:+e.quantidade, p_motivo:`Entrega excluída (${c?.nome || ''})`, p_destino:null});
+    await DB.remove('entregas', id); closeModal(); toast('Entrega excluída.'); await loadAll(); render();
+  } catch(x){ err(x); }
+}
+function epTrocasVer(){
+  const l = epAtuais(epVis()).filter(e => epTroca(e)).sort((a,b) => a.troca_em.localeCompare(b.troca_em));
+  openModal({title:'Trocas de EPI previstas', body: l.length ? `<div class="ep-hist">${l.map(e => { const c = C(e.colaborador_id) || CX(e.colaborador_id); return `<div class="ep-hi" data-act="ep-pessoa" data-id="${e.colaborador_id}" role="button" style="--c:${epTroca(e) === 'vencida' ? '#dc2626' : '#f59e0b'}"><span class="ep-hd"><b>${fmtD(e.troca_em).slice(0,5)}</b><small>${epTroca(e) === 'vencida' ? 'vencida' : 'em breve'}</small></span><div><b>${esc(c?.nome || '—')}</b><small>${esc(e.material)}${e.tamanho ? ' (tam. ' + esc(e.tamanho) + ')' : ''} · entregue em ${fmtD(e.data)} · ${bName(e.base)}</small></div>${ic('chevR',14)}</div>`; }).join('')}</div>` : '<p class="muted">Nenhuma troca prevista.</p>',
+    foot:`<button class="btn pri" data-act="modal-close">Fechar</button>`});
+}
+async function epXls(){
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const l = epVis().sort((a,b) => b.data.localeCompare(a.data));
+  const rows = [['Data','Colaborador','Base','Categoria','Material','Quantidade','Unidade','Tamanho','Motivo','Próxima troca','Saiu do estoque','Entregue por','Observação']];
+  l.forEach(e => { const c = C(e.colaborador_id) || CX(e.colaborador_id); rows.push([fmtD(e.data), c?.nome || '', bName(e.base), e.categoria, e.material, +e.quantidade, e.unidade, e.tamanho || '', e.motivo, e.troca_em ? fmtD(e.troca_em) : '', e.baixa_estoque ? 'Sim' : 'Não', e.entregue_por_nome || '', e.obs || '']); });
+  const pes = [['Colaborador','Base','Total de entregas','Última entrega','Itens com ele hoje','Trocas vencidas']];
+  S.colabs.filter(c => allowed(c.base) && inScope(c.base) && c.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt')).forEach(c => { const d = epDe(c.id), at = epAtuais(d);
+    pes.push([c.nome, bName(c.base), d.length, d[0] ? fmtD(d[0].data) : '', at.map(e => e.material + (e.tamanho ? ' (' + e.tamanho + ')' : '')).join(', '), at.filter(e => epTroca(e) === 'vencida').map(e => e.material).join(', ')]); });
+  const wb = X.utils.book_new(), w1 = X.utils.aoa_to_sheet(rows), w2 = X.utils.aoa_to_sheet(pes);
+  w1['!cols'] = [11,30,13,11,28,10,8,9,18,13,10,20,30].map(w => ({wch:w})); w2['!cols'] = [30,13,10,13,60,30].map(w => ({wch:w}));
+  X.utils.book_append_sheet(wb, w1, 'Entregas'); X.utils.book_append_sheet(wb, w2, 'Por colaborador');
+  X.writeFile(wb, `EPIs_e_materiais_${iso(new Date())}.xlsx`); toast('Entregas exportadas.');
+}
+
+
 /* ========================= USUÁRIOS E BASES ========================= */
 function pgUsers(){
   if (!isAdmin()) return go('dashboard');
@@ -6848,6 +7083,9 @@ const ACT = {
     const c = C(a.dataset.id), row = $('#arl-' + a.dataset.id); if (c && row){ const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); } },
   'ar-vobs': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; d.vObs = !d.vObs || !!d.obs; const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); $(`.ar-obs[data-id="${a.dataset.id}"]`)?.focus(); },
   'ar-salvar': () => arSalvar(), 'ar-edit': a => arEdit(a.dataset.id, a.dataset.k), 'ar-ed-save': a => arEdSave(a.dataset.id, a.dataset.k), 'ar-del': a => arDel(a.dataset.id), 'ar-xls': () => arXls(),
+  'ep-v': a => { EP.v = a.dataset.k; EP.lim = 0; pgEpis(); }, 'ep-new': a => epForm(a?.dataset?.id), 'ep-edit': a => epForm(null, a.dataset.id), 'ep-save': () => epSave(), 'ep-del': a => epDel(a.dataset.id),
+  'ep-pessoa': a => epPessoa(a.dataset.id), 'ep-add': () => { EPF.linhas.push({material:'', quantidade:1, unidade:'un', tamanho:'', categoria:'EPI'}); epLinhas(); $$('.ep-mat').pop()?.focus(); },
+  'ep-rm': a => { EPF.linhas.splice(+a.dataset.k, 1); epLinhas(); }, 'ep-xls': () => epXls(), 'ep-more': () => { EP.lim = (EP.lim || 80) + 80; pgEpis(); }, 'ep-trocas': () => epTrocasVer(),
   'esc-lote': () => escLote(), 'lt-save': () => ltSave(), 'lt-auto': () => ltAuto(),
   'lt-mes': a => { const [y, m] = LT.mes.split('-').map(Number); LT.mes = iso(new Date(y, m - 1 + +a.dataset.k, 1)).slice(0, 7); ltDraw(); },
   'lt-sabs': () => { const hj = iso(new Date()); ltSabados(LT.mes).filter(s => s >= hj).forEach(s => LT.datas.add(s)); ltDraw(); },
