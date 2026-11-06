@@ -1867,6 +1867,9 @@ button.po-tr:hover{background:var(--soft)}
 .sol-t tr:first-child td{background:#f0fdf4;font-weight:600;position:sticky;top:0}
 @media (max-width:600px){.sol-f{flex-wrap:wrap}.sol-f b{flex-basis:calc(100% - 30px)}}
 
+/* v2.22 */
+.pd-clip{display:inline-flex;align-items:center;gap:2px;font-size:11px;font-weight:600;color:#15803d;background:#f0fdf4;border-radius:10px;padding:1px 6px;margin-left:4px;vertical-align:middle}
+
 </style>
 </head>
 <body>
@@ -1879,7 +1882,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.21';
+const APP_VERSION = '2.22';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2144,7 +2147,7 @@ function seed(){
     V('v8','santo-andre','carro','Renault','Kangoo','SAN1D23',2022,'Branco',55100,'ok',null,10,'Paula Ribeiro'),
     V('v9','santo-andre','moto','Honda','Biz 125','TMD4E56',2024,'Azul',8200,'ok',null,12,'Paula Ribeiro')
   ];
-  const C = (id,base,nome,cargo,tel,pos,mat,adm,vid,lid,status) => ({id,base,nome,cargo,telefone:tel,email:nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(' ').slice(0,2).join('.')+'@empresa.com',pos,matricula:mat,admissao:adm,veiculo_id:vid,lider_id:lid,status,observacoes:null,created_at:h(1500)});
+  const C = (id,base,nome,cargo,tel,pos,mat,adm,vid,lid,status) => ({id,base,nome,cargo,telefone:tel,email:nome.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(' ').slice(0,2).join('.')+'@empresa.com',pos,matricula:mat,admissao:adm,nascimento:adm ? (+adm.slice(0,4) - 30) + adm.slice(4) : null,veiculo_id:vid,lider_id:lid,status,observacoes:null,created_at:h(1500)});
   const colaboradores = [
     C('c1','pinheiros','Ana Beatriz Rocha','Técnica de campo','(11) 98765-4321','0012345678901234','10234','2021-03-15','v1','u-carlos','ativo'),
     C('c2','pinheiros','Bruno Carvalho','Motorista','(11) 97654-3210','0012345678905678','10251','2020-07-01','v2','u-carlos','ativo'),
@@ -2773,6 +2776,10 @@ const imeiShow = v => v ? `<b class="mono">${esc(v)}</b> <button class="icon-btn
 
 /* ========================= COLABORADORES ========================= */
 // Cadastro: o encarregado mexe em tudo; líder e assistente, nas próprias bases (o banco confere)
+// Aniversário: mostra dia/mês e a idade (se o ano foi informado)
+const nascTxt = d => { if (!d) return '—'; const [y, m, dd] = d.split('-').map(Number), hj = new Date(); let id = hj.getFullYear() - y; if (hj.getMonth() + 1 < m || (hj.getMonth() + 1 === m && hj.getDate() < dd)) id--;
+  return `${String(dd).padStart(2,'0')}/${String(m).padStart(2,'0')}${y > 1900 && id > 0 && id < 100 ? ` · ${id} anos` : ''}${nascHoje(d) ? ' 🎂 hoje!' : ''}`; };
+const nascHoje = d => !!d && d.slice(5) === iso(new Date()).slice(5);
 const canColab = b => isAdmin() || (isLid(S.profile) && !!b && myBases().includes(b));
 const canColabAny = () => isAdmin() || (isLid(S.profile) && myBases().length > 0);
 const baseOpts = (cur, withEmpty=false) => (withEmpty?'<option value="">— Escolha a base —</option>':'') + myBases().map(k => `<option value="${k}" ${k===cur?'selected':''}>${BASES[k].nome}</option>`).join('');
@@ -2840,7 +2847,7 @@ function openColab(id){
         <div><small>IMEI 1 (celular)</small>${imeiShow(c.imei1)}</div>
         <div><small>IMEI 2 (celular)</small>${imeiShow(c.imei2)}</div>
         <div><small>Matrícula</small><b>${esc(c.matricula||'—')}</b></div>
-        <div><small>Admissão</small><b>${fmtD(c.admissao)}</b></div>
+        <div><small>Aniversário</small><b>${nascTxt(c.nascimento)}</b></div>
         <div><small>Líder responsável</small><b>${esc(l?.nome||'—')}</b></div>
         ${(() => { const m0 = iso(new Date(new Date().getFullYear(), new Date().getMonth(), 1)); const r = escStats(S.escalas.filter(x => x.data >= m0 && x.data <= iso(new Date())), S.horasMan.filter(x => x.data >= m0)).find(x => sameId(x.cid, c.id));
           return `<div><small>Escalas neste mês</small><b>${r ? [r.pl ? r.pl + ' plantão(ões)' : '', r.nHe ? r.nHe + ' ação(ões)' : ''].filter(Boolean).join(' — ') + (isAdmin() && r.total ? ` — +${fmtH(r.total)} de hora extra` : '') || 'Nenhuma até hoje' : 'Nenhuma até hoje'}</b></div>`; })()}
@@ -2885,7 +2892,7 @@ function colabForm(id){
     ${fld('Nº da POS', inp('pos',c.pos,'class="mono" inputmode="numeric" placeholder="Número completo da POS"'), false, false, 'Pode colar o número inteiro, sem limite de dígitos.')}
     ${fld('IMEI 1 do celular', inp('imei1',c.imei1,'class="mono" inputmode="numeric" maxlength="20" placeholder="15 dígitos"'), false, false, 'No celular, digite *#06# para ver o IMEI.')}
     ${fld('IMEI 2 do celular', inp('imei2',c.imei2,'class="mono" inputmode="numeric" maxlength="20" placeholder="15 dígitos (chip 2)"'), false, false, 'Celular com dois chips tem dois IMEIs.')}
-    ${fld('Data de admissão', inp('admissao',c.admissao,'type="date"'))}
+    ${fld('Data de aniversário', inp('nascimento',c.nascimento,'type="date" max="' + iso(new Date()) + '"'), false, false, 'Dia e mês do aniversário (o ano mostra a idade).')}
     ${fld('Líder responsável', `<select name="lider_id" id="flid">${sel.lider}</select>`)}
     ${fld('Veículo da frota', `<select name="veiculo_id" id="fveic">${sel.veic}</select>`, false, false, 'Mostra os veículos da base escolhida. Se estiver com outra pessoa, é transferido.')}
     ${fld('Status', rchips('status',CSTATUS,c.status||'ativo'), true)}
@@ -2902,7 +2909,7 @@ async function saveColab(id){
   { const dup = ['imei1','imei2'].map(k => imeiN(f[k])).filter(Boolean).map(d => S.colabs.find(c => !sameId(c.id, id) && (c.imei1 === d || c.imei2 === d))).find(Boolean);
     if (dup && !await confirmBox(`Esse IMEI já está cadastrado para <b>${esc(dup.nome)}</b>. Salvar mesmo assim?`, 'Salvar')) return; }
   const row = {imei1:imeiN(f.imei1) || null, imei2:imeiN(f.imei2) || null, nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
-    admissao:f.admissao, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
+    nascimento:f.nascimento || null, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
   try {
     if (row.veiculo_id && !sameId(row.veiculo_id, id ? C(id)?.veiculo_id : '')){
       const modo = await veicModo(row.veiculo_id, id); if (!modo) return;
@@ -3098,7 +3105,7 @@ const IMP = {
       {k:'imei1', h:'IMEI 1', w:18, text:true, al:['imei1','imei','imeicelular','imei1celular','imeichip1']},
       {k:'imei2', h:'IMEI 2', w:18, text:true, al:['imei2','imei2celular','imeichip2']},
       {k:'placa', h:'Placa do veículo', w:16, al:['placadoveiculo','placa','veiculo']},
-      {k:'admissao', h:'Admissão', w:12, al:['admissao','dataadmissao','datadeadmissao']},
+      {k:'nascimento', h:'Aniversário', w:12, al:['aniversario','datadeaniversario','nascimento','datadenascimento','dtnascimento','datanascimento']},
       {k:'status', h:'Status', w:12, al:['status','situacao']},
       {k:'observacoes', h:'Observações', w:32, al:['observacoes','observacao','obs']}
     ],
@@ -3127,11 +3134,11 @@ function cellStr(v){
   if (typeof v === 'number') return Number.isInteger(v) ? v.toLocaleString('fullwide',{useGrouping:false}) : String(v);
   return String(v).trim();
 }
-function parseDate(s){
+function parseDate(s, nasc){
   if (!s) return null;
   if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
   const m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/);
-  if (m){ let y = +m[3]; if (y < 100) y += 2000; const d = new Date(y, +m[2]-1, +m[1]); if (d.getMonth() === +m[2]-1) return iso(d); }
+  if (m){ let y = +m[3]; if (y < 100) y += (nasc && y > new Date().getFullYear() % 100) ? 1900 : 2000; const d = new Date(y, +m[2]-1, +m[1]); if (d.getMonth() === +m[2]-1) return iso(d); }
   return undefined;
 }
 const mapStatusC = s => { const n = nk(s); if (!n) return 'ativo'; return Object.keys(CSTATUS).find(k => nk(CSTATUS[k].label) === n || k === n) || (n.startsWith('afast')?'afastado':n.startsWith('desl')?'desligado':n.startsWith('fer')?'ferias':undefined); };
@@ -3142,7 +3149,7 @@ const mapTipo = s => { const n = nk(s); if (n.startsWith('moto')) return 'moto';
 
 function rowsExport(kind){
   if (kind === 'veic') return frotaFiltered().map(v => [v.placa, v.tipo==='moto'?'Moto':'Carro', bName(v.base), v.marca||'', v.modelo||'', v.ano||'', v.cor||'', v.km ?? '', VSTATUS[v.status]?.label||'', v.observacoes||'']);
-  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', c.imei1||'', c.imei2||'', V(c.veiculo_id)?.placa||'', c.admissao?fmtD(c.admissao):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
+  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', c.imei1||'', c.imei2||'', V(c.veiculo_id)?.placa||'', c.nascimento?fmtD(c.nascimento):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
 }
 async function excelFile(kind, withData){
   let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
@@ -3257,12 +3264,12 @@ function validateImport(){
     st.raw.forEach(o => {
       const r = {line:o._line, errs:[], warns:[], d:{}};
       const base = baseKey(o.base) ?? null, b = base || (o.base ? null : st.baseDef);
-      const status = mapStatusC(o.status), adm = parseDate(o.admissao), pos = o.pos ? o.pos.replace(/\s+/g,'') : null;
+      const status = mapStatusC(o.status), adm = parseDate(o.nascimento, true), pos = o.pos ? o.pos.replace(/\s+/g,'') : null;
       if (!o.nome) r.errs.push('falta o nome');
       if (!b) r.errs.push(o.base ? `base "${o.base}" não existe` : 'sem base');
       else if (!canColab(b)) r.errs.push(`base ${bName(b)} não é sua`);
       if (status === undefined) r.warns.push(`status "${o.status}" não reconhecido, ficou Ativo`);
-      if (adm === undefined) r.warns.push(`data de admissão "${o.admissao}" ignorada`);
+      if (adm === undefined) r.warns.push(`data de aniversário "${o.nascimento}" ignorada`);
       if (o._posRisk) r.warns.push('Nº POS veio como número no Excel e pode ter perdido dígitos — confira');
       let veiculo_id;
       if (o.placa){
@@ -3278,7 +3285,7 @@ function validateImport(){
       const im1 = imeiN(o.imei1) || null, im2 = imeiN(o.imei2) || null;
       [['IMEI 1', im1], ['IMEI 2', im2]].forEach(([l, v]) => { if (v && v.length !== 15) r.warns.push(`${l} com ${v.length} dígitos (o normal é 15) — confira`); });
       r.d = {nome:o.nome||null, base:b, cargo:o.cargo||null, matricula:o.matricula||null, telefone:o.telefone ? fmtPhone(o.telefone) : null, email:o.email||null, pos,
-        admissao:adm||null, status:status||'ativo', observacoes:o.observacoes||null};
+        ...(adm ? {nascimento:adm} : {}), status:status||'ativo', observacoes:o.observacoes||null};
       if (veiculo_id) r.d.veiculo_id = veiculo_id;
       if (im1) r.d.imei1 = im1; if (im2) r.d.imei2 = im2;   // em branco na planilha: mantém o que já estava
       r.match = ex; r.act = ex ? 'atualizar' : 'novo';
@@ -3684,6 +3691,8 @@ function buildNotifs0(){
     if (hj.length) rem.push({icon:'planner', c:PL_COR, t:`Hoje no planner: ${hj.length} tarefa(s)`, s:plSort(hj).slice(0,3).map(t => (t.hora ? hhmm(t.hora) + ' ' : '') + t.titulo).join(', '), act:'pl-go', k:'hoje', w:1, key:'rem:pl:hj:' + hj.length}); }
   { const bd = (S.anot||[]).filter(a => sameId(a.user_id, me) && bdDue(a));
     if (bd.length) rem.push({icon:'notebook', c:'#9333ea', urgent:true, t:bd.length === 1 ? 'Diário de bordo: lembrar hoje' : `Diário de bordo: ${bd.length} problemas para lembrar`, s:bd.slice(0,3).map(a => a.titulo).join(', '), act:'bd-go', w:0, key:'rem:bd:' + bd.length}); }
+  { const an = S.colabs.filter(c => c.status !== 'desligado' && allowed(c.base) && nascHoje(c.nascimento));
+    if (an.length) rem.push({icon:'user', c:'#db2777', urgent:false, t:an.length === 1 ? `🎂 Aniversário hoje: ${an[0].nome}` : `🎂 ${an.length} aniversariantes hoje`, s:an.map(c => firstName(c.nome) + ' (' + bName(c.base) + ')').join(', '), act:'c-open', id:an[0].id, w:0, key:'rem:niver:' + iso(new Date()) + ':' + an.length}); }
   { const rh = (S.anot || []).filter(a => a.tipo === 'reuniao' && a.status === 'aberto' && a.data === today && (sameId(a.user_id, me) || (a.base && allowed(a.base))));
     rh.forEach(a => rem.push({icon:'cal', c:'#7c3aed', urgent:true, t:`Reunião hoje${a.hora ? ' às ' + hhmm(a.hora) : ''}: ${a.titulo}`, s:[a.local, a.base ? bName(a.base) : ''].filter(Boolean).join(' · '), act:'bd-open', id:a.id, w:0, key:'rem:reu:' + a.id})); }
   { const ap = arPendMinhas();
@@ -6147,7 +6156,7 @@ function pgPedidos(){
   const all = pedVis(), ab = all.filter(pedAberto), mes = iso(new Date()).slice(0, 7);
   const q = nk(PD.q), velhos = ab.filter(p => pedDias(p) > 7);
   const match = p => (PD.f === 'todos' || (PD.f === 'abertos' ? pedAberto(p) : p.status === PD.f)) && (!PD.b || p.base === PD.b) && (!PD.canal || p.canal === PD.canal) &&
-    (!q || nk([p.numero, p.produto, pedItemNome(p), p.solicitante, p.comprador, p.canal, bName(p.base), p.obs].join(' ')).includes(q));
+    (!q || nk([p.numero, p.produto, pedItemNome(p), p.solicitante, p.comprador, p.canal, bName(p.base), p.obs, ...(p.arquivos || []).map(a => a.nome)].join(' ')).includes(q));
   const list = all.filter(match).sort((a,b) => PD.f === 'abertos'
     ? (a.status === 'pendente') - (b.status === 'pendente') || a.data.localeCompare(b.data) || (a.numero - b.numero)
     : b.data.localeCompare(a.data) || (b.numero - a.numero));
@@ -6178,7 +6187,7 @@ function pedRow(p){
   const o = PED_ST[p.status], d = pedDias(p), late = pedAberto(p) && d > 7;
   return `<tr class="pd-r ${p.status}" data-act="pd-open" data-id="${p.id}" role="button" tabindex="0" style="--c:${o.color}">
     <td data-l="" class="pd-n">#${p.numero ?? '—'}</td>
-    <td data-l="" class="pd-prod"><b>${esc(pedItemNome(p))}</b><small>${fmtQ(p.status === 'concluido' && p.qtd_recebida != null ? p.qtd_recebida : p.quantidade, p.unidade)}${p.status === 'concluido' && p.qtd_recebida != null && +p.qtd_recebida !== +p.quantidade ? ` <span class="muted">(pedido: ${fmtQ(p.quantidade)})</span>` : ''}</small></td>
+    <td data-l="" class="pd-prod"><b>${esc(pedItemNome(p))}${(p.arquivos || []).length ? ` <span class="pd-clip" title="${p.arquivos.length} anexo(s)">${ic('clip',12)}${p.arquivos.length}</span>` : ''}</b><small>${fmtQ(p.status === 'concluido' && p.qtd_recebida != null ? p.qtd_recebida : p.quantidade, p.unidade)}${p.status === 'concluido' && p.qtd_recebida != null && +p.qtd_recebida !== +p.quantidade ? ` <span class="muted">(pedido: ${fmtQ(p.quantidade)})</span>` : ''}</small></td>
     <td data-l="">${bTag(p.base)}</td>
     <td data-l="Quem pediu">${esc(p.solicitante || '—')}</td>
     <td data-l="Para">${esc(p.comprador || '—')}</td>
@@ -6206,9 +6215,9 @@ function pedForm(id){
     ${fld('Por onde foi o pedido', rchips('canal', Object.fromEntries(Object.entries(PED_CANAL).map(([k,o]) => [k, {label:k, color:o.color}])), p.canal || 'E-mail'), true)}
     ${fld('Situação', rchips('status', {pendente:PED_ST.pendente, andamento:PED_ST.andamento}, p.status), true)}
     ${fld('Observações', `<textarea name="obs" rows="2" placeholder="Ex: nº do chamado, previsão de entrega, fornecedor...">${esc(p.obs || '')}</textarea>`, true)}
-  </form>${id ? `<p class="f-hint">Registrado por ${esc(p.criado_por_nome || '—')} em ${fmtDT(p.created_at)}.</p>` : ''}`,
+  </form>${(p.arquivos || []).length ? `<div class="sec">Anexos (${p.arquivos.length})</div>${solList(p.arquivos)}` : ''}${solDrop('Ex: orçamento, nota fiscal, foto do produto · Excel, PDF ou foto')}${id ? `<p class="f-hint">Registrado por ${esc(p.criado_por_nome || '—')} em ${fmtDT(p.created_at)}.</p>` : ''}`,
   foot:`${id ? `<button class="btn danger left" data-act="pd-del" data-id="${id}">${ic('trash',15)}<span class="hide-s">Excluir</span></button><button class="btn" data-act="pd-cancel" data-id="${id}">${ic('x',15)}<span class="hide-s">Cancelar pedido</span></button>` : `<button class="btn" data-act="modal-close">Cancelar</button>`}<button class="btn" data-act="pd-save" data-id="${id || ''}">${ic('check',15)}Salvar</button>${id ? `<button class="btn pri" data-act="pd-concluir" data-id="${id}">${ic('box',15)}Concluir e dar entrada</button>` : ''}`,
-  onMount: ov => { const pr = $('[name=produto]', ov); pr.onchange = () => { const it = its.find(i => nk(i.nome) === nk(pr.value)); if (it) $('#pdun', ov).value = it.unidade || 'un'; }; }});
+  onMount: ov => { solMount(ov); const pr = $('[name=produto]', ov); pr.onchange = () => { const it = its.find(i => nk(i.nome) === nk(pr.value)); if (it) $('#pdun', ov).value = it.unidade || 'un'; }; }});
 }
 async function pedSave(id){
   const f = formObj();
@@ -6221,6 +6230,8 @@ async function pedSave(id){
   const row = {produto:it ? it.nome : f.produto.trim(), item_id:it ? it.id : null, quantidade:+f.quantidade, unidade:f.unidade || 'un', base:f.base, data:f.data || bdHoje(), solicitante:f.solicitante.trim(), comprador:f.comprador.trim(), canal:f.canal || 'Outro', status:f.status || 'pendente', obs:f.obs || '', updated_at:nowISO()};
   try {
     const p0 = id ? PDX(id) : null;
+    const novos = SOLF.length ? await solUpload(row.base) : [];
+    if (novos.length) row.arquivos = [...(p0?.arquivos || []), ...novos];                // só manda o campo quando há anexo
     if (p0){ await DB.update('pedidos', id, row); Object.assign(p0, row); }
     else { const r = await DB.insert('pedidos', {...row, criado_por:S.profile.id, criado_por_nome:S.profile.nome}); if (TEST && r.numero == null){ r.numero = Math.max(0, ...(S.ped || []).map(x => +x.numero || 0)) + 1; await DB.update('pedidos', r.id, {numero:r.numero}); } S.ped.push(r); }
     S.sig = dataSig(); closeModal(); toast(p0 ? 'Pedido salvo.' : `Pedido registrado para ${bName(row.base)}.`); pgPedidos();
@@ -6262,6 +6273,7 @@ function pedVer(id){
     <div class="dl">${row('Quantidade pedida', fmtQ(p.quantidade, p.unidade))}${p.qtd_recebida != null ? row('Quantidade que chegou', fmtQ(p.qtd_recebida, p.unidade)) : ''}
     ${row('Base', bTag(p.base))}${row('Data do pedido', fmtD(p.data))}${row('Quem pediu', esc(p.solicitante))}${row('Pedido para', esc(p.comprador || '—'))}${row('Por onde', canalTag(p.canal))}
     ${p.concluido_em ? row('Concluído', esc(fmtDT(p.concluido_em)) + (p.concluido_por ? ' por ' + esc(firstName(p.concluido_por)) : '')) : ''}${p.obs ? `<div class="full"><small>Observações</small><b style="white-space:pre-wrap;font-weight:400">${esc(p.obs)}</b></div>` : ''}</div>
+    ${(p.arquivos || []).length ? `<div class="sec">Anexos (${p.arquivos.length})</div>${solList(p.arquivos)}` : ''}
     ${p.status === 'concluido' ? '<p class="f-hint">Este pedido já entrou no estoque. Se algo veio errado, corrija pelo botão Movimentar do item.</p>' : ''}`,
   foot:`${p.status === 'cancelado' ? `<button class="btn danger left" data-act="pd-del" data-id="${id}">${ic('trash',15)}Excluir</button><button class="btn" data-act="pd-reabrir" data-id="${id}">${ic('refresh',15)}Reabrir</button>` : isAdmin() ? `<button class="btn danger left" data-act="pd-del" data-id="${id}">${ic('trash',15)}Excluir registro</button>` : ''}${p.item_id && itemOf(p.item_id) ? `<button class="btn" data-act="est-open" data-id="${p.item_id}">${ic('box',15)}Ver item no estoque</button>` : ''}<button class="btn pri" data-act="modal-close">Fechar</button>`});
 }
