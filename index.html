@@ -1880,6 +1880,15 @@ button.po-tr:hover{background:var(--soft)}
 .dup-pos{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);margin:10px 0 0}
 @media (max-width:900px){.ar-dl{grid-row:6!important;padding-left:0}}
 @media (max-width:760px){.ar-dia{flex-wrap:wrap}.ar-dia .btn{width:100%;justify-content:center}}
+
+/* v2.24: diário no resumo do mês */
+.ar-dia.ok{background:#f0fdf4;border-color:#bbf7d0;color:#14532d}
+.ar-c{position:relative}
+.ar-dmk{position:absolute;top:6px;left:6px;width:6px;height:6px;border-radius:2px;background:#0d9488;opacity:.8}
+.ar-c.dif{background:#fffbeb!important}
+.ar-dif{display:inline-flex;align-items:center;gap:3px;font-style:normal;font-size:10px;font-weight:700;color:#b45309;white-space:nowrap}
+.ar-com{color:#0f766e!important;text-decoration:none!important;font-weight:600}
+.ar-pend.dup{color:#0f766e!important;border-color:#5eead4!important;background:#f0fdfa!important}
 </style>
 </head>
 <body>
@@ -1892,7 +1901,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.23';
+const APP_VERSION = '2.24';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -6356,12 +6365,38 @@ function arTabs(){
     ${isAdmin() ? `<button class="${t === 'log' ? 'on' : ''}" data-act="ar-tab" data-k="log">${ic('clock',15)}Registro<em>${(S.arrLog || []).length}</em></button>` : ''}
   </div>`;
 }
+// Duplas do diário no Resumo do mês: o que o diário diz em cada semana e o que está diferente do lançado
+let AR_DM = {};
+const arSugMes = (s, cid) => { const r = AR_DM[s]?.get(String(cid)); return r ? {situacao: r.papel === 'acomp' ? 'dupla' : 'normal', dupla_com: r.com, n: r.n, papel: r.papel} : null; };
+function arDifMes(sems, bases){
+  const hj = iso(new Date()), dif = [], falta = [];
+  sems.filter(s => s >= AR_INICIO && s <= hj).forEach(s => (AR_DM[s] ? [...AR_DM[s].keys()] : []).forEach(cid => { const c = C(cid); if (!c || !bases.includes(c.base) || !allowed(c.base)) return;
+    const sg = arSugMes(s, cid), r = arRec(cid, s);
+    if (!r){ if (sg.situacao === 'dupla') falta.push({c, s, sg}); return; }
+    if ((r.situacao === 'dupla') !== (sg.situacao === 'dupla') || (r.situacao === 'dupla' && r.dupla_com && !sameId(r.dupla_com, sg.dupla_com))) dif.push({c, s, sg, r}); }));
+  return {dif, falta};
+}
+async function arAplicaMes(){
+  const sems = arSemanas(AR.mes), bases = arBases(); AR_DM = Object.fromEntries(sems.map(s => [s, arDiario(s)]));
+  const {dif, falta} = arDifMes(sems, bases);
+  if (!dif.length && !falta.length) return toast('Os lançamentos do mês já batem com o diário.');
+  if (!await confirmBox(`Aplicar as duplas do diário de bordo em <b>${cap(new Date(+AR.mes.slice(0,4), +AR.mes.slice(5) - 1, 1).toLocaleDateString('pt-BR',{month:'long'}))}</b>?<br>${dif.length ? `${dif.length} lançamento(s) muda(m) de situação (o valor digitado é mantido).<br>` : ''}${falta.length ? `${falta.length} pessoa(s) em dupla sem lançamento ficam registradas como "Em dupla".` : ''}`, 'Aplicar')) return;
+  try {
+    for (const x of dif) await DB.update('arrecadacoes', x.r.id, {situacao:x.sg.situacao, dupla_com:x.sg.situacao === 'dupla' ? x.sg.dupla_com : null, updated_at:nowISO(), lancado_por_nome:S.profile.nome});
+    const novos = falta.map(x => ({colaborador_id:x.c.id, base:x.c.base, semana:x.s, valor:0, situacao:'dupla', dupla_com:x.sg.dupla_com, obs:'', lancado_por:S.profile.id, lancado_por_nome:S.profile.nome, updated_at:nowISO()}));
+    if (novos.length) await DB.insertMany('arrecadacoes', novos);
+    if (TEST && typeof arTestLog === 'function') arTestLog([...dif.map(x => ({c:x.c, r:x.r, row:{semana:x.s, valor:x.r.valor, situacao:x.sg.situacao}})), ...novos.map((n, i) => ({c:falta[i].c, r:null, row:n}))]);
+    toast(`Diário aplicado: ${dif.length + novos.length} lançamento(s) ajustado(s).`); ARL = null; await loadAll(); render();
+  } catch(e){ err(e); }
+}
 function pgArrec(){
   if (!AR.mes) AR.mes = arMesDe(arAlvo());
   if (AR.tab === 'lancar') return pgArLancar();
   if (AR.tab === 'log' && isAdmin()) return pgArLog();
   const ym = AR.mes, sems = arSemanas(ym), bases = arBases(), hj = arAtual(), alvo = arAlvo();
   const recs = (S.arr || []).filter(r => sems.includes(r.semana) && bases.includes(r.base));
+  AR_DM = Object.fromEntries(sems.map(s => [s, arDiario(s)]));
+  const dd = arDifMes(sems, bases), nParMes = sems.reduce((a, s) => a + Math.round([...AR_DM[s].keys()].filter(k => bases.includes(C(k)?.base)).length / 2), 0);
   const cont = recs.filter(arConta), total = cont.reduce((s, r) => s + +r.valor, 0);
   const pessoas = [...new Map([...sems.flatMap(s => arPessoas(s, bases)), ...recs.map(r => C(r.colaborador_id) || CX(r.colaborador_id)).filter(Boolean)].map(c => [String(c.id), c])).values()];
   const linhas = pessoas.map(c => { const rs = sems.map(s => arRec(c.id, s)); const vs = rs.filter(arConta); const t = vs.reduce((s, r) => s + +r.valor, 0);
@@ -6400,6 +6435,7 @@ function pgArrec(){
   ${!S.base && BKEYS.filter(allowed).length > 1 ? `<div class="ar-bases">${BKEYS.filter(allowed).map(k => { const t = (S.arr || []).filter(r => sems.includes(r.semana) && r.base === k && arConta(r)).reduce((a, r) => a + +r.valor, 0);
       const tp = sems.includes(alvo) ? arPessoas(alvo, [k]).length : 0, pp = sems.includes(alvo) ? arPend(alvo, [k]).filter(c => c.status === 'ativo').length : 0, pc = tp ? Math.round((tp - pp) / tp * 100) : 100;
       return `<button class="ar-bc ${AR.b === k ? 'on' : ''}" style="--c:${BASES[k].c}" data-act="ar-b" data-k="${k}"><span class="ar-bc-h">${emblem(k,16,5)}<b>${BASES[k].nome}</b></span><strong>${brl(t)}</strong><span class="ar-prog"><i style="width:${pc}%"></i></span><small>${sems.includes(alvo) ? (pp ? `${pp} sem lançamento na semana ${arLbl(alvo)}` : 'semana em dia') : ' '}</small></button>`; }).join('')}</div>` : ''}
+  ${nParMes ? `<div class="ar-dia ${dd.dif.length || dd.falta.length ? '' : 'ok'}">${ic('notebook',16)}<div><b>Diário de bordo: ${nParMes} dupla(s) registrada(s) nas semanas deste mês</b><small>${dd.dif.length || dd.falta.length ? `${dd.dif.length ? `<b class="late">${dd.dif.length} lançamento(s) diferente(s) do diário</b> (marcados na tabela). ` : ''}${dd.falta.length ? `${dd.falta.length} pessoa(s) em dupla ainda sem lançamento.` : ''}` : `${ic('check',12)} Os lançamentos do mês batem com as duplas do diário.`}</small></div>${dd.dif.length || dd.falta.length ? `<button class="btn sm" data-act="ar-dia-mes">${ic('refresh',14)}Aplicar o diário no mês</button>` : ''}</div>` : ''}
   <div class="toolbar">
     <label class="search">${ic('search',16)}<input id="arq" placeholder="Buscar funcionário..." value="${esc(AR.q)}"></label>
     <select class="sel" id="arord" aria-label="Ordenar"><option value="total" ${AR.ord === 'total' ? 'selected' : ''}>Maior total</option><option value="media" ${AR.ord === 'media' ? 'selected' : ''}>Maior média</option><option value="nome" ${AR.ord === 'nome' ? 'selected' : ''}>Nome (A→Z)</option></select>
@@ -6416,9 +6452,11 @@ function pgArrec(){
   $('#arord').onchange = e => { AR.ord = e.target.value; pgArrec(); };
 }
 function arCell(c, s, r){
-  const fut = s > arAtual(), atual = s === arAtual();
-  if (!r) return `<td class="ar-c">${fut || s < AR_INICIO ? '<span class="ar-fut">—</span>' : `<button class="ar-pend ${atual ? 'cur' : ''}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="${atual ? 'Semana em andamento' : 'Sem lançamento'}">${atual ? 'em andamento' : ic('plus',12) + 'lançar'}</button>`}</td>`;
-  return `<td class="ar-c"><button class="ar-v ${r.situacao}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="Lançado por ${esc(r.lancado_por_nome || '—')}${r.obs ? ' — ' + esc(r.obs) : ''}">${r.situacao === 'normal' ? brl(r.valor) : `<span class="ar-tag ${r.situacao}">${AR_SIT[r.situacao].label}</span>${+r.valor ? `<small>${brl(r.valor)}</small>` : ''}`}${r.obs ? '<i class="ar-ob"></i>' : ''}</button></td>`;
+  const fut = s > arAtual(), atual = s === arAtual(), sg = arSugMes(s, c.id), nm = id => esc(firstName((C(id) || CX(id))?.nome || '?'));
+  const dTxt = sg ? (sg.situacao === 'dupla' ? `Diário: acompanhando ${nm(sg.dupla_com)} (${sg.n} dia(s))` : `Diário: com a POS, em dupla com ${nm(sg.dupla_com)} (${sg.n} dia(s))`) : '';
+  if (!r) return `<td class="ar-c">${fut || s < AR_INICIO ? '<span class="ar-fut">—</span>' : `<button class="ar-pend ${atual ? 'cur' : ''} ${sg?.situacao === 'dupla' ? 'dup' : ''}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="${atual ? 'Semana em andamento' : 'Sem lançamento'}${dTxt ? ' · ' + dTxt : ''}">${atual ? 'em andamento' : sg?.situacao === 'dupla' ? ic('pair',12) + 'em dupla?' : ic('plus',12) + 'lançar'}</button>`}${sg && !fut ? `<i class="ar-dmk" title="${dTxt}"></i>` : ''}</td>`;
+  const dif = sg && ((r.situacao === 'dupla') !== (sg.situacao === 'dupla') || (r.situacao === 'dupla' && r.dupla_com && !sameId(r.dupla_com, sg.dupla_com)));
+  return `<td class="ar-c ${dif ? 'dif' : ''}"><button class="ar-v ${r.situacao}" data-act="ar-edit" data-id="${c.id}" data-k="${s}" title="Lançado por ${esc(r.lancado_por_nome || '—')}${r.obs ? ' — ' + esc(r.obs) : ''}${dTxt ? ' · ' + dTxt : ''}${dif ? ' — DIFERENTE DO DIÁRIO' : ''}">${r.situacao === 'normal' ? brl(r.valor) : `<span class="ar-tag ${r.situacao}">${AR_SIT[r.situacao].label}</span>${r.situacao === 'dupla' && r.dupla_com ? `<small class="ar-com">c/ ${nm(r.dupla_com)}</small>` : ''}${+r.valor ? `<small>${brl(r.valor)}</small>` : ''}`}${r.obs ? '<i class="ar-ob"></i>' : ''}${dif ? `<em class="ar-dif">${ic('notebook',10)}diário: ${sg.situacao === 'dupla' ? 'em dupla' : 'com a POS'}</em>` : ''}</button>${sg && !dif ? `<i class="ar-dmk" title="${dTxt}"></i>` : ''}</td>`;
 }
 function arAviso(){
   const per = arPendPer(BKEYS.filter(k => allowed(k) && (!S.base || k === S.base)));
@@ -7246,6 +7284,7 @@ const ACT = {
   'ar-b': a => { AR.b = AR.b === a.dataset.k ? '' : a.dataset.k; ARL = null; pgArrec(); },
   'ar-sem': a => { const s0 = AR.sem || arAlvo(); AR.sem = +a.dataset.k < 0 ? arAnt(s0) : arProx(s0); if (AR.sem < AR_INICIO) AR.sem = AR_INICIO; ARL = null; pgArLancar(); },
   'ar-sem-go': a => { AR.sem = a.dataset.k; ARL = null; pgArLancar(); },
+  'ar-dia-mes': () => arAplicaMes(),
   'ar-dia-all': () => { if (!ARL) return; let n = 0; Object.keys(ARL.d).forEach(cid => { const d = ARL.d[cid], sg = arSugDup(cid); if (!sg) return; if (d.situacao === sg.situacao && sameId(d.dupla_com || '', sg.dupla_com)) return; arAplicaDiario(cid, d); d.salvo = false; n++; });
     const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); toast(n ? `${n} linha(s) ajustada(s) pelo diário. Confira e salve.` : 'Tudo já está igual ao diário.'); },
   'ar-dia-1': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; arAplicaDiario(a.dataset.id, d); d.salvo = false; const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); },
