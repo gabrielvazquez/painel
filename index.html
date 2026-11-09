@@ -1905,7 +1905,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.25';
+const APP_VERSION = '2.26';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -6057,6 +6057,20 @@ function bdXlsForm(){
   foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-xls-go">${ic('download',15)}Gerar Excel</button>`,
   onMount: ov => { const p = $('#bxper', ov); p.onchange = () => { $('#bxdw', ov).hidden = $('#bxaw', ov).hidden = p.value !== 'custom'; }; }});
 }
+// Excel com cores (xlsx-js-style). Carregada à parte para não mexer no leitor de Excel do resto do painel.
+let XLSXSP = null;
+function loadXLSXStyle(){
+  if (window.__XLSXS) return Promise.resolve(window.__XLSXS);
+  if (XLSXSP) return XLSXSP;
+  XLSXSP = new Promise(res => {
+    const prev = window.XLSX, s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js';
+    s.onload = () => { window.__XLSXS = window.XLSX; if (prev) window.XLSX = prev; res(window.__XLSXS); };
+    s.onerror = () => { XLSXSP = null; if (prev) window.XLSX = prev; res(null); };   // sem a versão com cores: usa a normal
+    document.head.appendChild(s);
+  });
+  return XLSXSP;
+}
 async function bdXls(){
   const f = formObj(), tps = $$('#mf [name=tp]:checked').map(x => x.value), hj = new Date(), H = iso(hj);
   let de = '', ate = H;
@@ -6073,33 +6087,98 @@ async function bdXls(){
   const reus = tps.includes('reuniao') ? all.filter(a => a.tipo === 'reuniao') : [];
   const dups = tps.includes('duplas') ? all.filter(a => a.tipo === 'duplas') : [];
   if (!notas.length && !reus.length && !dups.length) return toast('Nada no diário com esses filtros.', 'err');
-  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  toast('Montando a planilha...');
+  let X = await loadXLSXStyle(), cor = !!X;
+  if (!X){ try { X = await loadXLSX(); } catch(e){ return err(e); } }
   const nomeC = id => id ? ((C(id) || CX(id))?.nome || '') : '', placa = id => id ? (V(id)?.placa || '') : '';
-  const pri = p => BD_PRI[p]?.label || '', st = a => a.status === 'resolvido' ? 'Resolvida' : 'Em aberto';
   const per = `${de ? fmtD(de) : 'início'} a ${ate >= '9999' ? fmtD(H) : fmtD(ate)}`;
+  const basesTxt = base ? bName(base) : 'Todas as bases';
+  // ---------- estilo ----------
+  const hx = c => String(c || '#64748b').replace('#', '').toUpperCase();
+  const tint = (c, k) => { const n = parseInt(hx(c), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255, m = v => Math.round(v + (255 - v) * k).toString(16).padStart(2, '0'); return (m(r) + m(g) + m(b)).toUpperCase(); };
+  const BRD = {style:'thin', color:{rgb:'E5E7EB'}}, borda = {top:BRD, bottom:BRD, left:BRD, right:BRD};
+  const ST = {
+    titulo: c => ({font:{name:'Calibri', sz:18, bold:true, color:{rgb:'FFFFFF'}}, fill:{patternType:'solid', fgColor:{rgb:hx(c)}}, alignment:{vertical:'center', horizontal:'left', indent:1}}),
+    sub: c => ({font:{name:'Calibri', sz:10, color:{rgb:'FFFFFF'}}, fill:{patternType:'solid', fgColor:{rgb:hx(c)}}, alignment:{vertical:'center', horizontal:'left', indent:1}}),
+    cab: c => ({font:{name:'Calibri', sz:11, bold:true, color:{rgb:'FFFFFF'}}, fill:{patternType:'solid', fgColor:{rgb:hx(c)}}, alignment:{vertical:'center', horizontal:'center', wrapText:true}, border:borda}),
+    cel: (zebra, extra = {}) => ({font:{name:'Calibri', sz:10, color:{rgb:'1F2937'}, ...(extra.font || {})}, fill:{patternType:'solid', fgColor:{rgb: extra.fill || (zebra ? 'F8FAFC' : 'FFFFFF')}}, alignment:{vertical:'top', wrapText:true, horizontal: extra.h || 'left'}, border:borda}),
+    rot: {font:{name:'Calibri', sz:9, bold:true, color:{rgb:'64748B'}}, alignment:{horizontal:'center', vertical:'bottom'}},
+    big: c => ({font:{name:'Calibri', sz:24, bold:true, color:{rgb:hx(c)}}, fill:{patternType:'solid', fgColor:{rgb:tint(c, .9)}}, alignment:{horizontal:'center', vertical:'center'}, border:{bottom:{style:'thick', color:{rgb:hx(c)}}}}),
+    sec: c => ({font:{name:'Calibri', sz:13, bold:true, color:{rgb:hx(c)}}, border:{bottom:{style:'medium', color:{rgb:hx(c)}}}}),
+  };
+  const SIT = {aberto:{t:'● Em aberto', c:'B45309', f:'FEF3C7'}, resolvido:{t:'✔ Resolvida', c:'15803D', f:'DCFCE7'}};
+  const PRI = {3:{t:'▲ Alta', c:'B91C1C', f:'FEE2E2'}, 2:{t:'■ Média', c:'B45309', f:'FEF3C7'}, 1:{t:'▼ Baixa', c:'475569', f:'F1F5F9'}};
   const wb = X.utils.book_new();
-  const aba = (nome, rows, cols) => { const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = cols.map(w => ({wch:w})); if (rows.length > 1) ws['!autofilter'] = {ref: X.utils.encode_range({s:{r:0, c:0}, e:{r:rows.length - 1, c:rows[0].length - 1}})}; X.utils.book_append_sheet(wb, ws, nome.slice(0, 31)); };
-  // Resumo
-  const cats = Object.keys(BD_CAT), res = [['Diário de bordo — exportação'], ['Período', per], ['Base', base ? bName(base) : 'Todas'], ['Gerado em', fmtDT(nowISO()) + ' por ' + S.profile.nome], [],
-    ['Categoria', 'Total', 'Em aberto', 'Resolvidas', 'Prioridade alta', 'Com lembrete vencido']];
-  cats.forEach(k => { const l = notas.filter(a => (a.categoria || 'Outro') === k); if (l.length) res.push([k, l.length, l.filter(a => a.status === 'aberto').length, l.filter(a => a.status === 'resolvido').length, l.filter(a => +a.prioridade === 3).length, l.filter(bdDue).length]); });
-  res.push(['Total de anotações', notas.length, notas.filter(a => a.status === 'aberto').length, notas.filter(a => a.status === 'resolvido').length, notas.filter(a => +a.prioridade === 3).length, notas.filter(bdDue).length]);
-  res.push([], ['Reuniões', reus.length, `${reus.filter(a => a.status === 'resolvido').length} realizada(s)`, `${reus.reduce((n, a) => n + (a.arquivos || []).length, 0)} ata(s) anexada(s)`]);
-  res.push(['Dias com duplas montadas', dups.length, `${dups.reduce((n, a) => n + (a.duplas || []).length, 0)} dupla(s) no total`]);
-  if (notas.length && !base){ res.push([], ['Anotações por base', 'Total', 'Em aberto']); [...myBases(), ''].forEach(k => { const l = notas.filter(a => (a.base || '') === k); if (l.length) res.push([k ? bName(k) : 'Particulares (sem base)', l.length, l.filter(a => a.status === 'aberto').length]); }); }
-  const wr = X.utils.aoa_to_sheet(res); wr['!cols'] = [{wch:30},{wch:14},{wch:22},{wch:22},{wch:16},{wch:20}]; X.utils.book_append_sheet(wb, wr, 'Resumo');
-  // Uma aba por categoria
+  // monta uma aba: faixa de título + cabeçalho colorido + linhas zebradas
+  const aba = (nome, c, titulo, cab, linhas, larg, fmt) => {
+    const sub = `${basesTxt} · ${per} · ${linhas.length} registro(s)`;
+    const ws = X.utils.aoa_to_sheet([[titulo], [sub], [], cab, ...linhas]);
+    ws['!cols'] = larg.map(w => ({wch:w}));
+    ws['!merges'] = [{s:{r:0, c:0}, e:{r:0, c:cab.length - 1}}, {s:{r:1, c:0}, e:{r:1, c:cab.length - 1}}];
+    ws['!rows'] = [{hpt:34}, {hpt:20}, {hpt:6}, {hpt:30}];
+    ws['!autofilter'] = {ref: X.utils.encode_range({s:{r:3, c:0}, e:{r:3 + linhas.length, c:cab.length - 1}})};
+    if (cor){
+      for (let k = 0; k < cab.length; k++){ const a0 = X.utils.encode_cell({r:0, c:k}), a1 = X.utils.encode_cell({r:1, c:k}), a3 = X.utils.encode_cell({r:3, c:k});
+        ws[a0] = ws[a0] || {t:'s', v:''}; ws[a0].s = ST.titulo(c); ws[a1] = ws[a1] || {t:'s', v:''}; ws[a1].s = ST.sub(c); ws[a3].s = ST.cab(c); }
+      linhas.forEach((l, i) => l.forEach((v, k) => { const ad = X.utils.encode_cell({r:4 + i, c:k}); if (!ws[ad]) ws[ad] = {t:'s', v:''}; ws[ad].s = ST.cel(i % 2, fmt ? fmt(k, v, i) || {} : {}); }));
+    }
+    X.utils.book_append_sheet(wb, ws, nome.slice(0, 31));
+  };
+  // ---------- Resumo ----------
+  const cats = Object.keys(BD_CAT), RC = '7C3AED';
+  const kp = [['Anotações', notas.length, '#7C3AED'], ['Em aberto', notas.filter(a => a.status === 'aberto').length, '#D97706'], ['Resolvidas', notas.filter(a => a.status === 'resolvido').length, '#16A34A'], ['Prioridade alta', notas.filter(a => +a.prioridade === 3).length, '#DC2626'], ['Reuniões', reus.length, '#2563EB'], ['Duplas', dups.reduce((n, a) => n + (a.duplas || []).length, 0), '#0D9488']];
+  const linhasCat = cats.map(k => { const l = notas.filter(a => (a.categoria || 'Outro') === k); return [k, l.length, l.filter(a => a.status === 'aberto').length, l.filter(a => a.status === 'resolvido').length, l.filter(a => +a.prioridade === 3).length, l.filter(bdDue).length]; }).filter(r => r[1]);
+  const mx = Math.max(1, ...linhasCat.map(r => r[1]));
+  const res = [['📒  Diário de bordo'], [`${basesTxt} · ${per} · gerado em ${fmtDT(nowISO())} por ${S.profile.nome}`], [],
+    kp.map(x => x[0]), kp.map(x => x[1]), [], ['Por categoria'], ['Categoria', 'Total', 'Em aberto', 'Resolvidas', 'Alta', 'Lembrete vencido', 'Proporção']];
+  const r0 = res.length;
+  linhasCat.forEach(r => res.push([...r, '█'.repeat(Math.max(1, Math.round(r[1] / mx * 24)))]));
+  res.push(['Total', notas.length, kp[1][1], kp[2][1], kp[3][1], notas.filter(bdDue).length, '']);
+  const rTot = res.length - 1;
+  const porBase = !base ? [...myBases(), ''].map(k => { const l = notas.filter(a => (a.base || '') === k); return [k, l.length, l.filter(a => a.status === 'aberto').length]; }).filter(r => r[1]) : [];
+  let rB = -1;
+  if (porBase.length){ res.push([], ['Por base'], ['Base', 'Total', 'Em aberto', '', '', '', 'Proporção']); rB = res.length; const mb = Math.max(1, ...porBase.map(r => r[1]));
+    porBase.forEach(r => res.push([r[0] ? bName(r[0]) : 'Particulares (sem base)', r[1], r[2], '', '', '', '█'.repeat(Math.max(1, Math.round(r[1] / mb * 24)))])); }
+  const wr = X.utils.aoa_to_sheet(res);
+  wr['!cols'] = [{wch:24},{wch:14},{wch:14},{wch:14},{wch:14},{wch:16},{wch:30}];
+  wr['!merges'] = [{s:{r:0, c:0}, e:{r:0, c:6}}, {s:{r:1, c:0}, e:{r:1, c:6}}, {s:{r:6, c:0}, e:{r:6, c:6}}];
+  wr['!rows'] = [{hpt:40}, {hpt:20}, {hpt:8}, {hpt:18}, {hpt:44}];
+  if (cor){
+    const set = (r, c, s) => { const a = X.utils.encode_cell({r, c}); wr[a] = wr[a] || {t:'s', v:''}; wr[a].s = s; };
+    for (let c = 0; c < 7; c++){ set(0, c, ST.titulo('#' + RC)); set(1, c, ST.sub('#' + RC)); set(7, c, ST.cab('#334155')); }
+    kp.forEach((x, c) => { set(3, c, ST.rot); set(4, c, ST.big(x[2])); });
+    set(6, 0, ST.sec('#' + RC));
+    linhasCat.forEach((r, i) => { const cc = BD_CAT[r[0]]; for (let c = 0; c < 7; c++) set(r0 + i, c, c === 0 ? {font:{name:'Calibri', sz:11, bold:true, color:{rgb:hx(cc)}}, fill:{patternType:'solid', fgColor:{rgb:tint(cc, .88)}}, border:borda, alignment:{vertical:'center', indent:1}}
+      : c === 6 ? {font:{name:'Calibri', sz:11, color:{rgb:hx(cc)}}, border:borda, alignment:{vertical:'center'}} : ST.cel(i % 2, {h:'center', ...(c === 2 && r[2] ? {font:{bold:true, color:{rgb:'B45309'}}} : c === 4 && r[4] ? {font:{bold:true, color:{rgb:'B91C1C'}}} : {})})); });
+    for (let c = 0; c < 7; c++) set(rTot, c, {font:{name:'Calibri', sz:11, bold:true, color:{rgb:'FFFFFF'}}, fill:{patternType:'solid', fgColor:{rgb:'334155'}}, alignment:{horizontal: c ? 'center' : 'left', indent: c ? 0 : 1}, border:borda});
+    if (rB > 0){ set(rB - 2, 0, ST.sec('#0EA5E9')); for (let c = 0; c < 7; c++) set(rB - 1, c, ST.cab('#334155'));
+      porBase.forEach((r, i) => { const bc = r[0] ? BASES[r[0]].c : '#64748B'; for (let c = 0; c < 7; c++) set(rB + i, c, c === 0 ? {font:{name:'Calibri', sz:11, bold:true, color:{rgb:hx(bc)}}, fill:{patternType:'solid', fgColor:{rgb:tint(bc, .88)}}, border:borda, alignment:{indent:1}} : c === 6 ? {font:{color:{rgb:hx(bc)}}, border:borda} : ST.cel(i % 2, {h:'center'})); }); }
+  }
+  X.utils.book_append_sheet(wb, wr, 'Resumo');
+  // ---------- uma aba por categoria ----------
   const cabN = ['Data', 'Título', 'Detalhes', 'Situação', 'Prioridade', 'Base', 'Colaborador', 'Veículo', 'Lembrar em', 'Resolvida em', 'Anotado por'];
   cats.forEach(k => { const l = notas.filter(a => (a.categoria || 'Outro') === k).sort((a,b) => (a.status === 'resolvido') - (b.status === 'resolvido') || b.prioridade - a.prioridade || a.data.localeCompare(b.data)); if (!l.length) return;
-    aba(k, [cabN, ...l.map(a => [fmtD(a.data), a.titulo, a.texto || '', st(a), pri(a.prioridade), a.base ? bName(a.base) : 'Particular', nomeC(a.colaborador_id), placa(a.veiculo_id), a.lembrar_em ? fmtD(a.lembrar_em) : '', a.resolvido_em ? fmtD(a.resolvido_em) : '', a.autor_nome || ''])], [11,40,60,11,10,13,26,10,11,12,20]); });
-  if (reus.length) aba('Reuniões', [['Data', 'Horário', 'Assunto', 'Situação', 'Local', 'Base', 'Participantes', 'Pauta e decisões', 'Atas anexadas', 'Registrada por'],
-    ...reus.map(a => [fmtD(a.data), a.hora ? hhmm(a.hora) : '', a.titulo, a.status === 'resolvido' ? 'Realizada' : 'Agendada', a.local || '', a.base ? bName(a.base) : 'Particular', a.participantes || '', a.texto || '', (a.arquivos || []).map(x => x.nome).join(', '), a.autor_nome || ''])], [11,8,36,10,18,13,40,60,30,20]);
-  if (dups.length){ const rows = [['Data', 'Dia da semana', 'Base', 'Nº', 'Fica com a POS', 'Acompanha', 'Observação', 'Montado por']];
+    aba(k, BD_CAT[k], `${k}  ·  ${l.filter(a => a.status === 'aberto').length} em aberto de ${l.length}`, cabN,
+      l.map(a => [fmtD(a.data), a.titulo, a.texto || '', a.status === 'resolvido' ? SIT.resolvido.t : SIT.aberto.t, PRI[a.prioridade]?.t || '', a.base ? bName(a.base) : 'Particular', nomeC(a.colaborador_id), placa(a.veiculo_id), a.lembrar_em ? fmtD(a.lembrar_em) : '', a.resolvido_em ? fmtD(a.resolvido_em) : '', a.autor_nome || '']),
+      [11,38,56,13,11,13,24,10,11,12,20],
+      (c, v, i) => { const a = l[i];
+        if (c === 1) return {font:{bold:true}};
+        if (c === 3){ const x = a.status === 'resolvido' ? SIT.resolvido : SIT.aberto; return {fill:x.f, font:{bold:true, color:{rgb:x.c}}, h:'center'}; }
+        if (c === 4){ const x = PRI[a.prioridade]; return x ? {fill:x.f, font:{bold:true, color:{rgb:x.c}}, h:'center'} : {}; }
+        if (c === 8 && bdDue(a)) return {font:{bold:true, color:{rgb:'B91C1C'}}, h:'center'};
+        if (c === 0 || c === 7 || c === 8 || c === 9) return {h:'center'}; }); });
+  if (reus.length) aba('Reuniões', '#2563EB', `Reuniões  ·  ${reus.filter(a => a.status === 'resolvido').length} realizada(s) de ${reus.length}`,
+    ['Data', 'Horário', 'Assunto', 'Situação', 'Local', 'Base', 'Participantes', 'Pauta e decisões', 'Atas anexadas', 'Registrada por'],
+    reus.map(a => [fmtD(a.data), a.hora ? hhmm(a.hora) : '', a.titulo, a.status === 'resolvido' ? '✔ Realizada' : '◷ Agendada', a.local || '', a.base ? bName(a.base) : 'Particular', a.participantes || '', a.texto || '', (a.arquivos || []).map(x => '📎 ' + x.nome).join('\n'), a.autor_nome || '']),
+    [11,8,34,12,18,13,36,56,30,20],
+    (c, v, i) => c === 2 ? {font:{bold:true}} : c === 3 ? (reus[i].status === 'resolvido' ? {fill:'DCFCE7', font:{bold:true, color:{rgb:'15803D'}}, h:'center'} : {fill:'DBEAFE', font:{bold:true, color:{rgb:'1D4ED8'}}, h:'center'}) : (c < 2 ? {h:'center'} : {}));
+  if (dups.length){ const rows = [], meta = [];
     dups.forEach(a => (a.duplas || []).forEach((p, i) => { const [x, y] = (p || []).map(String), cx = C(x), cy = C(y), tit = cx?.pos && !cy?.pos ? x : cy?.pos && !cx?.pos ? y : x, out = tit === x ? y : x;
-      rows.push([fmtD(a.data), cap(parseISO(a.data).toLocaleDateString('pt-BR', {weekday:'long'})), bName(a.base), i + 1, nomeC(tit), nomeC(out), i ? '' : (a.texto || ''), a.autor_nome || '']); }));
-    aba('Duplas', rows, [11,14,13,4,28,28,36,20]); }
+      rows.push([fmtD(a.data), cap(parseISO(a.data).toLocaleDateString('pt-BR', {weekday:'long'})), bName(a.base), i + 1, '💳 ' + nomeC(tit), '👤 ' + nomeC(out), i ? '' : (a.texto || ''), a.autor_nome || '']); meta.push(a); }));
+    aba('Duplas', '#0D9488', `Duplas do dia  ·  ${rows.length} dupla(s) em ${dups.length} dia(s)`, ['Data', 'Dia da semana', 'Base', 'Nº', 'Fica com a POS', 'Acompanha', 'Observação', 'Montado por'], rows, [11,14,13,5,28,28,34,20],
+      (c, v, i) => c === 2 ? {font:{bold:true, color:{rgb:hx(BASES[meta[i].base]?.c)}}, fill:tint(BASES[meta[i].base]?.c, .9)} : c === 4 ? {font:{bold:true, color:{rgb:'0F766E'}}, fill:'CCFBF1'} : (c === 0 || c === 3 ? {h:'center'} : {})); }
   X.writeFile(wb, `Diario_de_bordo_${(de || 'inicio')}_a_${ate >= '9999' ? H : ate}${base ? '_' + bName(base).replace(/\s/g, '') : ''}.xlsx`);
-  closeModal(); toast(`Diário exportado: ${notas.length} anotação(ões), ${reus.length} reunião(ões), ${dups.length} dia(s) de duplas.`);
+  closeModal(); toast(`Diário exportado${cor ? ' com cores' : ''}: ${notas.length} anotação(ões), ${reus.length} reunião(ões), ${dups.length} dia(s) de duplas.`);
 }
 async function bdDel(id){
   const a = AN(id); if (!a || !await confirmBox(`Excluir ${a.tipo === 'reuniao' ? `a reunião <b>${esc(a.titulo)}</b>${(a.arquivos || []).length ? ' e as atas anexadas' : ''}` : a.tipo === 'duplas' ? `as duplas de <b>${bName(a.base)}</b> em ${fmtD(a.data)}` : `a anotação <b>${esc(a.titulo)}</b>`}?`)) return;
