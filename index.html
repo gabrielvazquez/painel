@@ -1893,6 +1893,10 @@ button.po-tr:hover{background:var(--soft)}
 /* v2.25: exportar diário */
 .bx-tp{display:flex;flex-direction:column;gap:8px}.bx-tp label{display:flex!important;align-items:center;justify-content:flex-start;gap:10px;font-size:13px;font-weight:400;text-align:left;color:var(--ink);margin:0}
 .bx-tp input{width:18px!important;height:18px;flex:none;margin:0;padding:0;accent-color:var(--accent)}
+
+/* v2.27: POS em dupla */
+.pos-dup{display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#0f766e;background:#f0fdfa;border-radius:10px;padding:1px 7px;margin-left:4px;white-space:nowrap}
+div.pos-dup{display:flex;width:max-content;margin:4px 0 0}
 </style>
 </head>
 <body>
@@ -1905,7 +1909,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.26';
+const APP_VERSION = '2.27';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -2830,7 +2834,7 @@ function pgColab(){
 function colabFiltered(){
   const f = S.f, q = f.cq.toLowerCase().trim();
   return colabsV().filter(c => (!f.cs || c.status===f.cs) && (!f.cl || sameId(c.lider_id,f.cl)) &&
-    (!q || [c.nome,c.cargo,c.telefone,c.email,c.pos,c.imei1,c.imei2,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome,bName(c.base)].join(' ').toLowerCase().includes(q)));
+    (!q || [c.nome,c.cargo,c.telefone,c.email,posDe(c),posCom(c)?.nome,c.imei1,c.imei2,c.matricula,V(c.veiculo_id)?.placa,P(c.lider_id)?.nome,bName(c.base)].join(' ').toLowerCase().includes(q)));
 }
 function colabList(){
   const list = colabFiltered(); const {col, dir} = S.sort; const multi = !S.base && myBases().length > 1;
@@ -2846,7 +2850,7 @@ function rowColab(c, multi){
     <td data-l="" class="mc-main"><div class="who">${avc(c)}<div style="min-width:0"><b>${esc(c.nome)}</b><small>${esc(c.cargo||'Sem cargo')}${c.matricula?' — mat. '+esc(c.matricula):''}</small></div></div></td>
     ${multi?`<td data-l="Base">${bTag(c.base)}</td>`:''}
     <td class="hide-m"><div>${esc(c.telefone||'—')}</div><div class="muted s">${esc(c.email||'')}</div></td>
-    <td data-l="Nº POS">${c.pos?`<span class="pos mono">${esc(c.pos)}</span> <button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar POS">${ic('copy',13)}</button>`:'<span class="muted">—</span>'}</td>
+    <td data-l="Nº POS">${c.pos?`<span class="pos mono">${esc(c.pos)}</span> <button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar POS">${ic('copy',13)}</button>${posDividida(c).length ? `<span class="pos-dup" title="Divide a POS com ${esc(posDividida(c).map(x => x.nome).join(', '))}">${ic('pair',11)}${esc(posDividida(c).map(x => firstName(x.nome)).join(', '))}</span>` : ''}`:posCom(c)?`<span class="pos-dup">${ic('pair',11)}POS de ${esc(firstName(posCom(c).nome))}</span>`:'<span class="muted">—</span>'}</td>
     <td data-l="Veículo">${v?`<span class="vlink">${plate(v.placa,true)}<i class="dot" style="--c:${VSTATUS[v.status]?.color}" title="${VSTATUS[v.status]?.label}"></i></span>`:'<span class="muted">Sem veículo</span>'}</td>
     <td class="hide-m">${l?esc(l.nome):'<span class="muted">—</span>'}</td>
     <td data-l="Status">${chip(CSTATUS[c.status])}</td>
@@ -2866,7 +2870,7 @@ function openColab(id){
       <div class="dl">
         <div><small>Telefone</small><b>${esc(c.telefone||'—')}</b>${dig?`<div class="contact"><a href="tel:${dig}">${ic('phone',12)}Ligar</a><a href="https://wa.me/55${dig}" target="_blank" rel="noopener">${ic('msg',12)}WhatsApp</a></div>`:''}</div>
         <div><small>E-mail</small><b>${esc(c.email||'—')}</b>${c.email?`<div class="contact"><a href="mailto:${esc(c.email)}">${ic('mail',12)}Enviar e-mail</a></div>`:''}</div>
-        <div><small>Nº da POS</small><b class="mono">${esc(c.pos||'—')}</b> ${c.pos?`<button class="icon-btn xs" data-act="copy" data-v="${esc(c.pos)}" title="Copiar">${ic('copy',13)}</button>`:''}</div>
+        <div><small>Nº da POS</small><b class="mono">${esc(posDe(c)||'—')}</b> ${posDe(c)?`<button class="icon-btn xs" data-act="copy" data-v="${esc(posDe(c))}" title="Copiar">${ic('copy',13)}</button>`:''}${posCom(c) ? `<div class="pos-dup">${ic('pair',11)}Em dupla: usa a POS de <span class="lnk" data-act="c-open" data-id="${posCom(c).id}">${esc(posCom(c).nome)}</span></div>` : posDividida(c).length ? `<div class="pos-dup">${ic('pair',11)}Divide a POS com ${posDividida(c).map(x => `<span class="lnk" data-act="c-open" data-id="${x.id}">${esc(firstName(x.nome))}</span>`).join(', ')}</div>` : ''}</div>
         <div><small>IMEI 1 (celular)</small>${imeiShow(c.imei1)}</div>
         <div><small>IMEI 2 (celular)</small>${imeiShow(c.imei2)}</div>
         <div><small>Matrícula</small><b>${esc(c.matricula||'—')}</b></div>
@@ -2901,6 +2905,17 @@ function colabSelects(base, c, id){
     veic: `<option value="">— Sem veículo —</option>${opts(vOpts, c.veiculo_id)}`
   };
 }
+// POS em dupla: o colaborador usa a POS de um colega (ex.: estão no mesmo carro)
+const posCom = c => c?.pos_com ? (C(c.pos_com) || CX(c.pos_com)) : null;
+const posDe = c => c?.pos || posCom(c)?.pos || '';
+const posDividida = c => S.colabs.filter(x => x.pos_com && sameId(x.pos_com, c?.id) && x.status !== 'desligado');
+const temPos = c => !!(c?.pos || c?.pos_com);
+function posComOpts(base, c, id){
+  const meuCarro = c?.veiculo_id ? condutoresOf(c.veiculo_id).filter(x => !sameId(x.id, id)).map(x => String(x.id)) : [];
+  const l = S.colabs.filter(x => x.base === base && !sameId(x.id, id) && x.pos && !x.pos_com && x.status !== 'desligado')
+    .sort((a,b) => meuCarro.includes(String(b.id)) - meuCarro.includes(String(a.id)) || a.nome.localeCompare(b.nome,'pt'));
+  return `<option value="">— Não, POS própria —</option>${opts(l.map(x => [x.id, `${x.nome} · POS …${String(x.pos).slice(-4)}${meuCarro.includes(String(x.id)) ? ' (mesmo carro)' : ''}`]), c?.pos_com || '')}`;
+}
 function colabForm(id){
   const c = id ? C(id) : {status:'ativo', base:defBase()};
   if (!c || (id ? !canColab(c.base) : !canColabAny())) return toast('Você só pode mexer no cadastro das suas bases.', 'err');
@@ -2912,7 +2927,8 @@ function colabForm(id){
     ${fld('Matrícula', inp('matricula',c.matricula))}
     ${fld('Telefone', inp('telefone',c.telefone,'data-mask="phone" inputmode="tel" placeholder="(11) 90000-0000"'))}
     ${fld('E-mail', inp('email',c.email,'type="email" placeholder="nome@empresa.com"'))}
-    ${fld('Nº da POS', inp('pos',c.pos,'class="mono" inputmode="numeric" placeholder="Número completo da POS"'), false, false, 'Pode colar o número inteiro, sem limite de dígitos.')}
+    ${fld('Nº da POS', inp('pos',c.pos,'class="mono" inputmode="numeric" placeholder="' + (c.pos_com ? 'Usa a POS do colega' : 'Número completo da POS') + '" id="fpos"' + (c.pos_com ? ' disabled' : '')), false, false, 'Pode colar o número inteiro, sem limite de dígitos.')}
+    ${fld(ic('pair',13) + ' POS em dupla', `<select name="pos_com" id="fposc">${posComOpts(c.base, c, id)}</select>`, false, false, 'Quando a dupla usa a mesma POS (ex.: estão no mesmo carro). A arrecadação dele entra como "Em dupla".')}
     ${fld('IMEI 1 do celular', inp('imei1',c.imei1,'class="mono" inputmode="numeric" maxlength="20" placeholder="15 dígitos"'), false, false, 'No celular, digite *#06# para ver o IMEI.')}
     ${fld('IMEI 2 do celular', inp('imei2',c.imei2,'class="mono" inputmode="numeric" maxlength="20" placeholder="15 dígitos (chip 2)"'), false, false, 'Celular com dois chips tem dois IMEIs.')}
     ${fld('Data de aniversário', inp('nascimento',c.nascimento,'type="date" max="' + iso(new Date()) + '"'), false, false, 'Dia e mês do aniversário (o ano mostra a idade).')}
@@ -2921,7 +2937,10 @@ function colabForm(id){
     ${fld('Status', rchips('status',CSTATUS,c.status||'ativo'), true)}
     ${fld('Observações', `<textarea name="observacoes" rows="3">${esc(c.observacoes||'')}</textarea>`, true)}
   </form>`, foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="c-save" data-id="${id||''}">${ic('check',15)}Salvar colaborador</button>`,
-  onMount: ov => { $('#fbase',ov).onchange = e => { const s = colabSelects(e.target.value, {}, id); $('#flid',ov).innerHTML = s.lider; $('#fveic',ov).innerHTML = s.veic; }; }});
+  onMount: ov => { const pc = $('#fposc',ov), fp = $('#fpos',ov), syncPos = () => { const on = !!pc.value; fp.disabled = on; fp.placeholder = on ? 'Usa a POS de ' + firstName(C(pc.value)?.nome || 'colega') : 'Número completo da POS'; if (on) fp.value = ''; };
+    pc.onchange = syncPos;
+    $('#fveic',ov).addEventListener('change', e => { const cur = pc.value; pc.innerHTML = posComOpts($('#fbase',ov).value, {veiculo_id:e.target.value, pos_com:cur}, id); });
+    $('#fbase',ov).onchange = e => { const s = colabSelects(e.target.value, {}, id); $('#flid',ov).innerHTML = s.lider; $('#fveic',ov).innerHTML = s.veic; pc.innerHTML = posComOpts(e.target.value, {}, id); syncPos(); }; }});
 }
 async function saveColab(id){
   const f = formObj(); if (!f.nome) return toast('Informe o nome do colaborador.','err');
@@ -2931,8 +2950,10 @@ async function saveColab(id){
   if (f.imei1 && f.imei2 && imeiN(f.imei1) === imeiN(f.imei2)) return toast('O IMEI 1 e o IMEI 2 estão iguais.','err');
   { const dup = ['imei1','imei2'].map(k => imeiN(f[k])).filter(Boolean).map(d => S.colabs.find(c => !sameId(c.id, id) && (c.imei1 === d || c.imei2 === d))).find(Boolean);
     if (dup && !await confirmBox(`Esse IMEI já está cadastrado para <b>${esc(dup.nome)}</b>. Salvar mesmo assim?`, 'Salvar')) return; }
-  const row = {imei1:imeiN(f.imei1) || null, imei2:imeiN(f.imei2) || null, nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos ? f.pos.replace(/\s+/g,'') : null,
+  const row = {imei1:imeiN(f.imei1) || null, imei2:imeiN(f.imei2) || null, nome:f.nome, base:f.base, cargo:f.cargo, matricula:f.matricula, telefone:f.telefone, email:f.email, pos:f.pos_com ? null : (f.pos ? f.pos.replace(/\s+/g,'') : null), pos_com:f.pos_com || null,
     nascimento:f.nascimento || null, lider_id:f.lider_id, veiculo_id:f.veiculo_id, status:f.status||'ativo', observacoes:f.observacoes};
+  if (row.pos_com && id && posDividida(C(id)).length) return toast(`${posDividida(C(id)).map(x => firstName(x.nome)).join(', ')} usa a POS deste colaborador. Desfaça isso antes de colocá-lo em dupla na POS de outro.`, 'err');
+  if (!row.pos_com && id && C(id)?.pos && !row.pos && posDividida(C(id)).length && !await confirmBox(`${esc(posDividida(C(id)).map(x => firstName(x.nome)).join(', '))} usa a POS deste colaborador. Tirar a POS dele mesmo assim?`, 'Tirar')) return;
   try {
     if (row.veiculo_id && !sameId(row.veiculo_id, id ? C(id)?.veiculo_id : '')){
       const modo = await veicModo(row.veiculo_id, id); if (!modo) return;
@@ -3125,6 +3146,7 @@ const IMP = {
       {k:'telefone', h:'Telefone', w:17, text:true, al:['telefone','celular','fone','tel','whatsapp']},
       {k:'email', h:'E-mail', w:28, al:['email','emailcorporativo']},
       {k:'pos', h:'Nº POS', w:22, text:true, al:['npos','pos','numeropos','numerodapos','nposterminal']},
+      {k:'pos_com', h:'POS em dupla com', w:26, al:['posemduplacom','posemdupla','posdupla','duplapos','usaaposde']},
       {k:'imei1', h:'IMEI 1', w:18, text:true, al:['imei1','imei','imeicelular','imei1celular','imeichip1']},
       {k:'imei2', h:'IMEI 2', w:18, text:true, al:['imei2','imei2celular','imeichip2']},
       {k:'placa', h:'Placa do veículo', w:16, al:['placadoveiculo','placa','veiculo']},
@@ -3132,7 +3154,7 @@ const IMP = {
       {k:'status', h:'Status', w:12, al:['status','situacao']},
       {k:'observacoes', h:'Observações', w:32, al:['observacoes','observacao','obs']}
     ],
-    exemplo:['Maria da Silva','Pinheiros','Técnica de campo','10234','(11) 98765-4321','maria.silva@empresa.com','0012345678901234','356938035643809','','ABC1D23','15/03/2021','Ativo','']
+    exemplo:['Maria da Silva','Pinheiros','Técnica de campo','10234','(11) 98765-4321','maria.silva@empresa.com','0012345678901234','','356938035643809','','ABC1D23','15/03/2021','Ativo','']
   },
   veic: {
     nome:'veículos', sheet:'Frota', modelo:'Modelo_Frota.xlsx',
@@ -3172,7 +3194,7 @@ const mapTipo = s => { const n = nk(s); if (n.startsWith('moto')) return 'moto';
 
 function rowsExport(kind){
   if (kind === 'veic') return frotaFiltered().map(v => [v.placa, v.tipo==='moto'?'Moto':'Carro', bName(v.base), v.marca||'', v.modelo||'', v.ano||'', v.cor||'', v.km ?? '', VSTATUS[v.status]?.label||'', v.observacoes||'']);
-  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', c.imei1||'', c.imei2||'', V(c.veiculo_id)?.placa||'', c.nascimento?fmtD(c.nascimento):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
+  return colabFiltered().map(c => [c.nome, bName(c.base), c.cargo||'', c.matricula||'', c.telefone||'', c.email||'', c.pos||'', posCom(c)?.nome||'', c.imei1||'', c.imei2||'', V(c.veiculo_id)?.placa||'', c.nascimento?fmtD(c.nascimento):'', CSTATUS[c.status]?.label||'', c.observacoes||'']);
 }
 async function excelFile(kind, withData){
   let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
@@ -3311,6 +3333,8 @@ function validateImport(){
         ...(adm ? {nascimento:adm} : {}), status:status||'ativo', observacoes:o.observacoes||null};
       if (veiculo_id) r.d.veiculo_id = veiculo_id;
       if (im1) r.d.imei1 = im1; if (im2) r.d.imei2 = im2;   // em branco na planilha: mantém o que já estava
+      if (o.pos_com){ const pn = nk(o.pos_com), par = S.colabs.find(x => nk(x.nome) === pn && (!b || x.base === b) && x.pos);
+        if (par && !(ex && sameId(par.id, ex.id))){ r.d.pos_com = par.id; r.d.pos = null; } else r.warns.push(`POS em dupla: "${o.pos_com}" não encontrado com POS na base, ficou sem dupla`); }
       r.match = ex; r.act = ex ? 'atualizar' : 'novo';
       r.show = [o.nome || '—', b ? BASES[b].nome : (o.base||'—'), pos || '—', o.placa ? normPlaca(o.placa) : '—'];
       out.push(r);
@@ -4701,7 +4725,7 @@ function revChecks(base){
   const lim = new Date(Date.now() - 15*864e5).toISOString();
   return [
     {t:'Colaboradores sem telefone', l:cs.filter(c => !c.telefone), nav:'colaboradores'},
-    {t:'Colaboradores sem Nº POS', l:cs.filter(c => !c.pos), nav:'colaboradores'},
+    {t:'Colaboradores sem Nº POS', l:cs.filter(c => !temPos(c)), nav:'colaboradores'},
     {t:'Colaboradores sem e-mail', l:cs.filter(c => !c.email), nav:'colaboradores'},
     {t:'Colaboradores sem veículo ou líder', l:cs.filter(c => c.status === 'ativo' && (!c.lider_id)), nav:'colaboradores'},
     {t:'Veículos sem quilometragem', l:vs.filter(v => !v.km), nav:'frota', v:true},
@@ -6583,7 +6607,7 @@ function pgArrec(){
     <div class="tb-right"><button class="btn" data-act="ar-xls">${ic('download',16)}<span class="hide-s">Exportar</span></button><button class="btn pri" data-act="ar-lancar">${ic('coin',16)}Lançar semana</button></div>
   </div>
   <div class="card ar-card">${lista.length ? `<div class="ar-scroll"><table class="ar-tbl"><thead><tr><th class="ar-who">Funcionário</th>${sems.map((s, i) => `<th class="ar-w ${s === alvo ? 'alvo' : ''}"><b>Semana ${i + 1}</b><small>${arLbl(s)}${arDias(s) < 7 ? ` · ${arDias(s)} dia${arDias(s) > 1 ? 's' : ''}` : ''}</small></th>`).join('')}<th class="ar-tot">Total do mês</th></tr></thead><tbody>
-    ${lista.map(l => { const p = pos.get(String(l.c.id)); return `<tr><td class="ar-who"><div class="ar-p" data-act="c-open" data-id="${l.c.id}" role="button">${p != null && p < 3 ? `<span class="ar-medal m${p}">${p + 1}</span>` : ''}${avc(l.c, 32)}<span><b>${esc(l.c.nome)}</b><small>${emblem(l.c.base,7,2)}${bName(l.c.base)}${!l.c.pos ? ' · sem POS cadastrado' : ''}</small></span></div></td>
+    ${lista.map(l => { const p = pos.get(String(l.c.id)); return `<tr><td class="ar-who"><div class="ar-p" data-act="c-open" data-id="${l.c.id}" role="button">${p != null && p < 3 ? `<span class="ar-medal m${p}">${p + 1}</span>` : ''}${avc(l.c, 32)}<span><b>${esc(l.c.nome)}</b><small>${emblem(l.c.base,7,2)}${bName(l.c.base)}${posCom(l.c) ? ' · POS em dupla com ' + esc(firstName(posCom(l.c).nome)) : !l.c.pos ? ' · sem POS cadastrado' : ''}</small></span></div></td>
       ${sems.map(s => arCell(l.c, s, arRec(l.c.id, s))).join('')}
       <td class="ar-tot"><b>${brl(l.t)}</b><small>${l.n ? `${l.n} semana(s) · média ${brlC(l.med)}` : 'nada contabilizado'}</small></td></tr>`; }).join('')}
     </tbody><tfoot><tr><td class="ar-who"><b>Total</b></td>${semTot.map(t => `<td><b>${t ? brl(t) : '—'}</b></td>`).join('')}<td class="ar-tot"><b>${brl(total)}</b></td></tr></tfoot></table></div>`
@@ -6627,7 +6651,7 @@ function pgArLancar(){
   if (!AR.sem) AR.sem = arAlvo();
   const s = AR.sem, bases = arBases(), pessoas = arPessoas(s, bases), fut = s > arAtual();
   if (!ARL || ARL.s !== s){ ARL = {s, d:{}, diario:arDiario(s)}; pessoas.forEach(c => { const r = arRec(c.id, s);
-    ARL.d[c.id] = r ? {valor:brlIn(r.valor), situacao:r.situacao, dupla_com:r.dupla_com || '', obs:r.obs || '', salvo:true} : {valor:'', situacao:c.pos ? 'normal' : 'sem_pos', dupla_com:'', obs:'', sug:!c.pos};
+    ARL.d[c.id] = r ? {valor:brlIn(r.valor), situacao:r.situacao, dupla_com:r.dupla_com || '', obs:r.obs || '', salvo:true} : {valor:'', situacao:c.pos_com ? 'dupla' : c.pos ? 'normal' : 'sem_pos', dupla_com:c.pos_com || '', obs:'', sug:!c.pos && !c.pos_com, sugP:!!c.pos_com};
     if (!r) arAplicaDiario(c.id, ARL.d[c.id]); }); }
   const nDup = [...ARL.diario.values()].filter(x => x.papel === 'acomp').length, nPar = Math.round([...ARL.diario.keys()].filter(k => pessoas.some(c => sameId(c.id, k))).length / 2);
   const difs = pessoas.filter(c => { const sg = arSugDup(c.id), d = ARL.d[c.id]; return sg && (d.situacao === 'dupla') !== (sg.situacao === 'dupla'); }).length;
@@ -6656,10 +6680,10 @@ function arLinha(c){
   const d = ARL.d[c.id], r = arRec(c.id, ARL.s), aus = ausenteEm(c.id, ARL.s) || ausenteEm(c.id, arFim(ARL.s));
   const pool = S.colabs.filter(x => x.base === c.base && !sameId(x.id, c.id) && x.status !== 'desligado').sort((a,b) => a.nome.localeCompare(b.nome,'pt'));
   return `<div class="ar-l ${d.situacao}" id="arl-${c.id}">
-    <div class="ar-l-p">${avc(c, 36)}<span><b>${esc(c.nome)}</b><small>${emblem(c.base,7,2)}${bName(c.base)}${c.pos ? ` · POS …${esc(String(c.pos).slice(-4))}` : ' · <em>sem POS cadastrado</em>'}${aus ? ` · <em>${esc(EV[aus.tipo]?.label || 'ausente')}</em>` : ''}</small></span></div>
+    <div class="ar-l-p">${avc(c, 36)}<span><b>${esc(c.nome)}</b><small>${emblem(c.base,7,2)}${bName(c.base)}${c.pos ? ` · POS …${esc(String(c.pos).slice(-4))}` : posCom(c) ? ` · <b class="pos-dup">${ic('pair',10)}POS de ${esc(firstName(posCom(c).nome))}</b>` : ' · <em>sem POS cadastrado</em>'}${aus ? ` · <em>${esc(EV[aus.tipo]?.label || 'ausente')}</em>` : ''}</small></span></div>
     <div class="ar-l-v"><label class="ar-money ${d.situacao !== 'normal' ? 'off' : ''}"><span>R$</span><input class="ar-in" data-id="${c.id}" inputmode="decimal" placeholder="0,00" value="${esc(d.valor)}" aria-label="Valor arrecadado por ${esc(c.nome)}"></label></div>
     <div class="ar-l-t"><button class="ar-tg dupla ${d.situacao === 'dupla' ? 'on' : ''}" data-act="ar-sit" data-id="${c.id}" data-k="dupla">${ic('pair',14)}Em dupla</button><button class="ar-tg sem_pos ${d.situacao === 'sem_pos' ? 'on' : ''}" data-act="ar-sit" data-id="${c.id}" data-k="sem_pos">${ic('pos',14)}Sem POS</button><button class="ar-tg obs ${d.obs || d.vObs ? 'on' : ''}" data-act="ar-vobs" data-id="${c.id}" title="Observação">${ic('msg',14)}<span class="hide-s">Obs.</span></button></div>
-    <div class="ar-l-s"><span class="ar-st ${d.salvo ? 'ok' : ''}" id="ars-${c.id}">${d.salvo ? ic('check',12) + 'salvo' : d.sugD ? 'pelo diário' : d.sug ? 'sem POS no cadastro' : 'pendente'}</span></div>
+    <div class="ar-l-s"><span class="ar-st ${d.salvo ? 'ok' : ''}" id="ars-${c.id}">${d.salvo ? ic('check',12) + 'salvo' : d.sugD ? 'pelo diário' : d.sugP ? 'POS em dupla' : d.sug ? 'sem POS no cadastro' : 'pendente'}</span></div>
     ${(() => { const dr = ARL.diario?.get(String(c.id)); if (!dr) return ''; const sg = arSugDup(c.id), igual = (d.situacao === 'dupla') === (sg.situacao === 'dupla') && (d.situacao !== 'dupla' || !d.dupla_com || sameId(d.dupla_com, sg.dupla_com));
       return `<div class="ar-l-x ar-dl ${igual ? '' : 'dif'}">${ic('notebook',12)}<span>Diário: em dupla com <b>${esc(firstName((C(dr.com) || CX(dr.com))?.nome || '?'))}</b> em ${dr.n} dia(s) · ${dr.papel === 'acomp' ? 'acompanhando (sem POS na dupla)' : 'com a POS da dupla'}</span>${igual ? '' : `<button class="btn sm" data-act="ar-dia-1" data-id="${c.id}">Usar o diário</button>`}</div>`; })()}
     ${d.situacao === 'dupla' ? `<div class="ar-l-x"><select class="sel ar-dsel" data-id="${c.id}" aria-label="Em dupla com"><option value="">Em dupla com... (opcional)</option>${opts(pool.map(x => [x.id, x.nome]), d.dupla_com)}</select></div>` : ''}
@@ -6714,9 +6738,9 @@ function arEdit(cid, s){
   const hist = isAdmin() ? (S.arrLog || []).filter(l => sameId(l.colaborador_id, cid) && l.semana === s).slice(0, 8) : [];
   openModal({title:'Arrecadação da semana', body:`<div class="ar-ed-h">${avc(c, 44)}<span><b>${esc(c.nome)}</b><small>${bTag(c.base)} ${s === arFim(s) ? 'Dia ' + fmtD(s) : `Semana de ${fmtD(s)} a ${fmtD(arFim(s))}`}</small></span></div>
     <form id="mf" class="form one" autocomplete="off">
-      ${fld('Situação', rchips('situacao', AR_SIT, r?.situacao || (c.pos ? 'normal' : 'sem_pos')), true, false, '"Em dupla" e "Sem POS" não entram na soma do funcionário.')}
+      ${fld('Situação', rchips('situacao', AR_SIT, r?.situacao || (c.pos_com ? 'dupla' : c.pos ? 'normal' : 'sem_pos')), true, false, '"Em dupla" e "Sem POS" não entram na soma do funcionário.')}
       ${fld('Valor arrecadado', `<label class="ar-money big"><span>R$</span><input name="valor" id="arev" inputmode="decimal" placeholder="0,00" value="${r ? brlIn(r.valor) : ''}"></label>`, true)}
-      ${fld('Em dupla com (opcional)', `<select name="dupla_com"><option value="">—</option>${opts(pool.map(x => [x.id, x.nome]), r?.dupla_com || '')}</select>`, true)}
+      ${fld('Em dupla com (opcional)', `<select name="dupla_com"><option value="">—</option>${opts(pool.map(x => [x.id, x.nome]), r?.dupla_com || c.pos_com || '')}</select>`, true)}
       ${fld('Observação', inp('obs', r?.obs || '', 'maxlength="140" placeholder="Opcional"'), true)}
     </form>
     ${r ? `<p class="f-hint">Último lançamento por ${esc(r.lancado_por_nome || '—')} em ${fmtDT(r.updated_at || r.created_at)}.</p>` : ''}
