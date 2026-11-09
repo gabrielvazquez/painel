@@ -1889,6 +1889,10 @@ button.po-tr:hover{background:var(--soft)}
 .ar-dif{display:inline-flex;align-items:center;gap:3px;font-style:normal;font-size:10px;font-weight:700;color:#b45309;white-space:nowrap}
 .ar-com{color:#0f766e!important;text-decoration:none!important;font-weight:600}
 .ar-pend.dup{color:#0f766e!important;border-color:#5eead4!important;background:#f0fdfa!important}
+
+/* v2.25: exportar diário */
+.bx-tp{display:flex;flex-direction:column;gap:8px}.bx-tp label{display:flex!important;align-items:center;justify-content:flex-start;gap:10px;font-size:13px;font-weight:400;text-align:left;color:var(--ink);margin:0}
+.bx-tp input{width:18px!important;height:18px;flex:none;margin:0;padding:0;accent-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -1901,7 +1905,7 @@ button.po-tr:hover{background:var(--soft)}
    pelo Supabase: sem config.js preenchido, aparece a tela de ajuda.
    ===================================================================== */
 const CONFIG = Object.assign({SUPABASE_URL:'', SUPABASE_ANON_KEY:'', LOGO_URL:'', VAPID_PUBLIC_KEY:''}, window.PAINEL_CONFIG || {});
-const APP_VERSION = '2.24';
+const APP_VERSION = '2.25';
 const TEST = !!window.__PAINEL_TEST__;               // usado só em testes automatizados
 const cleanUrl = u => String(u || '').trim().replace(/\/rest\/v1\/?$/,'').replace(/\/+$/,'');
 const CFG_OK = !!(cleanUrl(CONFIG.SUPABASE_URL) && String(CONFIG.SUPABASE_ANON_KEY || '').trim());
@@ -5889,6 +5893,7 @@ function pgBordo(){
     <select class="sel" id="bdcat" aria-label="Categoria"><option value="">Todas as categorias</option>${opts(Object.keys(BD_CAT).map(k => [k,k]), BD.cat)}</select>
     <button class="btn" data-act="bd-dup">${ic('users',16)}Duplas do dia</button>
     <button class="btn" data-act="bd-reu">${ic('cal',16)}Reunião</button>
+    <button class="btn" data-act="bd-xls" title="Exportar o diário para Excel">${ic('download',16)}<span class="hide-s">Exportar</span></button>
     <button class="btn pri" data-act="bd-new">${ic('plus',16)}Anotar</button>
   </div>
   ${due.length ? `<div class="bd-due">${ic('bell',16)}<b>${due.length === 1 ? 'Para lembrar hoje:' : due.length + ' anotações para lembrar hoje:'}</b>${due.slice(0,4).map(a => `<button data-act="bd-open" data-id="${a.id}">${esc(a.titulo)}</button>`).join('')}</div>` : ''}
@@ -6038,6 +6043,63 @@ async function bdToggle(id){
   const a = AN(id); if (!a) return; const st = a.status === 'aberto' ? 'resolvido' : 'aberto';
   const row = {status:st, resolvido_em: st === 'resolvido' ? nowISO() : null, updated_at:nowISO()};
   try { await DB.update('anotacoes', id, row); Object.assign(a, row); S.sig = dataSig(); toast(st === 'resolvido' ? 'Marcada como resolvida.' : 'Reaberta.'); pgBordo(); } catch(e){ err(e); }
+}
+/* ----- Exportar o diário (v2.25): uma aba por categoria, mais reuniões, duplas e um resumo ----- */
+function bdXlsForm(){
+  const hj = iso(new Date()), m1 = hj.slice(0, 8) + '01';
+  openModal({title:'Exportar diário de bordo', body:`<form id="mf" class="form" autocomplete="off" onsubmit="return false">
+    ${fld('Período', `<select name="per" id="bxper">${opts([['mes','Este mês'],['mesant','Mês passado'],['30','Últimos 30 dias'],['90','Últimos 90 dias'],['ano','Este ano'],['tudo','Tudo'],['custom','Escolher datas']], 'mes')}</select>`, true)}
+    <div class="f" id="bxdw" hidden><label>De</label><input type="date" name="de" value="${m1}"></div><div class="f" id="bxaw" hidden><label>Até</label><input type="date" name="ate" value="${hj}"></div>
+    ${fld('Base', `<select name="base"><option value="">${S.base ? bName(S.base) : 'Todas as minhas bases'}</option>${S.base ? '' : opts(myBases().map(k => [k, BASES[k].nome]), '')}</select>`)}
+    ${fld('Situação das anotações', `<select name="st">${opts([['','Todas'],['aberto','Só em aberto'],['resolvido','Só resolvidas']], '')}</select>`)}
+    ${fld('O que levar', `<div class="bx-tp"><label><input type="checkbox" name="tp" value="nota" checked> Anotações (uma aba por categoria)</label><label><input type="checkbox" name="tp" value="reuniao" checked> Reuniões</label><label><input type="checkbox" name="tp" value="duplas" checked> Duplas do dia</label><label><input type="checkbox" name="tp" value="part" checked> Incluir minhas anotações particulares</label></div>`, true)}
+  </form><p class="f-hint">A planilha sai com uma aba de Resumo, uma aba para cada categoria (Veículo, Equipe, Material...), uma de Reuniões e uma de Duplas.</p>`,
+  foot:`<button class="btn" data-act="modal-close">Cancelar</button><button class="btn pri" data-act="bd-xls-go">${ic('download',15)}Gerar Excel</button>`,
+  onMount: ov => { const p = $('#bxper', ov); p.onchange = () => { $('#bxdw', ov).hidden = $('#bxaw', ov).hidden = p.value !== 'custom'; }; }});
+}
+async function bdXls(){
+  const f = formObj(), tps = $$('#mf [name=tp]:checked').map(x => x.value), hj = new Date(), H = iso(hj);
+  let de = '', ate = H;
+  if (f.per === 'mes') de = H.slice(0, 8) + '01';
+  else if (f.per === 'mesant'){ const a = new Date(hj.getFullYear(), hj.getMonth() - 1, 1); de = iso(a); ate = iso(new Date(hj.getFullYear(), hj.getMonth(), 0)); }
+  else if (f.per === '30' || f.per === '90') de = iso(addDays(hj, -(+f.per)));
+  else if (f.per === 'ano') de = H.slice(0, 4) + '-01-01';
+  else if (f.per === 'custom'){ de = f.de || ''; ate = f.ate || H; if (de && ate && de > ate) return toast('A data inicial é depois da final.', 'err'); }
+  else ate = '9999-12-31';
+  const base = f.base || S.base || '';
+  const ok = a => (!de || a.data >= de) && a.data <= ate && (!base || a.base === base) && (a.base || tps.includes('part'));
+  const all = bdAll().filter(ok).sort((a,b) => a.data.localeCompare(b.data) || (a.created_at || '').localeCompare(b.created_at || ''));
+  const notas = tps.includes('nota') ? all.filter(a => (!a.tipo || a.tipo === 'nota') && (!f.st || a.status === f.st)) : [];
+  const reus = tps.includes('reuniao') ? all.filter(a => a.tipo === 'reuniao') : [];
+  const dups = tps.includes('duplas') ? all.filter(a => a.tipo === 'duplas') : [];
+  if (!notas.length && !reus.length && !dups.length) return toast('Nada no diário com esses filtros.', 'err');
+  let X; try { X = await loadXLSX(); } catch(e){ return err(e); }
+  const nomeC = id => id ? ((C(id) || CX(id))?.nome || '') : '', placa = id => id ? (V(id)?.placa || '') : '';
+  const pri = p => BD_PRI[p]?.label || '', st = a => a.status === 'resolvido' ? 'Resolvida' : 'Em aberto';
+  const per = `${de ? fmtD(de) : 'início'} a ${ate >= '9999' ? fmtD(H) : fmtD(ate)}`;
+  const wb = X.utils.book_new();
+  const aba = (nome, rows, cols) => { const ws = X.utils.aoa_to_sheet(rows); ws['!cols'] = cols.map(w => ({wch:w})); if (rows.length > 1) ws['!autofilter'] = {ref: X.utils.encode_range({s:{r:0, c:0}, e:{r:rows.length - 1, c:rows[0].length - 1}})}; X.utils.book_append_sheet(wb, ws, nome.slice(0, 31)); };
+  // Resumo
+  const cats = Object.keys(BD_CAT), res = [['Diário de bordo — exportação'], ['Período', per], ['Base', base ? bName(base) : 'Todas'], ['Gerado em', fmtDT(nowISO()) + ' por ' + S.profile.nome], [],
+    ['Categoria', 'Total', 'Em aberto', 'Resolvidas', 'Prioridade alta', 'Com lembrete vencido']];
+  cats.forEach(k => { const l = notas.filter(a => (a.categoria || 'Outro') === k); if (l.length) res.push([k, l.length, l.filter(a => a.status === 'aberto').length, l.filter(a => a.status === 'resolvido').length, l.filter(a => +a.prioridade === 3).length, l.filter(bdDue).length]); });
+  res.push(['Total de anotações', notas.length, notas.filter(a => a.status === 'aberto').length, notas.filter(a => a.status === 'resolvido').length, notas.filter(a => +a.prioridade === 3).length, notas.filter(bdDue).length]);
+  res.push([], ['Reuniões', reus.length, `${reus.filter(a => a.status === 'resolvido').length} realizada(s)`, `${reus.reduce((n, a) => n + (a.arquivos || []).length, 0)} ata(s) anexada(s)`]);
+  res.push(['Dias com duplas montadas', dups.length, `${dups.reduce((n, a) => n + (a.duplas || []).length, 0)} dupla(s) no total`]);
+  if (notas.length && !base){ res.push([], ['Anotações por base', 'Total', 'Em aberto']); [...myBases(), ''].forEach(k => { const l = notas.filter(a => (a.base || '') === k); if (l.length) res.push([k ? bName(k) : 'Particulares (sem base)', l.length, l.filter(a => a.status === 'aberto').length]); }); }
+  const wr = X.utils.aoa_to_sheet(res); wr['!cols'] = [{wch:30},{wch:14},{wch:22},{wch:22},{wch:16},{wch:20}]; X.utils.book_append_sheet(wb, wr, 'Resumo');
+  // Uma aba por categoria
+  const cabN = ['Data', 'Título', 'Detalhes', 'Situação', 'Prioridade', 'Base', 'Colaborador', 'Veículo', 'Lembrar em', 'Resolvida em', 'Anotado por'];
+  cats.forEach(k => { const l = notas.filter(a => (a.categoria || 'Outro') === k).sort((a,b) => (a.status === 'resolvido') - (b.status === 'resolvido') || b.prioridade - a.prioridade || a.data.localeCompare(b.data)); if (!l.length) return;
+    aba(k, [cabN, ...l.map(a => [fmtD(a.data), a.titulo, a.texto || '', st(a), pri(a.prioridade), a.base ? bName(a.base) : 'Particular', nomeC(a.colaborador_id), placa(a.veiculo_id), a.lembrar_em ? fmtD(a.lembrar_em) : '', a.resolvido_em ? fmtD(a.resolvido_em) : '', a.autor_nome || ''])], [11,40,60,11,10,13,26,10,11,12,20]); });
+  if (reus.length) aba('Reuniões', [['Data', 'Horário', 'Assunto', 'Situação', 'Local', 'Base', 'Participantes', 'Pauta e decisões', 'Atas anexadas', 'Registrada por'],
+    ...reus.map(a => [fmtD(a.data), a.hora ? hhmm(a.hora) : '', a.titulo, a.status === 'resolvido' ? 'Realizada' : 'Agendada', a.local || '', a.base ? bName(a.base) : 'Particular', a.participantes || '', a.texto || '', (a.arquivos || []).map(x => x.nome).join(', '), a.autor_nome || ''])], [11,8,36,10,18,13,40,60,30,20]);
+  if (dups.length){ const rows = [['Data', 'Dia da semana', 'Base', 'Nº', 'Fica com a POS', 'Acompanha', 'Observação', 'Montado por']];
+    dups.forEach(a => (a.duplas || []).forEach((p, i) => { const [x, y] = (p || []).map(String), cx = C(x), cy = C(y), tit = cx?.pos && !cy?.pos ? x : cy?.pos && !cx?.pos ? y : x, out = tit === x ? y : x;
+      rows.push([fmtD(a.data), cap(parseISO(a.data).toLocaleDateString('pt-BR', {weekday:'long'})), bName(a.base), i + 1, nomeC(tit), nomeC(out), i ? '' : (a.texto || ''), a.autor_nome || '']); }));
+    aba('Duplas', rows, [11,14,13,4,28,28,36,20]); }
+  X.writeFile(wb, `Diario_de_bordo_${(de || 'inicio')}_a_${ate >= '9999' ? H : ate}${base ? '_' + bName(base).replace(/\s/g, '') : ''}.xlsx`);
+  closeModal(); toast(`Diário exportado: ${notas.length} anotação(ões), ${reus.length} reunião(ões), ${dups.length} dia(s) de duplas.`);
 }
 async function bdDel(id){
   const a = AN(id); if (!a || !await confirmBox(`Excluir ${a.tipo === 'reuniao' ? `a reunião <b>${esc(a.titulo)}</b>${(a.arquivos || []).length ? ' e as atas anexadas' : ''}` : a.tipo === 'duplas' ? `as duplas de <b>${bName(a.base)}</b> em ${fmtD(a.data)}` : `a anotação <b>${esc(a.titulo)}</b>`}?`)) return;
@@ -7284,7 +7346,7 @@ const ACT = {
   'ar-b': a => { AR.b = AR.b === a.dataset.k ? '' : a.dataset.k; ARL = null; pgArrec(); },
   'ar-sem': a => { const s0 = AR.sem || arAlvo(); AR.sem = +a.dataset.k < 0 ? arAnt(s0) : arProx(s0); if (AR.sem < AR_INICIO) AR.sem = AR_INICIO; ARL = null; pgArLancar(); },
   'ar-sem-go': a => { AR.sem = a.dataset.k; ARL = null; pgArLancar(); },
-  'ar-dia-mes': () => arAplicaMes(),
+  'ar-dia-mes': () => arAplicaMes(), 'bd-xls': () => bdXlsForm(), 'bd-xls-go': () => bdXls(),
   'ar-dia-all': () => { if (!ARL) return; let n = 0; Object.keys(ARL.d).forEach(cid => { const d = ARL.d[cid], sg = arSugDup(cid); if (!sg) return; if (d.situacao === sg.situacao && sameId(d.dupla_com || '', sg.dupla_com)) return; arAplicaDiario(cid, d); d.salvo = false; n++; });
     const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); toast(n ? `${n} linha(s) ajustada(s) pelo diário. Confira e salve.` : 'Tudo já está igual ao diário.'); },
   'ar-dia-1': a => { const d = ARL?.d[a.dataset.id]; if (!d) return; arAplicaDiario(a.dataset.id, d); d.salvo = false; const y = window.scrollY; pgArLancar(); window.scrollTo(0, y); },
